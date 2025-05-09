@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Personagem apoio emocional - rosto empático -->
+  <defs>
+    <radialGradient id="faceGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#AAD4FF" />
+      <stop offset="100%" stop-color="#4A90E2" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Cabeça -->
+  <circle cx="60" cy="60" r="40" fill="url(#faceGradient)" />
+  
+  <!-- Olhos -->
+  <ellipse cx="45" cy="50" rx="7" ry="8" fill="#FFFFFF" />
+  <ellipse cx="75" cy="50" rx="7" ry="8" fill="#FFFFFF" />
+  <circle cx="45" cy="50" r="3.5" fill="#333333" />
+  <circle cx="75" cy="50" r="3.5" fill="#333333" />
+  <circle cx="46" cy="48" r="1" fill="#FFFFFF" />
+  <circle cx="76" cy="48" r="1" fill="#FFFFFF" />
+  
+  <!-- Sobrancelhas empáticas -->
+  <path d="M38 40 Q45 35 52 40" stroke="#333333" stroke-width="2" fill="none" />
+  <path d="M68 40 Q75 35 82 40" stroke="#333333" stroke-width="2" fill="none" />
+  
+  <!-- Sorriso suave -->
+  <path d="M45 70 Q60 78 75 70" stroke="#333333" stroke-width="3" fill="none" stroke-linecap="round" />
+  
+  <!-- Símbolo de coração -->
+  <path d="M55 20 C52 15 45 15 45 20 C45 25 55 30 60 35 C65 30 75 25 75 20 C75 15 68 15 65 20 C62 15 58 15 55 20 Z" fill="#FF6B6B" />
+  
+  <!-- Nome do personagem -->
+  <text x="60" y="115" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#333333">Emotivo</text>
+</svg>
