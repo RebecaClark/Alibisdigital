@@ -928,73 +928,25 @@
     }, 1000);
   }
   
- // Função que mostra o diagnóstico real utilizando a API Face++ (em vez de dados fixos)
-function mostrarDiagnosticoReal() {
-  const result = document.getElementById('scanner-result');
-  const helpButton = document.getElementById('emotional-help');
-  
-  result.textContent = "⏳ Analisando expressão facial...";
-
-  if (helpButton) {
-    helpButton.classList.add('hidden');
-  }
-
-  // Simulando um leve atraso para dar impressão de processamento
-  setTimeout(() => {
-    // Captura a imagem da câmera e envia para a API da Face++
-    enviarImagemParaFacePlus(); // Chama a função que lida com a API Face++
-  }, 2000);
-}
-
-// Função que envia a imagem capturada para a API Face++ e processa o diagnóstico
-function enviarImagemParaFacePlus() {
-  const canvas = document.getElementById('camera-canvas');
-  const imgData = canvas.toDataURL('image/jpeg'); // Captura a imagem da câmera (canvas)
-  
-  const url = "https://api-us.faceplusplus.com/facepp/v3/detect";
-  
-  // Prepara os dados para enviar para a API
-  const data = new FormData();
-  data.append("api_key", "SUA_CHAVE_API");
-  data.append("api_secret", "SEU_SECRET_API");
-  data.append("image_base64", imgData.split(',')[1]); // Envia a imagem como base64
-  
-  // Envia a requisição para Face++
-  fetch(url, {
-    method: "POST",
-    body: data
-  })
-  .then(response => response.json())
-  .then(data => {
-    // Chama a função para processar o diagnóstico com a resposta da API
-    processarDiagnostico(data);
-  })
-  .catch(error => {
-    console.error("Erro ao enviar imagem para Face++:", error);
-  });
-}
-
-// Função que processa a resposta da Face++ e exibe o diagnóstico
-function processarDiagnostico(data) {
-  const result = document.getElementById('scanner-result');
-  const helpButton = document.getElementById('emotional-help');
-  
-  result.textContent = "⏳ Analisando expressão facial...";
-
-  if (helpButton) {
-    helpButton.classList.add('hidden');
-  }
-
-  // Simula o tempo de processamento da API
-  setTimeout(() => {
-    if (data.faces && data.faces.length > 0) {
-      const face = data.faces[0];
-      const gender = face.attributes.gender.value;
-      const age = face.attributes.age;
-      const emotion = getDominantEmotion(face);
-      const diagnosis = gerarDiagnostico(emotion);
-
-      // Exibe os resultados na tela
+  // Nova função que mostra o diagnóstico sem depender da API externa
+  function mostrarDiagnosticoImediato() {
+    const result = document.getElementById('scanner-result');
+    const helpButton = document.getElementById('emotional-help');
+    
+    result.textContent = "⏳ Analisando expressão facial...";
+    
+    if (helpButton) {
+      helpButton.classList.add('hidden');
+    }
+    
+    // Simulando um leve atraso para dar impressão de processamento
+    setTimeout(() => {
+      // Dados fixos para demonstração
+      const gender = "Homem";
+      const age = 32;
+      const emotion = "neutra";
+      const diagnosis = "Percebo sinais de tensão leve e fadiga em sua expressão. Recomendo que você faça pausas regularmente durante o dia para relaxar e descansar os olhos. Considere tirar alguns minutos para respiração profunda e pequenas caminhadas.";
+      
       result.innerHTML = `
         <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
           <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
@@ -1006,7 +958,7 @@ function processarDiagnostico(data) {
             <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
             <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
           </div>
-
+          
           <div class="mt-6 text-center">
             <button onclick="replayDiagnosis()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full flex items-center space-x-2 mx-auto">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -1014,6 +966,34 @@ function processarDiagnostico(data) {
               </svg>
               <span>Ouvir Diagnóstico</span>
             </button>
+          </div>
+          
+          <div class="mt-8 bg-blue-900 bg-opacity-30 p-4 rounded-lg border border-blue-700">
+            <h4 class="text-blue-300 font-bold mb-2">Quer uma análise mais profunda?</h4>
+            <p class="text-gray-300 mb-3">Nosso diagnóstico completo inclui:</p>
+            <ul class="text-gray-300 space-y-1 mb-4 text-sm">
+              <li class="flex items-center">
+                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Análise detalhada de 7 emoções diferentes
+              </li>
+              <li class="flex items-center">
+                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Recomendações personalizadas de especialistas
+              </li>
+              <li class="flex items-center">
+                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Programa de 30 dias para melhorar seu bem-estar
+              </li>
+            </ul>
+            <a href="#planos" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-2 px-6 rounded-full inline-block transform transition hover:scale-105">
+              Ver planos de análise
+            </a>
           </div>
         </div>
       `;
@@ -1026,100 +1006,68 @@ function processarDiagnostico(data) {
       setTimeout(() => {
         speakDiagnosis(diagnosis, gender);
       }, 300);
-
+      
       // Mostra botão de ajuda
       if (helpButton) {
         helpButton.classList.remove('hidden');
       }
-    } else {
-      result.innerHTML = "❌ Nenhuma face detectada. Tente novamente.";
-    }
-  }, 2000);
-}
-
-// Função para obter a emoção predominante com base nos dados da Face++
-function getDominantEmotion(face) {
-  const emotions = face.attributes.emotion;
-  let dominantEmotion = "neutra";
-  let maxEmotionValue = -1;
-
-  for (let emotion in emotions) {
-    if (emotions[emotion] > maxEmotionValue) {
-      maxEmotionValue = emotions[emotion];
-      dominantEmotion = emotion;
+    }, 2000);
+  }
+  
+  // Função para reproduzir diagnóstico novamente
+  function replayDiagnosis() {
+    if (window.currentDiagnosis && window.currentGender) {
+      speakDiagnosis(window.currentDiagnosis, window.currentGender);
     }
   }
 
-  return dominantEmotion;
-}
+  function speakDiagnosis(text, gender) {
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices();
+    const diagnosisText = document.getElementById('diagnosis-text');
+    
+    // Animação de texto sendo digitado
+    let charIndex = 0;
+    const originalText = text;
+    
+    if (diagnosisText) {
+      diagnosisText.textContent = '"..."';
+      const typingInterval = setInterval(() => {
+        if (charIndex < originalText.length) {
+          diagnosisText.textContent = '"' + originalText.substring(0, charIndex + 1) + '"';
+          charIndex++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, 30);
+    }
 
-// Função para gerar o diagnóstico com base na emoção detectada
-function gerarDiagnostico(emotion) {
-  const diagnosticos = {
-    "neutral": "Você está com uma expressão neutra. Parece estar estável.",
-    "happy": "Você está sorrindo! Parece bem disposto.",
-    "angry": "Sinais de irritação detectados. Respire fundo e tente relaxar.",
-    "sad": "Expressão de tristeza detectada. Talvez seja hora de dar uma pausa e refletir.",
-    "surprised": "Sua expressão está de surpresa! Pode ser uma reação inesperada.",
-    "disgusted": "Expressão de desgosto detectada. Tente se distanciar do que está te incomodando."
-  };
+    if (voices.length === 0) {
+      setTimeout(() => speakDiagnosis(text, gender), 500);
+      return;
+    }
 
-  return diagnosticos[emotion] || "Diagnóstico não disponível.";
-}
+    // Prefere uma voz em português
+    let selectedVoice = voices.find(voice => voice.lang === "pt-BR");
+    
+    if (!selectedVoice) {
+      selectedVoice = voices[0];
+    }
 
-// Função para reproduzir diagnóstico novamente
-function replayDiagnosis() {
-  if (window.currentDiagnosis && window.currentGender) {
-    speakDiagnosis(window.currentDiagnosis, window.currentGender);
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.voice = selectedVoice;
+    utter.lang = 'pt-BR';
+    utter.rate = 0.9; // Um pouco mais lento para melhor compreensão
+    utter.pitch = 1.2; // Tom ligeiramente mais agudo para parecer um robô
+
+    if (synth.speaking) synth.cancel();
+    
+    // Pequeno atraso para sincronizar com a animação de texto
+    setTimeout(() => {
+      synth.speak(utter);
+    }, 500);
   }
-}
-
-function speakDiagnosis(text, gender) {
-  const synth = window.speechSynthesis;
-  const voices = synth.getVoices();
-  const diagnosisText = document.getElementById('diagnosis-text');
-  
-  // Animação de texto sendo digitado
-  let charIndex = 0;
-  const originalText = text;
-  
-  if (diagnosisText) {
-    diagnosisText.textContent = '"..."';
-    const typingInterval = setInterval(() => {
-      if (charIndex < originalText.length) {
-        diagnosisText.textContent = '"' + originalText.substring(0, charIndex + 1) + '"';
-        charIndex++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 30);
-  }
-
-  if (voices.length === 0) {
-    setTimeout(() => speakDiagnosis(text, gender), 500);
-    return;
-  }
-
-  // Prefere uma voz em português
-  let selectedVoice = voices.find(voice => voice.lang === "pt-BR");
-  
-  if (!selectedVoice) {
-    selectedVoice = voices[0];
-  }
-
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.voice = selectedVoice;
-  utter.lang = 'pt-BR';
-  utter.rate = 0.9; // Um pouco mais lento para melhor compreensão
-  utter.pitch = 1.2; // Tom ligeiramente mais agudo para parecer um robô
-
-  if (synth.speaking) synth.cancel();
-  
-  // Pequeno atraso para sincronizar com a animação de texto
-  setTimeout(() => {
-    synth.speak(utter);
-  }, 500);
-}
+</script>
 
 
   <!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
