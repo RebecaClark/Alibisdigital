@@ -7,36 +7,36 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
+
     .fade-in {
-      animation: fadeIn 1s ease-in-out both;
+      animation: fadeIn 0.8s ease-in-out;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Animação de cor no cabeçalho */
-    header {
-      background: linear-gradient(270deg, #0f172a, #1e293b, #0f172a);
-      background-size: 600% 600%;
-      animation: gradientShift 10s ease infinite;
+    .header-transition {
+      transition: background-color 0.5s ease, box-shadow 0.5s ease;
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .header-scrolled {
+      background-color: #1e293b !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
   </style>
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
 
-  <!-- Cabeçalho -->
-  <header class="text-white shadow-md fixed top-0 left-0 w-full z-50 transition-colors duration-500">
+  <!-- Cabeçalho com Transição -->
+  <header id="main-header" class="bg-[#0f172a] text-white fixed top-0 left-0 w-full z-50 header-transition">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo -->
       <div class="flex items-center space-x-3">
         <img src="logo.png" class="h-10 w-auto" alt="Álibis Digital Logo">
       </div>
+      <!-- Menu Mobile -->
       <div class="md:hidden flex items-center">
         <button id="hamburger-menu" class="text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,6 +44,7 @@
           </svg>
         </button>
       </div>
+      <!-- Navegação Desktop -->
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
         <a href="#criar-alibi" class="hover:text-green-400 transition">Criar Álibi</a>
         <a href="#scanner" class="hover:text-green-400 transition">Scanner com IA</a>
@@ -63,9 +64,10 @@
     </nav>
   </div>
 
+  <!-- Espaço para o header fixo -->
   <div class="h-20"></div>
 
-  <!-- Bloco 1 – Hero -->
+  <!-- Hero Section -->
   <section class="bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white text-center py-24 px-6 fade-in">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-5xl font-extrabold mb-6 leading-tight">Desculpas Impecáveis. Diagnóstico Emocional com IA.</h1>
@@ -77,18 +79,20 @@
     </div>
   </section>
 
+  <!-- Script de scroll do cabeçalho -->
   <script>
-    const hamburger = document.getElementById('hamburger-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    hamburger.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    window.addEventListener("scroll", function () {
+      const header = document.getElementById("main-header");
+      if (window.scrollY > 50) {
+        header.classList.add("header-scrolled");
+      } else {
+        header.classList.remove("header-scrolled");
+      }
     });
   </script>
 
 </body>
 </html>
-
 
  <!-- BLOCO 2 – Consciência do Problema -->
 <section id="criar-alibi" class="bg-[#0f172a] py-16 px-6 text-white">
