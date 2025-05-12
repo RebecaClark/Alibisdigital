@@ -810,10 +810,7 @@
       });
   }
 </script>
-
-
-
-  <!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
+<!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
 <section id="bloco6-diagnostico" class="bg-blue-950 py-16 px-4 sm:px-6 lg:px-8 text-white">
   <div class="max-w-3xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-white text-center">Diagnóstico Médico com IA</h2>
@@ -840,8 +837,13 @@
     </div>
 
     <div id="resultadoDiagnostico" class="mt-6 bg-blue-900 p-4 rounded shadow text-white hidden">
-      <h3 class="text-xl font-semibold mb-2">Resultado:</h3>
-      <p id="diagnosticoTexto"></p>
+      <h3 class="text-xl font-semibold mb-2">Prévia do Diagnóstico:</h3>
+      <p id="diagnosticoTexto" class="text-sm"></p>
+      <div class="text-center mt-4">
+        <button id="botaoPagamento" class="bg-green-600 hover:bg-green-700 text-white text-base font-medium py-2 px-6 rounded-full shadow-md transition-all duration-300">
+          Desbloquear Diagnóstico Completo
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -894,9 +896,11 @@
       });
 
       const data = await response.json();
-      const result = data?.result || "Não foi possível obter um diagnóstico.";
+      const fullResult = data?.result || "Não foi possível obter um diagnóstico.";
 
-      document.getElementById('diagnosticoTexto').textContent = result;
+      const preview = fullResult.length > 200 ? fullResult.substring(0, 200) + "..." : fullResult;
+
+      document.getElementById('diagnosticoTexto').textContent = preview;
     } catch (error) {
       document.getElementById('diagnosticoTexto').textContent = "Erro ao buscar diagnóstico. Tente novamente.";
     }
@@ -904,7 +908,12 @@
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('resultadoDiagnostico').classList.remove('hidden');
   });
+
+  document.getElementById('botaoPagamento').addEventListener('click', () => {
+    alert("Integre aqui sua plataforma de pagamento (ex: Stripe, MercadoPago, etc).");
+  });
 </script>
+
 
 <!-- BLOCO 7 - Pagamento -->
 <section id="bloco7-pagamento" class="py-16 px-4 bg-white text-center animate-on-scroll">
