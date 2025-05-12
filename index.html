@@ -810,70 +810,82 @@
       });
   }
 </script>
-<!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
-<section id="bloco6-diagnostico" class="bg-blue-950 py-16 px-4 sm:px-6 lg:px-8 text-white">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-white text-center">Diagnóstico Médico com IA</h2>
-
+<!-- Bloco 6: Diagnóstico Médico com IA -->
+<section id="consulta-medica" class="py-16 bg-white fade-in">
+  <div class="container mx-auto px-4 max-w-3xl">
+    <h2 class="text-3xl font-bold mb-6 text-center text-blue-800">Consulta Médica com IA</h2>
+    <p class="text-center mb-8 text-gray-600">Preencha os campos abaixo para receber um pré-diagnóstico com base em seus sintomas. Nossa IA é integrada com APIs médicas confiáveis.</p>
+    
     <form id="diagnosticoForm" class="space-y-4">
-      <input type="text" id="symptoms" placeholder="Sintomas (separados por vírgula)" required class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <input type="number" id="age" placeholder="Idade" required class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <select id="gender" required class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded">
-        <option value="">Gênero</option>
-        <option value="male">Masculino</option>
-        <option value="female">Feminino</option>
-      </select>
-      <input type="number" id="height" placeholder="Altura (cm)" class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <input type="number" id="weight" placeholder="Peso (kg)" class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <input type="text" id="medicalHistory" placeholder="Histórico Médico (separado por vírgula)" class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <input type="text" id="currentMedications" placeholder="Medicações atuais (separado por vírgula)" class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <input type="text" id="allergies" placeholder="Alergias (separado por vírgula)" class="w-full bg-blue-900 text-white border border-blue-700 p-2 rounded" />
-      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full transition">Obter Diagnóstico</button>
+      <div>
+        <label for="idade" class="block font-semibold">Idade:</label>
+        <input type="number" id="idade" name="idade" class="w-full p-2 border rounded" required>
+      </div>
+      
+      <div>
+        <label for="genero" class="block font-semibold">Gênero:</label>
+        <select id="genero" name="genero" class="w-full p-2 border rounded" required>
+          <option value="">Selecione</option>
+          <option value="male">Masculino</option>
+          <option value="female">Feminino</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="altura" class="block font-semibold">Altura (cm):</label>
+        <input type="number" id="altura" name="altura" class="w-full p-2 border rounded" required>
+      </div>
+
+      <div>
+        <label for="peso" class="block font-semibold">Peso (kg):</label>
+        <input type="number" id="peso" name="peso" class="w-full p-2 border rounded" required>
+      </div>
+
+      <div>
+        <label for="sintomas" class="block font-semibold">Sintomas (separados por vírgula):</label>
+        <input type="text" id="sintomas" name="sintomas" class="w-full p-2 border rounded" required>
+      </div>
+
+      <div>
+        <label for="historico" class="block font-semibold">Histórico Médico:</label>
+        <textarea id="historico" name="historico" class="w-full p-2 border rounded" rows="3" placeholder="Ex: hipertensão, diabetes tipo 2, alergia a penicilina"></textarea>
+        <p class="text-sm text-gray-500 mt-1">Escreva termos médicos claros, separados por vírgula.</p>
+      </div>
+
+      <button type="submit" class="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition">Enviar</button>
     </form>
 
-    <div id="loading" class="text-center mt-6 hidden">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white mx-auto mb-2"></div>
-      <p class="text-white">Analisando sintomas com IA...</p>
-    </div>
-
-    <div id="resultadoDiagnostico" class="mt-6 bg-blue-900 p-4 rounded shadow text-white hidden">
-      <h3 class="text-xl font-semibold mb-2">Prévia do Diagnóstico:</h3>
-      <p id="diagnosticoTexto" class="text-sm"></p>
-      <div class="text-center mt-4">
-        <button id="botaoPagamento" class="bg-green-600 hover:bg-green-700 text-white text-base font-medium py-2 px-6 rounded-full shadow-md transition-all duration-300">
-          Desbloquear Diagnóstico Completo
-        </button>
-      </div>
+    <div id="resultadoDiagnostico" class="mt-6 p-4 bg-gray-100 rounded hidden">
+      <h3 class="text-xl font-semibold mb-2 text-green-700">Prévia do Diagnóstico:</h3>
+      <pre id="resultadoTexto" class="whitespace-pre-wrap text-sm text-gray-800">Carregando...</pre>
+      <button id="desbloquearBtn" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition hidden">Desbloquear Diagnóstico Completo</button>
     </div>
   </div>
 </section>
 
 <script>
-  document.getElementById('diagnosticoForm').addEventListener('submit', async (e) => {
+  let fullDiagnostico = "";
+
+  document.getElementById("diagnosticoForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    document.getElementById('resultadoDiagnostico').classList.add('hidden');
-    document.getElementById('loading').classList.remove('hidden');
-
-    const symptoms = document.getElementById('symptoms').value.split(',').map(s => s.trim());
-    const age = parseInt(document.getElementById('age').value);
-    const gender = document.getElementById('gender').value;
-    const height = parseInt(document.getElementById('height').value);
-    const weight = parseInt(document.getElementById('weight').value);
-    const medicalHistory = document.getElementById('medicalHistory').value.split(',').map(s => s.trim());
-    const currentMedications = document.getElementById('currentMedications').value.split(',').map(s => s.trim());
-    const allergies = document.getElementById('allergies').value.split(',').map(s => s.trim());
+    const idade = document.getElementById("idade").value;
+    const genero = document.getElementById("genero").value;
+    const altura = document.getElementById("altura").value;
+    const peso = document.getElementById("peso").value;
+    const sintomas = document.getElementById("sintomas").value.split(',').map(s => s.trim());
+    const historico = document.getElementById("historico").value.split(',').map(h => h.trim());
 
     const body = {
-      symptoms,
+      symptoms: sintomas,
       patientInfo: {
-        age,
-        gender,
-        height,
-        weight,
-        medicalHistory,
-        currentMedications,
-        allergies,
+        age: parseInt(idade),
+        gender: genero,
+        height: parseInt(altura),
+        weight: parseInt(peso),
+        medicalHistory: historico,
+        currentMedications: [],
+        allergies: [],
         lifestyle: {
           smoking: false,
           alcohol: "occasional",
@@ -885,35 +897,35 @@
     };
 
     try {
-      const response = await fetch('https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1', {
-        method: 'POST',
+      const response = await fetch("https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-rapidapi-host': 'ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com',
-          'x-rapidapi-key': '6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d'
+          "Content-Type": "application/json",
+          "x-rapidapi-host": "ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com",
+          "x-rapidapi-key": "6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d"
         },
         body: JSON.stringify(body)
       });
 
       const data = await response.json();
-      const fullResult = data?.result || "Não foi possível obter um diagnóstico.";
+      fullDiagnostico = JSON.stringify(data.result, null, 2);
 
-      const preview = fullResult.length > 200 ? fullResult.substring(0, 200) + "..." : fullResult;
+      document.getElementById("resultadoTexto").textContent = "Diagnóstico processado. Clique abaixo para desbloquear o resultado completo.";
+      document.getElementById("resultadoDiagnostico").classList.remove("hidden");
+      document.getElementById("desbloquearBtn").classList.remove("hidden");
 
-      document.getElementById('diagnosticoTexto').textContent = preview;
     } catch (error) {
-      document.getElementById('diagnosticoTexto').textContent = "Erro ao buscar diagnóstico. Tente novamente.";
+      document.getElementById("resultadoTexto").textContent = "Erro ao obter o diagnóstico. Tente novamente mais tarde.";
+      document.getElementById("resultadoDiagnostico").classList.remove("hidden");
+      console.error("Erro ao conectar com a API:", error);
     }
-
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('resultadoDiagnostico').classList.remove('hidden');
   });
 
-  document.getElementById('botaoPagamento').addEventListener('click', () => {
-    alert("Integre aqui sua plataforma de pagamento (ex: Stripe, MercadoPago, etc).");
+  document.getElementById("desbloquearBtn").addEventListener("click", function () {
+    document.getElementById("resultadoTexto").textContent = fullDiagnostico;
+    this.classList.add("hidden"); // esconde o botão depois de desbloquear
   });
 </script>
-
 
 <!-- BLOCO 7 - Pagamento -->
 <section id="bloco7-pagamento" class="py-16 px-4 bg-white text-center animate-on-scroll">
