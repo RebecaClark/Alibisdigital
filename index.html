@@ -788,8 +788,8 @@
               <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
               <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
             </div>
-          </div>
-        `;
+           </div>
+
 
         if (showHelp) {
           helpButton.classList.remove('hidden');
@@ -803,6 +803,42 @@
       result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
     });
   }
+<script>
+  function replayDiagnosis() {
+    const diagnosisText = document.getElementById("diagnosis-text").textContent;
+
+    // Detectar o gênero (isso depende de como você armazenou ele)
+    const gender = document.getElementById("gender")?.textContent?.toLowerCase(); // precisa ter um elemento <div id="gender">homem</div> ou <div id="gender">mulher</div>
+
+    const utterance = new SpeechSynthesisUtterance(diagnosisText);
+    utterance.lang = 'pt-BR';
+
+    // Pega todas as vozes disponíveis
+    const voices = speechSynthesis.getVoices();
+
+    // Filtra por gênero oposto
+    let selectedVoice;
+    if (gender === "homem") {
+      selectedVoice = voices.find(v => v.name.toLowerCase().includes("female") || v.name.toLowerCase().includes("mulher"));
+    } else if (gender === "mulher") {
+      selectedVoice = voices.find(v => v.name.toLowerCase().includes("male") || v.name.toLowerCase().includes("homem"));
+    }
+
+    // Se achou uma voz oposta, usa. Senão, usa qualquer uma em pt-BR
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+    } else {
+      utterance.voice = voices.find(v => v.lang === 'pt-BR') || null;
+    }
+
+    speechSynthesis.speak(utterance);
+  }
+
+  // Garante que as vozes estejam carregadas antes de usar
+  window.speechSynthesis.onvoiceschanged = () => {
+    // Isso só precisa ser chamado uma vez no carregamento
+    speechSynthesis.getVoices();
+  };
 </script>
 
 
