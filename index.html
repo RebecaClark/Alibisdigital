@@ -639,7 +639,7 @@
   </div>
 
   <div class="flex justify-center">
-    <button onclick="mostrarDiagnosticoImediato()" class="mt-4 bg-green-600 text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in">
+    <button onclick="captureAndAnalyze()" class="mt-4 bg-green-600 text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in">
       Analisar Estado Emocional
     </button>
   </div>
@@ -669,38 +669,23 @@
         console.error("Erro ao acessar a câmera:", error);
         document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
       });
-      
-    // Mobile menu toggle
-    const hamburgerButton = document.getElementById('hamburger-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (hamburgerButton && mobileMenu) {
-      hamburgerButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
-    
-    // Iniciar as animações com base no scroll
+
     initScrollAnimations();
   };
-  
-  // Função para animar elementos quando eles aparecem na tela
+
   function initScrollAnimations() {
-    // Pegar todos os elementos que devem ser animados
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    
-    // Função para verificar se o elemento está visível
+
     function checkIfInView() {
       const windowHeight = window.innerHeight;
       const windowTopPosition = window.scrollY;
       const windowBottomPosition = windowTopPosition + windowHeight;
-      
+
       animatedElements.forEach(function(element) {
         const elementHeight = element.offsetHeight;
         const elementTopPosition = element.offsetTop;
         const elementBottomPosition = elementTopPosition + elementHeight;
-        
-        // Verificar se o elemento está visível na tela
+
         if (
           (elementBottomPosition >= windowTopPosition) &&
           (elementTopPosition <= windowBottomPosition)
@@ -709,14 +694,9 @@
         }
       });
     }
-    
-    // Executar a verificação quando a página carrega
+
     checkIfInView();
-    
-    // Executar a verificação durante o scroll
     window.addEventListener('scroll', checkIfInView);
-    
-    // Também verificar em redimensionamento de tela
     window.addEventListener('resize', checkIfInView);
   }
 
@@ -753,40 +733,6 @@
 
         const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
 
-        let diagnosis = '';
-        let showHelp = false;
-
-        switch (emotionSorted) {
-          case 'sadness':
-            diagnosis = "Identifico sinais de tristeza no seu rosto. Isso pode indicar um momento de reflexão ou algo que está te incomodando. Estou aqui para ajudar - seria bom conversar sobre isso ou talvez descansar um pouco.";
-            showHelp = true;
-            break;
-          case 'anger':
-            diagnosis = "Detecto tensão na sua expressão facial, possivelmente raiva ou frustração. Respire fundo algumas vezes. Uma caminhada ao ar livre poderia ajudar a aliviar esse estresse que está sentindo.";
-            showHelp = true;
-            break;
-          case 'happiness':
-            diagnosis = "Sua expressão mostra sinais claros de felicidade! Continue cultivando esses momentos positivos, eles são importantes para o seu bem-estar emocional e mental.";
-            break;
-          case 'surprise':
-            diagnosis = "Observo sinais de surpresa no seu rosto. Algo inesperado aconteceu? Lembre-se que momentos de surpresa podem ser oportunidades para novas perspectivas.";
-            break;
-          case 'neutral':
-            diagnosis = "Sua expressão está bastante neutra, o que pode indicar equilíbrio, mas também cansaço mental. Considere tirar um tempo para relaxar e recarregar suas energias.";
-            break;
-          case 'fear':
-            diagnosis = "Identifico traços de medo ou ansiedade na sua expressão. Se essa sensação for frequente no seu dia a dia, conversar com um profissional pode trazer alívio e novas estratégias para lidar com isso.";
-            showHelp = true;
-            break;
-          case 'disgust':
-            diagnosis = "Sua expressão mostra sinais de incômodo ou aversão. Você está enfrentando alguma situação desagradável que tem consumido sua energia? Podemos ajudar a encontrar alternativas.";
-            showHelp = true;
-            break;
-          default:
-            diagnosis = "A análise não foi conclusiva, mas lembre-se que cuidar da mente é sempre um bom passo para melhorar sua qualidade de vida e bem-estar geral.";
-        }
-
-        // Tradução das emoções para português
         const emotionPortuguese = {
           'sadness': 'tristeza',
           'anger': 'raiva',
@@ -796,10 +742,41 @@
           'fear': 'medo',
           'disgust': 'desgosto'
         };
-        
+
         const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
-        
-        // Mostra resultado em formato limpo sem holograma
+        let diagnosis = '';
+        let showHelp = false;
+
+        switch (emotionSorted) {
+          case 'sadness':
+            diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
+            showHelp = true;
+            break;
+          case 'anger':
+            diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
+            showHelp = true;
+            break;
+          case 'happiness':
+            diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
+            break;
+          case 'surprise':
+            diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
+            break;
+          case 'neutral':
+            diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pause?";
+            break;
+          case 'fear':
+            diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
+            showHelp = true;
+            break;
+          case 'disgust':
+            diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
+            showHelp = true;
+            break;
+          default:
+            diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
+        }
+
         result.innerHTML = `
           <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
             <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
@@ -811,263 +788,23 @@
               <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
               <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
             </div>
-            
-            <div class="mt-6 text-center">
-              <button onclick="replayDiagnosis()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full flex items-center space-x-2 mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                </svg>
-                <span>Ouvir Diagnóstico</span>
-              </button>
-            </div>
-            
-            <div class="mt-8 bg-blue-900 bg-opacity-30 p-4 rounded-lg border border-blue-700">
-              <h4 class="text-blue-300 font-bold mb-2">Quer uma análise mais profunda?</h4>
-              <p class="text-gray-300 mb-3">Nosso diagnóstico completo inclui:</p>
-              <ul class="text-gray-300 space-y-1 mb-4 text-sm">
-                <li class="flex items-center">
-                  <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Análise detalhada de 7 emoções diferentes
-                </li>
-                <li class="flex items-center">
-                  <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Recomendações personalizadas de especialistas
-                </li>
-                <li class="flex items-center">
-                  <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Programa de 30 dias para melhorar seu bem-estar
-                </li>
-              </ul>
-              <a href="#planos" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-2 px-6 rounded-full inline-block transform transition hover:scale-105">
-                Ver planos de análise
-              </a>
-            </div>
           </div>
         `;
-
-        // Guarda o diagnóstico atual numa variável global para poder reproduzir novamente
-        window.currentDiagnosis = diagnosis;
-        window.currentGender = gender;
-        
-        // Inicia a fala do diagnóstico
-        speakDiagnosis(diagnosis, gender);
 
         if (showHelp) {
           helpButton.classList.remove('hidden');
         }
-
       } else {
-        result.textContent = "⚠️ Nenhum rosto detectado. Ajuste a posição da câmera e tente novamente.";
+        result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
       }
     })
-    .catch(() => {
-      result.textContent = "🚫 Erro na análise. Verifique sua conexão e tente novamente.";
+    .catch(err => {
+      console.error("Erro na análise facial:", err);
+      result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
     });
   }
-
-  // Função para demonstração do escaneamento (sem necessidade de câmera)
-  function demonstracaoEscaneamento() {
-    const result = document.getElementById('scanner-result');
-    const helpButton = document.getElementById('emotional-help');
-    
-    // Mensagem de carregamento
-    result.textContent = "⏳ Carregando demonstração...";
-    
-    // Oculta botão de ajuda temporariamente
-    if (helpButton) {
-      helpButton.classList.add('hidden');
-    }
-    
-    // Informações de demonstração
-    const age = 28;
-    const gender = "Homem";
-    const emotion = "neutra";
-    const diagnosis = "Estou detectando sinais de cansaço mental. Sua expressão está neutra, mas há tensão sutilmente visível. Considere tirar um tempo para relaxar e recarregar suas energias. Priorize um bom sono nas próximas noites.";
-    
-    // Conteúdo HTML simplificado do resultado (sem holograma)
-    setTimeout(() => {
-      result.innerHTML = `
-        <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
-          <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
-          <div class="text-white mb-4">
-            <p class="mb-2">👤 <strong>Gênero:</strong> ${gender}</p>
-            <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
-            <p class="mb-4">😊 <strong>Emoção predominante:</strong> ${emotion}</p>
-            <hr class="border-blue-600 opacity-30 my-4">
-            <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
-            <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
-          </div>
-        </div>
-        <button onclick="replayDiagnosis()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full mx-auto flex items-center space-x-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-          </svg>
-          <span>Ouvir Diagnóstico</span>
-        </button>
-      `;
-      
-      // Armazena diagnóstico para reprodução
-      window.currentDiagnosis = diagnosis;
-      window.currentGender = gender;
-      
-      // Reproduz o diagnóstico
-      setTimeout(() => {
-        speakDiagnosis(diagnosis, gender);
-      }, 300);
-      
-      // Mostra botão de ajuda
-      if (helpButton) {
-        helpButton.classList.remove('hidden');
-      }
-    }, 1000);
-  }
-  
-  // Nova função que mostra o diagnóstico sem depender da API externa
-  function mostrarDiagnosticoImediato() {
-    const result = document.getElementById('scanner-result');
-    const helpButton = document.getElementById('emotional-help');
-    
-    result.textContent = "⏳ Analisando expressão facial...";
-    
-    if (helpButton) {
-      helpButton.classList.add('hidden');
-    }
-    
-    // Simulando um leve atraso para dar impressão de processamento
-    setTimeout(() => {
-      // Dados fixos para demonstração
-      const gender = "Homem";
-      const age = 32;
-      const emotion = "neutra";
-      const diagnosis = "Percebo sinais de tensão leve e fadiga em sua expressão. Recomendo que você faça pausas regularmente durante o dia para relaxar e descansar os olhos. Considere tirar alguns minutos para respiração profunda e pequenas caminhadas.";
-      
-      result.innerHTML = `
-        <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
-          <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
-          <div class="text-white mb-4">
-            <p class="mb-2">👤 <strong>Gênero:</strong> ${gender}</p>
-            <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
-            <p class="mb-4">😊 <strong>Emoção predominante:</strong> ${emotion}</p>
-            <hr class="border-blue-600 opacity-30 my-4">
-            <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
-            <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
-          </div>
-          
-          <div class="mt-6 text-center">
-            <button onclick="replayDiagnosis()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full flex items-center space-x-2 mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-              </svg>
-              <span>Ouvir Diagnóstico</span>
-            </button>
-          </div>
-          
-          <div class="mt-8 bg-blue-900 bg-opacity-30 p-4 rounded-lg border border-blue-700">
-            <h4 class="text-blue-300 font-bold mb-2">Quer uma análise mais profunda?</h4>
-            <p class="text-gray-300 mb-3">Nosso diagnóstico completo inclui:</p>
-            <ul class="text-gray-300 space-y-1 mb-4 text-sm">
-              <li class="flex items-center">
-                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Análise detalhada de 7 emoções diferentes
-              </li>
-              <li class="flex items-center">
-                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Recomendações personalizadas de especialistas
-              </li>
-              <li class="flex items-center">
-                <svg class="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Programa de 30 dias para melhorar seu bem-estar
-              </li>
-            </ul>
-            <a href="#planos" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-2 px-6 rounded-full inline-block transform transition hover:scale-105">
-              Ver planos de análise
-            </a>
-          </div>
-        </div>
-      `;
-      
-      // Armazena diagnóstico para reprodução
-      window.currentDiagnosis = diagnosis;
-      window.currentGender = gender;
-      
-      // Reproduz o diagnóstico
-      setTimeout(() => {
-        speakDiagnosis(diagnosis, gender);
-      }, 300);
-      
-      // Mostra botão de ajuda
-      if (helpButton) {
-        helpButton.classList.remove('hidden');
-      }
-    }, 2000);
-  }
-  
-  // Função para reproduzir diagnóstico novamente
-  function replayDiagnosis() {
-    if (window.currentDiagnosis && window.currentGender) {
-      speakDiagnosis(window.currentDiagnosis, window.currentGender);
-    }
-  }
-
-  function speakDiagnosis(text, gender) {
-    const synth = window.speechSynthesis;
-    const voices = synth.getVoices();
-    const diagnosisText = document.getElementById('diagnosis-text');
-    
-    // Animação de texto sendo digitado
-    let charIndex = 0;
-    const originalText = text;
-    
-    if (diagnosisText) {
-      diagnosisText.textContent = '"..."';
-      const typingInterval = setInterval(() => {
-        if (charIndex < originalText.length) {
-          diagnosisText.textContent = '"' + originalText.substring(0, charIndex + 1) + '"';
-          charIndex++;
-        } else {
-          clearInterval(typingInterval);
-        }
-      }, 30);
-    }
-
-    if (voices.length === 0) {
-      setTimeout(() => speakDiagnosis(text, gender), 500);
-      return;
-    }
-
-    // Prefere uma voz em português
-    let selectedVoice = voices.find(voice => voice.lang === "pt-BR");
-    
-    if (!selectedVoice) {
-      selectedVoice = voices[0];
-    }
-
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.voice = selectedVoice;
-    utter.lang = 'pt-BR';
-    utter.rate = 0.9; // Um pouco mais lento para melhor compreensão
-    utter.pitch = 1.2; // Tom ligeiramente mais agudo para parecer um robô
-
-    if (synth.speaking) synth.cancel();
-    
-    // Pequeno atraso para sincronizar com a animação de texto
-    setTimeout(() => {
-      synth.speak(utter);
-    }, 500);
-  }
 </script>
+
 
 
   <!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
