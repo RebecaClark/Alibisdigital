@@ -629,7 +629,7 @@
   </div>
 </section>
   
-<!-- BLOCO 5 - Scanner Facial Médico com IA + Diagnóstico Real -->
+<!-- BLOCO 5 - Scanner Facial Médico com IA + Diagnóstico Real + Leitura em Voz -->
 <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
   <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
   <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
@@ -675,17 +675,15 @@
 
   function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
-
     function checkIfInView() {
       const windowHeight = window.innerHeight;
       const windowTopPosition = window.scrollY;
       const windowBottomPosition = windowTopPosition + windowHeight;
 
-      animatedElements.forEach(function(element) {
+      animatedElements.forEach(function (element) {
         const elementHeight = element.offsetHeight;
         const elementTopPosition = element.offsetTop;
         const elementBottomPosition = elementTopPosition + elementHeight;
-
         if (
           (elementBottomPosition >= windowTopPosition) &&
           (elementTopPosition <= windowBottomPosition)
@@ -694,10 +692,16 @@
         }
       });
     }
-
     checkIfInView();
     window.addEventListener('scroll', checkIfInView);
     window.addEventListener('resize', checkIfInView);
+  }
+
+  function speak(text) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "pt-BR";
+    synth.speak(utter);
   }
 
   function captureAndAnalyze() {
@@ -723,87 +727,90 @@
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.faces && data.faces.length > 0) {
-        const face = data.faces[0];
-        const age = face.attributes.age.value;
-        const gender = face.attributes.gender.value;
-        const emotion = face.attributes.emotion;
+      .then(res => res.json())
+      .then(data => {
+        if (data.faces && data.faces.length > 0) {
+          const face = data.faces[0];
+          const age = face.attributes.age.value;
+          const gender = face.attributes.gender.value;
+          const emotion = face.attributes.emotion;
 
-        const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+          const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
 
-        const emotionPortuguese = {
-          'sadness': 'tristeza',
-          'anger': 'raiva',
-          'happiness': 'felicidade',
-          'surprise': 'surpresa',
-          'neutral': 'neutra',
-          'fear': 'medo',
-          'disgust': 'desgosto'
-        };
+          const emotionPortuguese = {
+            'sadness': 'tristeza',
+            'anger': 'raiva',
+            'happiness': 'felicidade',
+            'surprise': 'surpresa',
+            'neutral': 'neutra',
+            'fear': 'medo',
+            'disgust': 'desgosto'
+          };
 
-        const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
-        let diagnosis = '';
-        let showHelp = false;
+          const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+          let diagnosis = '';
+          let showHelp = false;
 
-        switch (emotionSorted) {
-          case 'sadness':
-            diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
-            showHelp = true;
-            break;
-          case 'anger':
-            diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
-            showHelp = true;
-            break;
-          case 'happiness':
-            diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
-            break;
-          case 'surprise':
-            diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
-            break;
-          case 'neutral':
-            diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pause?";
-            break;
-          case 'fear':
-            diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
-            showHelp = true;
-            break;
-          case 'disgust':
-            diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
-            showHelp = true;
-            break;
-          default:
-            diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
-        }
+          switch (emotionSorted) {
+            case 'sadness':
+              diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
+              showHelp = true;
+              break;
+            case 'anger':
+              diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
+              showHelp = true;
+              break;
+            case 'happiness':
+              diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
+              break;
+            case 'surprise':
+              diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
+              break;
+            case 'neutral':
+              diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pause?";
+              break;
+            case 'fear':
+              diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
+              showHelp = true;
+              break;
+            case 'disgust':
+              diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
+              showHelp = true;
+              break;
+            default:
+              diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
+          }
 
-        result.innerHTML = `
-          <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
-            <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
-            <div class="text-white mb-4">
-              <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
-              <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
-              <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
-              <hr class="border-blue-600 opacity-30 my-4">
-              <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
-              <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
+          result.innerHTML = `
+            <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
+              <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
+              <div class="text-white mb-4">
+                <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
+                <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
+                <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
+                <hr class="border-blue-600 opacity-30 my-4">
+                <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
+                <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
+              </div>
             </div>
-           </div>
+          `;
 
+          speak(`Diagnóstico emocional: ${diagnosis}`);
 
-        if (showHelp) {
-          helpButton.classList.remove('hidden');
+          if (showHelp) {
+            helpButton.classList.remove('hidden');
+          }
+        } else {
+          result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
         }
-      } else {
-        result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
-      }
-    })
-    .catch(err => {
-      console.error("Erro na análise facial:", err);
-      result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
-    });
+      })
+      .catch(err => {
+        console.error("Erro na análise facial:", err);
+        result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
+      });
   }
-<script>
+</script>
+
 
 
   <!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
