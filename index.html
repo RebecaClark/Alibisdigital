@@ -813,44 +813,229 @@
   
 <!-- Bloco 6: Diagnóstico Médico com IA -->
 
-<div id="diagnostic-block" class="diagnostic-block">
-  <h2>Diagnóstico Médico com IA</h2>
-  <form id="diagnostic-form">
-    <label for="age">Idade:</label>
-    <input type="number" id="age" name="age" required>
+ <!-- BLOCO 6 - Avaliação Emocional e Diagnóstico Aprofundado -->
 
-    <label for="gender">Sexo:</label>
-    <select id="gender" name="gender" required>
-      <option value="female">Feminino</option>
-      <option value="male">Masculino</option>
+<section id="avaliacao-emocional-detalhada" class="py-16 px-6 bg-white text-center animate-on-scroll">
+  <h2 class="text-4xl font-bold mb-6 text-gray-800 float">Avaliação Emocional Completa</h2>
+  <p class="text-lg mb-8 text-gray-600 fade-in">
+    Responda ao questionário abaixo. Após isso, oferecemos um diagnóstico detalhado com inteligência artificial (disponível mediante pagamento).
+  </p>
+
+  <form id="formEmocional" class="max-w-xl mx-auto text-left space-y-6 scale-in">
+
+```
+<!-- Bloco 1: Perguntas 1 a 3 -->
+<div id="perguntas1-3" class="slide-in-left">
+  <div class="fade-in" style="animation-delay: 0.2s">
+    <label class="block mb-2 font-semibold text-black">1. Como você tem se sentido ultimamente?</label>
+    <select name="q1" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="muito_bem">Muito bem</option>
+      <option value="bem">Bem</option>
+      <option value="neutro">Neutro</option>
+      <option value="mal">Mal</option>
+      <option value="muito_mal">Muito mal</option>
     </select>
+  </div>
 
-    <label for="height">Altura (em cm):</label>
-    <input type="number" id="height" name="height" required>
+  <div class="fade-in" style="animation-delay: 0.3s">
+    <label class="block mb-2 font-semibold text-black">2. Como está sua qualidade de sono?</label>
+    <select name="q2" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="boa">Durmo muito bem</option>
+      <option value="razoavel">Durmo razoavelmente bem</option>
+      <option value="dificuldade">Tenho dificuldades para dormir</option>
+      <option value="insuficiente">Não consigo descansar direito</option>
+    </select>
+  </div>
 
-    <label for="weight">Peso (
+  <div class="fade-in" style="animation-delay: 0.4s">
+    <label class="block mb-2 font-semibold text-black">3. Você sente tristeza ou ansiedade com frequência?</label>
+    <select name="q3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="nunca">Nunca</option>
+      <option value="as_vezes">Às vezes</option>
+      <option value="frequente">Frequentemente</option>
+      <option value="quase_todo_dia">Quase todo dia</option>
+    </select>
+  </div>
+</div>
 
-<!-- BLOCO 7 - Pagamento -->
-<section id="bloco7-pagamento" class="py-16 px-4 bg-white text-center animate-on-scroll">
-  <div class="max-w-2xl mx-auto">
-    <h2 class="text-3xl font-bold text-blue-900 mb-4 shine">Seu bem-estar vem primeiro.</h2>
-    <p class="text-lg text-gray-700 mb-6 fade-in">Nosso diagnóstico parcial detectou sinais claros de estresse. Liberte-se da dúvida e descubra o que está realmente acontecendo com você.</p>
-    <div class="bg-green-50 border border-green-200 rounded-2xl p-6 shadow-md mb-6 scale-in">
-      <h3 class="text-2xl font-semibold text-green-700">Relatório Completo: <strong class="pulse">R$19,90</strong></h3>
-      <ul class="text-gray-600 mt-4 space-y-2 text-left">
-        <li class="fade-in" style="animation-delay: 0.1s">✅ Leitura emocional detalhada</li>
-        <li class="fade-in" style="animation-delay: 0.2s">✅ Recomendações personalizadas</li>
-        <li class="fade-in" style="animation-delay: 0.3s">✅ Encaminhamento (se necessário)</li>
-        <li class="fade-in" style="animation-delay: 0.4s">✅ Entrega instantânea via e-mail</li>
-        <li class="fade-in" style="animation-delay: 0.5s">✅ Totalmente sigiloso e seguro</li>
-      </ul>
+<!-- Bloco 2: Perguntas 4 a 6 -->
+<div id="perguntas4-6" class="slide-in-right">
+  <div class="fade-in" style="animation-delay: 0.5s">
+    <label class="block mb-2 font-semibold text-black">4. Você tem evitado o convívio social, mesmo com pessoas próximas?</label>
+    <select name="q4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="nao">Não, estou mantendo meus vínculos normalmente</option>
+      <option value="as_vezes">Às vezes me afasto, mas tento manter contato</option>
+      <option value="sim">Sim, tenho preferido ficar completamente sozinho(a)</option>
+    </select>
+  </div>
+
+  <div class="fade-in" style="animation-delay: 0.6s">
+    <label class="block mb-2 font-semibold text-black">5. Você percebe sintomas físicos persistentes como fadiga, dores ou tensões?</label>
+    <select name="q5" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="nao">Não, meu corpo está bem</option>
+      <option value="as_vezes">Algumas vezes, especialmente em dias mais difíceis</option>
+      <option value="frequente">Sim, com frequência e sem causa aparente</option>
+    </select>
+  </div>
+
+  <div class="fade-in" style="animation-delay: 0.7s">
+    <label class="block mb-2 font-semibold text-black">6. Como está o seu apetite nos últimos dias?</label>
+    <select name="q6" required class="w-full px-4 py-2 border border-gray-300 rounded-lg text-black">
+      <option value="">Selecione</option>
+      <option value="normal">Permanece normal</option>
+      <option value="aumentado">Tenho sentido mais fome do que o habitual</option>
+      <option value="reduzido">Quase não tenho vontade de comer</option>
+    </select>
+  </div>
+</div>
+
+<!-- Botão de Diagnóstico Parcial -->
+<div class="mt-6 text-center bounce-in">
+  <button type="button" onclick="mostrarDiagnostico()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 animated-btn pulse">
+    Ver Diagnóstico Preliminar
+  </button>
+</div>
+```
+
+  </form>
+
+  <!-- Resultado Parcial do Diagnóstico - Inicialmente oculto -->
+
+  <div id="resultado-parcial" class="max-w-2xl mx-auto mt-10 hidden">
+    <div class="futuristic-box mb-8 text-white">
+      <div class="scanner-line"></div>
+      <h3 class="text-2xl text-[#00e9ff] font-bold mb-4 text-center">Resultado Preliminar</h3>
+
+```
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1 bg-[#0a1a2a] p-4 rounded-lg border border-[#00e9ff] border-opacity-30">
+      <div class="text-lg font-semibold mb-1 text-[#00e9ff]">Nível de Estresse</div>
+      <div class="text-5xl font-bold mb-2">68<span class="text-xl font-normal text-gray-400">/100</span></div>
+      <div class="text-sm text-gray-400">Acima da média</div>
     </div>
-    <button class="animated-btn bg-green-600 hover:bg-green-700 text-white text-lg font-medium py-3 px-8 rounded-full shadow-lg transition-all duration-300 bounce-in">
-      Liberar Diagnóstico Completo
-    </button>
-    <p class="text-sm text-gray-400 mt-3 fade-in" style="animation-delay: 0.6s">Pagamento 100% seguro. Suporte humano disponível.</p>
+    
+    <div class="flex-1 bg-[#0a1a2a] p-4 rounded-lg border border-[#00e9ff] border-opacity-30">
+      <div class="text-lg font-semibold mb-1 text-[#00e9ff]">Ansiedade</div>
+      <div class="text-5xl font-bold mb-2">72<span class="text-xl font-normal text-gray-400">/100</span></div>
+      <div class="text-sm text-gray-400">Nível elevado</div>
+    </div>
+  </div>
+  
+  <p class="mb-4">Nossa análise preliminar identificou <span class="text-red-400 font-semibold">sinais preocupantes</span> no seu padrão de respostas. Pessoas com este perfil frequentemente enfrentam:</p>
+  
+  <ul class="space-y-2 mb-6 pl-5">
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Dificuldade para dormir e descansar adequadamente</span>
+    </li>
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Redução na produtividade e capacidade de concentração</span>
+    </li>
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Sintomas físicos como tensão muscular e fadiga crônica</span>
+    </li>
+  </ul>
+  
+  <div class="bg-[#0a1a2a] p-4 rounded-lg border border-yellow-500 border-opacity-50 mb-6">
+    <p class="text-yellow-400 font-semibold text-center">Nossa análise completa pode identificar as causas subjacentes e oferecer soluções personalizadas para seu caso específico.</p>
+  </div>
+</div>
+
+<div class="animate-pulse">
+  <div class="hologram-container mx-auto mb-6">
+    <div class="hologram">
+      <div class="hologram-base"></div>
+      <div class="hologram-3d-container">
+        <div class="hologram-projection">
+          <div class="hologram-layer layer-1"></div>
+          <div class="hologram-layer layer-2"></div>
+          <div class="hologram-layer layer-3"></div>
+        </div>
+        <div class="hologram-rings">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+        </div>
+        <div class="hologram-particles" id="particles-container-diagnostico">
+          <!-- Partículas serão geradas via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-gradient-to-br from-blue-900 to-purple-900 rounded-2xl p-8 shadow-2xl border border-blue-400 border-opacity-30 mb-8">
+  <h3 class="text-3xl font-bold text-white mb-4 text-center">Diagnóstico Emocional Completo</h3>
+  <p class="text-lg text-gray-200 mb-6 text-center">Entenda completamente o que está afetando seu bem-estar emocional e receba orientações personalizadas</p>
+  
+  <ul class="space-y-4 mb-8">
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Análise completa de 12 dimensões emocionais</span>
+        <p class="text-gray-300">Muito além do diagnóstico básico, identificamos padrões profundos</p>
+      </div>
+    </li>
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Plano de ação personalizado e práticas recomendadas</span>
+        <p class="text-gray-300">Estratégias específicas para recuperar seu equilíbrio emocional</p>
+      </div>
+    </li>
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Suporte 24/7 com profissionais especializados</span>
+        <p class="text-gray-300">Acesso ao suporte via chat para dúvidas e acompanhamento</p>
+      </div>
+    </li>
+  </ul>
+  
+  <div class="text-center space-y-4">
+    <div class="text-2xl font-bold text-white mb-2">
+      <span class="text-sm line-through text-gray-400">R$99,90</span>
+      <span class="text-green-400"> R$19,90</span>
+      <span class="text-sm text-gray-300 ml-2">pagamento único</span>
+    </div>
+    
+    <a href="#comprar" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-full inline-block shadow-lg transform hover:scale-105 transition-all duration-300 animated-btn bounce-in text-lg">
+      QUERO MEU DIAGNÓSTICO COMPLETO
+    </a>
+    
+    <p class="text-sm text-gray-400">Processamento instantâneo e 100% seguro</p>
+  </div>
+</div>
+```
+
   </div>
 </section>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
