@@ -811,124 +811,67 @@
   }
 </script>
   
-<!-- Bloco 6: Consulta Médica com IA -->
-<section id="consulta-medica" class="py-16 px-4 bg-gray-100 text-gray-900">
-  <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-4">Consulta Médica com IA</h2>
-    <p class="text-lg mb-6">Preencha os dados abaixo para obter um pré-diagnóstico gratuito. Use linguagem clara e objetiva.</p>
-    
-    <form id="formConsultaIA" class="space-y-4 text-left bg-white p-6 rounded shadow-md">
-      <div>
-        <label for="sintomas" class="block font-semibold">Sintomas (separe por vírgula):</label>
-        <input type="text" id="sintomas" name="sintomas" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Ex: dor de cabeça, febre, fadiga" required>
-      </div>
-      
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label for="idade" class="block font-semibold">Idade:</label>
-          <input type="number" id="idade" name="idade" class="w-full border border-gray-300 rounded px-3 py-2" required>
-        </div>
-        <div>
-          <label for="genero" class="block font-semibold">Gênero:</label>
-          <select id="genero" name="genero" class="w-full border border-gray-300 rounded px-3 py-2" required>
-            <option value="">Selecione</option>
-            <option value="male">Masculino</option>
-            <option value="female">Feminino</option>
-            <option value="other">Outro</option>
-          </select>
-        </div>
-      </div>
+<!-- Bloco de Diagnóstico Completo com Animação -->
+<div id="resultadoTexto" class="text-left space-y-4 bg-white p-6 rounded-2xl shadow-xl border border-gray-200 text-sm text-gray-800 max-h-[600px] overflow-y-auto opacity-0 translate-y-4 transition-all duration-700 ease-in-out">
+  
+  <div>
+    <h4 class="font-bold text-lg">⚠️ Aviso:</h4>
+    <p class="italic text-gray-700">"Essa análise é apenas para fins educacionais e não substitui a avaliação médica profissional."</p>
+  </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label for="altura" class="block font-semibold">Altura (cm):</label>
-          <input type="number" id="altura" name="altura" class="w-full border border-gray-300 rounded px-3 py-2">
-        </div>
-        <div>
-          <label for="peso" class="block font-semibold">Peso (kg):</label>
-          <input type="number" id="peso" name="peso" class="w-full border border-gray-300 rounded px-3 py-2">
-        </div>
-      </div>
+  <div>
+    <h4 class="font-bold text-lg mt-4">🧠 Condições Possíveis:</h4>
 
-      <div>
-        <label for="historico" class="block font-semibold">Histórico Médico:</label>
-        <textarea id="historico" name="historico" rows="3" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Ex: hipertensão, alergia a penicilina, toma losartana diariamente" required></textarea>
-      </div>
+    <div class="mt-2">
+      <p><strong>1. Tensão ou Estresse</strong></p>
+      <p class="text-gray-700">A dor de cabeça tensional é uma das formas mais comuns de dor de cabeça, geralmente provocada por tensão muscular, estresse emocional ou falta de descanso.</p>
+      <p><strong>Sintomas comuns:</strong> Dor leve a moderada, Pressão ao redor da cabeça</p>
+      <p><strong>Nível de risco:</strong> Baixo</p>
+    </div>
 
-      <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-all">
-        Analisar Sintomas
-      </button>
-    </form>
-
-    <!-- Diagnóstico Parcial -->
-    <div class="mt-8 hidden" id="resultadoDiagnostico">
-      <h3 class="text-xl font-semibold mb-2">Prévia do Diagnóstico:</h3>
-      <pre id="resultadoTexto" class="whitespace-pre-wrap text-sm text-gray-800 bg-white p-3 rounded border border-gray-300 overflow-x-auto max-h-96"></pre>
-
-      <button onclick="mostrarDiagnosticoCompleto()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-all">
-        Desbloquear Diagnóstico Completo
-      </button>
+    <div class="mt-4">
+      <p><strong>2. Enxaqueca</strong></p>
+      <p class="text-gray-700">A enxaqueca é uma dor intensa que pode ser acompanhada de náuseas e sensibilidade à luz. Pode ser desencadeada por estresse, alimentação, hormônios e sono irregular.</p>
+      <p><strong>Sintomas comuns:</strong> Dor intensa, Náusea, Sensibilidade à luz</p>
+      <p><strong>Nível de risco:</strong> Médio</p>
     </div>
   </div>
-</section>
+
+  <div>
+    <h4 class="font-bold text-lg mt-4">🧾 Recomendações:</h4>
+    <ul class="list-disc pl-5">
+      <li>Hidratar-se bem.</li>
+      <li>Praticar técnicas de relaxamento como meditação ou yoga.</li>
+      <li>Reduzir o estresse diário sempre que possível.</li>
+    </ul>
+  </div>
+
+  <div>
+    <h4 class="font-bold text-lg mt-4">🩺 Quando procurar ajuda médica:</h4>
+    <ul class="list-disc pl-5">
+      <li>Se a dor de cabeça for intensa e incapacitante.</li>
+      <li>Se houver sintomas como visão turva, fraqueza ou confusão.</li>
+    </ul>
+  </div>
+
+  <div>
+    <h4 class="font-bold text-lg mt-4">📚 Fontes confiáveis:</h4>
+    <ul class="list-disc pl-5 text-blue-600 underline">
+      <li><a href="https://www.mayoclinic.org" target="_blank">Mayo Clinic</a></li>
+      <li><a href="https://www.who.int" target="_blank">Organização Mundial da Saúde (OMS)</a></li>
+    </ul>
+  </div>
+</div>
 
 <script>
-document.getElementById("formConsultaIA").addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const sintomas = document.getElementById("sintomas").value.split(",").map(s => s.trim());
-  const idade = parseInt(document.getElementById("idade").value);
-  const genero = document.getElementById("genero").value;
-  const altura = parseInt(document.getElementById("altura").value);
-  const peso = parseInt(document.getElementById("peso").value);
-  const historico = document.getElementById("historico").value.split(",").map(h => h.trim());
-
-  const body = {
-    symptoms: sintomas,
-    patientInfo: {
-      age: idade,
-      gender: genero,
-      height: altura,
-      weight: peso,
-      medicalHistory: historico,
-      currentMedications: [],
-      allergies: [],
-      lifestyle: {
-        smoking: false,
-        alcohol: "occasional",
-        exercise: "moderate",
-        diet: "balanced"
-      }
-    },
-    lang: "pt"
-  };
-
-  try {
-    const resposta = await fetch("https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-rapidapi-host": "ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com",
-        "x-rapidapi-key": "6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d"
-      },
-      body: JSON.stringify(body)
-    });
-
-    const data = await resposta.json();
-    document.getElementById("resultadoTexto").textContent = JSON.stringify(data, null, 2);
-    document.getElementById("resultadoDiagnostico").classList.remove("hidden");
-  } catch (err) {
-    document.getElementById("resultadoTexto").textContent = "Erro ao buscar diagnóstico. Tente novamente.";
-    document.getElementById("resultadoDiagnostico").classList.remove("hidden");
-  }
-});
-
-function mostrarDiagnosticoCompleto() {
-  alert("🔓 Diagnóstico Completo desbloqueado!\n\n(Isto é só uma simulação. Integração com pagamento real em breve.)");
-}
+  // Ativar animação de entrada após inserção do diagnóstico
+  setTimeout(() => {
+    const resultado = document.getElementById('resultadoTexto');
+    if (resultado) {
+      resultado.classList.remove('opacity-0', 'translate-y-4');
+    }
+  }, 300);
 </script>
-
-
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
