@@ -814,8 +814,8 @@
 <!-- BLOCO 6 – Diagnóstico Médico com IA -->
 <section id="consulta-redox" style="padding: 40px; background: #f9f9f9;">
   <div style="max-width: 600px; margin: auto;">
-    <h2>Consulta Redox com IA Médica</h2>
-    <p>Insira o ID do paciente para buscar dados médicos reais via Redox API.</p>
+    <h2>Consulta de Dados Médicos com Redox</h2>
+    <p>Insira o ID do paciente para buscar dados médicos reais:</p>
     <input id="paciente-id" type="text" placeholder="ID do Paciente (ex: 12345)" style="width: 100%; padding: 10px; margin-bottom: 15px;" />
     <button onclick="consultarRedox()" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer;">
       Consultar Dados Médicos
@@ -829,41 +829,40 @@
     const apiKey = "6ae09720-0505-4838-bfd4-af6ac688249e";
     const apiSecret = "04d0ff79-de20-4f9c-9359-0601f096ad5c";
 
-    const pacienteID = document.getElementById("paciente-id").value;
+    const pacienteID = document.getElementById("paciente-id").value.trim();
     const respostaDiv = document.getElementById("resposta-redox");
-    respostaDiv.textContent = "Consultando Redox API...";
+
+    if (!pacienteID) {
+      respostaDiv.textContent = "Por favor, insira um ID de paciente válido.";
+      return;
+    }
+
+    respostaDiv.textContent = "Conectando com a Redox API...";
 
     try {
-      // 1. Autentica e pega o token JWT
+      // 1. Autenticação na API Redox
       const authResponse = await fetch("https://api.redoxengine.com/auth/authenticate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          apiKey: apiKey,
-          secret: apiSecret
-        })
+        body: JSON.stringify({ apiKey, secret: apiSecret })
       });
 
-      if (!authResponse.ok) {
-        const err = await authResponse.text();
-        throw new Error("Erro de autenticação: " + err);
-      }
+      if (!authResponse.ok) throw new Error("Erro na autenticação");
 
-      const authData = await authResponse.json();
-      const token = authData.accessToken;
+      const { accessToken } = await authResponse.json();
 
-      // 2. Faz a requisição real ao endpoint Redox
-      const patientResponse = await fetch("https://api.redoxengine.com/endpoint", {
+      // 2. Consulta ao endpoint
+      const consultaResponse = await fetch("https://api.redoxengine.com/endpoint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           Meta: {
             DataModel: "PatientAdmin",
             EventType: "Query",
-            Test: true
+            Test: false
           },
           Patient: {
             Identifiers: [
@@ -876,19 +875,17 @@
         })
       });
 
-      if (!patientResponse.ok) {
-        const err = await patientResponse.text();
-        throw new Error("Erro na consulta: " + err);
-      }
+      if (!consultaResponse.ok) throw new Error("Erro ao consultar dados do paciente");
 
-      const patientData = await patientResponse.json();
-      respostaDiv.textContent = JSON.stringify(patientData, null, 2);
+      const data = await consultaResponse.json();
+      respostaDiv.textContent = JSON.stringify(data, null, 2);
 
-    } catch (error) {
-      respostaDiv.textContent = "Erro: " + error.message;
+    } catch (err) {
+      respostaDiv.textContent = `Erro: ${err.message}`;
     }
   }
 </script>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
