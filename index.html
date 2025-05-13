@@ -812,89 +812,71 @@
 </script>
 
   <!-- BLOCO 6 - Consulta Médica com IA -->
-<section id="consulta-medica" class="p-6 bg-white text-black fade-in">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-bold mb-4 text-center">Consulta Médica com IA</h2>
-    <form id="diagnostico-form" class="space-y-4">
-      <div>
-        <label class="block font-semibold">Idade:</label>
-        <input type="number" name="age" class="w-full p-2 border rounded" required>
-      </div>
-      <div>
-        <label class="block font-semibold">Gênero:</label>
-        <select name="gender" class="w-full p-2 border rounded" required>
-          <option value="">Selecione</option>
+  <!-- BLOCO 6 - Consulta Médica com IA -->
+<section id="consulta-medica" class="py-12 bg-white text-gray-900">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-2xl p-8 transition-opacity duration-1000 opacity-0" id="consultaBloco">
+      <h2 class="text-3xl font-bold mb-6 text-center text-blue-800">Consulta Médica com IA</h2>
+      <form id="diagnosticoForm" class="space-y-4">
+        <input type="text" name="idade" placeholder="Idade" class="w-full p-2 border border-gray-300 rounded" required />
+        <select name="genero" class="w-full p-2 border border-gray-300 rounded" required>
+          <option value="">Gênero</option>
           <option value="male">Masculino</option>
           <option value="female">Feminino</option>
-          <option value="other">Outro</option>
         </select>
-      </div>
-      <div>
-        <label class="block font-semibold">Sintomas (separe por vírgula):</label>
-        <input type="text" name="symptoms" class="w-full p-2 border rounded" required>
-      </div>
-      <div>
-        <label class="block font-semibold">Histórico Médico (ex: hipertensão, alergia a penicilina):</label>
-        <input type="text" name="history" class="w-full p-2 border rounded" placeholder="Ex: diabetes, hipertensão, asma...">
-      </div>
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Gerar Diagnóstico</button>
-    </form>
+        <input type="text" name="altura" placeholder="Altura (cm)" class="w-full p-2 border border-gray-300 rounded" required />
+        <input type="text" name="peso" placeholder="Peso (kg)" class="w-full p-2 border border-gray-300 rounded" required />
+        <textarea name="sintomas" placeholder="Liste seus sintomas, separados por vírgula" class="w-full p-2 border border-gray-300 rounded" required></textarea>
+        <textarea name="historico" placeholder="Histórico Médico (Ex: hipertensão, alergias, medicamentos...)\nExemplo: hipertensão, alergia a penicilina, tomando losartana 50mg" class="w-full p-2 border border-gray-300 rounded" required></textarea>
+        <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Obter Diagnóstico Parcial</button>
+      </form>
 
-    <div id="diagnostico-output" class="mt-6 text-sm whitespace-pre-wrap bg-gray-100 p-4 rounded shadow"></div>
+      <div id="diagnosticoParcial" class="mt-6 bg-gray-100 p-4 rounded shadow-sm overflow-auto text-sm whitespace-pre-wrap" style="display:none;"></div>
 
-    <button id="desbloquear-btn" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Desbloquear Diagnóstico Completo</button>
+      <button id="desbloquearBtn" class="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition" style="display:none;">Desbloquear Diagnóstico Completo</button>
+    </div>
   </div>
 </section>
 
 <script>
-  // Animação fade-in
-  document.querySelectorAll('.fade-in').forEach(el => {
-    el.style.opacity = 0;
-    el.style.transform = 'translateY(20px)';
-    setTimeout(() => {
-      el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-      el.style.opacity = 1;
-      el.style.transform = 'translateY(0)';
-    }, 100);
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('consultaBloco').classList.remove('opacity-0');
+    document.getElementById('consultaBloco').classList.add('opacity-100');
   });
 
-  const form = document.getElementById('diagnostico-form');
-  const output = document.getElementById('diagnostico-output');
-  const btnDesbloqueio = document.getElementById('desbloquear-btn');
-
-  form.addEventListener('submit', async (e) => {
+  document.getElementById('diagnosticoForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const age = parseInt(formData.get('age'));
-    const gender = formData.get('gender');
-    const symptoms = formData.get('symptoms').split(',').map(s => s.trim());
-    const history = formData.get('history').split(',').map(h => h.trim());
+    const form = e.target;
+    const sintomas = form.sintomas.value.split(',').map(s => s.trim());
+    const idade = parseInt(form.idade.value);
+    const genero = form.genero.value;
+    const altura = parseInt(form.altura.value);
+    const peso = parseInt(form.peso.value);
+    const historico = form.historico.value;
 
     const payload = {
-      symptoms,
+      symptoms: sintomas,
       patientInfo: {
-        age,
-        gender,
-        height: 170,
-        weight: 70,
-        medicalHistory: history,
+        age: idade,
+        gender: genero,
+        height: altura,
+        weight: peso,
+        medicalHistory: historico.split(',').map(h => h.trim()),
         currentMedications: [],
         allergies: [],
         lifestyle: {
           smoking: false,
-          alcohol: "none",
+          alcohol: "occasional",
           exercise: "moderate",
           diet: "balanced"
         }
       },
-      lang: "en"
+      lang: "pt"
     };
 
-    output.innerText = 'Analisando sintomas...';
-
     try {
-      const res = await fetch('https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1', {
+      const response = await fetch('https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -904,41 +886,24 @@
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (data && data.result && data.result.analysis) {
-        const resultado = data.result.analysis;
-        const condicoes = resultado.possibleConditions.map(cond => `
-🔍 <strong>${cond.condition}</strong>
-➡️ ${cond.description}
-⚠️ Risco: ${cond.riskLevel}
-💡 Info extra: ${cond.additionalInfo}
-------------------------------
-        `).join('\n');
+      const diagnosticoDiv = document.getElementById('diagnosticoParcial');
+      diagnosticoDiv.style.display = 'block';
+      diagnosticoDiv.textContent = `Prévia do Diagnóstico:\n${JSON.stringify(data, null, 2)}`;
 
-        const recomendacoes = resultado.generalAdvice?.recommendedActions?.join('\n✅ ') || 'Sem recomendações.';
-
-        output.innerHTML = `
-        <h3 class="font-bold text-lg mb-2">Prévia do Diagnóstico:</h3>
-        <div class="text-sm text-black">
-          ${condicoes}
-          <p><strong>Recomendações Gerais:</strong></p>
-          ✅ ${recomendacoes}
-        </div>
-        `;
-      } else {
-        output.innerText = 'Não foi possível gerar um diagnóstico.';
-      }
-
-    } catch (err) {
-      output.innerText = 'Erro ao conectar com a API: ' + err.message;
+      document.getElementById('desbloquearBtn').style.display = 'block';
+    } catch (error) {
+      console.error("Erro ao obter diagnóstico:", error);
+      alert("Ocorreu um erro ao tentar obter o diagnóstico. Verifique sua conexão ou tente novamente mais tarde.");
     }
   });
 
-  btnDesbloqueio.addEventListener('click', () => {
-    alert('💸 Aqui você vai integrar o pagamento. Por enquanto, simulação de desbloqueio!');
+  document.getElementById('desbloquearBtn').addEventListener('click', function () {
+    alert("Pagamento para diagnóstico completo ainda não implementado.");
   });
 </script>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
