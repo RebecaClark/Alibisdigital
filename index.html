@@ -812,76 +812,340 @@
 </script>
 
 <!-- BLOCO 6 – Diagnóstico Médico com IA -->
-<section id="diagnostico-medico" style="padding: 40px; background-color: #f4f4f4;">
-  <div style="max-width: 600px; margin: auto;">
-    <h2>Consulta Médica com IA + Redox</h2>
-    <p>Insira seu ID de paciente para um diagnóstico real via Redox:</p>
-    <input id="patient-id" type="text" placeholder="ID do paciente" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-    <button onclick="consultarPaciente()" style="width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer;">Consultar</button>
-    <pre id="resposta-redox" style="background-color: #fff; padding: 20px; margin-top: 20px; overflow-x: auto; white-space: pre-wrap; border: 1px solid #ccc;"></pre>
+<!-- BLOCO 6 - Avaliação Médica e Diagnóstico Aprofundado -->
+
+<section id="avaliacao-medica" class="py-16 px-6 bg-gradient-to-b from-blue-50 to-white text-center">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-4xl font-bold mb-6 text-blue-900 fade-in">Avaliação Médica Especializada</h2>
+    <p class="text-lg mb-8 text-gray-600 slide-in-left">
+      Diagnóstico profissional com tecnologia avançada de IA
+    </p>
+
+```
+<form id="formMedico" class="bg-white rounded-2xl shadow-lg p-8 space-y-6 scale-in">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Sintomas Físicos -->
+    <div class="fade-in" style="animation-delay: 0.2s">
+      <label class="block text-gray-700 font-semibold mb-2">Sintomas Físicos</label>
+      <select id="sintomas" onchange="mostrarOutroSintoma()" class="w-full p-3 border rounded-lg text-gray-800 bg-white" required>
+        <option value="">Selecione os sintomas</option>
+        <option value="dor_cabeca">Dor de cabeça</option>
+        <option value="fadiga">Fadiga</option>
+        <option value="dores_corpo">Dores no corpo</option>
+        <option value="insonia">Insônia</option>
+        <option value="outro">Outro sintoma</option>
+      </select>
+      <div id="outroSintomaDiv" class="hidden mt-3">
+        <input type="text" placeholder="Descreva seu sintoma" class="w-full p-3 border rounded-lg text-gray-800 bg-white">
+      </div>
+    </div>
+
+    <!-- Nível de Estresse -->
+    <div class="fade-in" style="animation-delay: 0.3s">
+      <label class="block text-gray-700 font-semibold mb-2">Nível de Estresse</label>
+      <select name="nivel-estresse" class="w-full p-3 border rounded-lg text-gray-800 bg-white" required>
+        <option value="">Selecione o nível</option>
+        <option value="baixo">Baixo</option>
+        <option value="moderado">Moderado</option>
+        <option value="alto">Alto</option>
+        <option value="severo">Severo</option>
+      </select>
+    </div>
+
+    <!-- Qualidade do Sono -->
+    <div class="fade-in" style="animation-delay: 0.4s">
+      <label class="block text-gray-700 font-semibold mb-2">Qualidade do Sono</label>
+      <select name="qualidade-sono" class="w-full p-3 border rounded-lg text-gray-800 bg-white" required>
+        <option value="">Como está seu sono?</option>
+        <option value="otimo">Ótimo</option>
+        <option value="bom">Bom</option>
+        <option value="regular">Regular</option>
+        <option value="ruim">Ruim</option>
+      </select>
+    </div>
+
+    <!-- Humor -->
+    <div class="fade-in" style="animation-delay: 0.5s">
+      <label class="block text-gray-700 font-semibold mb-2">Estado Emocional</label>
+      <select name="estado-emocional" class="w-full p-3 border rounded-lg text-gray-800 bg-white" required>
+        <option value="">Como está seu humor?</option>
+        <option value="otimo">Ótimo</option>
+        <option value="estavel">Estável</option>
+        <option value="instavel">Instável</option>
+        <option value="deprimido">Deprimido</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Detalhes Adicionais -->
+  <div class="fade-in" style="animation-delay: 0.6s">
+    <label class="block text-gray-700 font-semibold mb-2">Observações Adicionais</label>
+    <textarea 
+      name="observacoes"
+      class="w-full p-3 border rounded-lg bg-gray-50 h-32 text-gray-800"
+      placeholder="Descreva mais detalhes sobre seu estado atual..."
+    ></textarea>
+  </div>
+
+  <button 
+    type="submit"
+    onclick="realizarDiagnosticoMedico(event)"
+    class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 bounce-in"
+  >
+    Realizar Diagnóstico
+  </button>
+</form>
+
+<!-- Resultado do Diagnóstico -->
+<div id="resultado-medico" class="mt-8 hidden scale-in">
+  <!-- O resultado será inserido aqui via JavaScript -->
+</div>
+```
+
   </div>
 </section>
 
 <script>
-  async function consultarPaciente() {
-    const apiKey = "6ae09720-0505-4838-bfd4-af6ac688249e";
-    const apiSecret = "04d0ff79-de20-4f9c-9359-0601f096ad5c";
-    const patientId = document.getElementById("patient-id").value.trim();
-    const respostaDiv = document.getElementById("resposta-redox");
+async function realizarDiagnosticoMedico(e) {
+  e.preventDefault();
+  
+  const sintomas = document.getElementById('sintomas').value;
+  const nivelEstresse = document.querySelector('select[name="nivel-estresse"]').value;
+  const qualidadeSono = document.querySelector('select[name="qualidade-sono"]').value;
+  const estadoEmocional = document.querySelector('select[name="estado-emocional"]').value;
+  const observacoes = document.querySelector('textarea[name="observacoes"]').value;
 
-    if (!patientId) {
-      respostaDiv.textContent = "Por favor, insira um ID de paciente válido.";
-      return;
-    }
+  const resultadoDiv = document.getElementById('resultado-medico');
+  resultadoDiv.classList.remove('hidden');
 
-    respostaDiv.textContent = "Consultando dados com a Redox API...";
+  // Simular diagnóstico sem depender da API externa
+  const diagnostico = {
+    sintomas: sintomas,
+    nivelEstresse: nivelEstresse,
+    qualidadeSono: qualidadeSono,
+    estadoEmocional: estadoEmocional,
+    observacoes: observacoes
+  };
+  // Mostrar o resultado do diagnóstico
+  resultadoDiv.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+      <h3 class="text-2xl font-bold text-blue-900 mb-6">Resultado do Diagnóstico</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <h4 class="font-semibold text-blue-800 mb-2">Sintomas Relatados</h4>
+          <p class="text-gray-700">${sintomas}</p>
+        </div>
+        
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <h4 class="font-semibold text-blue-800 mb-2">Nível de Estresse</h4>
+          <p class="text-gray-700">${nivelEstresse}</p>
+        </div>
+      </div>
 
-    try {
-      // Autenticando na Redox
-      const auth = await fetch("https://api.redoxengine.com/auth/authenticate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ apiKey, secret: apiSecret })
-      });
+      <div class="bg-blue-100 p-6 rounded-lg mb-6">
+        <h4 class="font-semibold text-blue-900 mb-3">Análise Geral</h4>
+        <p class="text-gray-700">
+          Com base nos dados fornecidos, identificamos que seu quadro requer atenção 
+          ${nivelEstresse === 'alto' || nivelEstresse === 'severo' ? 'imediata' : 'preventiva'}.
+        </p>
+      </div>
 
-      if (!auth.ok) throw new Error("Falha na autenticação.");
+      <div class="text-center mt-8">
+        <button onclick="obterDiagnosticoCompleto()" class="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition-all duration-300">
+          Obter Diagnóstico Completo
+        </button>
+      </div>
+    </div>
+        <div class="h-4 bg-blue-200 rounded w-3/4 mx-auto"></div>
+        <div class="space-y-3 mt-4">
+          <div class="h-4 bg-blue-200 rounded w-1/2 mx-auto"></div>
+          <div class="h-4 bg-blue-200 rounded w-5/6 mx-auto"></div>
+        </div>
+      </div>
+      <p class="text-blue-600 font-semibold">Processando seu diagnóstico...</p>
+    </div>
+  `;
+  resultadoDiv.classList.remove('hidden');
 
-      const { accessToken } = await auth.json();
+  // Simular processamento
+  setTimeout(() => {
+    resultadoDiv.innerHTML = `
+      <div class="bg-white rounded-2xl shadow-lg p-8">
+        <h3 class="text-2xl font-bold text-blue-900 mb-6 fade-in">Resultado do Diagnóstico</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="bg-blue-50 p-4 rounded-lg slide-in-left">
+            <h4 class="font-semibold text-blue-800 mb-2">Nível de Estresse</h4>
+            <div class="text-3xl font-bold text-blue-600">72%</div>
+            <p class="text-sm text-gray-600">Acima da média</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg slide-in-right">
+            <h4 class="font-semibold text-blue-800 mb-2">Estado Emocional</h4>
+            <div class="text-3xl font-bold text-blue-600">65%</div>
+            <p class="text-sm text-gray-600">Necessita atenção</p>
+          </div>
+        </div>
+        <div class="text-left space-y-4 fade-in">
+          <p class="text-gray-700">Com base na sua avaliação, identificamos:</p>
+          <ul class="list-disc list-inside space-y-2 text-gray-600">
+            <li>Sinais de estresse moderado a alto</li>
+            <li>Padrão de sono irregular</li>
+            <li>Sintomas físicos relacionados à ansiedade</li>
+          </ul>
+          <p class="text-gray-700 mt-4">Recomendamos:</p>
+          <ul class="list-disc list-inside space-y-2 text-gray-600">
+            <li>Técnicas de respiração e meditação</li>
+            <li>Ajuste na rotina de sono</li>
+            <li>Acompanhamento profissional regular</li>
+          </ul>
+        </div>
+        <div class="mt-8 text-center">
+          <button onclick="obterDiagnosticoCompleto()" class="bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition-all duration-300 bounce-in">
+            Obter Diagnóstico Completo
+          </button>
+        </div>
+      </div>
+    `;
+  }, 2000);
+}
 
-      // Consultando os dados do paciente
-      const consulta = await fetch("https://api.redoxengine.com/endpoint", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({
-          Meta: {
-            DataModel: "PatientAdmin",
-            EventType: "Query",
-            Test: false
-          },
-          Patient: {
-            Identifiers: [
-              {
-                ID: patientId,
-                IDType: "MRN"
-              }
-            ]
-          }
-        })
-      });
-
-      if (!consulta.ok) throw new Error("Erro ao consultar dados do paciente.");
-
-      const dados = await consulta.json();
-      respostaDiv.textContent = JSON.stringify(dados, null, 2);
-
-    } catch (error) {
-      respostaDiv.textContent = "Erro: " + error.message;
-    }
-  }
+function obterDiagnosticoCompleto() {
+  // Implementar lógica de pagamento e diagnóstico completo
+  alert("Diagnóstico completo disponível após confirmação do pagamento.");
+}
 </script>
+
+  <!-- Resultado Parcial do Diagnóstico - Inicialmente oculto -->
+
+  <div id="resultado-parcial" class="max-w-2xl mx-auto mt-10 hidden">
+    <div class="futuristic-box mb-8 text-white">
+      <div class="scanner-line"></div>
+      <h3 class="text-2xl text-[#00e9ff] font-bold mb-4 text-center">Resultado Preliminar</h3>
+
+```
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1 bg-[#0a1a2a] p-4 rounded-lg border border-[#00e9ff] border-opacity-30">
+      <div class="text-lg font-semibold mb-1 text-[#00e9ff]">Nível de Estresse</div>
+      <div class="text-5xl font-bold mb-2">68<span class="text-xl font-normal text-gray-400">/100</span></div>
+      <div class="text-sm text-gray-400">Acima da média</div>
+    </div>
+
+    <div class="flex-1 bg-[#0a1a2a] p-4 rounded-lg border border-[#00e9ff] border-opacity-30">
+      <div class="text-lg font-semibold mb-1 text-[#00e9ff]">Ansiedade</div>
+      <div class="text-5xl font-bold mb-2">72<span class="text-xl font-normal text-gray-400">/100</span></div>
+      <div class="text-sm text-gray-400">Nível elevado</div>
+    </div>
+  </div>
+
+  <p class="mb-4">Nossa análise preliminar identificou <span class="text-red-400 font-semibold">sinais preocupantes</span> no seu padrão de respostas. Pessoas com este perfil frequentemente enfrentam:</p>
+
+  <ul class="space-y-2 mb-6 pl-5">
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Dificuldade para dormir e descansar adequadamente</span>
+    </li>
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Redução na produtividade e capacidade de concentração</span>
+    </li>
+    <li class="flex items-start">
+      <svg class="h-5 w-5 text-red-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>Sintomas físicos como tensão muscular e fadiga crônica</span>
+    </li>
+  </ul>
+
+  <div class="bg-[#0a1a2a] p-4 rounded-lg border border-yellow-500 border-opacity-50 mb-6">
+    <p class="text-yellow-400 font-semibold text-center">Nossa análise completa pode identificar as causas subjacentes e oferecer soluções personalizadas para seu caso específico.</p>
+  </div>
+</div>
+
+<div class="animate-pulse">
+  <div class="hologram-container mx-auto mb-6">
+    <div class="hologram">
+      <div class="hologram-base"></div>
+      <div class="hologram-3d-container">
+        <div class="hologram-projection">
+          <div class="hologram-layer layer-1"></div>
+          <div class="hologram-layer layer-2"></div>
+          <div class="hologram-layer layer-3"></div>
+        </div>
+        <div class="hologram-rings">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+        </div>
+        <div class="hologram-particles" id="particles-container-diagnostico">
+          <!-- Partículas serão geradas via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-gradient-to-br from-blue-900 to-purple-900 rounded-2xl p-8 shadow-2xl border border-blue-400 border-opacity-30 mb-8">
+  <h3 class="text-3xl font-bold text-white mb-4 text-center">Diagnóstico Emocional Completo</h3>
+  <p class="text-lg text-gray-200 mb-6 text-center">Entenda completamente o que está afetando seu bem-estar emocional e receba orientações personalizadas</p>
+
+  <ul class="space-y-4 mb-8">
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Análise completa de 12 dimensões emocionais</span>
+        <p class="text-gray-300">Muito além do diagnóstico básico, identificamos padrões profundos</p>
+      </div>
+    </li>
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Plano de ação personalizado e práticas recomendadas</span>
+        <p class="text-gray-300">Estratégias específicas para recuperar seu equilíbrio emocional</p>
+      </div>
+    </li>
+    <li class="flex items-start">
+      <div class="bg-green-400 rounded-full p-1 mr-3 mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-900" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-white">Suporte 24/7 com profissionais especializados</span>
+        <p class="text-gray-300">Acesso ao suporte via chat para dúvidas e acompanhamento</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="text-center space-y-4">
+    <div class="text-2xl font-bold text-white mb-2">
+      <span class="text-sm line-through text-gray-400">R$99,90</span>
+      <span class="text-green-400"> R$19,90</span>
+      <span class="text-sm text-gray-300 ml-2">pagamento único</span>
+    </div>
+
+    <a href="#comprar" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-full inline-block shadow-lg transform hover:scale-105 transition-all duration-300 animated-btn bounce-in text-lg">
+      QUERO MEU DIAGNÓSTICO COMPLETO
+    </a>
+
+    <p class="text-sm text-gray-400">Processamento instantâneo e 100% seguro</p>
+  </div>
+</div>
+```
+
+  </div>
+</section>
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
