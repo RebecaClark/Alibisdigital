@@ -812,107 +812,82 @@
 </script>
 
 <!-- BLOCO 6 – Diagnóstico Médico com IA -->
-<!-- BLOCO 6 – Diagnóstico Médico Completo com Animações -->
-<section id="diagnostico" class="py-20 bg-gray-800 text-white text-center animate-on-scroll">
-  <div class="max-w-4xl mx-auto px-6">
-    <!-- Cabeçalho com Animação -->
-    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight pulse">🔍 Diagnóstico Médico Completo</h2>
-    
-    <!-- Descrição com Animação -->
-    <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">Preencha as informações abaixo para um diagnóstico personalizado e detalhado.</p>
-
-    <!-- Formulário para Coleta de Dados -->
-    <form id="form-diagnostico" class="space-y-6">
-      <!-- Campos do Formulário -->
-      <input type="text" id="nome" name="nome" placeholder="Seu Nome" class="w-full p-3 bg-gray-700 text-white rounded-md" required />
-      <input type="number" id="idade" name="idade" placeholder="Sua Idade" class="w-full p-3 bg-gray-700 text-white rounded-md" required />
-      <input type="number" id="peso" name="peso" placeholder="Seu Peso (kg)" class="w-full p-3 bg-gray-700 text-white rounded-md" required />
-      <input type="number" id="altura" name="altura" placeholder="Sua Altura (cm)" class="w-full p-3 bg-gray-700 text-white rounded-md" required />
-      
-      <!-- Sintomas e Medicamentos -->
-      <textarea id="sintomas" name="sintomas" rows="4" placeholder="Sintomas que você está sentindo..." class="w-full p-3 bg-gray-700 text-white rounded-md" required></textarea>
-      <textarea id="medicamentos" name="medicamentos" rows="4" placeholder="Medicamentos que você está tomando..." class="w-full p-3 bg-gray-700 text-white rounded-md" required></textarea>
-
-      <!-- Botão CTA para gerar diagnóstico -->
-      <button type="submit" id="btn-diagnostico" class="inline-block bg-green-500 text-white font-semibold py-3 px-8 rounded-full shadow-md hover:bg-green-400 transition duration-300 animated-btn bounce-in">
-        Gerar Diagnóstico
-      </button>
-    </form>
-
-    <!-- Exibição do Diagnóstico -->
-    <div id="resultado" class="mt-12 hidden text-left bg-gray-900 p-6 rounded-md shadow-md">
-      <h3 class="text-2xl font-bold mb-4">Diagnóstico Completo:</h3>
-      <p id="diagnostico-texto" class="text-lg text-gray-300"></p>
-
-      <h4 class="text-xl font-semibold mt-6">Recomendações:</h4>
-      <ul id="recomendacoes" class="list-disc pl-6 text-gray-200">
-        <!-- Recomendações serão inseridas aqui -->
-      </ul>
-
-      <h4 class="text-xl font-semibold mt-6">Avisos:</h4>
-      <ul id="avisos" class="list-disc pl-6 text-gray-200">
-        <!-- Avisos serão inseridos aqui -->
-      </ul>
-
-      <p class="text-sm text-gray-400 mt-6">Essas informações são para fins educacionais. Consulte um profissional de saúde para diagnóstico preciso.</p>
-    </div>
+<section id="consulta-redox" style="padding: 40px; background: #f9f9f9;">
+  <div style="max-width: 600px; margin: auto;">
+    <h2>Consulta Redox com IA Médica</h2>
+    <p>Insira o ID do paciente para buscar dados médicos reais via Redox API.</p>
+    <input id="paciente-id" type="text" placeholder="ID do Paciente (ex: 12345)" style="width: 100%; padding: 10px; margin-bottom: 15px;" />
+    <button onclick="consultarRedox()" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer;">
+      Consultar Dados Médicos
+    </button>
+    <pre id="resposta-redox" style="background: #eee; padding: 20px; margin-top: 20px; white-space: pre-wrap;"></pre>
   </div>
 </section>
 
 <script>
-  // Evento de envio do formulário
-  document.getElementById('form-diagnostico').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    // Coleta os dados do formulário
-    const nome = document.getElementById('nome').value;
-    const idade = document.getElementById('idade').value;
-    const peso = document.getElementById('peso').value;
-    const altura = document.getElementById('altura').value;
-    const sintomas = document.getElementById('sintomas').value;
-    const medicamentos = document.getElementById('medicamentos').value;
+  async function consultarRedox() {
+    const apiKey = "6ae09720-0505-4838-bfd4-af6ac688249e";
+    const apiSecret = "04d0ff79-de20-4f9c-9359-0601f096ad5c";
 
-    // Chamada para a API para obter diagnóstico
-    fetch('https://ai-doctor-api-ai-medical-chatbot-healthcare-ai-assistant.p.rapidapi.com/chat?noqueue=1', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-rapidapi-host': 'ai-doctor-api-ai-medical-chatbot-healthcare-ai-assistant.p.rapidapi.com',
-        'x-rapidapi-key': '6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d'
-      },
-      body: JSON.stringify({
-        message: sintomas,
-        specialization: 'clinica geral',
-        language: 'pt'
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Exibe o diagnóstico quando os dados são retornados
-      document.getElementById('resultado').classList.remove('hidden');
-      document.getElementById('diagnostico-texto').textContent = data.result.response.message;
-      
-      // Exibe as recomendações retornadas pela API
-      const recomendacoesList = document.getElementById('recomendacoes');
-      data.result.response.recommendations.forEach(recommendation => {
-        const li = document.createElement('li');
-        li.textContent = recommendation;
-        recomendacoesList.appendChild(li);
+    const pacienteID = document.getElementById("paciente-id").value;
+    const respostaDiv = document.getElementById("resposta-redox");
+    respostaDiv.textContent = "Consultando Redox API...";
+
+    try {
+      // 1. Autentica e pega o token JWT
+      const authResponse = await fetch("https://api.redoxengine.com/auth/authenticate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          apiKey: apiKey,
+          secret: apiSecret
+        })
       });
-      
-      // Exibe os avisos retornados pela API
-      const avisosList = document.getElementById('avisos');
-      data.result.response.warnings.forEach(warning => {
-        const li = document.createElement('li');
-        li.textContent = warning;
-        avisosList.appendChild(li);
+
+      if (!authResponse.ok) {
+        const err = await authResponse.text();
+        throw new Error("Erro de autenticação: " + err);
+      }
+
+      const authData = await authResponse.json();
+      const token = authData.accessToken;
+
+      // 2. Faz a requisição real ao endpoint Redox
+      const patientResponse = await fetch("https://api.redoxengine.com/endpoint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          Meta: {
+            DataModel: "PatientAdmin",
+            EventType: "Query",
+            Test: true
+          },
+          Patient: {
+            Identifiers: [
+              {
+                ID: pacienteID,
+                IDType: "MRN"
+              }
+            ]
+          }
+        })
       });
-    })
-    .catch(error => {
-      console.error('Erro na requisição:', error);
-      alert('Ocorreu um erro. Tente novamente mais tarde.');
-    });
-  });
+
+      if (!patientResponse.ok) {
+        const err = await patientResponse.text();
+        throw new Error("Erro na consulta: " + err);
+      }
+
+      const patientData = await patientResponse.json();
+      respostaDiv.textContent = JSON.stringify(patientData, null, 2);
+
+    } catch (error) {
+      respostaDiv.textContent = "Erro: " + error.message;
+    }
+  }
 </script>
 
   <!-- BLOCO 7 – Alibis-->
