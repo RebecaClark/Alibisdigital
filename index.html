@@ -812,47 +812,44 @@
 </script>
 
 <!-- BLOCO 6 – Diagnóstico Médico com IA -->
-<section id="consulta-redox" style="padding: 40px; background: #f9f9f9;">
+<section id="diagnostico-medico" style="padding: 40px; background-color: #f4f4f4;">
   <div style="max-width: 600px; margin: auto;">
-    <h2>Consulta de Dados Médicos com Redox</h2>
-    <p>Insira o ID do paciente para buscar dados médicos reais:</p>
-    <input id="paciente-id" type="text" placeholder="ID do Paciente (ex: 12345)" style="width: 100%; padding: 10px; margin-bottom: 15px;" />
-    <button onclick="consultarRedox()" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer;">
-      Consultar Dados Médicos
-    </button>
-    <pre id="resposta-redox" style="background: #eee; padding: 20px; margin-top: 20px; white-space: pre-wrap;"></pre>
+    <h2>Consulta Médica com IA + Redox</h2>
+    <p>Insira seu ID de paciente para um diagnóstico real via Redox:</p>
+    <input id="patient-id" type="text" placeholder="ID do paciente" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+    <button onclick="consultarPaciente()" style="width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; cursor: pointer;">Consultar</button>
+    <pre id="resposta-redox" style="background-color: #fff; padding: 20px; margin-top: 20px; overflow-x: auto; white-space: pre-wrap; border: 1px solid #ccc;"></pre>
   </div>
 </section>
 
 <script>
-  async function consultarRedox() {
+  async function consultarPaciente() {
     const apiKey = "6ae09720-0505-4838-bfd4-af6ac688249e";
     const apiSecret = "04d0ff79-de20-4f9c-9359-0601f096ad5c";
-
-    const pacienteID = document.getElementById("paciente-id").value.trim();
+    const patientId = document.getElementById("patient-id").value.trim();
     const respostaDiv = document.getElementById("resposta-redox");
 
-    if (!pacienteID) {
+    if (!patientId) {
       respostaDiv.textContent = "Por favor, insira um ID de paciente válido.";
       return;
     }
 
-    respostaDiv.textContent = "Conectando com a Redox API...";
+    respostaDiv.textContent = "Consultando dados com a Redox API...";
 
     try {
-      // 1. Autenticação na API Redox
-      const authResponse = await fetch("https://api.redoxengine.com/auth/authenticate", {
+      // Autenticando na Redox
+      const auth = await fetch("https://api.redoxengine.com/auth/authenticate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ apiKey, secret: apiSecret })
       });
 
-      if (!authResponse.ok) throw new Error("Erro na autenticação");
+      if (!auth.ok) throw new Error("Falha na autenticação.");
 
-      const { accessToken } = await authResponse.json();
+      const { accessToken } = await auth.json();
 
-      // 2. Consulta ao endpoint
-      const consultaResponse = await fetch("https://api.redoxengine.com/endpoint", {
+      // Consultando os dados do paciente
+      const consulta = await fetch("https://api.redoxengine.com/endpoint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -867,7 +864,7 @@
           Patient: {
             Identifiers: [
               {
-                ID: pacienteID,
+                ID: patientId,
                 IDType: "MRN"
               }
             ]
@@ -875,17 +872,16 @@
         })
       });
 
-      if (!consultaResponse.ok) throw new Error("Erro ao consultar dados do paciente");
+      if (!consulta.ok) throw new Error("Erro ao consultar dados do paciente.");
 
-      const data = await consultaResponse.json();
-      respostaDiv.textContent = JSON.stringify(data, null, 2);
+      const dados = await consulta.json();
+      respostaDiv.textContent = JSON.stringify(dados, null, 2);
 
-    } catch (err) {
-      respostaDiv.textContent = `Erro: ${err.message}`;
+    } catch (error) {
+      respostaDiv.textContent = "Erro: " + error.message;
     }
   }
 </script>
-
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
