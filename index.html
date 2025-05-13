@@ -812,20 +812,41 @@
 </script>
 
   <!-- BLOCO 6 - Consulta Médica com IA -->
+<<!-- BLOCO 6 – Diagnóstico Médico com IA -->
+<!-- BLOCO 6 – Diagnóstico Médico com IA -->
+<section id="bloco-6" class="py-20 bg-gray-900 text-white text-center animate-on-scroll">
+  <div class="max-w-4xl mx-auto px-6">
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight fade-in">🧬 Diagnóstico Médico com IA</h2>
+    <p class="text-lg md:text-xl mb-10 text-gray-300 fade-in">Descreva seus sintomas e receba um diagnóstico instantâneo com nossa Inteligência Artificial médica.</p>
+
+    <form class="space-y-4 text-left fade-in" id="form-diagnostico">
+      <input type="text" name="nome" placeholder="Nome completo" required class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400" />
+      <input type="number" name="idade" placeholder="Idade" required class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400" />
+      <input type="number" name="peso" placeholder="Peso (kg)" required class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400" />
+      <input type="number" name="altura" placeholder="Altura (cm)" required class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400" />
+      <textarea name="sintomas" placeholder="Descreva seus sintomas" required class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400"></textarea>
+      <textarea name="medicamentos" placeholder="Medicamentos em uso (se houver)" class="w-full px-4 py-3 rounded bg-gray-800 text-white placeholder-gray-400"></textarea>
+      
+      <button type="submit" class="mt-4 bg-white text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-200 transition duration-300 animated-btn fade-in">
+        Obter Diagnóstico
+      </button>
+
+      <div id="resultado-diagnostico" class="mt-8 text-white text-lg fade-in"></div>
+    </form>
+  </div>
+</section>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('#bloco-6 form');
+    const form = document.querySelector('#form-diagnostico');
     const btn = form.querySelector('button');
-    const resultDiv = document.createElement('div');
-    resultDiv.className = "mt-8 text-lg text-white fade-in";
-    form.appendChild(resultDiv);
+    const resultado = document.querySelector('#resultado-diagnostico');
 
     form.addEventListener('submit', async function (e) {
-      e.preventDefault(); // evita o reload
+      e.preventDefault();
       btn.disabled = true;
-      btn.innerText = "Gerando diagnóstico...";
+      btn.innerText = "Analisando...";
 
-      // Pega os dados
       const nome = form.nome.value;
       const idade = form.idade.value;
       const peso = form.peso.value;
@@ -833,7 +854,7 @@
       const sintomas = form.sintomas.value;
       const medicamentos = form.medicamentos.value;
 
-      const message = `Meu nome é ${nome}, tenho ${idade} anos, ${peso}kg, ${altura}cm. Estou com os seguintes sintomas: ${sintomas}. Estou tomando os medicamentos: ${medicamentos}. Qual o possível diagnóstico?`;
+      const mensagem = `Meu nome é ${nome}, tenho ${idade} anos, ${peso}kg, ${altura}cm. Estou com os seguintes sintomas: ${sintomas}. Estou tomando: ${medicamentos}. Qual o diagnóstico?`;
 
       try {
         const response = await fetch('https://ai-doctor-api-ai-medical-chatbot-healthcare-ai-assistant.p.rapidapi.com/chat?noqueue=1', {
@@ -841,19 +862,19 @@
           headers: {
             'Content-Type': 'application/json',
             'x-rapidapi-host': 'ai-doctor-api-ai-medical-chatbot-healthcare-ai-assistant.p.rapidapi.com',
-            'x-rapidapi-key': '6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d'
+            'x-rapidapi-key': '6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d' // ← 🔒 CHAVE ATIVA AQUI!
           },
           body: JSON.stringify({
-            message: message,
+            message: mensagem,
             specialization: "general medicine",
             language: "pt"
           })
         });
 
         const data = await response.json();
-        resultDiv.innerHTML = `<strong>Diagnóstico:</strong><br>${data.reply}`;
+        resultado.innerHTML = `<strong>Diagnóstico:</strong><br>${data.reply}`;
       } catch (err) {
-        resultDiv.innerHTML = `<span style="color: red;">Erro ao buscar diagnóstico. Tente novamente mais tarde.</span>`;
+        resultado.innerHTML = `<span style="color:red;">Erro ao gerar diagnóstico. Tente novamente.</span>`;
         console.error(err);
       }
 
