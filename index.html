@@ -810,14 +810,13 @@
       });
   }
 </script>
-<!-- BLOCO 6 – Diagnóstico Médico com IA -->
-<!-- Bloco de Diagnóstico Médico com IA -->
+<!-- BLOCO 6 - Diagnóstico Médico com IA -->
 <section id="diagnostico-medico" class="bg-white text-black py-16 px-6">
   <div class="max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
     <form id="medical-form" class="space-y-4">
       <div>
-        <label for="symptoms" class="block font-semibold">Descreva seus sintomas:</label>
+        <label for="symptoms" class="block font-semibold">Quais sintomas você está sentindo?</label>
         <textarea id="symptoms" name="symptoms" rows="4" class="w-full border rounded p-2" required></textarea>
       </div>
       <div>
@@ -868,15 +867,15 @@
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-         'X-RapidAPI-Key': '6d9b96f8fbmshe4543a50a0281afp187774jsnadc61188ec0d', // Sua chave da RapidAPI
-         'X-RapidAPI-Host': 'infermedica-api1.p.rapidapi.com'
+          'X-RapidAPI-Key': 'SUA_CHAVE_DE_API', // Substitua pela sua chave de API
+          'X-RapidAPI-Host': 'infermedica-api1.p.rapidapi.com'
         },
         body: JSON.stringify({
           age: { value: parseInt(age) },
           sex: gender,
           evidence: [
             {
-              id: "s_21", // ID genérico de sintoma - em produção, você deve mapear a descrição real para IDs reais
+              id: "s_21", // Exemplo de ID de sintoma, mapeie com sintomas reais
               choice_id: "present"
             }
           ]
@@ -890,7 +889,7 @@
         parcialResult.innerText = 'Não foi possível identificar uma condição clara com os dados fornecidos.';
       }
 
-      // Armazena temporariamente os dados para uso no diagnóstico completo
+      // Armazena dados para diagnóstico completo
       window.diagnosticoCompleto = data.conditions;
 
     } catch (error) {
@@ -915,7 +914,6 @@
     }
   });
 </script>
-
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
