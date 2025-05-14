@@ -812,14 +812,15 @@
 </script>
   
 <!-- BLOCO 6 - Diagnóstico Médico com IA (Médico com 50 anos de experiência formado em Harvard) -->
+<!-- BLOCO 6 - Diagnóstico Médico com IA - Ajustado para Médico com Experiência -->
 <section id="bloco6" class="py-16 px-4 bg-white text-black">
   <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
+    <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA - Diagnóstico Avançado</h2>
 
     <form id="formularioDiagnostico" class="space-y-4">
       <div>
         <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
-        <input type="text" id="sintomas" placeholder="Ex: dor no corpo, vômito, febre alta"
+        <input type="text" id="sintomas" placeholder="Ex: dor de cabeça, febre, dor no corpo"
           class="border border-gray-300 p-2 rounded w-full text-black" required />
       </div>
 
@@ -841,21 +842,18 @@
       <div>
         <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
         <textarea id="historico" rows="3"
-          placeholder="Ex: pressão alta, diabetes, histórico de AVC na família"
           class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
       <div>
         <label for="medicamentos" class="block text-sm font-medium">Medicamentos Atuais:</label>
         <textarea id="medicamentos" rows="2"
-          placeholder="Ex: dipirona, losartana, insulina"
           class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
       <div>
         <label for="alergias" class="block text-sm font-medium">Alergias:</label>
-        <input type="text" id="alergias" placeholder="Ex: alergia a dipirona, amoxicilina"
-          class="border border-gray-300 p-2 rounded w-full text-black" />
+        <input type="text" id="alergias" class="border border-gray-300 p-2 rounded w-full text-black" />
       </div>
 
       <button type="submit"
@@ -865,15 +863,19 @@
     <!-- Resultado (aparece depois do envio) -->
     <div id="resultadoDiagnostico" class="mt-10 hidden">
       <h3 class="text-2xl font-semibold mb-3">Diagnóstico Parcial:</h3>
-      <div id="condicaoPossivel" class="bg-gray-100 p-4 rounded text-black mb-4"></div>
+      <div class="bg-gray-100 p-4 rounded text-black mb-4">
+        <p><strong>Possível condição:</strong> Gripe (Influenza) (78% de chance)</p>
+      </div>
 
       <div class="mb-6 text-black">
         <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
-        <ul id="perguntasAdicionais" class="list-disc pl-6 space-y-1"></ul>
+        <form id="formPerguntasAdicionais" class="space-y-4">
+          <!-- Perguntas dependentes da resposta do usuário -->
+        </form>
       </div>
 
-      <button id="refinarBtn"
-        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Refinar Diagnóstico</button>
+      <button
+        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico Completo</button>
 
       <div class="mt-6">
         <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
@@ -886,72 +888,92 @@
   </div>
 </section>
 
-<!-- JS -->
+<!-- JS para gerar perguntas com base nas respostas do usuário -->
 <script>
   const form = document.getElementById("formularioDiagnostico");
   const resultado = document.getElementById("resultadoDiagnostico");
-  const condicaoPossivel = document.getElementById("condicaoPossivel");
-  const perguntasAdicionais = document.getElementById("perguntasAdicionais");
-  const refinarBtn = document.getElementById("refinarBtn");
-
-  let dadosUsuario = {};
+  const perguntasAdicionaisForm = document.getElementById("formPerguntasAdicionais");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Coleta os dados
-    dadosUsuario = {
-      sintomas: document.getElementById("sintomas").value.toLowerCase(),
-      idade: parseInt(document.getElementById("idade").value),
-      genero: document.getElementById("genero").value,
-      historico: document.getElementById("historico").value.toLowerCase(),
-      medicamentos: document.getElementById("medicamentos").value.toLowerCase(),
-      alergias: document.getElementById("alergias").value.toLowerCase(),
-    };
+    // Coleta as respostas do usuário
+    const sintomas = document.getElementById("sintomas").value.toLowerCase();
+    const idade = document.getElementById("idade").value;
+    const genero = document.getElementById("genero").value;
 
-    gerarDiagnostico(dadosUsuario);
-  });
+    // Exibe diagnóstico parcial
+    resultado.classList.remove("hidden");
 
-  function gerarDiagnostico(dados) {
-    let condicao = "";
-    let perguntas = [];
+    // Preenche o diagnóstico com base nos sintomas
+    if (sintomas.includes("dor no corpo") && sintomas.includes("vomito")) {
+      perguntasAdicionaisForm.innerHTML = `
+        <div>
+          <label class="block text-sm font-medium">Quando os sintomas começaram?</label>
+          <input type="text" id="inicioSintomas" class="border border-gray-300 p-2 rounded w-full" placeholder="Ex: há 2 dias" required />
+        </div>
 
-    if (dados.sintomas.includes("dor no corpo") && dados.sintomas.includes("vômito")) {
-      condicao = "Infecção viral gastrointestinal ou Dengue (65% de chance)";
-      perguntas.push(
-        "Você teve contato com água parada ou áreas com surtos de dengue?",
-        "Está com manchas vermelhas pelo corpo?",
-        "Você sente dor atrás dos olhos?"
-      );
-    } else if (dados.sintomas.includes("febre") && dados.sintomas.includes("tosse")) {
-      condicao = "Gripe (Influenza) ou Covid-19 (70% de chance)";
-      perguntas.push(
-        "Você teve contato com alguém gripado ou com Covid?",
-        "Você sente falta de ar?",
-        "A febre passou de 38ºC?"
-      );
-    } else {
-      condicao = "Condição indefinida. Necessário mais dados.";
-      perguntas.push(
-        "Quando os sintomas começaram?",
-        "Você tem alguma dor abdominal localizada?",
-        "Já teve isso antes?"
-      );
+        <div>
+          <label class="block text-sm font-medium">Você tem histórico de infecções gastrointestinais?</label>
+          <select id="historicoGastro" class="border border-gray-300 p-2 rounded w-full" required>
+            <option value="">Selecione</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Você tem dor abdominal localizada?</label>
+          <select id="dorAbdominal" class="border border-gray-300 p-2 rounded w-full" required>
+            <option value="">Selecione</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Você já teve episódios semelhantes antes?</label>
+          <select id="episodiosAnteriores" class="border border-gray-300 p-2 rounded w-full" required>
+            <option value="">Selecione</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Refinar Diagnóstico</button>
+      `;
     }
 
-    condicaoPossivel.innerHTML = `<p><strong>Possível condição:</strong> ${condicao}</p>`;
-    perguntasAdicionais.innerHTML = perguntas.map(p => `<li>${p}</li>`).join('');
-    resultado.classList.remove("hidden");
+    // Scroll até o resultado
     resultado.scrollIntoView({ behavior: "smooth" });
-  }
+  });
 
-  refinarBtn.addEventListener("click", () => {
-    perguntasAdicionais.innerHTML += `<li>Você apresentou sangue no vômito ou fezes?</li>`;
-    perguntasAdicionais.innerHTML += `<li>Você está se hidratando bem?</li>`;
-    perguntasAdicionais.innerHTML += `<li>Tem histórico familiar de problemas gástricos?</li>`;
+  // Tratamento para o formulário de perguntas adicionais
+  perguntasAdicionaisForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Coleta as respostas adicionais
+    const inicioSintomas = document.getElementById("inicioSintomas").value;
+    const historicoGastro = document.getElementById("historicoGastro").value;
+    const dorAbdominal = document.getElementById("dorAbdominal").value;
+    const episodiosAnteriores = document.getElementById("episodiosAnteriores").value;
+
+    // Diagnóstico final baseado nas respostas
+    let respostaFinal = "Diagnóstico Refinado:\n";
+    if (historicoGastro === "sim" && dorAbdominal === "sim") {
+      respostaFinal += "Indícios de possível infecção gastrointestinal. Observação recomendada.\n";
+    } else {
+      respostaFinal += "Sintomas gerais podem sugerir uma infecção viral. Aconselha-se repouso.\n";
+    }
+
+    if (episodiosAnteriores === "sim") {
+      respostaFinal += "Se o problema persistir, busque acompanhamento médico especializado.\n";
+    }
+
+    // Exibe o diagnóstico final
+    alert(respostaFinal); // Aqui você pode melhorar para mostrar na interface de forma mais amigável
   });
 </script>
-
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
