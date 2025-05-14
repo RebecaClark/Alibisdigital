@@ -815,152 +815,75 @@
 <section id="diagnostico-medico" class="bg-white text-black py-16 px-6">
   <div class="max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
-    <form id="medical-form" class="space-y-4">
+
+    <form id="medical-form" class="space-y-6">
       <div>
         <label for="symptoms" class="block font-semibold">Descreva seus sintomas:</label>
-        <textarea id="symptoms" name="symptoms" rows="4" class="w-full border rounded p-2" required></textarea>
+        <textarea id="symptoms" name="symptoms" rows="4" class="w-full border rounded p-3" placeholder="Ex: Dor de cabeça, febre, enjoo..." required></textarea>
       </div>
+
       <div>
         <label for="age" class="block font-semibold">Idade:</label>
-        <input type="number" id="age" name="age" class="w-full border rounded p-2" required />
+        <input type="number" id="age" name="age" class="w-full border rounded p-3" placeholder="Ex: 28" required />
       </div>
+
       <div>
         <label for="gender" class="block font-semibold">Gênero:</label>
-        <select id="gender" name="gender" class="w-full border rounded p-2" required>
+        <select id="gender" name="gender" class="w-full border rounded p-3" required>
           <option value="">Selecione</option>
           <option value="male">Masculino</option>
           <option value="female">Feminino</option>
           <option value="other">Outro</option>
         </select>
       </div>
-      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
+
+      <button type="submit" class="w-full bg-green-600 text-white font-semibold py-3 rounded hover:bg-green-700 transition">
+        Obter Diagnóstico
+      </button>
     </form>
 
-    <div id="diagnostico-parcial" class="mt-6 hidden">
-      <h3 class="text-xl font-semibold mb-2">Diagnóstico Parcial:</h3>
-      <p id="parcial-result" class="bg-gray-100 p-4 rounded"></p>
-      <div id="perguntas-condicionais" class="mt-4"></div>
-
-      <button id="desbloquear-btn" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico Completo</button>
-
-      <div class="mt-4">
-        <p class="font-semibold mb-2">Esse diagnóstico foi útil?</p>
-        <button onclick="feedbackUsuario(true)" class="bg-green-500 text-white px-4 py-2 mr-2 rounded hover:bg-green-600">Sim</button>
-        <button onclick="feedbackUsuario(false)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Não</button>
-      </div>
-    </div>
-
-    <div id="diagnostico-completo" class="mt-6 hidden">
-      <h3 class="text-xl font-semibold mb-2">Diagnóstico Completo:</h3>
-      <p id="completo-result" class="bg-gray-100 p-4 rounded whitespace-pre-line"></p>
+    <div id="diagnostico-parcial" class="mt-10 hidden bg-gray-100 p-6 rounded shadow-lg">
+      <h3 class="text-xl font-bold mb-2">Diagnóstico Parcial</h3>
+      <p id="resposta-diagnostico" class="text-gray-800"></p>
+      <button id="botao-pagamento" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
+        Desbloquear Diagnóstico Completo
+      </button>
     </div>
   </div>
 </section>
 
 <script>
-  const perguntasCondicionais = {
-    "Influenza (flu)": [
-      "Você teve contato recente com alguém gripado?",
-      "Você tomou vacina da gripe esse ano?",
-      "A febre ultrapassa 38ºC?"
-    ],
-    "COVID-19": [
-      "Você sentiu perda de olfato ou paladar?",
-      "Teve contato com alguém com COVID confirmado?",
-      "Fez teste nos últimos 7 dias?"
-    ]
-  };
-
-  function mostrarPerguntasCondicionais(condicao) {
-    const perguntas = perguntasCondicionais[condicao];
-    const container = document.getElementById("perguntas-condicionais");
-    container.innerHTML = "";
-
-    if (perguntas) {
-      const titulo = document.createElement("h4");
-      titulo.innerText = "Perguntas adicionais para confirmar diagnóstico:";
-      titulo.classList.add("font-semibold", "mb-2");
-      container.appendChild(titulo);
-
-      perguntas.forEach((q) => {
-        const p = document.createElement("p");
-        p.innerText = "• " + q;
-        container.appendChild(p);
-      });
-    }
-  }
-
-  function feedbackUsuario(positivo) {
-    if (positivo) {
-      alert("Obrigado pelo seu feedback! Fique à vontade para continuar usando o Álibi Digital.");
-    } else {
-      alert("Vamos conectar você com um especialista humano para suporte mais personalizado.");
-      // Aqui você pode integrar um chat ou redirecionamento futuro
-    }
-  }
-
-  document.getElementById('medical-form').addEventListener('submit', async function (e) {
+  document.getElementById('medical-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const symptoms = document.getElementById('symptoms').value;
-    const age = document.getElementById('age').value;
-    const gender = document.getElementById('gender').value;
-    const parcialResult = document.getElementById('parcial-result');
-    parcialResult.innerText = 'Analisando sintomas...';
-    document.getElementById('diagnostico-parcial').classList.remove('hidden');
+    const sintomas = document.getElementById('symptoms').value.trim();
+    const idade = document.getElementById('age').value.trim();
+    const genero = document.getElementById('gender').value;
 
-    try {
-      const response = await fetch('https://infermedica-api1.p.rapidapi.com/diagnosis', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'X-RapidAPI-Key': 'SUA_CHAVE_RAPIDAPI_AQUI',
-          'X-RapidAPI-Host': 'infermedica-api1.p.rapidapi.com'
-        },
-        body: JSON.stringify({
-          age: { value: parseInt(age) },
-          sex: gender,
-          evidence: [
-            {
-              id: "s_21", // Substituir por mapeamento real dos sintomas
-              choice_id: "present"
-            }
-          ]
-        })
-      });
+    const diagnosticoParcial = document.getElementById('diagnostico-parcial');
+    const respostaDiagnostico = document.getElementById('resposta-diagnostico');
 
-      const data = await response.json();
-      if (data.conditions && data.conditions.length > 0) {
-        const condicaoPrincipal = data.conditions[0].name;
-        parcialResult.innerText = `Possível condição: ${condicaoPrincipal} (${Math.round(data.conditions[0].probability * 100)}% de chance)`;
-        mostrarPerguntasCondicionais(condicaoPrincipal);
-        window.diagnosticoCompleto = data.conditions;
-      } else {
-        parcialResult.innerText = 'Não foi possível identificar uma condição clara com os dados fornecidos.';
-      }
-
-    } catch (error) {
-      parcialResult.innerText = 'Erro ao processar o diagnóstico. Tente novamente.';
-      console.error(error);
+    if (!sintomas || !idade || !genero) {
+      alert('Por favor, preencha todos os campos.');
+      return;
     }
+
+    // Simulação de resposta da IA médica
+    const simulacaoResposta = `
+      Análise preliminar: com base nos sintomas descritos (${sintomas}), idade ${idade} e gênero ${genero},
+      há indícios de estresse ou fadiga. Recomendamos avaliação médica detalhada para confirmação do diagnóstico.
+    `;
+
+    respostaDiagnostico.textContent = simulacaoResposta;
+    diagnosticoParcial.classList.remove('hidden');
   });
 
-  document.getElementById('desbloquear-btn').addEventListener('click', function () {
-    const completo = document.getElementById('completo-result');
-    const condicoes = window.diagnosticoCompleto || [];
-
-    if (condicoes.length > 0) {
-      let resultado = '';
-      condicoes.forEach((c, i) => {
-        resultado += `${i + 1}. ${c.name} - ${Math.round(c.probability * 100)}%\n`;
-      });
-      completo.innerText = resultado;
-      document.getElementById('diagnostico-completo').classList.remove('hidden');
-    } else {
-      completo.innerText = 'Não há informações adicionais disponíveis.';
-    }
+  document.getElementById('botao-pagamento').addEventListener('click', function () {
+    alert('🔒 Redirecionando para pagamento do diagnóstico completo...');
+    // Aqui entra o link para checkout ou integração com API de pagamento
   });
 </script>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
