@@ -817,18 +817,18 @@
     <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
 
     <form id="formularioDiagnostico" class="space-y-4">
-      <div>
+      <div id="sintomasDiv">
         <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
         <input type="text" id="sintomas" placeholder="Ex: dor de cabeça, febre"
           class="border border-gray-300 p-2 rounded w-full text-black" required />
       </div>
 
-      <div>
+      <div id="idadeDiv">
         <label for="idade" class="block text-sm font-medium">Idade:</label>
         <input type="number" id="idade" class="border border-gray-300 p-2 rounded w-full text-black" required />
       </div>
 
-      <div>
+      <div id="generoDiv">
         <label for="genero" class="block text-sm font-medium">Gênero:</label>
         <select id="genero" class="border border-gray-300 p-2 rounded w-full text-black" required>
           <option value="">Selecione</option>
@@ -836,23 +836,6 @@
           <option value="male">Masculino</option>
           <option value="other">Outro</option>
         </select>
-      </div>
-
-      <div>
-        <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
-        <textarea id="historico" rows="3"
-          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
-      </div>
-
-      <div>
-        <label for="medicamentos" class="block text-sm font-medium">Medicamentos Atuais:</label>
-        <textarea id="medicamentos" rows="2"
-          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
-      </div>
-
-      <div>
-        <label for="alergias" class="block text-sm font-medium">Alergias:</label>
-        <input type="text" id="alergias" class="border border-gray-300 p-2 rounded w-full text-black" />
       </div>
 
       <button type="submit"
@@ -868,16 +851,12 @@
 
       <div class="mb-6 text-black">
         <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
-        <ul class="list-disc pl-6 space-y-1">
-          <li>Você teve contato recente com alguém gripado?</li>
-          <li>Você tomou vacina da gripe esse ano?</li>
-          <li>A febre ultrapassa 38ºC?</li>
+        <ul class="list-disc pl-6 space-y-1" id="perguntasAdicionais">
+          <!-- Perguntas serão inseridas dinamicamente -->
         </ul>
       </div>
 
-      <button
-        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico
-        Completo</button>
+      <button id="desbloquearDiagnostico" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico Completo</button>
 
       <div class="mt-6">
         <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
@@ -894,18 +873,49 @@
 <script>
   const form = document.getElementById("formularioDiagnostico");
   const resultado = document.getElementById("resultadoDiagnostico");
+  const perguntasAdicionais = document.getElementById("perguntasAdicionais");
+  const desbloquearDiagnostico = document.getElementById("desbloquearDiagnostico");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Simulação do pré-diagnóstico com base nas respostas
-    // (Futuramente aqui entra a integração com a API médica)
+    // Simulação de pré-diagnóstico com base nas respostas iniciais
+    const sintomas = document.getElementById("sintomas").value;
+    const idade = document.getElementById("idade").value;
+    const genero = document.getElementById("genero").value;
 
     // Exibe o diagnóstico parcial e perguntas adicionais
     resultado.classList.remove("hidden");
 
+    // Perguntas adicionais com base nas respostas
+    perguntasAdicionais.innerHTML = `
+      <li><strong>Você teve contato recente com alguém gripado?</strong>
+        <select class="border border-gray-300 p-2 rounded w-full text-black" id="contatoGripe">
+          <option value="yes">Sim</option>
+          <option value="no">Não</option>
+        </select>
+      </li>
+      <li><strong>Você tomou vacina da gripe esse ano?</strong>
+        <select class="border border-gray-300 p-2 rounded w-full text-black" id="vacinaGripe">
+          <option value="yes">Sim</option>
+          <option value="no">Não</option>
+        </select>
+      </li>
+      <li><strong>A febre ultrapassa 38ºC?</strong>
+        <select class="border border-gray-300 p-2 rounded w-full text-black" id="febreAlta">
+          <option value="yes">Sim</option>
+          <option value="no">Não</option>
+        </select>
+      </li>
+    `;
+
     // Scroll até o resultado
     resultado.scrollIntoView({ behavior: "smooth" });
+  });
+
+  desbloquearDiagnostico.addEventListener("click", function () {
+    // Lógica para desbloquear diagnóstico completo (aqui entra a integração com IA ou API médica)
+    alert("Diagnóstico Completo desbloqueado!");
   });
 </script>
 
