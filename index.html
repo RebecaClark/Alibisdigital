@@ -836,12 +836,11 @@
       <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
     </form>
 
-    <!-- Indicador de Carregamento -->
-    <div id="loading-spinner" class="hidden text-center mt-4">
-      <img src="spinner.gif" alt="Carregando..." />
+    <div id="loading" class="mt-6 text-center hidden">
+      <p class="text-lg font-semibold mb-2">Analisando sintomas...</p>
+      <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-green-600 mx-auto"></div>
     </div>
 
-    <!-- Diagnóstico Parcial -->
     <div id="diagnostico-parcial" class="mt-6 hidden">
       <h3 class="text-xl font-semibold mb-2">Diagnóstico Parcial:</h3>
       <p id="parcial-result" class="bg-gray-100 p-4 rounded"></p>
@@ -856,7 +855,6 @@
       </div>
     </div>
 
-    <!-- Diagnóstico Completo -->
     <div id="diagnostico-completo" class="mt-6 hidden">
       <h3 class="text-xl font-semibold mb-2">Diagnóstico Completo:</h3>
       <p id="completo-result" class="bg-gray-100 p-4 rounded whitespace-pre-line"></p>
@@ -902,47 +900,59 @@
       alert("Obrigado pelo seu feedback! Fique à vontade para continuar usando o Álibi Digital.");
     } else {
       alert("Vamos conectar você com um especialista humano para suporte mais personalizado.");
-      // Aqui você pode integrar um chat ou redirecionamento futuro
     }
+  }
+
+  async function traduzirSintomas(texto) {
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        q: texto,
+        source: "pt",
+        target: "en",
+        format: "text"
+      })
+    });
+    const data = await res.json();
+    return data.translatedText;
   }
 
   document.getElementById('medical-form').addEventListener('submit', async function (e) {
     e.preventDefault();
+    document.getElementById("loading").classList.remove("hidden");
+    document.getElementById("diagnostico-parcial").classList.add("hidden");
 
-    const symptoms = document.getElementById('symptoms').value;
+    const symptomsPt = document.getElementById('symptoms').value;
     const age = document.getElementById('age').value;
     const gender = document.getElementById('gender').value;
     const parcialResult = document.getElementById('parcial-result');
-    
-    // Mostra o carregamento
-    document.getElementById('loading-spinner').classList.remove('hidden');
-    parcialResult.innerText = 'Analisando sintomas...';
-    document.getElementById('diagnostico-parcial').classList.remove('hidden');
 
     try {
-      // Fazendo a requisição para a API de Diagnóstico Médico
-      const response = await fetch('https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1', {
-        method: 'POST',
+      const sintomasTraduzidos = await traduzirSintomas(symptomsPt);
+      const sintomasArray = sintomasTraduzidos.split(",").map(s => s.trim());
+
+      const response = await fetch("https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-rapidapi-host': 'ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com',
-          'x-rapidapi-key': '34f08ecabcmsh49cdfe9294a8cf4p136578jsnce64cd449a95'
+          "Content-Type": "application/json",
+          "x-rapidapi-host": "ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com",
+          "x-rapidapi-key": "34f08ecabcmsh49cdfe9294a8cf4p136578jsnce64cd449a95"
         },
         body: JSON.stringify({
-          symptoms: symptoms.split(",").map(symptom => symptom.trim()), // Manipulando sintomas como entrada
+          symptoms: sintomasArray,
           patientInfo: {
             age: parseInt(age),
             gender: gender
           },
-          lang: "pt"
+          lang: "en"
         })
       });
 
       const data = await response.json();
-      
-      // Esconde o carregamento
-      document.getElementById('loading-spinner').classList.add('hidden');
-      
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("diagnostico-parcial").classList.remove("hidden");
+
       if (data.conditions && data.conditions.length > 0) {
         const condicaoPrincipal = data.conditions[0].name;
         parcialResult.innerText = `Possível condição: ${condicaoPrincipal} (${Math.round(data.conditions[0].probability * 100)}% de chance)`;
@@ -953,8 +963,7 @@
       }
 
     } catch (error) {
-      // Esconde o carregamento em caso de erro
-      document.getElementById('loading-spinner').classList.add('hidden');
+      document.getElementById("loading").classList.add("hidden");
       parcialResult.innerText = 'Erro ao processar o diagnóstico. Tente novamente.';
       console.error(error);
     }
