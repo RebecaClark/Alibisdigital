@@ -811,112 +811,104 @@
   }
 </script>
   
-<!-- Bloco 6 - Diagnóstico IA (Simulado) -->
-<section id="diagnostico-ia" class="p-6 bg-white shadow-md rounded-2xl max-w-3xl mx-auto mt-10">
-  <h2 class="text-2xl font-bold mb-4">Consulta Médica com IA</h2>
-  <form id="formDiagnostico">
-    <div class="grid gap-4">
-      <input type="text" placeholder="Sintomas (ex: dor de cabeça, febre)" id="sintomas" class="border p-2 rounded w-full" required>
-      <input type="number" placeholder="Idade" id="idade" class="border p-2 rounded w-full" required>
-      <select id="sexo" class="border p-2 rounded w-full" required>
-        <option value="">Selecione o sexo</option>
-        <option value="feminino">Feminino</option>
-        <option value="masculino">Masculino</option>
-      </select>
-      <textarea placeholder="Histórico médico (ex: hipertensão, alergias)" id="historico" class="border p-2 rounded w-full"></textarea>
-      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Obter Pré-Diagnóstico</button>
-    </div>
-  </form>
+<!-- BLOCO 6 - Diagnóstico Médico com IA -->
+<section id="bloco6" class="py-16 px-4 bg-white text-black">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
 
-  <div id="resultadoParcial" class="mt-6 hidden">
-    <h3 class="text-lg font-semibold mb-2">Diagnóstico Parcial:</h3>
-    <div class="bg-gray-100 p-3 rounded mb-3" id="preDiagnosticoTexto">
-      <!-- pré-diagnóstico aqui -->
-    </div>
-    <div>
-      <p class="font-semibold">Perguntas adicionais para confirmar diagnóstico:</p>
-      <ul class="list-disc ml-5 mt-2 space-y-1" id="perguntasExtras">
-        <!-- perguntas aqui -->
-      </ul>
-    </div>
-    <button onclick="gerarDiagnosticoCompleto()" class="bg-blue-600 text-white mt-4 px-4 py-2 rounded hover:bg-blue-700">Gerar Diagnóstico Completo</button>
-  </div>
+    <form id="formularioDiagnostico" class="space-y-4">
+      <div>
+        <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
+        <input type="text" id="sintomas" placeholder="Ex: dor de cabeça, febre"
+          class="border border-gray-300 p-2 rounded w-full text-black" required />
+      </div>
 
-  <div id="resultadoFinal" class="mt-6 hidden bg-green-50 p-4 rounded shadow">
-    <h3 class="text-lg font-semibold mb-2">Diagnóstico Completo:</h3>
-    <p id="diagnosticoFinalTexto" class="text-gray-800"></p>
+      <div>
+        <label for="idade" class="block text-sm font-medium">Idade:</label>
+        <input type="number" id="idade" class="border border-gray-300 p-2 rounded w-full text-black" required />
+      </div>
+
+      <div>
+        <label for="genero" class="block text-sm font-medium">Gênero:</label>
+        <select id="genero" class="border border-gray-300 p-2 rounded w-full text-black" required>
+          <option value="">Selecione</option>
+          <option value="female">Feminino</option>
+          <option value="male">Masculino</option>
+          <option value="other">Outro</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
+        <textarea id="historico" rows="3"
+          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
+      </div>
+
+      <div>
+        <label for="medicamentos" class="block text-sm font-medium">Medicamentos Atuais:</label>
+        <textarea id="medicamentos" rows="2"
+          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
+      </div>
+
+      <div>
+        <label for="alergias" class="block text-sm font-medium">Alergias:</label>
+        <input type="text" id="alergias" class="border border-gray-300 p-2 rounded w-full text-black" />
+      </div>
+
+      <button type="submit"
+        class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
+    </form>
+
+    <!-- Resultado (aparece depois do envio) -->
+    <div id="resultadoDiagnostico" class="mt-10 hidden">
+      <h3 class="text-2xl font-semibold mb-3">Diagnóstico Parcial:</h3>
+      <div class="bg-gray-100 p-4 rounded text-black mb-4">
+        <p><strong>Possível condição:</strong> Gripe (Influenza) (78% de chance)</p>
+      </div>
+
+      <div class="mb-6 text-black">
+        <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
+        <ul class="list-disc pl-6 space-y-1">
+          <li>Você teve contato recente com alguém gripado?</li>
+          <li>Você tomou vacina da gripe esse ano?</li>
+          <li>A febre ultrapassa 38ºC?</li>
+        </ul>
+      </div>
+
+      <button
+        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico
+        Completo</button>
+
+      <div class="mt-6">
+        <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
+        <div class="flex gap-3">
+          <button class="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600">Sim</button>
+          <button class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-600">Não</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- JS -->
 <script>
-  const perguntasExtras = [
-    "Você teve contato recente com alguém gripado?",
-    "Você tomou vacina da gripe este ano?",
-    "A febre ultrapassa 38ºC?"
-  ];
+  const form = document.getElementById("formularioDiagnostico");
+  const resultado = document.getElementById("resultadoDiagnostico");
 
-  let respostasExtras = [];
-
-  document.getElementById("formDiagnostico").addEventListener("submit", function (e) {
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const sintomas = document.getElementById("sintomas").value;
-    const idade = document.getElementById("idade").value;
-    const sexo = document.getElementById("sexo").value;
-    const historico = document.getElementById("historico").value;
+    // Simulação do pré-diagnóstico com base nas respostas
+    // (Futuramente aqui entra a integração com a API médica)
 
-    const chance = Math.floor(Math.random() * 40) + 60; // 60-99%
-    const condicao = "Gripe (Influenza)";
+    // Exibe o diagnóstico parcial e perguntas adicionais
+    resultado.classList.remove("hidden");
 
-    document.getElementById("resultadoParcial").classList.remove("hidden");
-    document.getElementById("preDiagnosticoTexto").innerText = `Possível condição: ${condicao} (${chance}% de chance)`;
-
-    const lista = document.getElementById("perguntasExtras");
-    lista.innerHTML = "";
-
-    perguntasExtras.forEach((pergunta, i) => {
-      const li = document.createElement("li");
-      li.innerHTML = `${pergunta} 
-        <select onchange="salvarResposta(${i}, this.value)" class="ml-2 p-1 border rounded">
-          <option value="">Selecione</option>
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
-        </select>`;
-      lista.appendChild(li);
-    });
-
-    respostasExtras = new Array(perguntasExtras.length).fill(null);
+    // Scroll até o resultado
+    resultado.scrollIntoView({ behavior: "smooth" });
   });
-
-  function salvarResposta(index, valor) {
-    respostasExtras[index] = valor;
-  }
-
-  function gerarDiagnosticoCompleto() {
-    if (respostasExtras.includes(null)) {
-      alert("Por favor, responda todas as perguntas antes de continuar.");
-      return;
-    }
-
-    const sintomas = document.getElementById("sintomas").value;
-    const idade = document.getElementById("idade").value;
-    const sexo = document.getElementById("sexo").value;
-    const historico = document.getElementById("historico").value;
-
-    let textoFinal = `A paciente do sexo ${sexo}, com ${idade} anos, relatou os seguintes sintomas: ${sintomas}.`;
-
-    if (historico) {
-      textoFinal += ` Possui histórico médico de ${historico}.`;
-    }
-
-    textoFinal += ` Respondeu às perguntas adicionais da seguinte forma: ${respostasExtras.join(", ")}.`;
-
-    textoFinal += ` Com base nesses dados, o sistema sugere uma forte possibilidade de Gripe comum (Influenza). Recomenda-se repouso, hidratação e, caso os sintomas persistam ou piorem, procurar atendimento médico presencial.`;
-
-    document.getElementById("resultadoFinal").classList.remove("hidden");
-    document.getElementById("diagnosticoFinalTexto").innerText = textoFinal;
-  }
 </script>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
