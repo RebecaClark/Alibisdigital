@@ -818,9 +818,9 @@
 
     <form id="formularioDiagnostico" class="space-y-4">
       <div>
-        <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
-        <input type="text" id="sintomas" placeholder="Ex: dor de cabeça, febre"
-          class="border border-gray-300 p-2 rounded w-full text-black" required />
+        <label for="sintomas" class="block text-sm font-medium">Descreva seus sintomas:</label>
+        <textarea id="sintomas" rows="3" placeholder="Ex: muita dor no corpo, vômito, febre alta"
+          class="border border-gray-300 p-2 rounded w-full text-black" required></textarea>
       </div>
 
       <div>
@@ -840,7 +840,7 @@
 
       <div>
         <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
-        <textarea id="historico" rows="3"
+        <textarea id="historico" rows="2"
           class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
@@ -850,105 +850,80 @@
           class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
-      <div>
-        <label for="alergias" class="block text-sm font-medium">Alergias:</label>
-        <input type="text" id="alergias" class="border border-gray-300 p-2 rounded w-full text-black" />
-      </div>
-
       <button type="submit"
         class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
     </form>
 
-    <!-- Resultado (aparece depois do envio) -->
+    <!-- Resultado -->
     <div id="resultadoDiagnostico" class="mt-10 hidden">
       <h3 class="text-2xl font-semibold mb-3">Diagnóstico Parcial:</h3>
-      <div class="bg-gray-100 p-4 rounded text-black mb-4">
-        <p><strong>Possível condição:</strong> Gripe (Influenza) (78% de chance)</p>
+      <div class="bg-gray-100 p-4 rounded text-black mb-4" id="diagnosticoTexto">
+        <!-- Diagnóstico gerado aqui -->
       </div>
 
-      <div class="mb-6 text-black">
-        <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
-        <form id="formAdicionais" class="space-y-4">
-          <div>
-            <label class="block">Você teve contato recente com alguém gripado?</label>
-            <select id="contato" class="border border-gray-300 p-2 rounded w-full text-black" required>
-              <option value="">Selecione</option>
-              <option value="sim">Sim</option>
-              <option value="nao">Não</option>
-            </select>
-          </div>
-          <div>
-            <label class="block">Você tomou vacina da gripe esse ano?</label>
-            <select id="vacina" class="border border-gray-300 p-2 rounded w-full text-black" required>
-              <option value="">Selecione</option>
-              <option value="sim">Sim</option>
-              <option value="nao">Não</option>
-            </select>
-          </div>
-          <div>
-            <label class="block">A febre ultrapassa 38ºC?</label>
-            <select id="febre" class="border border-gray-300 p-2 rounded w-full text-black" required>
-              <option value="">Selecione</option>
-              <option value="sim">Sim</option>
-              <option value="nao">Não</option>
-            </select>
-          </div>
-
-          <button type="submit"
-            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Refinar Diagnóstico</button>
-        </form>
+      <div class="mb-6 text-black" id="perguntasAdicionaisContainer">
+        <!-- Perguntas adicionais geradas aqui -->
       </div>
 
-      <div id="diagnosticoRefinado" class="mt-6 hidden bg-green-100 p-4 rounded text-black">
-        <h4 class="text-xl font-bold mb-2">Diagnóstico Refinado:</h4>
-        <p id="resultadoRefinadoTexto">Analisando respostas...</p>
-      </div>
-
-      <div class="mt-6">
-        <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
-        <div class="flex gap-3">
-          <button class="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600">Sim</button>
-          <button class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-600">Não</button>
-        </div>
-      </div>
+      <button id="btnRefinar" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition hidden">
+        Refinar Diagnóstico
+      </button>
     </div>
   </div>
 </section>
 
-<!-- JS -->
 <script>
   const form = document.getElementById("formularioDiagnostico");
   const resultado = document.getElementById("resultadoDiagnostico");
-  const formAdicionais = document.getElementById("formAdicionais");
-  const diagnosticoRefinado = document.getElementById("diagnosticoRefinado");
-  const resultadoRefinadoTexto = document.getElementById("resultadoRefinadoTexto");
+  const diagnosticoTexto = document.getElementById("diagnosticoTexto");
+  const perguntasContainer = document.getElementById("perguntasAdicionaisContainer");
+  const btnRefinar = document.getElementById("btnRefinar");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    const sintomas = document.getElementById("sintomas").value.toLowerCase();
+
+    // Diagnóstico básico simulado (será trocado por IA ou API)
+    let diagnostico = "Possível condição: Gripe (Influenza) (78%)";
+
+    // Perguntas adicionais com base em sintomas
+    let perguntas = [];
+
+    if (sintomas.includes("dor no corpo") && sintomas.includes("vômito")) {
+      diagnostico = "Possível condição: Dengue, virose ou intoxicação (em análise)";
+      perguntas = [
+        "Você notou manchas vermelhas na pele?",
+        "Está com febre acima de 38°C?",
+        "Está com diarreia ou desidratação?",
+        "Teve contato com água ou comida suspeita?",
+        "Viajou recentemente para região com surto de dengue?"
+      ];
+    } else if (sintomas.includes("tosse") || sintomas.includes("febre") || sintomas.includes("coriza")) {
+      perguntas = [
+        "A febre ultrapassa 38ºC?",
+        "Você teve contato recente com alguém gripado?",
+        "Você tomou vacina da gripe esse ano?"
+      ];
+    } else {
+      perguntas = ["Você pode descrever com mais detalhes os sintomas?", "Eles surgiram de forma súbita ou gradual?"];
+    }
+
+    // Exibir diagnóstico e perguntas
+    diagnosticoTexto.innerHTML = `<p><strong>${diagnostico}</strong></p>`;
+    perguntasContainer.innerHTML = `
+      <p class="font-semibold mb-2">Perguntas adicionais para refinar diagnóstico:</p>
+      <ul class="list-disc pl-6 space-y-1">
+        ${perguntas.map(p => `<li>${p}</li>`).join('')}
+      </ul>
+    `;
+
+    btnRefinar.classList.remove("hidden");
     resultado.classList.remove("hidden");
     resultado.scrollIntoView({ behavior: "smooth" });
   });
-
-  formAdicionais.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const contato = document.getElementById("contato").value;
-    const vacina = document.getElementById("vacina").value;
-    const febre = document.getElementById("febre").value;
-
-    let diagnostico = "Gripe (Influenza)";
-    let chance = 78;
-
-    if (contato === "sim") chance += 5;
-    if (vacina === "nao") chance += 5;
-    if (febre === "sim") chance += 7;
-    if (vacina === "sim") chance -= 8;
-
-    resultadoRefinadoTexto.textContent = `Com base nas suas respostas, a condição mais provável continua sendo ${diagnostico} (${chance}% de chance). Recomendamos repouso, boa hidratação e, se persistirem os sintomas, procure um médico.`;
-
-    diagnosticoRefinado.classList.remove("hidden");
-    diagnosticoRefinado.scrollIntoView({ behavior: "smooth" });
-  });
 </script>
+
 
   <!-- BLOCO 7 – Alibis-->
       <section id="bloco7-alibi" class="py-16 px-4 bg-blue-50 animate-on-scroll">
