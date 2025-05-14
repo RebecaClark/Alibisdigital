@@ -811,7 +811,7 @@
   }
 </script>
   
-<!-- BLOCO 6 - Diagnóstico Médico com IA -->
+<!-- BLOCO 6 - Diagnóstico Médico com IA (Médico com 50 anos de experiência formado em Harvard) -->
 <section id="bloco6" class="py-16 px-4 bg-white text-black">
   <div class="max-w-3xl mx-auto">
     <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA</h2>
@@ -819,7 +819,7 @@
     <form id="formularioDiagnostico" class="space-y-4">
       <div>
         <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
-        <input type="text" id="sintomas" placeholder="Ex: dor no corpo, febre, vômito"
+        <input type="text" id="sintomas" placeholder="Ex: dor no corpo, vômito, febre alta"
           class="border border-gray-300 p-2 rounded w-full text-black" required />
       </div>
 
@@ -841,21 +841,21 @@
       <div>
         <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
         <textarea id="historico" rows="3"
-          class="border border-gray-300 p-2 rounded w-full text-black"
-          placeholder="Ex: Já tive dengue em 2020. Tenho crises de enxaqueca e pressão alta."></textarea>
+          placeholder="Ex: pressão alta, diabetes, histórico de AVC na família"
+          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
       <div>
         <label for="medicamentos" class="block text-sm font-medium">Medicamentos Atuais:</label>
         <textarea id="medicamentos" rows="2"
-          class="border border-gray-300 p-2 rounded w-full text-black"
-          placeholder="Ex: Dipirona, Losartana"></textarea>
+          placeholder="Ex: dipirona, losartana, insulina"
+          class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
       </div>
 
       <div>
         <label for="alergias" class="block text-sm font-medium">Alergias:</label>
-        <input type="text" id="alergias" class="border border-gray-300 p-2 rounded w-full text-black"
-          placeholder="Ex: Alergia a dipirona" />
+        <input type="text" id="alergias" placeholder="Ex: alergia a dipirona, amoxicilina"
+          class="border border-gray-300 p-2 rounded w-full text-black" />
       </div>
 
       <button type="submit"
@@ -865,17 +865,17 @@
     <!-- Resultado (aparece depois do envio) -->
     <div id="resultadoDiagnostico" class="mt-10 hidden">
       <h3 class="text-2xl font-semibold mb-3">Diagnóstico Parcial:</h3>
-      <div id="condicaoParcial" class="bg-gray-100 p-4 rounded text-black mb-4"></div>
+      <div id="condicaoPossivel" class="bg-gray-100 p-4 rounded text-black mb-4"></div>
 
-      <div id="perguntasAdicionais" class="mb-6 text-black hidden">
+      <div class="mb-6 text-black">
         <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
-        <ul id="listaPerguntas" class="list-disc pl-6 space-y-1"></ul>
+        <ul id="perguntasAdicionais" class="list-disc pl-6 space-y-1"></ul>
       </div>
 
-      <button id="btnRefinar"
-        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition hidden">Refinar Diagnóstico</button>
+      <button id="refinarBtn"
+        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Refinar Diagnóstico</button>
 
-      <div class="mt-6 hidden" id="feedbackUtil">
+      <div class="mt-6">
         <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
         <div class="flex gap-3">
           <button class="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600">Sim</button>
@@ -890,64 +890,65 @@
 <script>
   const form = document.getElementById("formularioDiagnostico");
   const resultado = document.getElementById("resultadoDiagnostico");
-  const condicaoParcial = document.getElementById("condicaoParcial");
+  const condicaoPossivel = document.getElementById("condicaoPossivel");
   const perguntasAdicionais = document.getElementById("perguntasAdicionais");
-  const listaPerguntas = document.getElementById("listaPerguntas");
-  const btnRefinar = document.getElementById("btnRefinar");
-  const feedbackUtil = document.getElementById("feedbackUtil");
+  const refinarBtn = document.getElementById("refinarBtn");
 
-  const bancoPerguntas = {
-    gripe: [
-      "Você teve contato recente com alguém gripado?",
-      "Você tomou vacina da gripe esse ano?",
-      "A febre ultrapassa 38ºC?"
-    ],
-    dengue: [
-      "Você notou manchas vermelhas na pele?",
-      "Está sentindo dor atrás dos olhos?",
-      "Você teve episódios de sangramento (nariz, gengiva)?"
-    ],
-    covid: [
-      "Você sente falta de ar?",
-      "Perdeu olfato ou paladar?",
-      "Teve contato com alguém com Covid-19?"
-    ],
-  };
+  let dadosUsuario = {};
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const sintomas = document.getElementById("sintomas").value.toLowerCase();
+    // Coleta os dados
+    dadosUsuario = {
+      sintomas: document.getElementById("sintomas").value.toLowerCase(),
+      idade: parseInt(document.getElementById("idade").value),
+      genero: document.getElementById("genero").value,
+      historico: document.getElementById("historico").value.toLowerCase(),
+      medicamentos: document.getElementById("medicamentos").value.toLowerCase(),
+      alergias: document.getElementById("alergias").value.toLowerCase(),
+    };
 
-    let condicao = "Gripe (Influenza)";
-    let chance = "78%";
-    let perguntas = bancoPerguntas.gripe;
+    gerarDiagnostico(dadosUsuario);
+  });
 
-    if (sintomas.includes("dor no corpo") && sintomas.includes("vômito")) {
-      condicao = "Dengue";
-      chance = "82%";
-      perguntas = bancoPerguntas.dengue;
-    } else if (sintomas.includes("tosse") && sintomas.includes("falta de ar")) {
-      condicao = "Covid-19";
-      chance = "75%";
-      perguntas = bancoPerguntas.covid;
+  function gerarDiagnostico(dados) {
+    let condicao = "";
+    let perguntas = [];
+
+    if (dados.sintomas.includes("dor no corpo") && dados.sintomas.includes("vômito")) {
+      condicao = "Infecção viral gastrointestinal ou Dengue (65% de chance)";
+      perguntas.push(
+        "Você teve contato com água parada ou áreas com surtos de dengue?",
+        "Está com manchas vermelhas pelo corpo?",
+        "Você sente dor atrás dos olhos?"
+      );
+    } else if (dados.sintomas.includes("febre") && dados.sintomas.includes("tosse")) {
+      condicao = "Gripe (Influenza) ou Covid-19 (70% de chance)";
+      perguntas.push(
+        "Você teve contato com alguém gripado ou com Covid?",
+        "Você sente falta de ar?",
+        "A febre passou de 38ºC?"
+      );
+    } else {
+      condicao = "Condição indefinida. Necessário mais dados.";
+      perguntas.push(
+        "Quando os sintomas começaram?",
+        "Você tem alguma dor abdominal localizada?",
+        "Já teve isso antes?"
+      );
     }
 
-    condicaoParcial.innerHTML = `<p><strong>Possível condição:</strong> ${condicao} (${chance} de chance)</p>`;
-
-    listaPerguntas.innerHTML = "";
-    perguntas.forEach(p => {
-      const li = document.createElement("li");
-      li.textContent = p;
-      listaPerguntas.appendChild(li);
-    });
-
+    condicaoPossivel.innerHTML = `<p><strong>Possível condição:</strong> ${condicao}</p>`;
+    perguntasAdicionais.innerHTML = perguntas.map(p => `<li>${p}</li>`).join('');
     resultado.classList.remove("hidden");
-    perguntasAdicionais.classList.remove("hidden");
-    btnRefinar.classList.remove("hidden");
-    feedbackUtil.classList.remove("hidden");
-
     resultado.scrollIntoView({ behavior: "smooth" });
+  }
+
+  refinarBtn.addEventListener("click", () => {
+    perguntasAdicionais.innerHTML += `<li>Você apresentou sangue no vômito ou fezes?</li>`;
+    perguntasAdicionais.innerHTML += `<li>Você está se hidratando bem?</li>`;
+    perguntasAdicionais.innerHTML += `<li>Tem histórico familiar de problemas gástricos?</li>`;
   });
 </script>
 
