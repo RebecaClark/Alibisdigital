@@ -836,11 +836,6 @@
       <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
     </form>
 
-    <div id="loading" class="mt-6 text-center hidden">
-      <p class="text-lg font-semibold mb-2">Analisando sintomas...</p>
-      <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-green-600 mx-auto"></div>
-    </div>
-
     <div id="diagnostico-parcial" class="mt-6 hidden">
       <h3 class="text-xl font-semibold mb-2">Diagnóstico Parcial:</h3>
       <p id="parcial-result" class="bg-gray-100 p-4 rounded"></p>
@@ -864,7 +859,7 @@
 
 <script>
   const perguntasCondicionais = {
-    "Influenza (flu)": [
+    "Gripe (Influenza)": [
       "Você teve contato recente com alguém gripado?",
       "Você tomou vacina da gripe esse ano?",
       "A febre ultrapassa 38ºC?"
@@ -903,70 +898,44 @@
     }
   }
 
-  async function traduzirSintomas(texto) {
-    const res = await fetch("https://libretranslate.de/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        q: texto,
-        source: "pt",
-        target: "en",
-        format: "text"
-      })
-    });
-    const data = await res.json();
-    return data.translatedText;
-  }
-
   document.getElementById('medical-form').addEventListener('submit', async function (e) {
     e.preventDefault();
-    document.getElementById("loading").classList.remove("hidden");
-    document.getElementById("diagnostico-parcial").classList.add("hidden");
 
-    const symptomsPt = document.getElementById('symptoms').value;
-    const age = document.getElementById('age').value;
+    const symptoms = document.getElementById('symptoms').value.toLowerCase();
+    const age = parseInt(document.getElementById('age').value);
     const gender = document.getElementById('gender').value;
     const parcialResult = document.getElementById('parcial-result');
+    const diagnosticoParcial = document.getElementById('diagnostico-parcial');
 
-    try {
-      const sintomasTraduzidos = await traduzirSintomas(symptomsPt);
-      const sintomasArray = sintomasTraduzidos.split(",").map(s => s.trim());
+    parcialResult.innerText = 'Analisando sintomas...';
+    diagnosticoParcial.classList.remove('hidden');
 
-      const response = await fetch("https://ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com/analyzeSymptomsAndDiagnose?noqueue=1", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-rapidapi-host": "ai-medical-diagnosis-api-symptoms-to-results.p.rapidapi.com",
-          "x-rapidapi-key": "34f08ecabcmsh49cdfe9294a8cf4p136578jsnce64cd449a95"
-        },
-        body: JSON.stringify({
-          symptoms: sintomasArray,
-          patientInfo: {
-            age: parseInt(age),
-            gender: gender
-          },
-          lang: "en"
-        })
-      });
+    setTimeout(() => {
+      // SIMULAÇÃO DE DIAGNÓSTICO
+      let condicoes = [];
 
-      const data = await response.json();
-      document.getElementById("loading").classList.add("hidden");
-      document.getElementById("diagnostico-parcial").classList.remove("hidden");
-
-      if (data.conditions && data.conditions.length > 0) {
-        const condicaoPrincipal = data.conditions[0].name;
-        parcialResult.innerText = `Possível condição: ${condicaoPrincipal} (${Math.round(data.conditions[0].probability * 100)}% de chance)`;
-        mostrarPerguntasCondicionais(condicaoPrincipal);
-        window.diagnosticoCompleto = data.conditions;
+      if (symptoms.includes("febre") && symptoms.includes("dor de cabeça")) {
+        condicoes = [
+          { name: "Gripe (Influenza)", probability: 0.78 },
+          { name: "COVID-19", probability: 0.64 }
+        ];
+      } else if (symptoms.includes("fadiga") || symptoms.includes("tontura")) {
+        condicoes = [
+          { name: "Anemia", probability: 0.55 },
+          { name: "Desidratação", probability: 0.42 }
+        ];
       } else {
-        parcialResult.innerText = 'Não foi possível identificar uma condição clara com os dados fornecidos.';
+        condicoes = [
+          { name: "Estresse ou cansaço", probability: 0.4 }
+        ];
       }
 
-    } catch (error) {
-      document.getElementById("loading").classList.add("hidden");
-      parcialResult.innerText = 'Erro ao processar o diagnóstico. Tente novamente.';
-      console.error(error);
-    }
+      const condicaoPrincipal = condicoes[0].name;
+      parcialResult.innerText = `Possível condição: ${condicaoPrincipal} (${Math.round(condicoes[0].probability * 100)}% de chance)`;
+
+      mostrarPerguntasCondicionais(condicaoPrincipal);
+      window.diagnosticoCompleto = condicoes;
+    }, 1000); // simula delay de 1s
   });
 
   document.getElementById('desbloquear-btn').addEventListener('click', function () {
@@ -985,6 +954,7 @@
     }
   });
 </script>
+
 
 
   <!-- BLOCO 7 – Alibis-->
