@@ -401,45 +401,48 @@
   </style>
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
-
 <!-- Cabeçalho -->
-  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <!-- Logo -->
-        <span class="font-bold text-xl">logo.png</span>
-      </div>
-      <!-- Menu Hamburguer para dispositivos móveis -->
-      <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-
-      <!-- Menu de navegação para telas maiores -->
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-        <a href="#criar-alibi" class="hover:text-green-400 transition">Criar Álibi</a>
-        <a href="#scanner" class="hover:text-green-400 transition">Scanner com IA</a>
-        <a href="#avaliacao-emocional" class="hover:text-green-400 transition">Avaliação Emocional</a>
-        <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
-      </nav>
+<header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <a href="/">
+        <img src="logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
+      </a>
     </div>
-  </header>
 
-  <!-- Menu de navegação colapsado para mobile -->
-  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
-    <nav class="flex flex-col items-center">
-      <a href="#criar-alibi" class="text-white py-3 text-lg">Criar Álibi</a>
-      <a href="#scanner" class="text-white py-3 text-lg">Scanner com IA</a>
-      <a href="#avaliacao-emocional" class="text-white py-3 text-lg">Avaliação Emocional</a>
-      <a href="#suporte" class="text-white py-3 text-lg">Suporte</a>
+    <!-- Menu Hamburguer para dispositivos móveis -->
+    <div class="md:hidden flex items-center">
+      <button id="hamburger-menu" class="text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Menu de navegação para telas maiores -->
+    <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
+      <a href="#criar-alibi" class="hover:text-green-400 transition">Criar Álibi</a>
+      <a href="#scanner" class="hover:text-green-400 transition">Scanner com IA</a>
+      <a href="#avaliacao-emocional" class="hover:text-green-400 transition">Avaliação Emocional</a>
+      <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
     </nav>
   </div>
+</header>
 
-  <div class="h-20"></div>
+<!-- Menu de navegação colapsado para mobile -->
+<div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
+  <nav class="flex flex-col items-center">
+    <a href="#criar-alibi" class="text-white py-3 text-lg">Criar Álibi</a>
+    <a href="#scanner" class="text-white py-3 text-lg">Scanner com IA</a>
+    <a href="#avaliacao-emocional" class="text-white py-3 text-lg">Avaliação Emocional</a>
+    <a href="#suporte" class="text-white py-3 text-lg">Suporte</a>
+  </nav>
+</div>
+
+<div class="h-20"></div>
+
 
  <!-- Bloco 1 – Hero com Funil Emocional (Thiago Finch + Alan Nicolas) -->
 <section id="hero" class="animated-gradient text-white text-center py-24 px-6">
