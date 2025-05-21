@@ -1,471 +1,103 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ÁLIBIS DIGITAL</title> 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Bibliotecas adicionais -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    
-    /* Animações básicas */
-    .fade-in {
-      animation: fadeIn 0.8s ease-in-out;
-    }
-    
-    .slide-in-left {
-      animation: slideInLeft 1s ease-in-out;
-    }
-    
-    .slide-in-right {
-      animation: slideInRight 1s ease-in-out;
-    }
-    
-    .bounce-in {
-      animation: bounceIn 1s ease-in-out;
-    }
-    
-    .pulse {
-      animation: pulse 2s infinite ease-in-out;
-    }
-    
-    .float {
-      animation: float 3s infinite ease-in-out;
-    }
-    
-    .scale-in {
-      animation: scaleIn 0.5s ease-in-out;
-    }
-    
-    .rotate-in {
-      animation: rotateIn 0.8s ease-in-out;
-    }
-    
-    /* Definição das animações */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-50px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(50px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    
-    @keyframes bounceIn {
-      0% { opacity: 0; transform: scale(0.3); }
-      50% { opacity: 1; transform: scale(1.05); }
-      70% { transform: scale(0.9); }
-      100% { transform: scale(1); }
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
-    }
-    
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    
-    @keyframes rotateIn {
-      from { opacity: 0; transform: rotate(-90deg); }
-      to   { opacity: 1; transform: rotate(0); }
-    }
-    
-    /* Animação para botões com hover */
-    .animated-btn {
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    .animated-btn:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-    }
-    
-    .animated-btn:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.2);
-      transition: all 0.3s;
-      z-index: -1;
-    }
-    
-    .animated-btn:hover:before {
-      width: 100%;
-    }
-    
-    /* Animação para elementos quando entram na viewport */
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
-    }
-    
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Efeito de brilho para elementos */
-    .shine {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .shine::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.3) 50%, 
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: rotate(30deg);
-      animation: shine 3s infinite linear;
-    }
-    
-    @keyframes shine {
-      0% { transform: translateX(-100%) rotate(30deg); }
-      100% { transform: translateX(100%) rotate(30deg); }
-    }
-    
-    /* Efeito de gradiente animado */
-    .animated-gradient {
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradient 10s ease infinite;
-    }
-    
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    /* Estilos para o holograma futurista em 3D */
-    .hologram-container {
-      position: relative;
-      width: 280px;
-      height: 280px;
-      margin: 0 auto;
-      perspective: 1000px;
-      transform-style: preserve-3d;
-    }
-    
-    .hologram {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: rotate3d 15s linear infinite;
-    }
-    
-    .hologram::before {
-      content: '';
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 20px;
-      background: radial-gradient(ellipse at center, rgba(0, 233, 255, 0.7) 0%, rgba(0, 233, 255, 0) 70%);
-      border-radius: 50%;
-      animation: pulse-base 2s infinite;
-      z-index: -1;
-    }
-    
-    .hologram-3d-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      animation: float-3d 6s ease-in-out infinite;
-    }
-    
-    .hologram-base {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 10px;
-      background: radial-gradient(ellipse at center, rgba(0, 233, 255, 0.7) 0%, rgba(0, 233, 255, 0) 70%);
-      border-radius: 50%;
-      filter: blur(3px);
-    }
-    
-    .hologram-projection {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      transform-style: preserve-3d;
-    }
-    
-    .hologram-layer {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: url('/assets/hologram.png');
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.8;
-      transform-style: preserve-3d;
-      filter: drop-shadow(0 0 8px rgba(0, 233, 255, 0.8));
-    }
-    
-    .layer-1 { transform: translateZ(10px); animation: pulse-layer 3s infinite ease-in-out; }
-    .layer-2 { transform: translateZ(0px); animation: pulse-layer 3s infinite ease-in-out reverse; animation-delay: 0.5s; }
-    .layer-3 { transform: translateZ(-10px); animation: pulse-layer 3s infinite ease-in-out; animation-delay: 1s; }
-    
-    .hologram-particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-    }
-    
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(0, 233, 255, 0.8);
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(0, 233, 255, 0.8);
-    }
-    
-    .hologram-rings {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      transform-style: preserve-3d;
-    }
-    
-    .ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border: 1px solid rgba(0, 233, 255, 0.4);
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 233, 255, 0.4);
-    }
-    
-    .ring-1 { width: 100px; height: 100px; animation: rotate-ring 8s linear infinite; }
-    .ring-2 { width: 160px; height: 160px; animation: rotate-ring 12s linear infinite reverse; }
-    .ring-3 { width: 220px; height: 220px; animation: rotate-ring 16s linear infinite; }
-    
-    @keyframes rotate3d {
-      0% { transform: rotateY(0deg); }
-      100% { transform: rotateY(360deg); }
-    }
-    
-    @keyframes float-3d {
-      0%, 100% { transform: translateY(0) rotateX(0deg); }
-      25% { transform: translateY(-15px) rotateX(5deg); }
-      50% { transform: translateY(0) rotateX(0deg); }
-      75% { transform: translateY(15px) rotateX(-5deg); }
-    }
-    
-    @keyframes pulse-layer {
-      0%, 100% { opacity: 0.7; transform: scale(0.95) translateZ(0); }
-      50% { opacity: 0.9; transform: scale(1.05) translateZ(10px); }
-    }
-    
-    @keyframes rotate-ring {
-      0% { transform: translate(-50%, -50%) rotateZ(0deg); }
-      100% { transform: translate(-50%, -50%) rotateZ(360deg); }
-    }
-    
-    @keyframes pulse-base {
-      0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
-      50% { opacity: 0.6; transform: translateX(-50%) scale(1.1); }
-    }
-    
-    /* Efeito digitação futurista */
-    .typing-effect {
-      display: inline-block;
-      overflow: hidden;
-      white-space: normal;
-      margin: 0;
-      letter-spacing: 0.05em;
-      border-right: 2px solid #00e9ff;
-      color: #00e9ff;
-      text-shadow: 0 0 10px rgba(0, 233, 255, 0.8);
-      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
-    }
-    
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    
-    @keyframes blink-caret {
-      from, to { border-color: transparent; }
-      50% { border-color: #00e9ff; }
-    }
-    
-    /* Scanner para efeito futurista */
-    .scanner-line {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(to right, transparent, #00e9ff, transparent);
-      animation: scan 2s linear infinite;
-      opacity: 0.7;
-      z-index: 10;
-    }
-    
-    @keyframes scan {
-      0% { top: 0; }
-      100% { top: 100%; }
-    }
-    
-    /* Caixa futurista para o diagnóstico */
-    .futuristic-box {
-      background: rgba(5, 20, 40, 0.8);
-      border: 1px solid #00e9ff;
-      border-radius: 8px;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(0, 233, 255, 0.3);
-    }
-    
-    .futuristic-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #00e9ff, transparent);
-      animation: slide-right 2s linear infinite;
-    }
-    
-    @keyframes slide-right {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    
-    .hologram-text {
-      color: #00e9ff;
-      text-shadow: 0 0 5px rgba(0, 233, 255, 0.8);
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      background: rgba(0, 10, 20, 0.7);
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 2px solid #00e9ff;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Álibi Digital - Liberdade e Saúde Mental</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: #000; /* fundo preto pra dar aquele ar profissional */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    color: #00ff99; /* verde neon, vibe tech */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #textContainer {
+    font-size: 1.8rem;
+    line-height: 1.4;
+    margin-bottom: 40px;
+    max-width: 600px;
+    transition: opacity 1s ease;
+  }
+  #textContainer.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #videoContainer {
+    width: 80vw;
+    max-width: 720px;
+    height: 40.5vw; /* 16:9 ratio */
+    max-height: 405px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+  }
+  #videoContainer.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
 </head>
-<body class="bg-[#0b1120] text-white font-sans">
-<!-- Cabeçalho -->
-<header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    
-    <!-- Logo -->
-    <div class="flex items-center space-x-3">
-      <a href="/">
-        <img src="logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
-      </a>
-    </div>
+<body>
 
-    <!-- Menu Hamburguer para dispositivos móveis -->
-    <div class="md:hidden flex items-center">
-      <button id="hamburger-menu" class="text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Menu de navegação para telas maiores -->
-    <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-      <a href="#criar-alibi" class="hover:text-green-400 transition">Criar Álibi</a>
-      <a href="#scanner" class="hover:text-green-400 transition">Scanner com IA</a>
-      <a href="#avaliacao-emocional" class="hover:text-green-400 transition">Avaliação Emocional</a>
-      <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
-    </nav>
-  </div>
-</header>
-
-<!-- Menu de navegação colapsado para mobile -->
-<div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
-  <nav class="flex flex-col items-center">
-    <a href="#criar-alibi" class="text-white py-3 text-lg">Criar Álibi</a>
-    <a href="#scanner" class="text-white py-3 text-lg">Scanner com IA</a>
-    <a href="#avaliacao-emocional" class="text-white py-3 text-lg">Avaliação Emocional</a>
-    <a href="#suporte" class="text-white py-3 text-lg">Suporte</a>
-  </nav>
+<div id="textContainer">
+  <strong>Liberte-se com um Álibi Digital</strong><br />
+  A tecnologia que protege seu tempo, sua saúde mental e sua liberdade.
 </div>
 
-<div class="h-20"></div>
+<div id="videoContainer">
+  <iframe id="youtubePlayer" width="720" height="405"
+    src="https://www.youtube.com/embed/x_7LVHtLT4A?enablejsapi=1&autoplay=0&mute=1"
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
+<script>
+  const textEl = document.getElementById('textContainer');
+  const videoContainer = document.getElementById('videoContainer');
 
- <!-- Bloco 1 – Hero com Funil Emocional (Thiago Finch + Alan Nicolas) -->
-<section id="hero" class="animated-gradient text-white text-center py-24 px-6">
-  <div class="max-w-4xl mx-auto">
-    <!-- Título impactante -->
-    <h1 class="text-5xl font-extrabold mb-6 leading-tight animate__animated animate__fadeInDown">
-      Fuja da rotina com um álibi perfeito. Ou descubra que seu corpo está pedindo socorro.
-    </h1>
+  // YouTube Iframe API
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
 
-    <!-- Subtítulo provocativo -->
-    <p class="text-lg text-gray-300 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
-      Escaneie seu rosto agora e veja se é estresse, exaustão ou só a vida mesmo.
-    </p>
+  let player;
 
-    <!-- Botão CTA principal -->
-    <div class="flex justify-center">
-      <a href="#scanner"
-         class="bg-purple-700 hover:bg-purple-600 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 animate__animated animate__pulse animate__infinite">
-        🔍 Faça o escaneamento agora
-      </a>
-    </div>
-  </div>
-</section>
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('youtubePlayer', {
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    // 5 segundos de texto, depois some e começa o vídeo
+    setTimeout(() => {
+      textEl.classList.add('hidden');
+      videoContainer.classList.add('visible');
+      event.target.playVideo();
+    }, 5000);
+  }
+
+  function onPlayerStateChange(event) {
+    if(event.data === YT.PlayerState.ENDED) {
+      // Vídeo terminou, esconde vídeo, tela limpa
+      videoContainer.classList.remove('visible');
+      // Aqui poderíamos preparar o próximo texto do funil futuramente
+    }
+  }
+</script>
+
+</body>
+</html>
+
 
 <!-- BLOCO 2 – Consciência do Problema -->
 <section id="criar-alibi" class="bg-[#0f172a] py-16 px-6 text-white">
