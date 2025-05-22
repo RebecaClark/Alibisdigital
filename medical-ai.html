@@ -2,97 +2,120 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diagnóstico Médico com IA - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/styles/global.css" />
+  <link rel="stylesheet" href="/styles/global.css">
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
 
   <!-- Cabeçalho -->
-  <header class="bg-[#0f172a] fixed top-0 w-full z-50 shadow-md">
+  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="/"><img src="/assets/logo.png" alt="Logo" class="h-10"></a>
+      <a href="/"><img src="/assets/logo.png" alt="Logo" class="h-10" /></a>
       <nav class="hidden md:flex space-x-6 text-sm">
-        <a href="/index.html" class="hover:text-green-400">Início</a>
-        <a href="/scanner.html" class="hover:text-green-400">Scanner</a>
-        <a href="/emotional-evaluation.html" class="hover:text-green-400">Avaliação Emocional</a>
         <a href="/alibi.html" class="hover:text-green-400">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-green-400">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-green-400">Avaliação Emocional</a>
+        <a href="/medical-ai.html" class="text-green-400 font-bold">Diagnóstico Médico</a>
       </nav>
     </div>
   </header>
 
   <div class="h-20"></div>
 
-  <!-- Bloco Diagnóstico Médico com IA -->
-  <section id="medical-ai" class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll">
+  <!-- Bloco de Diagnóstico Médico com IA -->
+  <section class="py-16 px-6 text-center animate-on-scroll">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-4xl font-bold mb-6 text-white shine">Triagem Médica com IA</h2>
-      <p class="text-gray-400 mb-8">Responda algumas perguntas para um diagnóstico prévio. Não substitui uma consulta médica, mas pode te orientar.</p>
+      <h1 class="text-4xl font-bold mb-6 text-white shine">Diagnóstico Médico Inicial com IA 🤖</h1>
+      <p class="text-gray-400 mb-10 fade-in">Responda às perguntas e receba um pré-diagnóstico personalizado, como se estivesse falando com um clínico experiente.</p>
 
-      <form onsubmit="event.preventDefault(); gerarDiagnosticoIA();" class="space-y-6">
+      <form onsubmit="event.preventDefault(); diagnosticoIA();" class="space-y-6 text-left max-w-2xl mx-auto">
+
         <div>
-          <label class="block text-left mb-2">Qual seu principal sintoma?</label>
-          <input id="sintoma" required type="text" class="w-full p-3 rounded text-black" placeholder="Ex: dor de cabeça, febre...">
+          <label class="block mb-2 text-sm">1. Quais são seus principais sintomas?</label>
+          <textarea id="sintomas" class="w-full p-3 rounded bg-white text-black" rows="3" required></textarea>
         </div>
 
         <div>
-          <label class="block text-left mb-2">Qual a intensidade da dor?</label>
-          <select id="intensidade" required class="w-full p-3 rounded text-black">
-            <option value="">Selecione</option>
-            <option value="leve">Leve</option>
-            <option value="moderada">Moderada</option>
-            <option value="intensa">Intensa</option>
+          <label class="block mb-2 text-sm">2. Há quantos dias você está assim?</label>
+          <input id="duracao" type="number" min="1" class="w-full p-3 rounded bg-white text-black" required />
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm">3. Você tem alguma condição pré-existente (ex: diabetes, pressão alta)?</label>
+          <input id="condicao" type="text" class="w-full p-3 rounded bg-white text-black" />
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm">4. Qual sua faixa etária?</label>
+          <select id="idade" class="w-full p-3 rounded bg-white text-black" required>
+            <option value="">Selecione...</option>
+            <option>Menos de 18</option>
+            <option>18-30</option>
+            <option>31-50</option>
+            <option>51-70</option>
+            <option>Mais de 70</option>
           </select>
         </div>
 
-        <div>
-          <label class="block text-left mb-2">Você apresenta outros sintomas?</label>
-          <textarea id="outros" rows="3" class="w-full p-3 rounded text-black" placeholder="Ex: náusea, tontura, suor..."></textarea>
-        </div>
-
-        <button type="submit" class="animated-btn bg-purple-700 hover:bg-purple-600 text-white py-3 px-6 rounded shadow-lg">Gerar Diagnóstico</button>
+        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 animated-btn pulse">
+          Obter Diagnóstico
+        </button>
       </form>
 
-      <div id="resultado-medico" class="mt-10 hidden bg-[#1a1d3b] p-6 rounded-lg text-green-300 scale-in">
-        <h3 class="text-xl font-semibold mb-4">Resultado:</h3>
-        <p id="resultadoTexto" class="text-lg italic">Analisando...</p>
-        <p class="mt-4 text-sm text-gray-400">⚠️ Recomendamos procurar um médico caso os sintomas persistam.</p>
+      <div id="resultado-diagnostico" class="mt-10 p-6 bg-[#112240] rounded-lg hidden scale-in text-left text-green-300">
+        <h2 class="text-xl font-semibold mb-3">🩺 Diagnóstico Preliminar:</h2>
+        <p id="respostaIA">Aguarde...</p>
+        <p class="text-sm text-gray-400 mt-4">💡 Recomendamos sempre procurar um médico para uma avaliação completa.</p>
       </div>
     </div>
   </section>
 
   <!-- Rodapé -->
-  <footer class="bg-gray-950 text-gray-400 py-12">
-    <div class="max-w-6xl mx-auto px-6 text-sm text-center">
-      <p>&copy; 2025 Álibis Digital. Todos os direitos reservados.</p>
+  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Inteligência artificial a serviço da sua saúde e liberdade. Soluções reais para problemas reais.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white">Scanner Facial</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white">Criar Álibi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <p>Email: contato@alibisdigital.com</p>
+        <p>WhatsApp: (11) 91234-5678</p>
+      </div>
     </div>
   </footer>
 
-  <!-- Script de Diagnóstico Simples -->
   <script>
-    function gerarDiagnosticoIA() {
-      const sintoma = document.getElementById("sintoma").value.toLowerCase();
-      const intensidade = document.getElementById("intensidade").value;
-      const outros = document.getElementById("outros").value.toLowerCase();
-      const resultado = document.getElementById("resultado-medico");
-      const resultadoTexto = document.getElementById("resultadoTexto");
+    function diagnosticoIA() {
+      const sintomas = document.getElementById("sintomas").value;
+      const duracao = document.getElementById("duracao").value;
+      const condicao = document.getElementById("condicao").value || "nenhuma";
+      const idade = document.getElementById("idade").value;
 
-      let diagnostico = "Estamos analisando suas informações...";
+      const texto = `
+        Você relatou: ${sintomas}.
+        Duração: ${duracao} dias.
+        Condições pré-existentes: ${condicao}.
+        Faixa etária: ${idade}.
+        Nossa IA indica que seu estado pode requerer atenção médica. Recomendamos procurar um clínico geral.
+      `;
 
-      if (sintoma.includes("febre") || outros.includes("febre")) {
-        diagnostico = "Pode ser um quadro viral ou infeccioso. Hidrate-se e monitore a temperatura.";
-      } else if (sintoma.includes("dor de cabeça") || outros.includes("tontura")) {
-        diagnostico = "Pode indicar estresse, enxaqueca ou até queda de pressão.";
-      } else if (intensidade === "intensa") {
-        diagnostico = "Dor intensa requer atenção imediata. Procure um pronto-socorro.";
-      } else {
-        diagnostico = "Recomendamos acompanhamento se os sintomas persistirem por mais de 3 dias.";
-      }
-
-      resultadoTexto.textContent = diagnostico;
-      resultado.classList.remove("hidden");
+      document.getElementById("respostaIA").textContent = texto;
+      document.getElementById("resultado-diagnostico").classList.remove("hidden");
     }
   </script>
+
+  <script src="/scripts/navbar.js" defer></script>
 </body>
 </html>
