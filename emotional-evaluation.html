@@ -1,0 +1,186 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação Emocional - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS')"></script>
+  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')">
+</head>
+<body class="bg-[#0b1120] text-white font-sans">
+  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')"></a>
+      </div>
+      <div class="md:hidden">
+        <button id="hamburger-menu" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
+        <a href="/alibi.html" class="hover:text-[#22C55E] transition">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-[#22C55E] transition">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition">Avaliação Emocional</a>
+        <a href="#suporte" class="hover:text-[#22C55E] transition">Suporte</a>
+      </nav>
+    </div>
+  </header>
+  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
+    <nav class="flex flex-col items-center">
+      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Criar Álibi</a>
+      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Scanner com IA</a>
+      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Avaliação Emocional</a>
+      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Suporte</a>
+    </nav>
+  </div>
+  <div class="h-20"></div>
+
+  <section id="avaliacao-emocional" class="bg-[#1a1d3b] py-16 px-6 text-white">
+    <div class="max-w-4xl mx-auto text-center animate-on-scroll">
+      <h2 class="text-3xl font-bold mb-4 float">Como Você Está Se Sentindo?</h2>
+      <p class="text-lg mb-8 text-gray-400 slide-in-left">
+        Às vezes, o estresse e as tensões diárias nos afetam de maneiras que nem sempre conseguimos perceber. Vamos ajudá-lo a avaliar seu bem-estar emocional.
+      </p>
+      <form onsubmit="event.preventDefault(); realizarAvaliacaoEmocional();" class="max-w-2xl mx-auto space-y-6 scale-in">
+        <div class="fade-in">
+          <label class="block mb-2 text-sm text-gray-300">Você tem se sentido estressado(a) ultimamente?</label>
+          <select id="estresse" required class="w-full p-3 rounded bg-white text-black">
+            <option value="">Selecione...</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="fade-in">
+          <label class="block mb-2 text-sm text-gray-300">Você tem tido dificuldade em relaxar?</label>
+          <select id="dificuldade-relaxar" required class="w-full p-3 rounded bg-white text-black">
+            <option value="">Selecione...</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="fade-in">
+          <label class="block mb-2 text-sm text-gray-300">Como você se sente ao acordar de manhã?</label>
+          <select id="sentimento-manha" required class="w-full p-3 rounded bg-white text-black">
+            <option value="">Selecione...</option>
+            <option value="Revigorado">Revigorado</option>
+            <option value="Cansado">Cansado</option>
+            <option value="Indiferente">Indiferente</option>
+          </select>
+        </div>
+        <button type="submit" class="animated-btn w-full bg-purple-700 text-white py-3 rounded hover:bg-purple-600 transition pulse">
+          Avaliar Meu Bem-Estar
+        </button>
+      </form>
+      <div id="resultado-avaliacao" class="mt-10 bg-[#1a1d3b] p-6 rounded-lg text-green-300 text-center hidden scale-in">
+        <h3 class="text-xl font-semibold mb-4">Seu Diagnóstico Emocional:</h3>
+        <p id="resultadoEmocional" class="text-lg italic">Gerando diagnóstico...</p>
+        <p class="mt-4 text-sm text-gray-400 shine">🔒 O diagnóstico completo estará disponível após o pagamento.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
+          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">Email: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function realizarAvaliacaoEmocional() {
+      const estresse = document.getElementById("estresse").value;
+      const dificuldadeRelaxar = document.getElementById("dificuldade-relaxar").value;
+      const sentimentoManha = document.getElementById("sentimento-manha").value;
+
+      let resultado = "";
+      if (estresse === "Sim" && dificuldadeRelaxar === "Sim") {
+        resultado = `Você está se sentindo sobrecarregado(a). É importante dar atenção ao seu bem-estar e buscar ajuda se necessário.`;
+      } else if (sentimentoManha === "Cansado") {
+        resultado = `Seu corpo está pedindo descanso. Considere cuidar de sua saúde mental e física.`;
+      } else if (estresse === "Não" && dificuldadeRelaxar === "Não") {
+        resultado = `Parece que você está conseguindo lidar bem com as situações do dia a dia. Continue assim!`;
+      } else {
+        resultado = `Ainda há áreas que podem ser melhoradas. Considere uma avaliação mais profunda.`;
+      }
+
+      document.getElementById("resultadoEmocional").innerText = `"${resultado}"`;
+      document.getElementById("resultado-avaliacao").classList.remove("hidden");
+
+      fetch('/api/emotional-evaluations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stress: estresse,
+          relaxDifficulty: dificuldadeRelaxar,
+          morningFeeling: sentimentoManha,
+          result: resultado
+        })
+      })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+  <script src="/scripts/navbar.js" defer onerror="console.error('Erro ao carregar navbar.js')"></script>
+</body>
+</html>

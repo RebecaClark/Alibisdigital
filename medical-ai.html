@@ -1,0 +1,230 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico Médico - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS')"></script>
+  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')">
+</head>
+<body class="bg-[#0b1120] text-white font-sans">
+  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')"></a>
+      </div>
+      <div class="md:hidden">
+        <button id="hamburger-menu" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
+        <a href="/alibi.html" class="hover:text-[#22C55E] transition">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-[#22C55E] transition">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition">Avaliação Emocional</a>
+        <a href="#suporte" class="hover:text-[#22C55E] transition">Suporte</a>
+      </nav>
+    </div>
+  </header>
+  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
+    <nav class="flex flex-col items-center">
+      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Criar Álibi</a>
+      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Scanner com IA</a>
+      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Avaliação Emocional</a>
+      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Suporte</a>
+    </nav>
+  </div>
+  <div class="h-20"></div>
+
+  <section id="bloco6" class="py-16 px-4 bg-white text-black">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-center">Consulta Médica com IA - Diagnóstico Avançado</h2>
+      <form id="formularioDiagnostico" class="space-y-4">
+        <div>
+          <label for="sintomas" class="block text-sm font-medium">Sintomas:</label>
+          <input type="text" id="sintomas" placeholder="Ex: dor de cabeça, febre, dor no corpo" class="border border-gray-300 p-2 rounded w-full text-black" required />
+        </div>
+        <div>
+          <label for="idade" class="block text-sm font-medium">Idade:</label>
+          <input type="number" id="idade" placeholder="Ex: 30" class="border border-gray-300 p-2 rounded w-full text-black" required />
+        </div>
+        <div>
+          <label for="genero" class="block text-sm font-medium">Gênero:</label>
+          <select id="genero" class="border border-gray-300 p-2 rounded w-full text-black" required>
+            <option value="">Selecione</option>
+            <option value="female">Feminino</option>
+            <option value="male">Masculino</option>
+            <option value="other">Outro</option>
+          </select>
+        </div>
+        <div>
+          <label for="historico" class="block text-sm font-medium">Histórico Médico:</label>
+          <textarea id="historico" rows="3" placeholder="Ex: hipertensão, diabetes" class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
+        </div>
+        <div>
+          <label for="medicamentos" class="block text-sm font-medium">Medicamentos Atuais:</label>
+          <textarea id="medicamentos" rows="2" placeholder="Ex: losartana, paracetamol" class="border border-gray-300 p-2 rounded w-full text-black"></textarea>
+        </div>
+        <div>
+          <label for="alergias" class="block text-sm font-medium">Alergias:</label>
+          <input type="text" id="alergias" placeholder="Ex: penicilina" class="border border-gray-300 p-2 rounded w-full text-black" />
+        </div>
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Obter Diagnóstico</button>
+      </form>
+      <div id="resultadoDiagnostico" class="mt-10 hidden">
+        <h3 class="text-2xl font-semibold mb-3">Diagnóstico Parcial:</h3>
+        <div class="bg-gray-100 p-4 rounded text-black mb-4">
+          <p><strong>Possível condição:</strong> Gripe (Influenza) (78% de chance)</p>
+        </div>
+        <div class="mb-6 text-black">
+          <p class="font-semibold mb-2">Perguntas adicionais para confirmar diagnóstico:</p>
+          <form id="formPerguntasAdicionais" class="space-y-4"></form>
+        </div>
+        <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Desbloquear Diagnóstico Completo</button>
+        <div class="mt-6">
+          <p class="font-medium mb-2">Esse diagnóstico foi útil?</p>
+          <div class="flex gap-3">
+            <button class="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600">Sim</button>
+            <button class="bg-red-500 text-white px-5 py-2 rounded hover:bg-red-600">Não</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
+          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">Email: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById("formularioDiagnostico");
+    const resultado = document.getElementById("resultadoDiagnostico");
+    const perguntasAdicionaisForm = document.getElementById("formPerguntasAdicionais");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const sintomas = document.getElementById("sintomas").value.toLowerCase();
+      const idade = document.getElementById("idade").value;
+      const genero = document.getElementById("genero").value;
+
+      resultado.classList.remove("hidden");
+      if (sintomas.includes("dor no corpo") && sintomas.includes("vomito")) {
+        perguntasAdicionaisForm.innerHTML = `
+          <div>
+            <label class="block text-sm font-medium">Quando os sintomas começaram?</label>
+            <input type="text" id="inicioSintomas" class="border border-gray-300 p-2 rounded w-full" placeholder="Ex: há 2 dias" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Você tem histórico de infecções gastrointestinais?</label>
+            <select id="historicoGastro" class="border border-gray-300 p-2 rounded w-full" required>
+              <option value="">Selecione</option>
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Você tem dor abdominal localizada?</label>
+            <select id="dorAbdominal" class="border border-gray-300 p-2 rounded w-full" required>
+              <option value="">Selecione</option>
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Você já teve episódios semelhantes antes?</label>
+            <select id="episodiosAnteriores" class="border border-gray-300 p-2 rounded w-full" required>
+              <option value="">Selecione</option>
+              <option value="sim">Sim</option>
+              <option value="nao">Não</option>
+            </select>
+          </div>
+          <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Refinar Diagnóstico</button>
+        `;
+      }
+      resultado.scrollIntoView({ behavior: "smooth" });
+    });
+
+    perguntasAdicionaisForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const inicioSintomas = document.getElementById("inicioSintomas").value;
+      const historicoGastro = document.getElementById("historicoGastro").value;
+      const dorAbdominal = document.getElementById("dorAbdominal").value;
+      const episodiosAnteriores = document.getElementById("episodiosAnteriores").value;
+
+      let respostaFinal = "Diagnóstico Refinado:\n";
+      if (historicoGastro === "sim" && dorAbdominal === "sim") {
+        respostaFinal += "Indícios de possível infecção gastrointestinal. Observação recomendada.\n";
+      } else {
+        respostaFinal += "Sintomas gerais podem sugerir uma infecção viral. Aconselha-se repouso.\n";
+      }
+      if (episodiosAnteriores === "sim") {
+        respostaFinal += "Se o problema persistir, busque acompanhamento médico especializado.\n";
+      }
+      alert(respostaFinal);
+    });
+  </script>
+  <script src="/scripts/navbar.js" defer onerror="console.error('Erro ao carregar navbar.js')"></script>
+</body>
+</html>
