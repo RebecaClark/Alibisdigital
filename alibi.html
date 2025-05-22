@@ -1,133 +1,86 @@
+<!-- alibi.html - Página Atualizada -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Criar Álibi - Álibis Digital</title>
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <link rel="stylesheet" href="/styles/global.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/styles/global.css" />
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
   <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto"></a>
-      </div>
-      <div class="md:hidden">
-        <button id="hamburger-menu" class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-        <a href="/alibi.html" class="hover:text-[#22C55E] transition">Criar Álibi</a>
-        <a href="/scanner.html" class="hover:text-[#22C55E] transition">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition">Avaliação Emocional</a>
-        <a href="#suporte" class="hover:text-[#22C55E] transition">Suporte</a>
+      <a href="/">
+        <img src="/assets/logo.png" alt="Logo" class="h-10" />
+      </a>
+      <nav class="hidden md:flex space-x-6 text-sm">
+        <a href="/index.html" class="hover:text-[#22C55E] transition">Início</a>
+        <a href="/scanner.html" class="hover:text-[#22C55E] transition">Scanner</a>
+        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition">Apoio Emocional</a>
       </nav>
     </div>
   </header>
-  <div class="h-20"></div>
 
-  <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="criar-alibi">
-    <h2 class="text-4xl font-bold mb-6 text-white shine">Precisa de um Álibi?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Preencha as informações abaixo para gerar um álibi perfeito e sigiloso.</p>
-    
-    <form onsubmit="event.preventDefault(); gerarAlibi();" class="max-w-2xl mx-auto text-left space-y-6 scale-in">
-      <div class="fade-in">
-        <label class="block mb-2 text-gray-300">Para quem é o álibi?</label>
-        <select id="destinatario" required class="w-full p-3 rounded bg-white text-black">
+  <div class="h-24"></div>
+
+  <section class="py-20 px-6 text-center animate-on-scroll">
+    <h1 class="text-4xl font-bold mb-6 fade-in">Gerador de Álibis Inteligente</h1>
+    <p class="text-lg mb-10 text-gray-300 slide-in-left">Use nossa IA para criar uma desculpa convincente baseada no seu estado atual.</p>
+
+    <form id="alibi-form" class="max-w-xl mx-auto space-y-6 text-left bg-[#1a1d3b] p-8 rounded-xl shadow-lg border border-[#00e9ff]">
+      <div>
+        <label for="para" class="block text-sm text-gray-300 mb-2">Para quem é o álibi?</label>
+        <select id="para" required class="w-full p-3 rounded bg-white text-black">
           <option value="">Selecione...</option>
-          <option value="Chefe">Chefe</option>
-          <option value="Professor(a)">Professor(a)</option>
-          <option value="Namorado(a)">Namorado(a)</option>
-          <option value="Outro">Outro</option>
+          <option>Chefe</option>
+          <option>Professor(a)</option>
+          <option>Namorado(a)</option>
+          <option>Outro</option>
         </select>
       </div>
-
-      <div class="fade-in">
-        <label class="block mb-2 text-gray-300">Qual o motivo da ausência?</label>
+      <div>
+        <label for="motivo" class="block text-sm text-gray-300 mb-2">Motivo do Álibi</label>
         <select id="motivo" required class="w-full p-3 rounded bg-white text-black">
           <option value="">Selecione...</option>
-          <option value="Doença">Doença</option>
-          <option value="Compromisso familiar">Compromisso familiar</option>
-          <option value="Problemas pessoais">Problemas pessoais</option>
-          <option value="Outros">Outros</option>
+          <option>Doença</option>
+          <option>Compromisso familiar</option>
+          <option>Problemas pessoais</option>
+          <option>Outro</option>
         </select>
       </div>
-
-      <div class="fade-in">
-        <label class="block mb-2 text-gray-300">Deseja incluir um áudio justificando?</label>
+      <div>
+        <label for="audio" class="block text-sm text-gray-300 mb-2">Deseja incluir um áudio falso?</label>
         <select id="audio" required class="w-full p-3 rounded bg-white text-black">
           <option value="">Selecione...</option>
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
+          <option>Sim</option>
+          <option>Não</option>
         </select>
       </div>
-
-      <button type="submit" class="w-full bg-purple-700 text-white py-3 rounded hover:bg-purple-600 transition animated-btn pulse">
-        Gerar Álibi
-      </button>
+      <button type="submit" class="w-full bg-purple-700 hover:bg-purple-600 text-white py-3 rounded-lg animated-btn">Gerar Álibi</button>
     </form>
 
-    <div id="resultado-alibi" class="mt-10 hidden text-left bg-[#0f172a] p-6 rounded-xl border border-green-500 shadow-lg text-white scale-in">
-      <h3 class="text-xl font-semibold mb-4">Seu Álibi Gerado:</h3>
-      <p id="textoAlibi" class="text-lg italic"></p>
+    <div id="resultado-alibi" class="mt-10 hidden p-6 rounded-lg bg-[#051428] text-[#00e9ff] border border-[#00e9ff] text-left max-w-xl mx-auto">
+      <h3 class="text-xl font-bold mb-4">Álibi Gerado:</h3>
+      <p id="alibi-gerado"></p>
     </div>
   </section>
 
-  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-      <div class="slide-in-left">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
-      </div>
-      <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegação</h4>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition">Início</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
-          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
-        </ul>
-      </div>
-      <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
-        <ul class="space-y-2">
-          <li class="fade-in">Email: contato@alibisdigital.com</li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
-        </ul>
-      </div>
-    </div>
-  </footer>
-
   <script>
-    function gerarAlibi() {
-      const destinatario = document.getElementById("destinatario").value;
+    document.getElementById("alibi-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const para = document.getElementById("para").value;
       const motivo = document.getElementById("motivo").value;
       const audio = document.getElementById("audio").value;
 
-      let texto = `Olá ${destinatario}, tudo bem? Precisei me ausentar hoje por conta de ${motivo.toLowerCase()}. Espero retomar normalmente amanhã. Obrigado pela compreensão.`;
-
+      let mensagem = `Olá ${para}, infelizmente precisei me ausentar devido a ${motivo.toLowerCase()}. Agradeço a compreensão.`;
       if (audio === "Sim") {
-        texto += `\n\n🔊 Um áudio será gerado para tornar sua justificativa ainda mais realista.`;
+        mensagem += " Áudio de justificativa será enviado em breve para maior credibilidade.";
       }
 
-      document.getElementById("textoAlibi").innerText = texto;
+      document.getElementById("alibi-gerado").innerText = mensagem;
       document.getElementById("resultado-alibi").classList.remove("hidden");
-
-      // Enviar para API (simulação)
-      fetch('/api/alibis', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ destinatario, motivo, audio, texto })
-      })
-      .then(res => res.json())
-      .then(data => console.log("Alibi salvo:", data))
-      .catch(err => console.error("Erro ao salvar álibi:", err));
-    }
+    });
   </script>
 </body>
 </html>
-
