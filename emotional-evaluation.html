@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Avaliação Emocional - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS')"></script>
-  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')">
+  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')" />
   <style>
     @keyframes pulseGlow {
       0% { box-shadow: 0 0 5px #22C55E, 0 0 10px #22C55E; }
@@ -20,6 +20,7 @@
       white-space: nowrap;
       border-right: 2px solid #22C55E;
       animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+      display: inline-block;
     }
     @keyframes typing {
       from { width: 0; }
@@ -28,51 +29,129 @@
     @keyframes blink {
       50% { border-color: transparent; }
     }
+    /* Animações para fade in */
+    .fade-in-slow {
+      opacity: 0;
+      animation: fadeInSlow 1.5s forwards;
+    }
+    .fade-in-slow.delay-1s {
+      animation-delay: 1s;
+    }
+    .fade-in-slow.delay-2s {
+      animation-delay: 2s;
+    }
+    @keyframes fadeInSlow {
+      to { opacity: 1; }
+    }
+    /* animação blob (background) */
+    @keyframes blob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    .animation-delay-2s {
+      animation-delay: 2s;
+    }
+    .animation-delay-4s {
+      animation-delay: 4s;
+    }
+    .animate-pulse-slow {
+      animation: pulse 6s infinite;
+    }
   </style>
 </head>
 <body class="bg-[#0b1120] text-white font-sans overflow-x-hidden">
-  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-all duration-300">
+  <header
+    class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-all duration-300"
+  >
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
-        <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto transition-transform hover:scale-105" onerror="console.error('Erro ao carregar logo.png')"></a>
+        <a href="/"
+          ><img
+            src="/assets/logo.png"
+            alt="Álibis Digital Logo"
+            class="h-10 w-auto transition-transform hover:scale-105"
+            onerror="console.error('Erro ao carregar logo.png')"
+        /></a>
       </div>
       <div class="md:hidden">
-        <button id="hamburger-menu" class="text-white transition-transform hover:scale-110">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <button
+          id="hamburger-menu"
+          class="text-white transition-transform hover:scale-110"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         </button>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-        <a href="/alibi.html" class="hover:text-[#22C55E] transition-transform hover:scale-105">Criar Álibi</a>
-        <a href="/scanner.html" class="hover:text-[#22C55E] transition-transform hover:scale-105">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition-transform hover:scale-105">Avaliação Emocional</a>
-        <a href="#suporte" class="hover:text-[#22C55E] transition-transform hover:scale-105">Suporte</a>
+        <a
+          href="/alibi.html"
+          class="hover:text-[#22C55E] transition-transform hover:scale-105"
+          >Criar Álibi</a
+        >
+        <a
+          href="/scanner.html"
+          class="hover:text-[#22C55E] transition-transform hover:scale-105"
+          >Scanner com IA</a
+        >
+        <a
+          href="/emotional-evaluation.html"
+          class="hover:text-[#22C55E] transition-transform hover:scale-105"
+          >Avaliação Emocional</a
+        >
+        <a
+          href="#suporte"
+          class="hover:text-[#22C55E] transition-transform hover:scale-105"
+          >Suporte</a
+        >
       </nav>
     </div>
   </header>
-  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6 transition-all duration-300">
-    <nav class="flex flex-col items-center">
-      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105">Criar Álibi</a>
-      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105">Scanner com IA</a>
-      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105">Avaliação Emocional</a>
-      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105">Suporte</a>
-    </nav>
-  </div>
   <div class="h-20"></div>
 
-  <section id="avaliacao-emocional" class="bg-[#1a1d3b] py-20 px-6 text-white relative overflow-hidden">
+  <section
+    id="avaliacao-emocional"
+    class="bg-[#1a1d3b] py-20 px-6 text-white relative overflow-hidden"
+  >
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <h2 class="text-4xl font-bold mb-6 text-[#22C55E] typing animate__animated animate__fadeInDown">Olá, sou seu Terapeuta Virtual. Como você está?</h2>
-      <p class="text-lg mb-10 text-gray-300 slide-in-left animate__animated animate__fadeInUp">
+      <h2
+        class="text-4xl font-bold mb-6 text-[#22C55E] typing"
+      >
+        Olá, sou seu Terapeuta Virtual. Como você está?
+      </h2>
+      <p class="text-lg mb-10 text-gray-300 slide-in-left">
         Estou aqui para ajudá-lo a explorar seus sentimentos. Responda com calma e honestidade – vamos criar um espaço seguro para você.
       </p>
-      <div id="dialogue-container" class="max-w-2xl mx-auto bg-[#0f172a] p-8 rounded-xl shadow-lg border border-[#22C55E] animate__animated animate__zoomIn">
+      <div
+        id="dialogue-container"
+        class="max-w-2xl mx-auto bg-[#0f172a] p-8 rounded-xl shadow-lg border border-[#22C55E]"
+      >
         <div id="dialogue" class="space-y-6">
           <!-- Pergunta 1 -->
           <div class="fade-in-slow">
-            <p class="text-md text-gray-400 italic">Terapeuta: "Nos últimos dias, você tem sentido algum peso ou estresse? Pode me contar?"</p>
-            <select id="estresse" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300">
+            <p class="text-md text-gray-400 italic">
+              Terapeuta: "Nos últimos dias, você tem sentido algum peso ou estresse? Pode me contar?"
+            </p>
+            <select
+              id="estresse"
+              required
+              class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300"
+            >
               <option value="" class="text-gray-500">Refletindo...</option>
               <option value="Sim">Sim, bastante</option>
               <option value="Pouco">Sim, um pouco</option>
@@ -81,8 +160,14 @@
           </div>
           <!-- Pergunta 2 -->
           <div class="fade-in-slow delay-1s">
-            <p class="text-md text-gray-400 italic">Terapeuta: "Às vezes, relaxar pode ser desafiador. Você tem tido dificuldade com isso?"</p>
-            <select id="dificuldade-relaxar" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300">
+            <p class="text-md text-gray-400 italic">
+              Terapeuta: "Às vezes, relaxar pode ser desafiador. Você tem tido dificuldade com isso?"
+            </p>
+            <select
+              id="dificuldade-relaxar"
+              required
+              class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300"
+            >
               <option value="" class="text-gray-500">Pensando...</option>
               <option value="Sim">Sim, muito</option>
               <option value="Pouco">Sim, às vezes</option>
@@ -91,135 +176,73 @@
           </div>
           <!-- Pergunta 3 -->
           <div class="fade-in-slow delay-2s">
-            <p class="text-md text-gray-400 italic">Terapeuta: "Como você tem começado seus dias? Me conte como se sente ao acordar."</p>
-            <select id="sentimento-manha" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300">
+            <p class="text-md text-gray-400 italic">
+              Terapeuta: "Como você tem começado seus dias? Me conte como se sente ao acordar."
+            </p>
+            <select
+              id="sentimento-manha"
+              required
+              class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300"
+            >
               <option value="" class="text-gray-500">Recordando...</option>
               <option value="Revigorado">Revigorado e pronto</option>
               <option value="Cansado">Cansado ou exausto</option>
               <option value="Indiferente">Nem bem, nem mal</option>
             </select>
           </div>
-          <button type="submit" onclick="realizarAvaliacaoEmocional()" class="animated-btn w-full bg-[#22C55E] text-white py-4 rounded-lg mt-6 hover:bg-[#1aa65b] transition-all duration-300 pulse-glow">
-            <span class="typing">Enviar para meu Terapeuta Virtual</span>
+          <button
+            type="submit"
+            onclick="realizarAvaliacaoEmocional()"
+            class="animated-btn w-full bg-[#22C55E] text-white py-4 rounded-lg mt-6 hover:bg-[#1aa65b] transition-all duration-300 pulse-glow"
+          >
+            <span class="typing">Enviar Avaliação</span>
           </button>
-        </div>
-        <div id="resultado-avaliacao" class="mt-8 bg-[#0f172a] p-6 rounded-lg text-[#22C55E] text-center hidden animate__animated animate__fadeIn">
-          <h3 class="text-xl font-semibold mb-4 typing">Diagnóstico do Terapeuta Virtual:</h3>
-          <p id="resultadoEmocional" class="text-lg italic">Aguarde enquanto analiso suas emoções...</p>
-          <p class="mt-4 text-sm text-gray-400 shine">🔒 Um diagnóstico completo com suporte 24/7 está no Plano Mestre do Bem-Estar.</p>
-          <a href="/upsell.html" class="mt-6 inline-block bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 transition-all animate__animated animate__pulse">Quero mais apoio agora</a>
         </div>
       </div>
     </div>
-    <!-- Efeito de fundo futurista -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#1a1d3b_0%,#0b1120_70%)] opacity-50 animate-pulse-slow"></div>
-    <div class="absolute inset-0 pointer-events-none">
-      <div class="w-64 h-64 bg-[#22C55E] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-      <div class="w-64 h-64 bg-[#1aa65b] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2s"></div>
-      <div class="w-64 h-64 bg-[#22C55E] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4s"></div>
-    </div>
-  </style>
-  </style>
-</section>
+    <!-- Background blobs animados -->
+    <div
+      class="absolute top-0 -left-10 w-72 h-72 bg-[#22C55E] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2s"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="absolute top-20 -right-10 w-72 h-72 bg-[#4ade80] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4s"
+      aria-hidden="true"
+    ></div>
+  </section>
 
-<footer class="bg-gray-950 text-gray-400 py-12 animate__animated animate__fadeInUp">
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-    <div class="slide-in-left">
-      <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-      <p class="fade-in">Seu espaço seguro para apoio emocional e saúde com IA. Comece sua jornada agora.</p>
-    </div>
-    <div class="fade-in">
-      <h4 class="text-white font-semibold mb-4">Navegação</h4>
-      <ul class="space-y-2">
-        <li><a href="/" class="hover:text-white transition">Início</a></li>
-        <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
-        <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
-        <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
-      </ul>
-    </div>
-    <div class="slide-in-right">
-      <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
-      <ul class="space-y-2">
-        <li class="fade-in">Email: contato@alibisdigital.com</li>
-        <li class="fade-in">WhatsApp: (11) 91234-5678</li>
-      </ul>
-    </div>
-  </div>
-</footer>
+  <script>
+    // Função para lidar com envio da avaliação emocional
+    function realizarAvaliacaoEmocional() {
+      const estresse = document.getElementById('estresse').value;
+      const dificuldade = document.getElementById('dificuldade-relaxar').value;
+      const sentimento = document.getElementById('sentimento-manha').value;
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js" defer></script>
-<script>
-  // Menu mobile
-  document.getElementById('hamburger-menu').addEventListener('click', () => {
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenu.classList.toggle('hidden');
-    mobileMenu.classList.add('animate__fadeInDown');
-    if (!mobileMenu.classList.contains('hidden')) {
-      setTimeout(() => mobileMenu.classList.remove('animate__fadeInDown'), 500);
-    }
-  });
-
-  async function realizarAvaliacaoEmocional() {
-    const estresse = document.getElementById("estresse").value;
-    const dificuldadeRelaxar = document.getElementById("dificuldade-relaxar").value;
-    const sentimentoManha = document.getElementById("sentimento-manha").value;
-
-    document.getElementById("resultadoEmocional").innerText = "Analisando suas emoções com IA...";
-    document.getElementById("resultado-avaliacao").classList.remove("hidden");
-
-    try {
-      const response = await fetch('http://seu-backend.com/api/grok-emotional-evaluation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          stress: estresse,
-          relaxDifficulty: dificuldadeRelaxar,
-          morningFeeling: sentimentoManha,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
-
-      document.getElementById("resultadoEmocional").innerText = `"${data.result}"`;
-      document.getElementById("resultado-avaliacao").classList.add('animate__pulse');
-      setTimeout(() => document.getElementById("resultado-avaliacao").classList.remove('animate__pulse'), 1000);
-    } catch (error) {
-      console.error('Erro:', error);
-      document.getElementById("resultadoEmocional").innerText = "Desculpe, houve um erro. Vamos tentar novamente?";
-    }
-
-    fetch('/api/emotional-evaluations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        stress: estresse,
-        relaxDifficulty: dificuldadeRelaxar,
-        morningFeeling: sentimentoManha,
-        result: document.getElementById("resultadoEmocional").innerText,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => console.log('Success:', data))
-      .catch(error => console.error('Error:', error));
-  }
-
-  // Animações personalizadas
-  const fadeInElements = document.querySelectorAll('.fade-in-slow');
-  fadeInElements.forEach((el, index) => {
-    el.style.animationDelay = `${index * 0.5}s`;
-  });
-
-  const animateOnScroll = document.querySelectorAll('.animate-on-scroll');
-  window.addEventListener('scroll', () => {
-    animateOnScroll.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top >= 0 && rect.top < window.innerHeight) {
-        el.classList.add('animate__fadeInUp');
+      if (!estresse || !dificuldade || !sentimento) {
+        alert('Por favor, responda todas as perguntas antes de enviar.');
+        return;
       }
+
+      let resultado = '';
+
+      if (estresse === 'Sim' && dificuldade === 'Sim' && sentimento === 'Cansado') {
+        resultado =
+          'Parece que você está passando por um período difícil. Recomendo reservar um tempo para descansar e, se necessário, buscar ajuda profissional.';
+      } else if (estresse === 'Não' && dificuldade === 'Não' && sentimento === 'Revigorado') {
+        resultado = 'Você parece estar equilibrado e em boa saúde emocional. Continue cuidando de você!';
+      } else {
+        resultado =
+          'Obrigado por compartilhar seus sentimentos. Lembre-se que é importante cuidar da saúde mental diariamente.';
+      }
+
+      alert(resultado);
+    }
+
+    // Código para o menu mobile simples
+    document.getElementById('hamburger-menu').addEventListener('click', () => {
+      const nav = document.getElementById('navbar');
+      nav.classList.toggle('hidden');
     });
-  });
-</script>
-<script src="/scripts/navbar.js" defer onerror="console.error('Erro ao carregar navbar.js')"></script>
+  </script>
 </body>
 </html>
