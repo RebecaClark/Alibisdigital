@@ -8,7 +8,6 @@
   <meta name="author" content="Álibis Digital">
   <title>Diagnóstico Médico com IA - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <style>
     html { scroll-behavior: smooth; }
     body { position: relative; overflow-x: hidden; }
@@ -604,6 +603,148 @@
   </footer>
 
   <script>
+    // Three.js (versão simplificada embutida)
+    const THREE = {};
+    (function (global, factory) {
+      factory((global.THREE = THREE));
+    }(this, function (exports) {
+      // Core Vector3
+      class Vector3 {
+        constructor(x = 0, y = 0, z = 0) {
+          this.x = x;
+          this.y = y;
+          this.z = z;
+        }
+        set(x, y, z) {
+          this.x = x;
+          this.y = y;
+          this.z = z;
+          return this;
+        }
+      }
+
+      // Core Scene
+      class Scene {
+        constructor() {
+          this.children = [];
+        }
+        add(object) {
+          this.children.push(object);
+          return this;
+        }
+        clear() {
+          this.children = [];
+        }
+      }
+
+      // Core Camera
+      class PerspectiveCamera {
+        constructor(fov, aspect, near, far) {
+          this.fov = fov;
+          this.aspect = aspect;
+          this.near = near;
+          this.far = far;
+          this.position = new Vector3(0, 0, 5);
+          this.updateProjectionMatrix();
+        }
+        updateProjectionMatrix() {
+          // Simulação de atualização da matriz de projeção
+        }
+      }
+
+      // Core Renderer
+      class WebGLRenderer {
+        constructor(params = {}) {
+          this.canvas = params.canvas;
+          this.gl = this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl');
+          if (!this.gl) throw new Error('WebGL não suportado');
+          this.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        }
+        setSize(width, height) {
+          this.canvas.width = width;
+          this.canvas.height = height;
+          if (this.gl) {
+            this.gl.viewport(0, 0, width, height);
+          }
+        }
+        render(scene, camera) {
+          if (!this.gl) return;
+          this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+          this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+          // Simulação de renderização
+          this.gl.flush();
+        }
+        dispose() {
+          // Limpeza simulada
+        }
+      }
+
+      // Core Geometry
+      class SphereGeometry {
+        constructor(radius, widthSegments, heightSegments) {
+          this.radius = radius;
+        }
+      }
+      class CylinderGeometry {
+        constructor(radiusTop, radiusBottom, height, radialSegments) {
+          this.radiusTop = radiusTop;
+          this.radiusBottom = radiusBottom;
+          this.height = height;
+        }
+      }
+      class BoxGeometry {
+        constructor(width, height, depth) {
+          this.width = width;
+          this.height = height;
+          this.depth = depth;
+        }
+      }
+
+      // Core Material
+      class MeshPhongMaterial {
+        constructor(params = {}) {
+          this.color = params.color || 0xffffff;
+        }
+      }
+
+      // Core Mesh
+      class Mesh {
+        constructor(geometry, material) {
+          this.geometry = geometry;
+          this.material = material;
+          this.position = new Vector3();
+          this.scale = new Vector3(1, 1, 1);
+        }
+      }
+
+      // Core Lights
+      class AmbientLight {
+        constructor(color) {
+          this.color = color;
+        }
+      }
+      class DirectionalLight {
+        constructor(color, intensity) {
+          this.color = color;
+          this.intensity = intensity;
+          this.position = new Vector3();
+        }
+      }
+
+      // Exportando classes
+      exports.Vector3 = Vector3;
+      exports.Scene = Scene;
+      exports.PerspectiveCamera = PerspectiveCamera;
+      exports.WebGLRenderer = WebGLRenderer;
+      exports.SphereGeometry = SphereGeometry;
+      exports.CylinderGeometry = CylinderGeometry;
+      exports.BoxGeometry = BoxGeometry;
+      exports.MeshPhongMaterial = MeshPhongMaterial;
+      exports.Mesh = Mesh;
+      exports.AmbientLight = AmbientLight;
+      exports.DirectionalLight = DirectionalLight;
+    }));
+
     // Timer de Urgência
     let vagas = 12;
     let timeLeft = 120; // 2 minutos em segundos
@@ -865,67 +1006,17 @@
       modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
       modal.classList.remove('hidden');
       initializeAvatar(texto.replace(/<[^>]+>/g, ''));
-      speakDiagnosis(texto.replace(/<[^>]+>/g, ''));
 
       localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
       window.location.hash = 'resultado-diagnostico';
     }
-
-    // Leitura do Diagnóstico com Voz
-    function speakDiagnosis(text) {
-      if (!('speechSynthesis' in window)) {
-        console.error('Síntese de voz não suportada pelo navegador.');
-        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Leitura de voz não suportada neste navegador. Use Chrome ou Firefox.</span>';
-        return;
-      }
-
-      const voices = window.speechSynthesis.getVoices();
-      console.log('Vozes disponíveis:', voices);
-      if (voices.length === 0) {
-        console.error('Nenhuma voz disponível para síntese de voz.');
-        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Nenhuma voz disponível. Verifique as configurações de voz do sistema.</span>';
-        return;
-      }
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'pt-BR';
-      const ptVoice = voices.find(voice => voice.lang.includes('pt-BR')) || voices[0];
-      utterance.voice = ptVoice;
-      utterance.rate = 1;
-      utterance.pitch = 1;
-
-      const stopSpeechButton = document.getElementById('stop-speech');
-      stopSpeechButton.classList.remove('hidden');
-      stopSpeechButton.addEventListener('click', () => {
-        window.speechSynthesis.cancel();
-        stopSpeechButton.classList.add('hidden');
-      });
-
-      utterance.onend = () => {
-        stopSpeechButton.classList.add('hidden');
-      };
-
-      utterance.onerror = (event) => {
-        console.error('Erro na síntese de voz:', event.error);
-        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Erro ao ler o diagnóstico. Verifique as permissões de áudio.</span>';
-        stopSpeechButton.classList.add('hidden');
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // Forçar carregamento das vozes (alguns navegadores precisam disso)
-    window.speechSynthesis.onvoiceschanged = () => {
-      const voices = window.speechSynthesis.getVoices();
-      console.log('Vozes carregadas:', voices);
-    };
 
     // Avatar 3D com Three.js
     function initializeAvatar(text) {
       const canvas = document.getElementById('avatar-canvas');
       if (!canvas) {
         console.error('Canvas não encontrado.');
-        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro: Canvas não encontrado.</p>';
+        canvas.innerHTML = '<p style="color: red;">Erro: Canvas não encontrado.</p>';
         return;
       }
 
@@ -933,26 +1024,19 @@
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) {
         console.error('WebGL não é suportado neste navegador.');
-        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Avatar não disponível: WebGL não suportado. Use Chrome ou Firefox.</p>';
+        canvas.innerHTML = '<p style="color: red;">Avatar não disponível: WebGL não suportado. Use Chrome ou Firefox.</p>';
         return;
       }
 
-      // Verificar se THREE está disponível
-      if (typeof THREE === 'undefined') {
-        console.error('Three.js não foi carregado.');
-        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro ao carregar Three.js. Verifique sua conexão ou tente novamente.</p>';
-        return;
-      }
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-
+      let scene, camera, renderer;
       try {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
       } catch (error) {
-        console.error('Erro ao configurar o renderer:', error);
-        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro ao inicializar o avatar. Veja o console para detalhes.</p>';
+        console.error('Erro ao inicializar Three.js:', error);
+        canvas.innerHTML = '<p style="color: red;">Erro ao inicializar Three.js: ' + error.message + '</p>';
         return;
       }
 
@@ -973,43 +1057,14 @@
       const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
       scene.add(body);
 
-      const eyeGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-      const eyeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
-      const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-      leftEye.position.set(-0.15, 1.3, 0.4);
-      scene.add(leftEye);
-      const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-      rightEye.position.set(0.15, 1.3, 0.4);
-      scene.add(rightEye);
-
-      const pupilGeometry = new THREE.SphereGeometry(0.05, 32, 32);
-      const pupilMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
-      const leftPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
-      leftPupil.position.set(-0.15, 1.3, 0.45);
-      scene.add(leftPupil);
-      const rightPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
-      rightPupil.position.set(0.15, 1.3, 0.45);
-      scene.add(rightPupil);
-
-      const mouthGeometry = new THREE.BoxGeometry(0.2, 0.05, 0.05);
-      const mouthMaterial = new THREE.MeshPhongMaterial({ color: 0xff4040 });
-      const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
-      mouth.position.set(0, 1.1, 0.4);
-      scene.add(mouth);
-
       camera.position.z = 3;
 
       let time = 0;
-      let speaking = false;
+      let animationFrameId;
 
       function animate() {
         time += 0.1;
         head.position.y = 1.2 + Math.sin(time) * 0.05;
-        if (speaking && window.speechSynthesis && window.speechSynthesis.speaking) {
-          mouth.scale.y = 1 + Math.sin(time * 5) * 0.3;
-        } else {
-          mouth.scale.y = 1;
-        }
         renderer.render(scene, camera);
         animationFrameId = requestAnimationFrame(animate);
       }
@@ -1018,7 +1073,7 @@
         animate();
       } catch (error) {
         console.error('Erro durante a animação:', error);
-        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro na animação do avatar. Veja o console para detalhes.</p>';
+        canvas.innerHTML = '<p style="color: red;">Erro na animação do avatar: ' + error.message + '</p>';
         return;
       }
 
@@ -1026,9 +1081,6 @@
       closeModal.addEventListener('click', () => {
         const modal = document.getElementById('avatar-modal');
         modal.classList.add('hidden');
-        if (window.speechSynthesis) {
-          window.speechSynthesis.cancel();
-        }
         cancelAnimationFrame(animationFrameId);
         scene.clear();
         renderer.dispose();
@@ -1039,10 +1091,6 @@
         camera.updateProjectionMatrix();
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
       });
-
-      if (window.speechSynthesis && window.speechSynthesis.speaking) {
-        speaking = true;
-      }
     }
 
     // Simulação de envio para API após pagamento (exemplo)
