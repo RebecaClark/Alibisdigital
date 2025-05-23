@@ -3,55 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Crie álibis digitais personalizados com IA para proteger sua privacidade. Seguro, rápido e confiável.">
+  <meta name="description" content="Proteja sua privacidade com álibis digitais e avaliações emocionais geradas por IA. Seguro, rápido e confiável.">
   <meta name="keywords" content="álibis digitais, scanner facial, diagnóstico emocional, IA, privacidade">
   <meta name="author" content="Álibis Digital">
-  <title>Álibis Digital - Desculpas Convincentes com IA</title>
+  <title>Álibis Digital - Privacidade com Inteligência Artificial</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     html { scroll-behavior: smooth; }
-    .fade-in { animation: fadeIn 0.8s ease-in-out; }
-    .slide-in-left { animation: slideInLeft 1s ease-in-out; }
-    .slide-in-right { animation: slideInRight 1s ease-in-out; }
-    .bounce-in { animation: bounceIn 1s ease-in-out; }
-    .pulse { animation: pulse 2s infinite ease-in-out; }
-    .float { animation: float 3s infinite ease-in-out; }
-    .scale-in { animation: scaleIn 0.5s ease-in-out; }
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
+    .pulse { animation: pulse 2.5s infinite ease-in-out; }
+    .float { animation: float 4s infinite ease-in-out; }
+    .scale-up { animation: scaleUp 0.8s ease-in-out; }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-50px); }
+      from { opacity: 0; transform: translateX(-60px); }
       to { opacity: 1; transform: translateX(0); }
     }
     @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(50px); }
+      from { opacity: 0; transform: translateX(60px); }
       to { opacity: 1; transform: translateX(0); }
     }
     @keyframes bounceIn {
-      0% { opacity: 0; transform: scale(0.3); }
-      50% { opacity: 1; transform: scale(1.05); }
-      70% { transform: scale(0.9); }
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      75% { transform: scale(0.9); }
       100% { transform: scale(1); }
     }
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.08); }
       100% { transform: scale(1); }
     }
     @keyframes float {
       0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-15px); }
       100% { transform: translateY(0); }
     }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.8); }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.7); }
       to { opacity: 1; transform: scale(1); }
     }
     .animated-btn {
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
       z-index: 1;
@@ -63,6 +62,7 @@
       left: 0;
       width: 100%;
       height: 100%;
+      background: rgba(255, 255, 255, 0.1);
       z-index: -2;
     }
     .animated-btn:before {
@@ -72,8 +72,8 @@
       left: 0;
       width: 0%;
       height: 100%;
-      background-color: rgba(255, 255, 255, 0.2);
-      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.3);
+      transition: width 0.4s ease;
       z-index: -1;
     }
     .animated-btn:hover:before {
@@ -81,8 +81,8 @@
     }
     .animate-on-scroll {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
+      transform: translateY(50px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
     }
     .animate-on-scroll.visible {
       opacity: 1;
@@ -95,32 +95,38 @@
     .shine::after {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: rotate(30deg);
-      animation: shine 3s infinite linear;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+      transform: rotate(20deg);
+      animation: shine 4s infinite linear;
     }
     @keyframes shine {
-      0% { transform: translateX(-100%) rotate(30deg); }
-      100% { transform: translateX(100%) rotate(30deg); }
+      0% { transform: translateX(-120%) rotate(20deg); }
+      100% { transform: translateX(120%) rotate(20deg); }
     }
     .animated-gradient {
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background: linear-gradient(135deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
-      animation: gradient 10s ease infinite;
+      animation: gradient 12s ease infinite;
     }
     @keyframes gradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .flex { flex-direction: column; }
+      .animated-btn { width: 100%; margin-bottom: 0.5rem; }
+      video { width: 100%; height: auto; }
+      #navbar, #mobile-menu { width: 100%; }
+      #mobile-menu a { width: 100%; text-align: center; }
     }
   </style>
 </head>
@@ -130,11 +136,11 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <a href="/">
-          <img src="https://via.placeholder.com/100x40?text=Logo" alt="Álibis Digital Logo" class="h-10 w-auto">
+          <img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
         </a>
       </div>
       <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white">
+        <button id="hamburger-menu" class="text-white focus:outline-none">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -146,125 +152,115 @@
         <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
       </nav>
     </div>
+    <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Avaliação Emocional</a>
+        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+      </nav>
+    </div>
   </header>
-  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
-    <nav class="flex flex-col items-center">
-      <a href="/scanner.html" class="text-white py-3 text-lg">Scanner com IA</a>
-      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg">Avaliação Emocional</a>
-      <a href="#suporte" class="text-white py-3 text-lg">Suporte</a>
-    </nav>
-  </div>
   <div class="h-20"></div>
 
   <!-- Bloco 1: Hero -->
-  <section id="hero" class="animated-gradient text-white text-center py-24 px-6">
+  <section id="hero" class="animated-gradient text-white text-center py-20 px-6">
     <div class="max-w-4xl mx-auto">
-      <!-- Título e Subtítulo -->
-      <h1 class="text-5xl font-extrabold mb-6 leading-tight animate__animated animate__fadeInDown">
-        Crie Álibis Digitais Convincentes em Minutos
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
+        Proteja Sua Privacidade com IA
       </h1>
-      <p class="text-lg text-gray-300 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
-        Transforme sua privacidade em prioridade com álibis inteligentes gerados por IA, adaptados ao seu estado emocional.
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
+        Descubra seu estado emocional e crie álibis personalizados em minutos com nossa tecnologia inovadora.
       </p>
-
-      <!-- VSL: Vídeo Sales Letter -->
       <div class="mb-10">
-        <video controls autoplay playsinline preload="auto"
-               class="w-full rounded-xl shadow-lg border-2 border-[#22C55E]">
+        <video controls autoplay playsinline preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22C55E]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
           Seu navegador não suporta vídeo.
         </video>
       </div>
-
-      <!-- Botão CTA -->
-      <div class="flex justify-center">
-        <a href="#scanner" class="bg-purple-700 hover:bg-purple-600 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 animated-btn pulse">
-          🔍 Teste o Scanner Agora
-        </a>
-      </div>
-
-      <!-- Urgência -->
-      <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Apenas <span id="vagas">12</span> vagas disponíveis hoje!</p>
-
-      <!-- Formulário de captura -->
-      <div class="mt-8 max-w-md mx-auto">
-        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas para Álibis</h3>
+      <a href="/scanner.html" class="bg-purple-700 hover:bg-purple-600 text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-105 animated-btn pulse">
+        🔍 Teste o Scanner Grátis
+      </a>
+      <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Apenas <span id="vagas">12</span> vagas restantes hoje!</p>
+      <div class="mt-10 max-w-md mx-auto">
+        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
         <form class="flex flex-col sm:flex-row gap-4">
           <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg text-black w-full" required>
-          <button type="submit" class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 animated-btn">Enviar</button>
+          <button type="submit" class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 animated-btn">Inscrever-se</button>
         </form>
-        <p class="text-sm text-gray-400 mt-2">🔒 Seus dados estão 100% seguros.</p>
+        <p class="text-sm text-gray-400 mt-2">🔒 Seus dados são protegidos.</p>
       </div>
     </div>
   </section>
 
-  <!-- Bloco 9: Benefícios do Premium -->
+  <!-- Bloco 2: Benefícios -->
   <section class="py-16 px-6 bg-white text-gray-800 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine">Por Que Escolher o Álibi Digital?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <h2 class="text-4xl font-bold mb-10 shine">O Que Você Ganha com o Álibis Digital?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <div class="text-purple-500 mb-4 scale-in">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5V8H20v10a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5H13z"/>
-            <path d="M14 3v5h5"/>
-          </svg>
-        </div>
-        <h3 class="text-2xl font-semibold mb-4">Desculpas Realistas</h3>
-        <p class="mb-3">Álibis com textos, áudios e prints que enganam qualquer um.</p>
-        <a href="#scanner" class="text-purple-700 font-semibold hover:underline shine">Comece agora →</a>
-      </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-in">
-        <div class="text-purple-500 mb-4 scale-in">
+        <div class="text-purple-500 mb-4 scale-up">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
             <path d="M15 8a7.002 7.002 0 0 1-11.027 5.733c.107-.325.347-.573.677-.65a1 1 0 0 0 .707-.707 1 1 0 0 1 .65-.677A4 4 0 0 0 11 8V7a4 4 0 0 0-8 0v1a4.992 4.992 0 0 0 .336 1.813M12 8a5 5 0 0 1-1.367 3.443"/>
             <path d="M16 8A8 8 0 0 1 0 8v1a5 5 0 1 0 10 0V8a3 3 0 1 1 6 0v1a7 7 0 0 1-7 7h-1.5"/>
           </svg>
         </div>
         <h3 class="text-2xl font-semibold mb-4">Scanner Emocional</h3>
-        <p class="mb-3">Detecte sinais de estresse ou cansaço com nossa IA.</p>
-        <a href="#scanner" class="text-purple-700 font-semibold hover:underline shine">Ver agora →</a>
+        <p class="mb-3">Identifique estresse ou cansaço com precisão em segundos.</p>
+        <a href="/scanner.html" class="text-purple-700 font-semibold hover:underline shine">Experimente agora →</a>
       </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <div class="text-purple-500 mb-4 scale-in">
+      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <div class="text-purple-500 mb-4 scale-up">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M9 12h.01M12 12h.01M15 12h.01M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/>
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/>
+            <path d="M12 6a1 1 0 0 0-1 1v6a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 12.586V7a1 1 0 0 0-1-1z"/>
           </svg>
         </div>
-        <h3 class="text-2xl font-semibold mb-4">Suporte Personalizado</h3>
-        <p class="mb-3">Receba ajuda real para suas necessidades emocionais.</p>
-        <a href="/emotional-evaluation.html" class="text-purple-700 font-semibold hover:underline shine">Fazer avaliação →</a>
+        <h3 class="text-2xl font-semibold mb-4">Avaliação Detalhada</h3>
+        <p class="mb-3">Relatórios personalizados para seu bem-estar emocional.</p>
+        <a href="/emotional-evaluation.html" class="text-purple-700 font-semibold hover:underline shine">Faça agora →</a>
+      </div>
+      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <div class="text-purple-500 mb-4 scale-up">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-semibold mb-4">Álibis Personalizados</h3>
+        <p class="mb-3">Desculpas realistas com textos e provas digitais.</p>
+        <a href="#checkout" class="text-purple-700 font-semibold hover:underline shine">Desbloqueie agora →</a>
       </div>
     </div>
-    <div class="mt-10 pulse">
-      <a href="#checkout" class="animated-btn bg-purple-700 text-white font-bold px-8 py-4 rounded-full hover:bg-purple-800 transition-all duration-300">
-        Liberar Todos os Benefícios
+    <div class="mt-12 pulse">
+      <a href="#checkout" class="animated-btn bg-purple-700 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-800 transition-all duration-300">
+        Assine o Plano Premium
       </a>
     </div>
   </section>
 
-  <!-- Bloco 10: Chamada Final com Urgência -->
+  <!-- Bloco 3: Chamada Final -->
   <section class="py-20 bg-gray-900 text-white text-center animate-on-scroll">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Precisa de um Álibi Agora?</h2>
-      <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">Crie desculpas sob medida com anonimato garantido.</p>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Sua Privacidade Está em Jogo!</h2>
+      <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">
+        Teste o Scanner agora e garanta álibis sob medida com total anonimato.
+      </p>
       <div class="mb-10">
-        <span class="text-lg text-gray-400 italic">Apenas <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas restantes hoje!</span>
+        <span class="text-lg text-gray-400 italic">Apenas <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas hoje!</span>
       </div>
-      <a href="#checkout" class="inline-block bg-white text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-200 transition duration-300 animated-btn bounce-in">
-        Teste o Scanner Agora
+      <a href="/scanner.html" class="inline-block bg-white text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-200 transition duration-300 animated-btn bounce-in">
+        Teste o Scanner Grátis
       </a>
-      <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Privacidade total. Pagamento seguro via PIX ou cartão.</p>
+      <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
     </div>
   </section>
 
-  <!-- Bloco 11: Checkout -->
+  <!-- Bloco 4: Checkout -->
   <section id="checkout" class="py-16 px-6 bg-white text-gray-900 text-center animate-on-scroll">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 shine">Finalizar Sua Compra</h2>
-      <p class="text-lg mb-8 fade-in">Escolha seu plano e pague com segurança para desbloquear seu álibi.</p>
+      <h2 class="text-3xl font-bold mb-6 shine">Escolha Seu Plano</h2>
+      <p class="text-lg mb-8 fade-in">Pague com segurança e desbloqueie álibis e suporte premium.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <button class="bg-green-600 text-white py-3 px-6 rounded-full hover:bg-green-700 animated-btn">Pagar com PIX</button>
-        <button class="bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 animated-btn">Pagar com Cartão</button>
+        <button class="bg-green-600 text-white py-3 px-6 rounded-full hover:bg-green-700 animated-btn w-full sm:w-auto">Pagar com PIX</button>
+        <button class="bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 animated-btn w-full sm:w-auto">Pagar com Cartão</button>
       </div>
       <div class="flex justify-center gap-4 mt-4">
         <img src="https://via.placeholder.com/50?text=SSL" alt="SSL Seguro" class="h-10">
@@ -273,44 +269,44 @@
     </div>
   </section>
 
-  <!-- Bloco 12: Suporte ao Cliente -->
+  <!-- Bloco 5: Suporte -->
   <section id="suporte" class="bg-gray-900 py-16 px-6 text-white animate-on-scroll">
     <div class="max-w-3xl mx-auto text-center">
-      <h3 class="text-3xl font-bold mb-4 float">Precisa de Ajuda?</h3>
-      <p class="text-gray-400 mb-8 fade-in">Nossa equipe está pronta para orientar e garantir o álibi perfeito com total discrição.</p>
-      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-        <a href="#" class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-full flex items-center transition animated-btn slide-in-left">
+      <h3 class="text-3xl font-bold mb-4 float">Estamos Aqui para Ajudar</h3>
+      <p class="text-gray-400 mb-8 fade-in">Contato imediato para suporte com discrição total.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="https://wa.me/5511912345678" class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-full flex items-center transition animated-btn slide-in-left">
           <svg class="w-5 h-5 mr-2 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
           WhatsApp
         </a>
         <a href="mailto:contato@alibisdigital.com" class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-full transition animated-btn slide-in-right">
-          Enviar e-mail
+          Enviar E-mail
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Bloco 13: Rodapé -->
+  <!-- Bloco 6: Rodapé -->
   <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Desculpas sob medida com IA, garantindo sua privacidade e tranquilidade.</p>
+        <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
-          <li><a href="#planos" class="hover:text-white transition">Planos</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
+          <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
           <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
-          <li><a href="/politica-privacidade" class="hover:text-white transition">Política de Privacidade</a></li>
+          <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
         </ul>
       </div>
       <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
         <ul class="space-y-2">
-          <li class="fade-in">Email: contato@alibisdigital.com</li>
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
         </ul>
       </div>
@@ -320,7 +316,6 @@
     </div>
   </footer>
 
-  <!-- Script para Contador de Vagas -->
   <script>
     let vagas = 12;
     setInterval(() => {
@@ -332,21 +327,17 @@
     }, 3600000);
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Inicia o vídeo com som
       const video = document.querySelector('video');
       if (video) {
-        video.play().catch(error => {
-          console.log("Erro ao reproduzir vídeo: ", error);
-        });
+        video.play().catch(error => console.log("Erro ao reproduzir vídeo: ", error));
       }
 
-      // Animações ao rolar
       const animItems = document.querySelectorAll('.animate-on-scroll');
       const windowHeight = window.innerHeight;
       function animOnScroll() {
         animItems.forEach(item => {
           const itemTop = item.getBoundingClientRect().top;
-          const animStart = 100;
+          const animStart = 150;
           if (itemTop < windowHeight - animStart) {
             item.classList.add('visible');
           }
@@ -355,7 +346,6 @@
       animOnScroll();
       window.addEventListener('scroll', animOnScroll);
 
-      // Menu hamburguer
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
       hamburger.addEventListener('click', () => {
