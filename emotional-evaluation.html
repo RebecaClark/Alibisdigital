@@ -37,6 +37,18 @@
         box-shadow: 0 0 15px #22C55E, 0 0 30px #22C55E;
       }
     }
+
+    /* Transição suave entre telas */
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .screen.active {
+      display: block;
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="text-white">
@@ -62,141 +74,169 @@
       <h2 class="text-4xl font-bold mb-4 text-[#22C55E] fade-in">Como você está se sentindo?</h2>
       <p class="text-lg text-gray-300 mb-10 fade-in">Responda essas perguntas rápidas e receba um feedback personalizado do nosso terapeuta virtual.</p>
 
-      <form onsubmit="event.preventDefault(); avaliarBemEstar();" class="space-y-6 fade-in">
-        <div>
-          <label for="estresse" class="block text-left mb-2 text-sm">Você tem se sentido estressado(a) ultimamente?</label>
-          <select id="estresse" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Selecione...</option>
-            <option value="Sim">Sim</option>
-            <option value="Não">Não</option>
-          </select>
+      <form id="evaluation-form" onsubmit="event.preventDefault(); avaliarBemEstar();" class="space-y-6 fade-in">
+        <!-- Tela 1: Perguntas 1-3 -->
+        <div id="screen-1" class="screen active">
+          <div>
+            <label for="estresse" class="block text-left mb-2 text-sm">Você tem se sentido estressado(a) ultimamente?</label>
+            <select id="estresse" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          <div>
+            <label for="relaxar" class="block text-left mb-2 text-sm">Tem dificuldade em relaxar mesmo quando está descansando?</label>
+            <select id="relaxar" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          <div>
+            <label for="manha" class="block text-left mb-2 text-sm">Como você se sente ao acordar pela manhã?</label>
+            <select id="manha" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Selecione...</option>
+              <option value="Revigorado">Revigorado</option>
+              <option value="Cansado">Cansado</option>
+              <option value="Indiferente">Indiferente</option>
+            </select>
+          </div>
+          <div class="flex justify-end mt-6">
+            <button type="button" onclick="nextScreen(1)" class="bg-[#22C55E] text-black font-bold py-2 px-4 rounded hover:bg-green-500 transition pulse-glow">Próximo</button>
+          </div>
         </div>
-        <div>
-          <label for="relaxar" class="block text-left mb-2 text-sm">Tem dificuldade em relaxar mesmo quando está descansando?</label>
-          <select id="relaxar" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Selecione...</option>
-            <option value="Sim">Sim</option>
-            <option value="Não">Não</option>
-          </select>
+
+        <!-- Tela 2: Perguntas 4-6 -->
+        <div id="screen-2" class="screen">
+          <div>
+            <label for="humor" class="block text-left mb-2 text-sm">Nos últimos dias, como você tem se sentido na maior parte do tempo?</label>
+            <select id="humor" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Refletindo...</option>
+              <option value="Triste">Triste ou desanimado</option>
+              <option value="Ansioso">Ansioso ou preocupado</option>
+              <option value="Irritado">Irritado ou frustrado</option>
+              <option value="Neutro">Neutro ou bem</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div>
+            <label for="anedonia" class="block text-left mb-2 text-sm">Você tem sentido prazer ou interesse nas atividades que normalmente gosta (ex.: hobbies, sair com amigos)?</label>
+            <select id="anedonia" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Pensando...</option>
+              <option value="Sim">Sim, como sempre</option>
+              <option value="Pouco">Um pouco menos</option>
+              <option value="QuaseNunca">Quase nunca</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div>
+            <label for="pensamentos" class="block text-left mb-2 text-sm">Você tem tido pensamentos repetitivos ou preocupações que não saem da sua cabeça?</label>
+            <select id="pensamentos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Refletindo...</option>
+              <option value="Sim">Sim, o tempo todo</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(2)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="button" onclick="nextScreen(2)" class="bg-[#22C55E] text-black font-bold py-2 px-4 rounded hover:bg-green-500 transition pulse-glow">Próximo</button>
+          </div>
         </div>
-        <div>
-          <label for="manha" class="block text-left mb-2 text-sm">Como você se sente ao acordar pela manhã?</label>
-          <select id="manha" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Selecione...</option>
-            <option value="Revigorado">Revigorado</option>
-            <option value="Cansado">Cansado</option>
-            <option value="Indiferente">Indiferente</option>
-          </select>
+
+        <!-- Tela 3: Perguntas 7-9 -->
+        <div id="screen-3" class="screen">
+          <div>
+            <label for="concentracao" class="block text-left mb-2 text-sm">Como está sua capacidade de se concentrar ou tomar decisões no momento?</label>
+            <select id="concentracao" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Pensando...</option>
+              <option value="Dificil">Muito difícil</option>
+              <option value="PoucoDificil">Um pouco difícil</option>
+              <option value="Normal">Normal</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div>
+            <label for="habitos" class="block text-left mb-2 text-sm">Você notou alguma mudança nos seus hábitos diários, como comer mais/menos, evitar compromissos ou se isolar?</label>
+            <select id="habitos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Refletindo...</option>
+              <option value="Muito">Sim, bastante</option>
+              <option value="Pouco">Sim, um pouco</option>
+              <option value="Nao">Não</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div>
+            <label for="sono" class="block text-left mb-2 text-sm">Como tem sido seu sono ultimamente?</label>
+            <select id="sono" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Pensando...</option>
+              <option value="Mal">Durmo mal (insônia ou acordar muito)</option>
+              <option value="Muito">Durmo demais</option>
+              <option value="Normal">Normal</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(3)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="button" onclick="nextScreen(3)" class="bg-[#22C55E] text-black font-bold py-2 px-4 rounded hover:bg-green-500 transition pulse-glow">Próximo</button>
+          </div>
         </div>
-        <!-- Novas Perguntas -->
-        <div>
-          <label for="humor" class="block text-left mb-2 text-sm">Nos últimos dias, como você tem se sentido na maior parte do tempo?</label>
-          <select id="humor" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Refletindo...</option>
-            <option value="Triste">Triste ou desanimado</option>
-            <option value="Ansioso">Ansioso ou preocupado</option>
-            <option value="Irritado">Irritado ou frustrado</option>
-            <option value="Neutro">Neutro ou bem</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
+
+        <!-- Tela 4: Perguntas 10-13 -->
+        <div id="screen-4" class="screen">
+          <div>
+            <label for="energia" class="block text-left mb-2 text-sm">Você tem se sentido cansado(a) ou sem energia, mesmo após descansar?</label>
+            <select id="energia" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Refletindo...</option>
+              <option value="Sempre">Sim, o tempo todo</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div>
+            <label for="relacoes" class="block text-left mb-2 text-sm">Como estão suas relações com amigos, família ou colegas? Você se sente apoiado(a)?</label>
+            <select id="relacoes" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Pensando...</option>
+              <option value="Isolado">Me sinto isolado(a)</option>
+              <option value="Distante">Tenho apoio, mas me sinto distante</option>
+              <option value="Apoiado">Me sinto bem e apoiado(a)</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div>
+            <label for="fisicos" class="block text-left mb-2 text-sm">Você tem sentido algum desconforto físico, como dores de cabeça, tensão muscular, coração acelerado ou falta de ar?</label>
+            <select id="fisicos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Refletindo...</option>
+              <option value="Frequentemente">Sim, frequentemente</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div>
+            <label for="eventos" class="block text-left mb-2 text-sm">Recentemente, você passou por algum evento marcante, como uma perda, mudança ou pressão no trabalho?</label>
+            <select id="eventos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
+              <option value="">Pensando...</option>
+              <option value="Significativo">Sim, algo significativo</option>
+              <option value="Leve">Sim, algo leve</option>
+              <option value="Nao">Não</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(4)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="submit" class="bg-[#22C55E] text-black font-bold py-2 px-4 rounded hover:bg-green-500 transition pulse-glow">Obter Meu Diagnóstico</button>
+          </div>
         </div>
-        <div>
-          <label for="anedonia" class="block text-left mb-2 text-sm">Você tem sentido prazer ou interesse nas atividades que normalmente gosta (ex.: hobbies, sair com amigos)?</label>
-          <select id="anedonia" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Pensando...</option>
-            <option value="Sim">Sim, como sempre</option>
-            <option value="Pouco">Um pouco menos</option>
-            <option value="QuaseNunca">Quase nunca</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <div>
-          <label for="pensamentos" class="block text-left mb-2 text-sm">Você tem tido pensamentos repetitivos ou preocupações que não saem da sua cabeça?</label>
-          <select id="pensamentos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Refletindo...</option>
-            <option value="Sim">Sim, o tempo todo</option>
-            <option value="AsVezes">Às vezes</option>
-            <option value="Raramente">Raramente</option>
-            <option value="Nao">Não</option>
-          </select>
-        </div>
-        <div>
-          <label for="concentracao" class="block text-left mb-2 text-sm">Como está sua capacidade de se concentrar ou tomar decisões no momento?</label>
-          <select id="concentracao" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Pensando...</option>
-            <option value="Dificil">Muito difícil</option>
-            <option value="PoucoDificil">Um pouco difícil</option>
-            <option value="Normal">Normal</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <div>
-          <label for="habitos" class="block text-left mb-2 text-sm">Você notou alguma mudança nos seus hábitos diários, como comer mais/menos, evitar compromissos ou se isolar?</label>
-          <select id="habitos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Refletindo...</option>
-            <option value="Muito">Sim, bastante</option>
-            <option value="Pouco">Sim, um pouco</option>
-            <option value="Nao">Não</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <div>
-          <label for="sono" class="block text-left mb-2 text-sm">Como tem sido seu sono ultimamente?</label>
-          <select id="sono" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Pensando...</option>
-            <option value="Mal">Durmo mal (insônia ou acordar muito)</option>
-            <option value="Muito">Durmo demais</option>
-            <option value="Normal">Normal</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <div>
-          <label for="energia" class="block text-left mb-2 text-sm">Você tem se sentido cansado(a) ou sem energia, mesmo após descansar?</label>
-          <select id="energia" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Refletindo...</option>
-            <option value="Sempre">Sim, o tempo todo</option>
-            <option value="AsVezes">Às vezes</option>
-            <option value="Raramente">Raramente</option>
-            <option value="Nao">Não</option>
-          </select>
-        </div>
-        <div>
-          <label for="relacoes" class="block text-left mb-2 text-sm">Como estão suas relações com amigos, família ou colegas? Você se sente apoiado(a)?</label>
-          <select id="relacoes" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Pensando...</option>
-            <option value="Isolado">Me sinto isolado(a)</option>
-            <option value="Distante">Tenho apoio, mas me sinto distante</option>
-            <option value="Apoiado">Me sinto bem e apoiado(a)</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <div>
-          <label for="fisicos" class="block text-left mb-2 text-sm">Você tem sentido algum desconforto físico, como dores de cabeça, tensão muscular, coração acelerado ou falta de ar?</label>
-          <select id="fisicos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Refletindo...</option>
-            <option value="Frequentemente">Sim, frequentemente</option>
-            <option value="AsVezes">Às vezes</option>
-            <option value="Raramente">Raramente</option>
-            <option value="Nao">Não</option>
-          </select>
-        </div>
-        <div>
-          <label for="eventos" class="block text-left mb-2 text-sm">Recentemente, você passou por algum evento marcante, como uma perda, mudança ou pressão no trabalho?</label>
-          <select id="eventos" required class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600">
-            <option value="">Pensando...</option>
-            <option value="Significativo">Sim, algo significativo</option>
-            <option value="Leve">Sim, algo leve</option>
-            <option value="Nao">Não</option>
-            <option value="NaoSei">Não sei</option>
-          </select>
-        </div>
-        <button type="submit" class="w-full bg-[#22C55E] text-black font-bold py-3 rounded hover:bg-green-500 transition pulse-glow">Obter Meu Diagnóstico</button>
       </form>
 
       <div id="resultado" class="mt-10 hidden fade-in">
-        <h3 class="text-xl font-semibold mb-4 text-green-300">Seu Diagnóstico Emocional:</h3>
+        <h3 class="text-xl font-semibold mb-4 text-green-300">Pré-Diagnóstico Emocional:</h3>
         <p id="mensagemResultado" class="text-lg text-gray-200 italic">...</p>
-        <p class="mt-4 text-sm text-gray-400">🔒 O diagnóstico completo pode ser desbloqueado com apoio profissional 24/7.</p>
+        <p class="mt-4 text-sm text-gray-400">🔒 Desbloqueie o diagnóstico completo e suporte 24/7 com o Plano Mestre do Bem-Estar. Redirecionando...</p>
       </div>
     </div>
   </section>
@@ -226,6 +266,17 @@
   </footer>
 
   <script>
+    // Funções para navegação entre telas
+    function nextScreen(currentScreen) {
+      document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+      document.getElementById(`screen-${currentScreen + 1}`).classList.add('active');
+    }
+
+    function prevScreen(currentScreen) {
+      document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+      document.getElementById(`screen-${currentScreen - 1}`).classList.add('active');
+    }
+
     function avaliarBemEstar() {
       const estresse = document.getElementById('estresse').value;
       const relaxar = document.getElementById('relaxar').value;
@@ -241,21 +292,36 @@
       const fisicos = document.getElementById('fisicos').value;
       const eventos = document.getElementById('eventos').value;
 
-      let resultado = "Obrigado por compartilhar. Cuidar da mente é essencial.";
+      let resultado = "Obrigado por compartilhar. Vamos analisar suas respostas.";
+
+      // Pré-diagnósticos mais detalhados
       if (estresse === "Sim" && relaxar === "Sim" && manha === "Cansado" && energia === "Sempre" && habitos === "Muito") {
-        resultado = "Você está apresentando sinais clássicos de esgotamento ou burnout. Considere pausar e buscar apoio especializado.";
+        resultado = "Pré-diagnóstico: Sinais claros de esgotamento ou burnout. Você relatou estresse elevado, dificuldade em relaxar, cansaço persistente ao acordar e durante o dia, além de mudanças significativas nos seus hábitos. Isso pode indicar que você está sobrecarregado. Uma pausa e suporte emocional podem ajudar.";
       } else if (estresse === "Não" && relaxar === "Não" && manha === "Revigorado" && anedonia === "Sim" && relacoes === "Apoiado") {
-        resultado = "Você está bem equilibrado emocionalmente. Continue cuidando de si.";
+        resultado = "Pré-diagnóstico: Você parece emocionalmente equilibrado. Não há sinais de estresse ou dificuldade para relaxar, e você se sente revigorado ao acordar, com prazer nas atividades habituais e bom suporte social. Continue priorizando seu bem-estar!";
       } else if (manha === "Indiferente" && concentracao === "Dificil" && pensamentos === "Sim") {
-        resultado = "Seu corpo e mente podem estar em modo automático, com sinais de ansiedade. Isso merece atenção.";
+        resultado = "Pré-diagnóstico: Possíveis sinais de ansiedade ou sobrecarga mental. Você se sente indiferente ao acordar, tem dificuldade de concentração e pensamentos repetitivos, o que pode indicar um estado de ansiedade ou sobrecarga. Técnicas de mindfulness podem ser um bom começo.";
       } else if (humor === "Triste" && anedonia === "QuaseNunca" && sono === "Mal" && energia === "Sempre") {
-        resultado = "Você pode estar enfrentando sintomas de depressão. Recomendo buscar apoio emocional mais profundo.";
+        resultado = "Pré-diagnóstico: Possíveis sintomas de depressão. Você relatou tristeza predominante, perda de interesse em atividades que gostava, dificuldades no sono e cansaço constante. Isso pode ser um sinal de depressão, e buscar apoio emocional é recomendado.";
       } else if (humor === "Ansioso" && pensamentos === "Sim" && fisicos === "Frequentemente" && eventos === "Significativo") {
-        resultado = "Você parece estar lidando com ansiedade, possivelmente ligada a um evento recente. Técnicas de relaxamento podem ajudar.";
+        resultado = "Pré-diagnóstico: Possível ansiedade, influenciada por eventos recentes. Você se sente ansioso, com pensamentos repetitivos, sintomas físicos frequentes (como dores ou coração acelerado) e passou por um evento marcante. Respiração profunda e suporte podem ajudar a aliviar.";
+      } else if (humor === "Irritado" && relacoes === "Isolado" && concentracao === "Dificil") {
+        resultado = "Pré-diagnóstico: Sinais de irritabilidade e isolamento emocional. Você está irritado, com dificuldade de concentração e se sente isolado, o que pode indicar estresse ou problemas emocionais. Reconectar-se com pessoas próximas pode ser um primeiro passo.";
+      } else if (sono === "Muito" && energia === "Sempre" && habitos === "Muito") {
+        resultado = "Pré-diagnóstico: Possível desequilíbrio emocional, com sinais de letargia. Você dorme excessivamente, sente cansaço constante e notou mudanças nos seus hábitos, o que pode indicar um estado de apatia ou desmotivação. Atividades leves podem ajudar a recuperar energia.";
+      } else if (estresse === "Sim" && eventos === "Significativo" && fisicos === "Frequentemente") {
+        resultado = "Pré-diagnóstico: Estresse elevado, possivelmente ligado a eventos marcantes. Você relatou estresse, sintomas físicos frequentes e um evento significativo recente, o que pode estar impactando sua saúde mental. Tente reservar momentos para relaxar e refletir.";
+      } else {
+        resultado = "Pré-diagnóstico: Estado emocional moderado, com alguns sinais que merecem atenção. Suas respostas indicam um equilíbrio, mas há aspectos que podem ser explorados mais a fundo, como [mencionar um ou dois pontos, ex.: dificuldade de concentração ou cansaço]. Um diagnóstico completo pode oferecer mais clareza.";
       }
 
       document.getElementById('mensagemResultado').innerText = resultado;
       document.getElementById('resultado').classList.remove('hidden');
+
+      // Redireciona para a página de pagamento após 3 segundos
+      setTimeout(() => {
+        window.location.href = '/upsell.html';
+      }, 3000);
     }
   </script>
 
