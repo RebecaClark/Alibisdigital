@@ -464,7 +464,7 @@
     </div>
   </section>
 
-  <!-- Modal com Apenas o Diagnóstico -->
+  <!-- Modal com Voz Robótica -->
   <div id="avatar-modal" class="modal hidden">
     <div class="modal-content">
       <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -474,6 +474,10 @@
       </button>
       <h2 class="text-2xl font-bold mb-4 text-white">Seu Pré-Diagnóstico</h2>
       <p id="modal-diagnostico" class="text-green-300 mt-4"></p>
+      <div class="flex justify-center gap-4 mt-4">
+        <button id="play-speech" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 animated-btn neon-glow">Reproduzir</button>
+        <button id="stop-speech" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn neon-glow">Parar</button>
+      </div>
       <a href="#checkout" class="block mt-4 bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 animated-btn neon-glow text-center">Obter Diagnóstico Completo</a>
     </div>
   </div>
@@ -770,7 +774,8 @@
       });
     });
 
-    // Processamento do Diagnóstico
+    // Processamento do Diagnóstico e Leitura com Voz
+    let utterance;
     function processarDiagnostico() {
       const dados = {
         historico_cronico: document.getElementById('historico-cronico').value === 'Outra' ? document.getElementById('historico-cronico-outra').value : document.getElementById('historico-cronico').value,
@@ -841,29 +846,62 @@
 
       const texto = `
         ${diagnostico}
-        <strong>Faixa etária:</strong> ${dados.idade}.<br>
-        <strong>Condições crônicas:</strong> ${dados.historico_cronico}.<br>
-        <strong>Recomendações iniciais:</strong> ${recomendacao}<br>
+        Faixa etária: ${dados.idade}.
+        Condições crônicas: ${dados.historico_cronico}.
+        Recomendações iniciais: ${recomendacao}
         Para um diagnóstico mais profundo, sugiro que obtenha o Diagnóstico Completo.
       `;
 
-      document.getElementById('respostaIA').innerHTML = texto;
+      document.getElementById('respostaIA').innerHTML = texto.replace(/\n/g, '<br>');
       document.getElementById('resultado-diagnostico').classList.remove('hidden');
 
       const modal = document.getElementById('avatar-modal');
       const modalDiagnostico = document.getElementById('modal-diagnostico');
-      modalDiagnostico.innerHTML = texto;
+      modalDiagnostico.innerHTML = texto.replace(/\n/g, '<br>');
       modal.classList.remove('hidden');
 
       localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
       window.location.hash = 'resultado-diagnostico';
     }
 
+    // Controle de Voz Robótica
+    const playSpeechButton = document.getElementById('play-speech');
+    const stopSpeechButton = document.getElementById('stop-speech');
+    let speechSynthesis = window.speechSynthesis;
+    let utterance;
+
+    function speakText(text) {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+      }
+      utterance = new SpeechSynthesisUtterance(text);
+      const voices = speechSynthesis.getVoices();
+      utterance.voice = voices.find(voice => voice.lang === 'pt-BR') || voices[0]; // Usa voz em português ou a primeira disponível
+      utterance.pitch = 1.2; // Aumenta a altura para efeito robótico
+      utterance.rate = 0.9; // Diminui a velocidade para som mais mecânico
+      speechSynthesis.speak(utterance);
+    }
+
+    playSpeechButton.addEventListener('click', () => {
+      const modalDiagnostico = document.getElementById('modal-diagnostico');
+      const text = modalDiagnostico.textContent;
+      speakText(text);
+    });
+
+    stopSpeechButton.addEventListener('click', () => {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+      }
+    });
+
     // Inicializar o Modal
     function initializeModal() {
       const closeModal = document.getElementById('close-modal');
       closeModal.addEventListener('click', () => {
         const modal = document.getElementById('avatar-modal');
+        if (speechSynthesis.speaking) {
+          speechSynthesis.cancel();
+        }
         modal.classList.add('hidden');
       });
     }
