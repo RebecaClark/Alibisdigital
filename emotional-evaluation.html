@@ -236,7 +236,8 @@
       <div id="resultado" class="mt-10 hidden fade-in">
         <h3 class="text-xl font-semibold mb-4 text-green-300">Pré-Diagnóstico Emocional:</h3>
         <p id="mensagemResultado" class="text-lg text-gray-200 italic">...</p>
-        <p class="mt-4 text-sm text-gray-400">🔒 Desbloqueie o diagnóstico completo e suporte 24/7 com o Plano Mestre do Bem-Estar. Redirecionando...</p>
+        <p class="mt-4 text-sm text-gray-400">Para uma avaliação mais aprofundada e suporte personalizado, clique em "Obter Diagnóstico Completo" e descubra como podemos ajudá-lo a se sentir melhor.</p>
+        <button onclick="window.location.href='/upsell.html'" class="mt-4 bg-[#22C55E] text-black font-bold py-2 px-4 rounded hover:bg-green-500 transition pulse-glow">Obter Diagnóstico Completo</button>
       </div>
     </div>
   </section>
@@ -277,6 +278,22 @@
       document.getElementById(`screen-${currentScreen - 1}`).classList.add('active');
     }
 
+    // Função para leitura do pré-diagnóstico em voz alta
+    function speakDiagnosis(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'pt-BR'; // Idioma: Português Brasileiro
+      utterance.rate = 0.9; // Velocidade: Lenta para um tom calmo
+      utterance.pitch = 1.0; // Tom: Natural
+      utterance.volume = 1.0; // Volume: Máximo
+
+      // Tenta encontrar uma voz suave (depende do navegador/dispositivo)
+      const voices = speechSynthesis.getVoices();
+      const softVoice = voices.find(voice => voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.lang === 'pt-BR') || voices[0];
+      utterance.voice = softVoice;
+
+      speechSynthesis.speak(utterance);
+    }
+
     function avaliarBemEstar() {
       const estresse = document.getElementById('estresse').value;
       const relaxar = document.getElementById('relaxar').value;
@@ -292,36 +309,34 @@
       const fisicos = document.getElementById('fisicos').value;
       const eventos = document.getElementById('eventos').value;
 
-      let resultado = "Obrigado por compartilhar. Vamos analisar suas respostas.";
+      let resultado = "Obrigado por compartilhar. Vamos analisar como você está se sentindo.";
 
-      // Pré-diagnósticos mais detalhados
+      // Pré-diagnósticos reformulados com tom mais empático e fluido
       if (estresse === "Sim" && relaxar === "Sim" && manha === "Cansado" && energia === "Sempre" && habitos === "Muito") {
-        resultado = "Pré-diagnóstico: Sinais claros de esgotamento ou burnout. Você relatou estresse elevado, dificuldade em relaxar, cansaço persistente ao acordar e durante o dia, além de mudanças significativas nos seus hábitos. Isso pode indicar que você está sobrecarregado. Uma pausa e suporte emocional podem ajudar.";
+        resultado = "Entendo como você está se sentindo. Suas respostas mostram sinais claros de esgotamento emocional, possivelmente burnout. Você mencionou estar muito estressado, com dificuldade para relaxar, sentindo cansaço ao acordar e ao longo do dia, além de mudanças significativas nos seus hábitos. Isso sugere que você pode estar sobrecarregado. Um momento de pausa e apoio emocional pode fazer uma grande diferença agora.";
       } else if (estresse === "Não" && relaxar === "Não" && manha === "Revigorado" && anedonia === "Sim" && relacoes === "Apoiado") {
-        resultado = "Pré-diagnóstico: Você parece emocionalmente equilibrado. Não há sinais de estresse ou dificuldade para relaxar, e você se sente revigorado ao acordar, com prazer nas atividades habituais e bom suporte social. Continue priorizando seu bem-estar!";
+        resultado = "Fico feliz em ver que você está se sentindo bem. Suas respostas indicam um bom equilíbrio emocional. Você não relatou estresse, consegue relaxar com facilidade, sente-se revigorado pela manhã, mantém o prazer nas suas atividades habituais e tem um suporte social sólido. Continue cuidando de si mesmo assim!";
       } else if (manha === "Indiferente" && concentracao === "Dificil" && pensamentos === "Sim") {
-        resultado = "Pré-diagnóstico: Possíveis sinais de ansiedade ou sobrecarga mental. Você se sente indiferente ao acordar, tem dificuldade de concentração e pensamentos repetitivos, o que pode indicar um estado de ansiedade ou sobrecarga. Técnicas de mindfulness podem ser um bom começo.";
+        resultado = "Percebo que você pode estar enfrentando um momento delicado. Suas respostas mostram sinais de ansiedade ou sobrecarga mental. Você se sente indiferente ao acordar, está com dificuldade para se concentrar e tem pensamentos repetitivos que não saem da cabeça. Isso pode indicar um estado de ansiedade. Práticas como respiração profunda ou mindfulness podem ajudar a trazer mais calma.";
       } else if (humor === "Triste" && anedonia === "QuaseNunca" && sono === "Mal" && energia === "Sempre") {
-        resultado = "Pré-diagnóstico: Possíveis sintomas de depressão. Você relatou tristeza predominante, perda de interesse em atividades que gostava, dificuldades no sono e cansaço constante. Isso pode ser um sinal de depressão, e buscar apoio emocional é recomendado.";
+        resultado = "Agradeço por compartilhar isso comigo. Suas respostas sugerem possíveis sinais de depressão. Você mencionou que se sente triste na maior parte do tempo, não tem sentido prazer nas atividades que gostava, está com dificuldades no sono e se sente constantemente cansado. Esses são sinais importantes, e buscar apoio emocional pode ser um passo valioso para se sentir melhor.";
       } else if (humor === "Ansioso" && pensamentos === "Sim" && fisicos === "Frequentemente" && eventos === "Significativo") {
-        resultado = "Pré-diagnóstico: Possível ansiedade, influenciada por eventos recentes. Você se sente ansioso, com pensamentos repetitivos, sintomas físicos frequentes (como dores ou coração acelerado) e passou por um evento marcante. Respiração profunda e suporte podem ajudar a aliviar.";
+        resultado = "Entendo como você está se sentindo, e quero ajudar. Suas respostas indicam um possível quadro de ansiedade, que pode estar sendo influenciado por eventos recentes. Você se sente ansioso, com pensamentos que se repetem, sintomas físicos como dores ou coração acelerado, e passou por um evento marcante. Algumas técnicas de relaxamento, como respiração consciente, podem ajudar a aliviar esse peso.";
       } else if (humor === "Irritado" && relacoes === "Isolado" && concentracao === "Dificil") {
-        resultado = "Pré-diagnóstico: Sinais de irritabilidade e isolamento emocional. Você está irritado, com dificuldade de concentração e se sente isolado, o que pode indicar estresse ou problemas emocionais. Reconectar-se com pessoas próximas pode ser um primeiro passo.";
+        resultado = "Obrigado por me contar como você está. Parece que você está lidando com irritabilidade e um certo isolamento emocional. Você mencionou estar irritado, com dificuldade para se concentrar e se sentindo isolado, o que pode indicar estresse ou desconforto emocional. Reconectar-se com alguém de confiança pode ser um primeiro passo para aliviar isso.";
       } else if (sono === "Muito" && energia === "Sempre" && habitos === "Muito") {
-        resultado = "Pré-diagnóstico: Possível desequilíbrio emocional, com sinais de letargia. Você dorme excessivamente, sente cansaço constante e notou mudanças nos seus hábitos, o que pode indicar um estado de apatia ou desmotivação. Atividades leves podem ajudar a recuperar energia.";
+        resultado = "Agradeço por compartilhar seus sentimentos. Suas respostas apontam para um possível desequilíbrio emocional, com sinais de letargia. Você está dormindo excessivamente, sente cansaço constante e notou mudanças nos seus hábitos, o que pode refletir apatia ou desmotivação. Atividades leves, como uma caminhada ao ar livre, podem ajudar a trazer mais energia.";
       } else if (estresse === "Sim" && eventos === "Significativo" && fisicos === "Frequentemente") {
-        resultado = "Pré-diagnóstico: Estresse elevado, possivelmente ligado a eventos marcantes. Você relatou estresse, sintomas físicos frequentes e um evento significativo recente, o que pode estar impactando sua saúde mental. Tente reservar momentos para relaxar e refletir.";
+        resultado = "Percebo que você está passando por um momento desafiador. Suas respostas indicam um nível elevado de estresse, possivelmente ligado a eventos marcantes. Você relatou estresse, sintomas físicos frequentes, como dores ou tensão, e um evento significativo recente. Isso pode estar afetando seu bem-estar. Reservar um tempo para relaxar e refletir pode ser um bom começo.";
       } else {
-        resultado = "Pré-diagnóstico: Estado emocional moderado, com alguns sinais que merecem atenção. Suas respostas indicam um equilíbrio, mas há aspectos que podem ser explorados mais a fundo, como [mencionar um ou dois pontos, ex.: dificuldade de concentração ou cansaço]. Um diagnóstico completo pode oferecer mais clareza.";
+        resultado = "Obrigado por compartilhar como você está se sentindo. Suas respostas mostram um estado emocional moderado, com alguns aspectos que podemos explorar mais a fundo, como certa dificuldade de concentração ou cansaço ocasional. Um olhar mais detalhado pode trazer mais clareza sobre como apoiar você.";
       }
 
       document.getElementById('mensagemResultado').innerText = resultado;
       document.getElementById('resultado').classList.remove('hidden');
 
-      // Redireciona para a página de pagamento após 3 segundos
-      setTimeout(() => {
-        window.location.href = '/upsell.html';
-      }, 3000);
+      // Lê o pré-diagnóstico em voz alta
+      speakDiagnosis(resultado);
     }
   </script>
 
