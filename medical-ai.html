@@ -177,7 +177,21 @@
       height: 300px;
       border-radius: 0.5rem;
       background: #112240;
-      object-fit: cover;
+      object-fit: contain;
+      animation: hologramGlow 2s infinite alternate;
+    }
+    #hologram-fallback {
+      width: 100%;
+      height: 300px;
+      border-radius: 0.5rem;
+      background: #112240;
+      object-fit: contain;
+      display: none;
+      animation: hologramGlow 2s infinite alternate;
+    }
+    @keyframes hologramGlow {
+      from { box-shadow: 0 0 10px #23d5ab; }
+      to { box-shadow: 0 0 20px #23a6d5, 0 0 30px #e73c7e; }
     }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
@@ -188,7 +202,7 @@
       .animated-btn { width: 100%; margin-bottom: 0.5rem; }
       #navbar, #mobile-menu { width: 100%; }
       #mobile-menu a { width: 100%; text-align: center; }
-      #hologram-video { height: 200px; }
+      #hologram-video, #hologram-fallback { height: 200px; }
     }
   </style>
 </head>
@@ -481,10 +495,11 @@
         </svg>
       </button>
       <h2 class="text-2xl font-bold mb-4 text-white">Seu Pré-Diagnóstico</h2>
-      <video id="hologram-video" autoplay loop muted playsinline>
+      <video id="hologram-video" controls>
         <source src="/assets/hologram.mp4" type="video/mp4">
-        Seu navegador não suporta o elemento de vídeo.
+        Your browser does not support the video tag.
       </video>
+      <img id="hologram-fallback" src="/assets/hologram.png" alt="Holograma" />
       <p id="modal-diagnostico" class="text-green-300 mt-4"></p>
       <button id="stop-speech" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn hidden">Parar Leitura</button>
       <a href="#checkout" class="block mt-4 bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 animated-btn neon-glow text-center">Obter Diagnóstico Completo</a>
@@ -865,9 +880,15 @@
 
       const modal = document.getElementById('avatar-modal');
       const modalDiagnostico = document.getElementById('modal-diagnostico');
+      const video = document.getElementById('hologram-video');
+      const fallback = document.getElementById('hologram-fallback');
+
       modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
+      video.addEventListener('error', () => {
+        video.style.display = 'none';
+        fallback.style.display = 'block';
+      });
       modal.classList.remove('hidden');
-      initializeHologramVideo();
 
       localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
       window.location.hash = 'resultado-diagnostico';
@@ -876,16 +897,6 @@
     // Inicializar o Vídeo de Holograma
     function initializeHologramVideo() {
       const video = document.getElementById('hologram-video');
-      if (!video) {
-        console.error('Vídeo não encontrado.');
-        return;
-      }
-
-      video.play().catch(error => {
-        console.error('Erro ao reproduzir o vídeo:', error);
-        video.insertAdjacentHTML('afterend', '<p style="color: red;">Erro ao reproduzir o vídeo. Verifique se o arquivo está acessível.</p>');
-      });
-
       const closeModal = document.getElementById('close-modal');
       closeModal.addEventListener('click', () => {
         const modal = document.getElementById('avatar-modal');
@@ -893,6 +904,8 @@
         video.pause();
       });
     }
+
+    document.addEventListener('DOMContentLoaded', initializeHologramVideo);
 
     // Simulação de envio para API após pagamento (exemplo)
     function enviarParaAPIMedica() {
