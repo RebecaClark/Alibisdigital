@@ -5,22 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avaliação Emocional - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS')"></script>
-  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
-    /* Animação de fundo com gradiente dinâmico */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+    /* Gradiente animado no fundo */
     @keyframes gradientFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
     .gradient-flow {
-      background: linear-gradient(45deg, #0b1120, #1a1d3b, #0f172a, #0b1120);
+      background: linear-gradient(45deg, #111827, #1F2937, #111827);
       background-size: 400% 400%;
       animation: gradientFlow 15s ease infinite;
     }
 
-    /* Animação de partículas (bolhas flutuantes) */
+    /* Partículas flutuantes */
     @keyframes floatBlob {
       0% { transform: translateY(0) translateX(0); opacity: 0.2; }
       50% { transform: translateY(-50px) translateX(20px); opacity: 0.5; }
@@ -32,11 +38,21 @@
     .animation-delay-2s { animation-delay: 2s; }
     .animation-delay-4s { animation-delay: 4s; }
 
+    /* Partículas estelares (brilhos sutis) */
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      50% { opacity: 0.8; }
+      100% { opacity: 0.2; }
+    }
+    .twinkle {
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
     /* Efeito de brilho pulsante */
     @keyframes pulseGlow {
-      0% { box-shadow: 0 0 5px #22C55E, 0 0 10px #22C55E; }
-      50% { box-shadow: 0 0 15px #22C55E, 0 0 25px #22C55E; }
-      100% { box-shadow: 0 0 5px #22C55E, 0 0 10px #22C55E; }
+      0% { box-shadow: 0 0 5px #4ADE80, 0 0 10px #4ADE80; }
+      50% { box-shadow: 0 0 10px #4ADE80, 0 0 20px #4ADE80; }
+      100% { box-shadow: 0 0 5px #4ADE80, 0 0 10px #4ADE80; }
     }
     .pulse-glow {
       animation: pulseGlow 2s infinite;
@@ -53,11 +69,11 @@
     .typing {
       overflow: hidden;
       white-space: nowrap;
-      border-right: 3px solid #22C55E;
+      border-right: 2px solid #4ADE80;
       animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
     }
 
-    /* Efeito de fade-in com atraso */
+    /* Fade-in com atraso */
     .fade-in-slow {
       opacity: 0;
       animation: fadeIn 1s ease forwards;
@@ -69,10 +85,10 @@
     .delay-2s { animation-delay: 2s; }
     .delay-3s { animation-delay: 3s; }
 
-    /* Efeito de onda no botão */
+    /* Efeito de onda nos botões */
     @keyframes wave {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.5); opacity: 0; }
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.3); opacity: 0; }
     }
     .wave-effect {
       position: relative;
@@ -85,16 +101,16 @@
       left: 50%;
       width: 0;
       height: 0;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       animation: wave 2s infinite;
     }
   </style>
 </head>
-<body class="gradient-flow text-white font-sans overflow-x-hidden">
-  <!-- Header com animação -->
-  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-all duration-500 animate__animated animate__fadeInDown">
+<body class="gradient-flow text-white overflow-x-hidden">
+  <!-- Header -->
+  <header class="bg-[#1F2937] text-white shadow-lg fixed top-0 left-0 w-full z-50 transition-all duration-500 animate__animated animate__fadeInDown">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto transition-transform hover:scale-110 animate__animated animate__pulse animate__infinite" onerror="console.error('Erro ao carregar logo.png')"></a>
@@ -107,36 +123,36 @@
         </button>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-        <a href="/alibi.html" class="hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-1s">Criar Álibi</a>
-        <a href="/scanner.html" class="hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-3s">Avaliação Emocional</a>
-        <a href="#suporte" class="hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-4s">Suporte</a>
+        <a href="/alibi.html" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-1s">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-3s">Avaliação Emocional</a>
+        <a href="#suporte" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-4s">Suporte</a>
       </nav>
     </div>
   </header>
-  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6 transition-all duration-300">
+  <div id="mobile-menu" class="md:hidden bg-[#1F2937] w-full hidden py-6 transition-all duration-300">
     <nav class="flex flex-col items-center">
-      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn">Criar Álibi</a>
-      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-1s">Scanner com IA</a>
-      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Avaliação Emocional</a>
-      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#22C55E] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-3s">Suporte</a>
+      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn">Criar Álibi</a>
+      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-1s">Scanner com IA</a>
+      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Avaliação Emocional</a>
+      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-3s">Suporte</a>
     </nav>
   </div>
   <div class="h-20"></div>
 
-  <!-- Seção principal com animações -->
-  <section id="avaliacao-emocional" class="bg-[#1a1d3b] py-20 px-6 text-white relative overflow-hidden">
+  <!-- Seção Principal -->
+  <section id="avaliacao-emocional" class="py-20 px-6 text-white relative overflow-hidden">
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <h2 class="text-4xl font-bold mb-6 text-[#22C55E] typing animate__animated animate__zoomIn">Olá, sou seu Terapeuta Virtual. Como você está?</h2>
-      <p class="text-lg mb-10 text-gray-300 animate__animated animate__fadeInUp animate__delay-1s">
-        Estou aqui para guiá-lo em uma jornada de autoconhecimento. Vamos conversar sobre como você se sente hoje?
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 text-[#4ADE80] typing animate__animated animate__zoomIn">Olá, sou seu Terapeuta Virtual. Como você está?</h2>
+      <p class="text-lg md:text-xl mb-10 text-gray-300 animate__animated animate__fadeInUp animate__delay-1s">
+        Vamos explorar seus sentimentos juntos. Responda com calma – este é um espaço seguro para você.
       </p>
-      <div id="dialogue-container" class="max-w-2xl mx-auto bg-[#0f172a] p-8 rounded-xl shadow-lg border border-[#22C55E] animate__animated animate__bounceIn">
+      <div id="dialogue-container" class="max-w-2xl mx-auto bg-[#1F2937] p-8 rounded-3xl shadow-xl border border-gray-700 animate__animated animate__bounceIn">
         <div id="dialogue" class="space-y-6">
           <!-- Pergunta 1 -->
           <div class="fade-in-slow">
             <p class="text-md text-gray-400 italic typing">Terapeuta: "Nos últimos dias, você tem sentido algum peso ou estresse? Pode me contar?"</p>
-            <select id="estresse" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300 animate__animated animate__fadeInRight">
+            <select id="estresse" required class="w-full p-4 mt-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#4ADE80] transition-all duration-300 animate__animated animate__fadeInRight">
               <option value="" class="text-gray-500">Refletindo...</option>
               <option value="Sim">Sim, bastante</option>
               <option value="Pouco">Sim, um pouco</option>
@@ -146,7 +162,7 @@
           <!-- Pergunta 2 -->
           <div class="fade-in-slow delay-1s">
             <p class="text-md text-gray-400 italic typing">Terapeuta: "Às vezes, relaxar pode ser desafiador. Você tem tido dificuldade com isso?"</p>
-            <select id="dificuldade-relaxar" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300 animate__animated animate__fadeInRight">
+            <select id="dificuldade-relaxar" required class="w-full p-4 mt-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#4ADE80] transition-all duration-300 animate__animated animate__fadeInRight">
               <option value="" class="text-gray-500">Pensando...</option>
               <option value="Sim">Sim, muito</option>
               <option value="Pouco">Sim, às vezes</option>
@@ -156,36 +172,39 @@
           <!-- Pergunta 3 -->
           <div class="fade-in-slow delay-2s">
             <p class="text-md text-gray-400 italic typing">Terapeuta: "Como você tem começado seus dias? Me conte como se sente ao acordar."</p>
-            <select id="sentimento-manha" required class="w-full p-4 mt-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition-all duration-300 animate__animated animate__fadeInRight">
+            <select id="sentimento-manha" required class="w-full p-4 mt-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#4ADE80] transition-all duration-300 animate__animated animate__fadeInRight">
               <option value="" class="text-gray-500">Recordando...</option>
               <option value="Revigorado">Revigorado e pronto</option>
               <option value="Cansado">Cansado ou exausto</option>
               <option value="Indiferente">Nem bem, nem mal</option>
             </select>
           </div>
-          <button type="submit" onclick="realizarAvaliacaoEmocional()" class="wave-effect animated-btn w-full bg-[#22C55E] text-white py-4 rounded-lg mt-6 hover:bg-[#1aa65b] transition-all duration-300 pulse-glow">
-            <span class="typing">Enviar para meu Terapeuta Virtual</span>
+          <button type="submit" onclick="realizarAvaliacaoEmocional()" class="wave-effect flex items-center justify-center w-full bg-gradient-to-r from-[#4ADE80] to-[#34D399] text-white py-4 rounded-lg mt-6 hover:from-[#34D399] hover:to-[#4ADE80] transition-all duration-300 pulse-glow">
+            <span class="typing mr-2">Enviar para meu Terapeuta Virtual</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </button>
         </div>
-        <div id="resultado-avaliacao" class="mt-8 bg-[#0f172a] p-6 rounded-lg text-[#22C55E] text-center hidden animate__animated animate__zoomIn">
+        <div id="resultado-avaliacao" class="mt-8 bg-[#1F2937]/80 backdrop-blur-md p-6 rounded-2xl text-[#4ADE80] text-center hidden animate__animated animate__zoomIn">
           <h3 class="text-xl font-semibold mb-4 typing">Diagnóstico do Terapeuta Virtual:</h3>
           <p id="resultadoEmocional" class="text-lg italic animate__animated animate__fadeIn">Aguarde enquanto analiso suas emoções...</p>
           <p class="mt-4 text-sm text-gray-400 animate__animated animate__fadeIn animate__delay-1s">🔒 Um diagnóstico completo com suporte 24/7 está no Plano Mestre do Bem-Estar.</p>
-          <a href="/upsell.html" class="mt-6 inline-block bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 transition-all wave-effect animate__animated animate__pulse animate__infinite">Quero mais apoio agora</a>
+          <a href="/upsell.html" class="mt-6 inline-block bg-gradient-to-r from-[#A78BFA] to-[#8B5CF6] text-white py-2 px-4 rounded-lg hover:from-[#8B5CF6] hover:to-[#A78BFA] transition-all wave-effect animate__animated animate__pulse animate__infinite">Quero mais apoio agora</a>
         </div>
       </div>
     </div>
-    <!-- Efeito de fundo com partículas animadas -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#1a1d3b_0%,#0b1120_70%)] opacity-50 animate-pulse-slow"></div>
+    <!-- Fundo com partículas -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#1F2937_0%,#111827_70%)] opacity-50 animate-pulse-slow"></div>
     <div class="absolute inset-0 pointer-events-none">
-      <div class="w-64 h-64 bg-[#22C55E] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob top-10 left-10"></div>
-      <div class="w-64 h-64 bg-[#1aa65b] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2s bottom-20 right-20"></div>
-      <div class="w-64 h-64 bg-[#22C55E] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4s top-40 right-40"></div>
+      <div class="w-64 h-64 bg-[#A3E635] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob top-10 left-10"></div>
+      <div class="w-64 h-64 bg-[#34D399] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2s bottom-20 right-20"></div>
+      <div class="w-64 h-64 bg-[#A3E635] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4s top-40 right-40"></div>
     </div>
   </section>
 
-  <!-- Footer com animação -->
-  <footer class="bg-gray-950 text-gray-400 py-12 animate__animated animate__fadeInUp">
+  <!-- Footer -->
+  <footer class="bg-gradient-to-t from-[#111827] to-[#1F2937] text-gray-400 py-12 animate__animated animate__fadeInUp">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="animate__animated animate__fadeInLeft">
         <h3 class="text-white text-2xl font-bold mb-4 typing">Álibis Digital</h3>
@@ -194,10 +213,10 @@
       <div class="animate__animated animate__fadeIn animate__delay-1s">
         <h4 class="text-white font-semibold mb-4 typing">Navegação</h4>
         <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Início</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Criar Álibi</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Scanner Facial</a></li>
-          <li><a href="#suporte" class="hover:text-white transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Suporte</a></li>
+          <li><a href="/" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Início</a></li>
+          <li><a href="/alibi.html" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Scanner Facial</a></li>
+          <li><a href="#suporte" class="hover:text-[#4ADE80] transition-transform hover:scale-105 animate__animated animate__fadeIn animate__delay-2s">Suporte</a></li>
         </ul>
       </div>
       <div class="animate__animated animate__fadeInRight">
@@ -212,7 +231,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js" defer></script>
   <script>
-    // Menu mobile com animação
+    // Menu mobile
     document.getElementById('hamburger-menu').addEventListener('click', () => {
       const mobileMenu = document.getElementById('mobile-menu');
       mobileMenu.classList.toggle('hidden');
@@ -284,17 +303,27 @@
       });
     });
 
-    // Adicionar partículas animadas ao fundo
+    // Partículas flutuantes e estelares
     const section = document.querySelector('#avaliacao-emocional');
     for (let i = 0; i < 10; i++) {
       const particle = document.createElement('div');
-      particle.classList.add('absolute', 'bg-[#22C55E]', 'rounded-full', 'mix-blend-multiply', 'filter', 'blur-xl', 'opacity-20', 'animate-blob');
+      particle.classList.add('absolute', 'bg-[#A3E635]', 'rounded-full', 'mix-blend-multiply', 'filter', 'blur-xl', 'opacity-20', 'animate-blob');
       particle.style.width = `${Math.random() * 100 + 50}px`;
       particle.style.height = particle.style.width;
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
       particle.style.animationDelay = `${Math.random() * 5}s`;
       section.appendChild(particle);
+    }
+    for (let i = 0; i < 20; i++) {
+      const star = document.createElement('div');
+      star.classList.add('absolute', 'bg-[#34D399]', 'rounded-full', 'twinkle');
+      star.style.width = `${Math.random() * 4 + 2}px`;
+      star.style.height = star.style.width;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      section.appendChild(star);
     }
   </script>
   <script src="/scripts/navbar.js" defer onerror="console.error('Erro ao carregar navbar.js')"></script>
