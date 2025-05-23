@@ -172,13 +172,6 @@
       border: 1px solid #23d5ab;
       box-shadow: 0 0 20px rgba(35, 213, 171, 0.5);
     }
-    #hologram-video {
-      width: 100%;
-      height: 300px;
-      border-radius: 0.5rem;
-      background: #112240;
-      object-fit: cover;
-    }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -188,7 +181,6 @@
       .animated-btn { width: 100%; margin-bottom: 0.5rem; }
       #navbar, #mobile-menu { width: 100%; }
       #mobile-menu a { width: 100%; text-align: center; }
-      #hologram-video { height: 200px; }
     }
   </style>
 </head>
@@ -472,7 +464,7 @@
     </div>
   </section>
 
-  <!-- Modal com Vídeo de Holograma -->
+  <!-- Modal com Voz Robótica -->
   <div id="avatar-modal" class="modal hidden">
     <div class="modal-content">
       <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -481,12 +473,11 @@
         </svg>
       </button>
       <h2 class="text-2xl font-bold mb-4 text-white">Seu Pré-Diagnóstico</h2>
-      <video id="hologram-video" autoplay loop muted playsinline>
-        <source src="/assets/hologram.mp4" type="video/mp4">
-        Seu navegador não suporta o elemento de vídeo.
-      </video>
       <p id="modal-diagnostico" class="text-green-300 mt-4"></p>
-      <button id="stop-speech" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn hidden">Parar Leitura</button>
+      <div class="flex justify-center gap-4 mt-4">
+        <button id="play-speech" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 animated-btn neon-glow">Reproduzir</button>
+        <button id="stop-speech" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn hidden">Parar</button>
+      </div>
       <a href="#checkout" class="block mt-4 bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 animated-btn neon-glow text-center">Obter Diagnóstico Completo</a>
     </div>
   </div>
@@ -867,30 +858,38 @@
       const modalDiagnostico = document.getElementById('modal-diagnostico');
       modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
       modal.classList.remove('hidden');
-      initializeHologramVideo();
 
       localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
       window.location.hash = 'resultado-diagnostico';
-    }
 
-    // Inicializar o Vídeo de Holograma
-    function initializeHologramVideo() {
-      const video = document.getElementById('hologram-video');
-      if (!video) {
-        console.error('Vídeo não encontrado.');
-        return;
-      }
+      // Voz Robótica
+      const playSpeechBtn = document.getElementById('play-speech');
+      const stopSpeechBtn = document.getElementById('stop-speech');
+      const synth = window.speechSynthesis;
+      let utterance;
 
-      video.play().catch(error => {
-        console.error('Erro ao reproduzir o vídeo:', error);
-        video.insertAdjacentHTML('afterend', '<p style="color: red;">Erro ao reproduzir o vídeo. Verifique se o arquivo está acessível.</p>');
+      playSpeechBtn.addEventListener('click', () => {
+        if (synth.speaking) synth.cancel();
+        utterance = new SpeechSynthesisUtterance(modalDiagnostico.textContent);
+        utterance.lang = 'pt-BR';
+        utterance.pitch = 1.2; // Efeito robótico
+        utterance.rate = 0.9;  // Velocidade reduzida
+        synth.speak(utterance);
+        stopSpeechBtn.classList.remove('hidden');
+        playSpeechBtn.classList.add('hidden');
       });
 
-      const closeModal = document.getElementById('close-modal');
-      closeModal.addEventListener('click', () => {
-        const modal = document.getElementById('avatar-modal');
+      stopSpeechBtn.addEventListener('click', () => {
+        if (synth.speaking) synth.cancel();
+        stopSpeechBtn.classList.add('hidden');
+        playSpeechBtn.classList.remove('hidden');
+      });
+
+      document.getElementById('close-modal').addEventListener('click', () => {
+        if (synth.speaking) synth.cancel();
         modal.classList.add('hidden');
-        video.pause();
+        stopSpeechBtn.classList.add('hidden');
+        playSpeechBtn.classList.remove('hidden');
       });
     }
 
