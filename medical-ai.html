@@ -483,7 +483,7 @@
       <h2 class="text-2xl font-bold mb-4 text-white">Seu Pré-Diagnóstico</h2>
       <div id="avatar-canvas"></div>
       <p id="modal-diagnostico" class="text-green-300 mt-4"></p>
-      <button id="stop-speech" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn">Parar Leitura</button>
+      <button id="stop-speech" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn hidden">Parar Leitura</button>
       <a href="#checkout" class="block mt-4 bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 animated-btn neon-glow text-center">Obter Diagnóstico Completo</a>
     </div>
   </div>
@@ -711,7 +711,6 @@
 
     nextButton.addEventListener('click', () => {
       if (currentStep < totalSteps) {
-        // Validação básica antes de avançar
         const currentInputs = steps[currentStep - 1].querySelectorAll('input[required], select[required]');
         let valid = true;
         currentInputs.forEach(input => {
@@ -783,7 +782,6 @@
 
     // Processamento do Diagnóstico
     function processarDiagnostico() {
-      // Coleta de dados do formulário
       const dados = {
         historico_cronico: document.getElementById('historico-cronico').value === 'Outra' ? document.getElementById('historico-cronico-outra').value : document.getElementById('historico-cronico').value,
         historico_cirurgias: document.getElementById('historico-cirurgias').value === 'Outro' ? document.getElementById('historico-cirurgias-outra').value : document.getElementById('historico-cirurgias').value,
@@ -805,11 +803,9 @@
         idade: document.getElementById('idade').value
       };
 
-      // Lógica para Pré-Diagnóstico Mais Preciso
       let diagnostico = '';
       let recomendacao = '';
 
-      // Verificação de Sintomas Respiratórios (Gripe)
       const sintomas = dados.sintomas.toLowerCase();
       if (sintomas.includes('febre') || sintomas.includes('tosse') || dados.sinais_vitais === 'Febre') {
         if (dados.exposicao.includes('Exposição') || dados.duracao === '1-3' || dados.duracao === '4-7') {
@@ -818,7 +814,6 @@
         }
       }
 
-      // Verificação de Insônia e Estresse
       if (dados.sono_apetite.includes('Insônia') || dados.sono_apetite === 'Ambos') {
         if (dados.estresse === 'Moderado' || dados.estresse === 'Alto') {
           diagnostico += 'Além disso, você pode estar sofrendo de insônia devido ao estresse elevado. ';
@@ -829,7 +824,6 @@
         }
       }
 
-      // Verificação de Problemas Digestivos
       if (sintomas.includes('dor abdominal')) {
         if (dados.dieta.includes('Rica em Carboidratos') || dados.dieta.includes('Baixa em Frutas/Vegetais')) {
           diagnostico += 'Você pode estar enfrentando problemas digestivos, possivelmente relacionados à sua dieta. ';
@@ -840,7 +834,6 @@
         }
       }
 
-      // Verificação de Fadiga
       if (sintomas.includes('cansaço')) {
         if (dados.historico_cronico === 'Diabetes' || dados.historico_cronico === 'Hipertensão') {
           diagnostico += 'Seu cansaço pode estar relacionado à sua condição crônica. ';
@@ -851,13 +844,11 @@
         }
       }
 
-      // Caso não haja diagnóstico específico
       if (!diagnostico) {
         diagnostico = 'Com base nos dados fornecidos, não identificamos uma condição específica, mas seus sintomas requerem atenção. ';
         recomendacao = 'Monitore seus sintomas e considere obter um Diagnóstico Completo para uma análise mais profunda. ';
       }
 
-      // Texto Final do Pré-Diagnóstico
       const texto = `
         ${diagnostico}
         <strong>Faixa etária:</strong> ${dados.idade}.<br>
@@ -869,55 +860,108 @@
       document.getElementById('respostaIA').innerHTML = texto;
       document.getElementById('resultado-diagnostico').classList.remove('hidden');
 
-      // Exibir o modal com o avatar 3D
       const modal = document.getElementById('avatar-modal');
       const modalDiagnostico = document.getElementById('modal-diagnostico');
-      modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, ''); // Remove HTML para leitura
+      modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
       modal.classList.remove('hidden');
-      initializeAvatar();
-      speakDiagnosis(modalDiagnostico.textContent);
+      initializeAvatar(texto.replace(/<[^>]+>/g, ''));
+      speakDiagnosis(texto.replace(/<[^>]+>/g, ''));
 
-      // Armazenar dados para envio via API após pagamento
       localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
       window.location.hash = 'resultado-diagnostico';
     }
 
     // Leitura do Diagnóstico com Voz
-    let utterance;
     function speakDiagnosis(text) {
-      utterance = new SpeechSynthesisUtterance(text);
+      if (!('speechSynthesis' in window)) {
+        console.error('Síntese de voz não suportada pelo navegador.');
+        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Leitura de voz não suportada neste navegador. Use Chrome ou Firefox.</span>';
+        return;
+      }
+
+      const voices = window.speechSynthesis.getVoices();
+      console.log('Vozes disponíveis:', voices);
+      if (voices.length === 0) {
+        console.error('Nenhuma voz disponível para síntese de voz.');
+        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Nenhuma voz disponível. Verifique as configurações de voz do sistema.</span>';
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'pt-BR';
+      const ptVoice = voices.find(voice => voice.lang.includes('pt-BR')) || voices[0];
+      utterance.voice = ptVoice;
       utterance.rate = 1;
       utterance.pitch = 1;
-      window.speechSynthesis.speak(utterance);
 
       const stopSpeechButton = document.getElementById('stop-speech');
+      stopSpeechButton.classList.remove('hidden');
       stopSpeechButton.addEventListener('click', () => {
         window.speechSynthesis.cancel();
+        stopSpeechButton.classList.add('hidden');
       });
 
       utterance.onend = () => {
         stopSpeechButton.classList.add('hidden');
       };
+
+      utterance.onerror = (event) => {
+        console.error('Erro na síntese de voz:', event.error);
+        document.getElementById('modal-diagnostico').innerHTML += '<br><span style="color: red;">Erro ao ler o diagnóstico. Verifique as permissões de áudio.</span>';
+        stopSpeechButton.classList.add('hidden');
+      };
+
+      window.speechSynthesis.speak(utterance);
     }
 
+    // Forçar carregamento das vozes (alguns navegadores precisam disso)
+    window.speechSynthesis.onvoiceschanged = () => {
+      const voices = window.speechSynthesis.getVoices();
+      console.log('Vozes carregadas:', voices);
+    };
+
     // Avatar 3D com Three.js
-    let animationFrameId;
-    function initializeAvatar() {
+    function initializeAvatar(text) {
       const canvas = document.getElementById('avatar-canvas');
+      if (!canvas) {
+        console.error('Canvas não encontrado.');
+        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro: Canvas não encontrado.</p>';
+        return;
+      }
+
+      // Verificar suporte a WebGL
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        console.error('WebGL não é suportado neste navegador.');
+        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Avatar não disponível: WebGL não suportado. Use Chrome ou Firefox.</p>';
+        return;
+      }
+
+      // Verificar se THREE está disponível
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js não foi carregado.');
+        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro ao carregar Three.js. Verifique sua conexão ou tente novamente.</p>';
+        return;
+      }
+
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
 
-      // Iluminação
+      try {
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      } catch (error) {
+        console.error('Erro ao configurar o renderer:', error);
+        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro ao inicializar o avatar. Veja o console para detalhes.</p>';
+        return;
+      }
+
       const ambientLight = new THREE.AmbientLight(0x404040);
       scene.add(ambientLight);
       const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
       directionalLight.position.set(0, 1, 1);
       scene.add(directionalLight);
 
-      // Geometria do Avatar (Cabeça e Corpo Simples)
       const headGeometry = new THREE.SphereGeometry(0.5, 32, 32);
       const headMaterial = new THREE.MeshPhongMaterial({ color: 0xffd1a3 });
       const head = new THREE.Mesh(headGeometry, headMaterial);
@@ -929,7 +973,6 @@
       const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
       scene.add(body);
 
-      // Olhos
       const eyeGeometry = new THREE.SphereGeometry(0.1, 32, 32);
       const eyeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
       const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
@@ -948,7 +991,6 @@
       rightPupil.position.set(0.15, 1.3, 0.45);
       scene.add(rightPupil);
 
-      // Boca
       const mouthGeometry = new THREE.BoxGeometry(0.2, 0.05, 0.05);
       const mouthMaterial = new THREE.MeshPhongMaterial({ color: 0xff4040 });
       const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
@@ -957,35 +999,50 @@
 
       camera.position.z = 3;
 
-      // Animação do Avatar
       let time = 0;
-      let speaking = true;
-      utterance.onend = () => {
-        speaking = false;
-        document.getElementById('stop-speech').classList.add('hidden');
-      };
+      let speaking = false;
 
       function animate() {
         time += 0.1;
-        head.position.y = 1.2 + Math.sin(time) * 0.05; // Movimento leve de flutuação
-        if (speaking) {
-          mouth.scale.y = 1 + Math.sin(time * 5) * 0.3; // Animação de fala
+        head.position.y = 1.2 + Math.sin(time) * 0.05;
+        if (speaking && window.speechSynthesis && window.speechSynthesis.speaking) {
+          mouth.scale.y = 1 + Math.sin(time * 5) * 0.3;
+        } else {
+          mouth.scale.y = 1;
         }
         renderer.render(scene, camera);
         animationFrameId = requestAnimationFrame(animate);
       }
-      animate();
 
-      // Limpeza ao fechar o modal
+      try {
+        animate();
+      } catch (error) {
+        console.error('Erro durante a animação:', error);
+        document.getElementById('avatar-canvas').innerHTML = '<p style="color: red;">Erro na animação do avatar. Veja o console para detalhes.</p>';
+        return;
+      }
+
       const closeModal = document.getElementById('close-modal');
       closeModal.addEventListener('click', () => {
         const modal = document.getElementById('avatar-modal');
         modal.classList.add('hidden');
-        window.speechSynthesis.cancel();
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
         cancelAnimationFrame(animationFrameId);
         scene.clear();
         renderer.dispose();
       });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      });
+
+      if (window.speechSynthesis && window.speechSynthesis.speaking) {
+        speaking = true;
+      }
     }
 
     // Simulação de envio para API após pagamento (exemplo)
