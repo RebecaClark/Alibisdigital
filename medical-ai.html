@@ -842,4 +842,100 @@
           diagnostico += 'Seu cansaço pode estar relacionado à sua condição crônica. ';
           recomendacao += 'Monitore seus níveis de glicose ou pressão arterial regularmente. ';
         } else if (dados.sono_apetite.includes('Falta de Apetite')) {
-          diagnostico += 'Seu cansaço pode estar
+          diagnostico += 'Seu cansaço pode estar ligado à falta de apetite e possível deficiência nutricional. ';
+          recomendacao += 'Tente refeições leves e ricas em nutrientes. ';
+        }
+      }
+
+      if (!diagnostico) {
+        diagnostico = 'Com base nos dados fornecidos, não identificamos uma condição específica, mas seus sintomas requerem atenção. ';
+        recomendacao = 'Monitore seus sintomas e considere obter um Diagnóstico Completo para uma análise mais profunda. ';
+      }
+
+      const texto = `
+        ${diagnostico}
+        <strong>Faixa etária:</strong> ${dados.idade}.<br>
+        <strong>Condições crônicas:</strong> ${dados.historico_cronico}.<br>
+        <strong>Recomendações iniciais:</strong> ${recomendacao}<br>
+        Para um diagnóstico mais profundo, sugiro que obtenha o Diagnóstico Completo.
+      `;
+
+      document.getElementById('respostaIA').innerHTML = texto;
+      document.getElementById('resultado-diagnostico').classList.remove('hidden');
+
+      const modal = document.getElementById('avatar-modal');
+      const modalDiagnostico = document.getElementById('modal-diagnostico');
+      modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
+      modal.classList.remove('hidden');
+      initializeHologramVideo();
+
+      localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
+      window.location.hash = 'resultado-diagnostico';
+    }
+
+    // Inicializar o Vídeo de Holograma
+    function initializeHologramVideo() {
+      const video = document.getElementById('hologram-video');
+      if (!video) {
+        console.error('Vídeo não encontrado.');
+        return;
+      }
+
+      video.play().catch(error => {
+        console.error('Erro ao reproduzir o vídeo:', error);
+        video.insertAdjacentHTML('afterend', '<p style="color: red;">Erro ao reproduzir o vídeo. Verifique se o arquivo está acessível.</p>');
+      });
+
+      const closeModal = document.getElementById('close-modal');
+      closeModal.addEventListener('click', () => {
+        const modal = document.getElementById('avatar-modal');
+        modal.classList.add('hidden');
+        video.pause();
+      });
+    }
+
+    // Simulação de envio para API após pagamento (exemplo)
+    function enviarParaAPIMedica() {
+      const dados = JSON.parse(localStorage.getItem('diagnosticoDados'));
+      if (!dados) return;
+
+      const payload = {
+        patient_data: {
+          medical_history: {
+            chronic_conditions: dados.historico_cronico,
+            surgeries_allergies: dados.historico_cirurgias,
+            medications: dados.medicamentos,
+            mental_health: dados.historico_mental,
+            family_history: dados.historico_familiar
+          },
+          symptoms: {
+            main_symptoms: dados.sintomas,
+            duration_days: dados.duracao,
+            sleep_appetite: dados.sono_apetite,
+            physical_changes: dados.mudancas_fisicas
+          },
+          lifestyle: {
+            weight: dados.peso,
+            height: dados.altura,
+            diet: dados.dieta,
+            habits: dados.habitos
+          },
+          psychosocial: {
+            stress: dados.estresse
+          },
+          vitals: {
+            blood_pressure_temperature: dados.sinais_vitais,
+            observations: dados.observacoes
+          },
+          context: {
+            exposure: dados.exposicao
+          },
+          age_range: dados.idade
+        }
+      };
+
+      console.log('Dados prontos para envio à API:', payload);
+    }
+  </script>
+</body>
+</html>
