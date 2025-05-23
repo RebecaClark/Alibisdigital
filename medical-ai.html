@@ -172,11 +172,12 @@
       border: 1px solid #23d5ab;
       box-shadow: 0 0 20px rgba(35, 213, 171, 0.5);
     }
-    #avatar-canvas {
+    #hologram-video {
       width: 100%;
       height: 300px;
       border-radius: 0.5rem;
       background: #112240;
+      object-fit: cover;
     }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
@@ -187,7 +188,7 @@
       .animated-btn { width: 100%; margin-bottom: 0.5rem; }
       #navbar, #mobile-menu { width: 100%; }
       #mobile-menu a { width: 100%; text-align: center; }
-      #avatar-canvas { height: 200px; }
+      #hologram-video { height: 200px; }
     }
   </style>
 </head>
@@ -471,7 +472,7 @@
     </div>
   </section>
 
-  <!-- Modal com Avatar 3D -->
+  <!-- Modal com Vídeo de Holograma -->
   <div id="avatar-modal" class="modal hidden">
     <div class="modal-content">
       <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -480,7 +481,10 @@
         </svg>
       </button>
       <h2 class="text-2xl font-bold mb-4 text-white">Seu Pré-Diagnóstico</h2>
-      <div id="avatar-canvas"></div>
+      <video id="hologram-video" autoplay loop muted playsinline>
+        <source src="/assets/hologram.mp4" type="video/mp4">
+        Seu navegador não suporta o elemento de vídeo.
+      </video>
       <p id="modal-diagnostico" class="text-green-300 mt-4"></p>
       <button id="stop-speech" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 animated-btn hidden">Parar Leitura</button>
       <a href="#checkout" class="block mt-4 bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-600 animated-btn neon-glow text-center">Obter Diagnóstico Completo</a>
@@ -603,148 +607,6 @@
   </footer>
 
   <script>
-    // Three.js (versão simplificada embutida)
-    const THREE = {};
-    (function (global, factory) {
-      factory((global.THREE = THREE));
-    }(this, function (exports) {
-      // Core Vector3
-      class Vector3 {
-        constructor(x = 0, y = 0, z = 0) {
-          this.x = x;
-          this.y = y;
-          this.z = z;
-        }
-        set(x, y, z) {
-          this.x = x;
-          this.y = y;
-          this.z = z;
-          return this;
-        }
-      }
-
-      // Core Scene
-      class Scene {
-        constructor() {
-          this.children = [];
-        }
-        add(object) {
-          this.children.push(object);
-          return this;
-        }
-        clear() {
-          this.children = [];
-        }
-      }
-
-      // Core Camera
-      class PerspectiveCamera {
-        constructor(fov, aspect, near, far) {
-          this.fov = fov;
-          this.aspect = aspect;
-          this.near = near;
-          this.far = far;
-          this.position = new Vector3(0, 0, 5);
-          this.updateProjectionMatrix();
-        }
-        updateProjectionMatrix() {
-          // Simulação de atualização da matriz de projeção
-        }
-      }
-
-      // Core Renderer
-      class WebGLRenderer {
-        constructor(params = {}) {
-          this.canvas = params.canvas;
-          this.gl = this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl');
-          if (!this.gl) throw new Error('WebGL não suportado');
-          this.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-        }
-        setSize(width, height) {
-          this.canvas.width = width;
-          this.canvas.height = height;
-          if (this.gl) {
-            this.gl.viewport(0, 0, width, height);
-          }
-        }
-        render(scene, camera) {
-          if (!this.gl) return;
-          this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
-          this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-          // Simulação de renderização
-          this.gl.flush();
-        }
-        dispose() {
-          // Limpeza simulada
-        }
-      }
-
-      // Core Geometry
-      class SphereGeometry {
-        constructor(radius, widthSegments, heightSegments) {
-          this.radius = radius;
-        }
-      }
-      class CylinderGeometry {
-        constructor(radiusTop, radiusBottom, height, radialSegments) {
-          this.radiusTop = radiusTop;
-          this.radiusBottom = radiusBottom;
-          this.height = height;
-        }
-      }
-      class BoxGeometry {
-        constructor(width, height, depth) {
-          this.width = width;
-          this.height = height;
-          this.depth = depth;
-        }
-      }
-
-      // Core Material
-      class MeshPhongMaterial {
-        constructor(params = {}) {
-          this.color = params.color || 0xffffff;
-        }
-      }
-
-      // Core Mesh
-      class Mesh {
-        constructor(geometry, material) {
-          this.geometry = geometry;
-          this.material = material;
-          this.position = new Vector3();
-          this.scale = new Vector3(1, 1, 1);
-        }
-      }
-
-      // Core Lights
-      class AmbientLight {
-        constructor(color) {
-          this.color = color;
-        }
-      }
-      class DirectionalLight {
-        constructor(color, intensity) {
-          this.color = color;
-          this.intensity = intensity;
-          this.position = new Vector3();
-        }
-      }
-
-      // Exportando classes
-      exports.Vector3 = Vector3;
-      exports.Scene = Scene;
-      exports.PerspectiveCamera = PerspectiveCamera;
-      exports.WebGLRenderer = WebGLRenderer;
-      exports.SphereGeometry = SphereGeometry;
-      exports.CylinderGeometry = CylinderGeometry;
-      exports.BoxGeometry = BoxGeometry;
-      exports.MeshPhongMaterial = MeshPhongMaterial;
-      exports.Mesh = Mesh;
-      exports.AmbientLight = AmbientLight;
-      exports.DirectionalLight = DirectionalLight;
-    }));
-
     // Timer de Urgência
     let vagas = 12;
     let timeLeft = 120; // 2 minutos em segundos
@@ -980,161 +842,4 @@
           diagnostico += 'Seu cansaço pode estar relacionado à sua condição crônica. ';
           recomendacao += 'Monitore seus níveis de glicose ou pressão arterial regularmente. ';
         } else if (dados.sono_apetite.includes('Falta de Apetite')) {
-          diagnostico += 'Seu cansaço pode estar ligado à falta de apetite e possível deficiência nutricional. ';
-          recomendacao += 'Tente refeições leves e ricas em nutrientes. ';
-        }
-      }
-
-      if (!diagnostico) {
-        diagnostico = 'Com base nos dados fornecidos, não identificamos uma condição específica, mas seus sintomas requerem atenção. ';
-        recomendacao = 'Monitore seus sintomas e considere obter um Diagnóstico Completo para uma análise mais profunda. ';
-      }
-
-      const texto = `
-        ${diagnostico}
-        <strong>Faixa etária:</strong> ${dados.idade}.<br>
-        <strong>Condições crônicas:</strong> ${dados.historico_cronico}.<br>
-        <strong>Recomendações iniciais:</strong> ${recomendacao}<br>
-        Para um diagnóstico mais profundo, sugiro que obtenha o Diagnóstico Completo.
-      `;
-
-      document.getElementById('respostaIA').innerHTML = texto;
-      document.getElementById('resultado-diagnostico').classList.remove('hidden');
-
-      const modal = document.getElementById('avatar-modal');
-      const modalDiagnostico = document.getElementById('modal-diagnostico');
-      modalDiagnostico.textContent = texto.replace(/<[^>]+>/g, '');
-      modal.classList.remove('hidden');
-      initializeAvatar(texto.replace(/<[^>]+>/g, ''));
-
-      localStorage.setItem('diagnosticoDados', JSON.stringify(dados));
-      window.location.hash = 'resultado-diagnostico';
-    }
-
-    // Avatar 3D com Three.js
-    function initializeAvatar(text) {
-      const canvas = document.getElementById('avatar-canvas');
-      if (!canvas) {
-        console.error('Canvas não encontrado.');
-        canvas.innerHTML = '<p style="color: red;">Erro: Canvas não encontrado.</p>';
-        return;
-      }
-
-      // Verificar suporte a WebGL
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-      if (!gl) {
-        console.error('WebGL não é suportado neste navegador.');
-        canvas.innerHTML = '<p style="color: red;">Avatar não disponível: WebGL não suportado. Use Chrome ou Firefox.</p>';
-        return;
-      }
-
-      let scene, camera, renderer;
-      try {
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-      } catch (error) {
-        console.error('Erro ao inicializar Three.js:', error);
-        canvas.innerHTML = '<p style="color: red;">Erro ao inicializar Three.js: ' + error.message + '</p>';
-        return;
-      }
-
-      const ambientLight = new THREE.AmbientLight(0x404040);
-      scene.add(ambientLight);
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-      directionalLight.position.set(0, 1, 1);
-      scene.add(directionalLight);
-
-      const headGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-      const headMaterial = new THREE.MeshPhongMaterial({ color: 0xffd1a3 });
-      const head = new THREE.Mesh(headGeometry, headMaterial);
-      head.position.y = 1.2;
-      scene.add(head);
-
-      const bodyGeometry = new THREE.CylinderGeometry(0.3, 0.3, 1, 32);
-      const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x23a6d5 });
-      const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-      scene.add(body);
-
-      camera.position.z = 3;
-
-      let time = 0;
-      let animationFrameId;
-
-      function animate() {
-        time += 0.1;
-        head.position.y = 1.2 + Math.sin(time) * 0.05;
-        renderer.render(scene, camera);
-        animationFrameId = requestAnimationFrame(animate);
-      }
-
-      try {
-        animate();
-      } catch (error) {
-        console.error('Erro durante a animação:', error);
-        canvas.innerHTML = '<p style="color: red;">Erro na animação do avatar: ' + error.message + '</p>';
-        return;
-      }
-
-      const closeModal = document.getElementById('close-modal');
-      closeModal.addEventListener('click', () => {
-        const modal = document.getElementById('avatar-modal');
-        modal.classList.add('hidden');
-        cancelAnimationFrame(animationFrameId);
-        scene.clear();
-        renderer.dispose();
-      });
-
-      window.addEventListener('resize', () => {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-      });
-    }
-
-    // Simulação de envio para API após pagamento (exemplo)
-    function enviarParaAPIMedica() {
-      const dados = JSON.parse(localStorage.getItem('diagnosticoDados'));
-      if (!dados) return;
-
-      const payload = {
-        patient_data: {
-          medical_history: {
-            chronic_conditions: dados.historico_cronico,
-            surgeries_allergies: dados.historico_cirurgias,
-            medications: dados.medicamentos,
-            mental_health: dados.historico_mental,
-            family_history: dados.historico_familiar
-          },
-          symptoms: {
-            main_symptoms: dados.sintomas,
-            duration_days: dados.duracao,
-            sleep_appetite: dados.sono_apetite,
-            physical_changes: dados.mudancas_fisicas
-          },
-          lifestyle: {
-            weight: dados.peso,
-            height: dados.altura,
-            diet: dados.dieta,
-            habits: dados.habitos
-          },
-          psychosocial: {
-            stress: dados.estresse
-          },
-          vitals: {
-            blood_pressure_temperature: dados.sinais_vitais,
-            observations: dados.observacoes
-          },
-          context: {
-            exposure: dados.exposicao
-          },
-          age_range: dados.idade
-        }
-      };
-
-      console.log('Dados prontos para envio à API:', payload);
-    }
-  </script>
-</body>
-</html>
+          diagnostico += 'Seu cansaço pode estar
