@@ -141,66 +141,62 @@
         </button>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
-        <a href="#criar-alibi" class="hover:text-green-400 transition">Criar Álibi</a>
-        <a href="#scanner" class="hover:text-green-400 transition">Scanner com IA</a>
-        <a href="#avaliacao-emocional" class="hover:text-green-400 transition">Avaliação Emocional</a>
+        <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
         <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
       </nav>
     </div>
   </header>
   <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
     <nav class="flex flex-col items-center">
-      <a href="#criar-alibi" class="text-white py-3 text-lg">Criar Álibi</a>
-      <a href="#scanner" class="text-white py-3 text-lg">Scanner com IA</a>
-      <a href="#avaliacao-emocional" class="text-white py-3 text-lg">Avaliação Emocional</a>
+      <a href="/scanner.html" class="text-white py-3 text-lg">Scanner com IA</a>
+      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg">Avaliação Emocional</a>
       <a href="#suporte" class="text-white py-3 text-lg">Suporte</a>
     </nav>
   </div>
   <div class="h-20"></div>
 
   <!-- Bloco 1: Hero -->
-<section id="hero" class="animated-gradient text-white text-center py-24 px-6">
-  <div class="max-w-4xl mx-auto">
+  <section id="hero" class="animated-gradient text-white text-center py-24 px-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Título e Subtítulo -->
+      <h1 class="text-5xl font-extrabold mb-6 leading-tight animate__animated animate__fadeInDown">
+        Crie Álibis Digitais Convincentes em Minutos
+      </h1>
+      <p class="text-lg text-gray-300 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
+        Transforme sua privacidade em prioridade com álibis inteligentes gerados por IA, adaptados ao seu estado emocional.
+      </p>
 
-    <!-- Título e Subtítulo -->
-    <h1 class="text-5xl font-extrabold mb-6 leading-tight animate__animated animate__fadeInDown">
-      Crie Álibis Digitais Convincentes em Minutos
-    </h1>
-    <p class="text-lg text-gray-300 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
-      Use nossa IA para gerar desculpas realistas e proteger sua privacidade, com base no seu estado emocional.
-    </p>
+      <!-- VSL: Vídeo Sales Letter -->
+      <div class="mb-10">
+        <video controls autoplay playsinline preload="auto"
+               class="w-full rounded-xl shadow-lg border-2 border-[#22C55E]">
+          <source src="/assets/vsl-video.mp4" type="video/mp4">
+          Seu navegador não suporta vídeo.
+        </video>
+      </div>
 
-    <!-- VSL: Vídeo Sales Letter -->
-    <div class="mb-10">
-      <video controls autoplay muted playsinline preload="auto"
-             class="w-full rounded-xl shadow-lg border-2 border-[#22C55E]">
-        <source src="/assets/vsl-video.mp4" type="video/mp4">
-        Seu navegador não suporta vídeo.
-      </video>
+      <!-- Botão CTA -->
+      <div class="flex justify-center">
+        <a href="#scanner" class="bg-purple-700 hover:bg-purple-600 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 animated-btn pulse">
+          🔍 Teste o Scanner Agora
+        </a>
+      </div>
+
+      <!-- Urgência -->
+      <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Apenas <span id="vagas">12</span> vagas disponíveis hoje!</p>
+
+      <!-- Formulário de captura -->
+      <div class="mt-8 max-w-md mx-auto">
+        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas para Álibis</h3>
+        <form class="flex flex-col sm:flex-row gap-4">
+          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg text-black w-full" required>
+          <button type="submit" class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 animated-btn">Enviar</button>
+        </form>
+        <p class="text-sm text-gray-400 mt-2">🔒 Seus dados estão 100% seguros.</p>
+      </div>
     </div>
-
-    <!-- Botão CTA -->
-    <div class="flex justify-center">
-      <a href="#scanner" class="bg-purple-700 hover:bg-purple-600 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg transform transition-all duration-300 hover:scale-105 animated-btn pulse">
-        🔍 Crie Seu Álibi Agora
-      </a>
-    </div>
-
-    <!-- Urgência -->
-    <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Apenas <span id="vagas">12</span> vagas disponíveis hoje!</p>
-
-    <!-- Formulário de captura -->
-    <div class="mt-8 max-w-md mx-auto">
-      <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas para Álibis</h3>
-      <form class="flex flex-col sm:flex-row gap-4">
-        <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg text-black w-full" required>
-        <button type="submit" class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 animated-btn">Enviar</button>
-      </form>
-      <p class="text-sm text-gray-400 mt-2">🔒 Seus dados estão 100% seguros.</p>
-    </div>
-
-  </div>
-</section>
+  </section>
 
   <!-- Bloco 9: Benefícios do Premium -->
   <section class="py-16 px-6 bg-white text-gray-800 text-center animate-on-scroll">
@@ -215,7 +211,7 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Desculpas Realistas</h3>
         <p class="mb-3">Álibis com textos, áudios e prints que enganam qualquer um.</p>
-        <a href="#criar-alibi" class="text-purple-700 font-semibold hover:underline shine">Comece agora →</a>
+        <a href="#scanner" class="text-purple-700 font-semibold hover:underline shine">Comece agora →</a>
       </div>
       <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-in">
         <div class="text-purple-500 mb-4 scale-in">
@@ -236,11 +232,11 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Suporte Personalizado</h3>
         <p class="mb-3">Receba ajuda real para suas necessidades emocionais.</p>
-        <a href="#avaliacao-emocional" class="text-purple-700 font-semibold hover:underline shine">Fazer avaliação →</a>
+        <a href="/emotional-evaluation.html" class="text-purple-700 font-semibold hover:underline shine">Fazer avaliação →</a>
       </div>
     </div>
     <div class="mt-10 pulse">
-      <a href="#planos" class="animated-btn bg-purple-700 text-white font-bold px-8 py-4 rounded-full hover:bg-purple-800 transition-all duration-300">
+      <a href="#checkout" class="animated-btn bg-purple-700 text-white font-bold px-8 py-4 rounded-full hover:bg-purple-800 transition-all duration-300">
         Liberar Todos os Benefícios
       </a>
     </div>
@@ -255,7 +251,7 @@
         <span class="text-lg text-gray-400 italic">Apenas <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas restantes hoje!</span>
       </div>
       <a href="#checkout" class="inline-block bg-white text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-200 transition duration-300 animated-btn bounce-in">
-        Criar Meu Álibi Agora
+        Teste o Scanner Agora
       </a>
       <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Privacidade total. Pagamento seguro via PIX ou cartão.</p>
     </div>
@@ -304,8 +300,8 @@
       <div class="fade-in">
         <h4 class="text-white font-semibold mb-4">Navegação</h4>
         <ul class="space-y-2">
-          <li><a href="#hero" class="hover:text-white transition">Início</a></li>
-          <li><a href="#scanner" class="hover:text-white transition">Scanner Facial</a></li>
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
           <li><a href="#planos" class="hover:text-white transition">Planos</a></li>
           <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
           <li><a href="/politica-privacidade" class="hover:text-white transition">Política de Privacidade</a></li>
@@ -334,7 +330,17 @@
         document.getElementById('vagas-final').textContent = vagas;
       }
     }, 3600000);
+
     document.addEventListener('DOMContentLoaded', () => {
+      // Inicia o vídeo com som
+      const video = document.querySelector('video');
+      if (video) {
+        video.play().catch(error => {
+          console.log("Erro ao reproduzir vídeo: ", error);
+        });
+      }
+
+      // Animações ao rolar
       const animItems = document.querySelectorAll('.animate-on-scroll');
       const windowHeight = window.innerHeight;
       function animOnScroll() {
@@ -342,14 +348,19 @@
           const itemTop = item.getBoundingClientRect().top;
           const animStart = 100;
           if (itemTop < windowHeight - animStart) {
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0)';
-            item.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            item.classList.add('visible');
           }
         });
       }
       animOnScroll();
       window.addEventListener('scroll', animOnScroll);
+
+      // Menu hamburguer
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
     });
   </script>
 </body>
