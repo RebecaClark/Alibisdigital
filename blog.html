@@ -1,49 +1,10 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Leia artigos educativos sobre IA, privacidade e bem-estar no blog da Álibis Digital.">
-  <meta name="keywords" content="blog, IA, privacidade, Álibis Digital">
+  <meta name="keywords" content="blog, IA, privacidade, Álibis Digital, saúde mental, estresse, bem-estar">
   <meta name="author" content="Álibis Digital">
   <title>Blog - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -136,15 +97,35 @@
     <div class="max-w-3xl mx-auto">
       <h2 class="text-4xl font-bold mb-6 shine">Últimos Artigos</h2>
       <div class="space-y-6 text-left">
-        <div class="p-4 bg-gray-100 rounded-lg">
-          <h3 class="text-xl font-semibold">Como a IA Pode Ajudar na Sua Saúde</h3>
-          <p class="text-gray-600 mt-2">Descubra como nossa tecnologia de diagnóstico médico pode melhorar sua qualidade de vida.</p>
-          <a href="/medical-ai.html" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
+          <p class="text-gray-600 mt-2">Descubra como o scanner facial de estresse e o Abili podem ajudar a aliviar a tensão no trabalho com dicas personalizadas.</p>
+          <a href="/reduzir-estresse-trabalho-ia" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
         </div>
-        <div class="p-4 bg-gray-100 rounded-lg">
-          <h3 class="text-xl font-semibold">Benefícios da Análise Emocional</h3>
-          <p class="text-gray-600 mt-2">Entenda como monitorar seu estado emocional pode trazer mais equilíbrio.</p>
-          <a href="/emotional-evaluation.html" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
+          <p class="text-gray-600 mt-2">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
+          <a href="/gerenciar-financas-estresse" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
+          <p class="text-gray-600 mt-2">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
+          <a href="/prevenir-burnout-ia" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Melhore Seu Sono com Inteligência Artificial</h3>
+          <p class="text-gray-600 mt-2">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
+          <a href="/melhorar-sono-com-ia" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
+          <p class="text-gray-600 mt-2">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
+          <a href="/produtividade-trabalho-ia" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg animate-on-scroll">
+          <h3 class="text-xl font-semibold">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
+          <p class="text-gray-600 mt-2">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
+          <a href="/equilibre-vida-pessoal-ia" class="text-purple-700 font-semibold hover:underline">Leia mais →</a>
         </div>
       </div>
     </div>
@@ -181,7 +162,38 @@
     </div>
   </footer>
 
-  <script>
+  <script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+        } catch (e) {
+          console.error(e);
+          return "";
+        }
+      }
+      return gk_fileData[filename] || "";
+    }
+
     function createParticles() {
       const particlesContainer = document.getElementById('particles');
       for (let i = 0; i < 50; i++) {
@@ -222,6 +234,23 @@
           document.querySelector('header').classList.add('shadow-lg');
         } else {
           document.querySelector('header').classList.remove('shadow-lg');
+        }
+      });
+
+      // Corrige links "Leia mais" para evitar redirecionamento para medical-ai.html
+      document.querySelectorAll('a[href="/medical-ai.html"]').forEach(link => {
+        if (!gk_isXlsx) { // Evita interferência da lógica XLSX
+          const articleLinks = [
+            '/reduzir-estresse-trabalho-ia',
+            '/gerenciar-financas-estresse',
+            '/prevenir-burnout-ia',
+            '/melhorar-sono-com-ia',
+            '/produtividade-trabalho-ia',
+            '/equilibre-vida-pessoal-ia'
+          ];
+          if (!articleLinks.includes(link.getAttribute('href'))) {
+            link.href = '/blog.html'; // Redireciona links incorretos para a página do blog
+          }
         }
       });
     });
