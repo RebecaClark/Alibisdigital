@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Proteja sua privacidade com álibis digitais e avaliações emocionais geradas por IA. Seguro, rápido e confiável.">
-  <meta name="keywords" content="álibis digitais, scanner facial, diagnóstico emocional, IA, privacidade">
+  <meta name="description" content="Descubra e gerencie suas emoções com ferramentas de IA rápidas e personalizadas. Seguro, rápido e confiável.">
+  <meta name="keywords" content="álibis digitais, scanner facial, diagnóstico emocional, IA, bem-estar emocional">
   <meta name="author" content="Álibis Digital">
-  <title>Álibis Digital - Privacidade com Inteligência Artificial</title>
+  <title>Álibis Digital - Inteligência Artificial para o Bem-Estar Emocional</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -14,7 +14,7 @@
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
     .bounce-in { animation: bounceIn 1.2s ease-in-out; }
-    .pulse { animation: pulse 2.5s infinite ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
     .float { animation: float 4s infinite ease-in-out; }
     .scale-up { animation: scaleUp 0.8s ease-in-out; }
     @keyframes fadeIn {
@@ -37,7 +37,7 @@
     }
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
     @keyframes float {
@@ -99,7 +99,7 @@
       left: -60%;
       width: 220%;
       height: 220%;
-      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
       transform: rotate(20deg);
       animation: shine 4s infinite linear;
     }
@@ -107,16 +107,91 @@
       0% { transform: translateX(-120%) rotate(20deg); }
       100% { transform: translateX(120%) rotate(20deg); }
     }
-    .animated-gradient {
-      background: linear-gradient(135deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradient 12s ease infinite;
+    /* Estilo do Gradiente Tecnológico */
+    .tech-gradient {
+      background: linear-gradient(135deg, #1e293b, #4c1d95, #0f172a);
     }
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Estilos do Submenu */
+    .dropdown:hover .dropdown-menu {
+      display: block;
     }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #1f2937;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+    .dropdown-menu a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+    .dropdown-menu a:hover {
+      background-color: #374151;
+      color: #34d399;
+    }
+    /* Estilo do Botão Teste Grátis */
+    .cta-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: neonGlow 1.5s infinite alternate, subtleShake 0.5s infinite;
+    }
+    @keyframes neonGlow {
+      0% { box-shadow: 0 0 5px #7C3AED, 0 0 10px #7C3AED, 0 0 15px #7C3AED; }
+      100% { box-shadow: 0 0 10px #7C3AED, 0 0 20px #7C3AED, 0 0 30px #7C3AED; }
+    }
+    @keyframes subtleShake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+    .cta-btn .icon {
+      display: inline-block;
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    /* Estilo do Formulário de Dicas */
+    .form-container {
+      background: #1f2937;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    .form-container:hover {
+      transform: translateY(-5px);
+    }
+    .form-container input {
+      background: #374151;
+      border: 1px solid #4b5563;
+      color: white;
+      transition: border-color 0.3s ease;
+    }
+    .form-container input:focus {
+      outline: none;
+      border-color: #7C3AED;
+      box-shadow: 0 0 5px rgba(124, 58, 237, 0.5);
+    }
+    .form-container button {
+      background: #16A34A;
+      transition: background 0.3s ease;
+    }
+    .form-container button:hover {
+      background: #15803d;
+    }
+    /* Estilos para Mobile */
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -127,6 +202,21 @@
       video { width: 100%; height: auto; }
       #navbar, #mobile-menu { width: 100%; }
       #mobile-menu a { width: 100%; text-align: center; }
+      .dropdown-menu-mobile {
+        display: none;
+        background-color: #1f2937;
+        width: 100%;
+      }
+      .dropdown-menu-mobile a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+      }
+      .dropdown-menu-mobile a:hover {
+        background-color: #374151;
+      }
     }
   </style>
 </head>
@@ -147,61 +237,93 @@
         </button>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
+        <!-- Dropdown para Serviços -->
+        <div class="dropdown relative">
+          <button class="hover:text-green-400 transition flex items-center">
+            Serviços
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
+            <a href="/blog.html" class="hover:text-green-400 transition">Blog</a>
+            <a href="/medical-ai.html" class="hover:text-green-400 transition">Medical</a>
+            <a href="/alibi.html" class="hover:text-green-400 transition">Alibi</a>
+          </div>
+        </div>
         <a href="#checkout" class="hover:text-green-400 transition">Planos</a>
         <a href="#suporte" class="hover:text-green-400 transition">Suporte</a>
-        <a href="/scanner.html" class="bg-purple-700 hover:bg-purple-600 text-white py-2 px-4 rounded-full text-sm font-semibold transition animated-btn ml-4">Teste Grátis</a>
+        <a href="/scanner.html" class="bg-[#7C3AED] text-white py-2 px-4 rounded-full text-sm font-semibold cta-btn">
+          <span class="icon">🔍</span> Teste Grátis
+        </a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
-        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Avaliação Emocional</a>
+        <!-- Dropdown para Mobile -->
+        <div class="w-full">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+            Serviços
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="services-menu" class="dropdown-menu-mobile">
+            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/blog.html" class="hover:bg-gray-700">Blog</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Medical</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Alibi</a>
+          </div>
+        </div>
         <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
         <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="/scanner.html" class="bg-purple-700 hover:bg-purple-600 text-white py-2 px-4 rounded-full text-lg w-full text-center mt-2">Teste Grátis</a>
+        <a href="/scanner.html" class="bg-[#7C3AED] text-white py-2 px-4 rounded-full text-lg w-full text-center cta-btn">
+          <span class="icon">🔍</span> Teste Grátis
+        </a>
       </nav>
     </div>
   </header>
   <div class="h-20"></div>
 
   <!-- Bloco 1: Hero (Topo do Funil - ToFu) -->
-  <section id="hero" class="animated-gradient text-white text-center py-20 px-6">
+  <section id="hero" class="tech-gradient text-white text-center py-20 px-6">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
-        Proteja Sua Privacidade com IA
+        Transforme Seu Dia com IA Emocional
       </h1>
       <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
-        Descubra seu estado emocional e crie álibis personalizados em minutos.
+        Descubra e gerencie suas emoções com ferramentas de IA rápidas e personalizadas.
       </p>
       <div class="mb-10 relative">
-        <video controls preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22C55E]">
+        <video controls preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#16A34A]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
-          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-purple-700 text-white py-3 px-6 rounded-full hover:bg-purple-600 transition">Tocar Vídeo</button>
+          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#7C3AED] text-white py-3 px-6 rounded-full hover:bg-[#6D28D9] transition">Tocar Vídeo</button>
         </video>
       </div>
-      <a href="/scanner.html" class="bg-purple-700 hover:bg-purple-600 text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-105 animated-btn pulse">
+      <a href="/scanner.html" class="bg-[#7C3AED] hover:bg-[#6D28D9] text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-105 animated-btn pulse">
         🔍 Teste o Scanner Grátis
       </a>
       <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Apenas <span id="vagas">12</span> vagas, fecha em <span id="timer">2:00</span>!</p>
-      <div class="mt-10 max-w-md mx-auto">
+      <div class="mt-10 max-w-md mx-auto form-container">
         <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
         <form class="flex flex-col sm:flex-row gap-4">
-          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg text-black w-full" required>
-          <button type="submit" class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 animated-btn">Inscrever-se</button>
+          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full" required>
+          <button type="submit" class="bg-[#16A34A] text-white py-3 px-6 rounded-lg pulse">Inscrever-se</button>
         </form>
-        <p class="text-sm text-gray-400 mt-2">🔒 Seus dados são protegidos.</p>
+        <p class="text-sm text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
       </div>
     </div>
   </section>
 
   <!-- Bloco 2: Benefícios (Meio do Funil - MoFu) -->
-  <section class="py-16 px-6 bg-white text-gray-800 text-center animate-on-scroll">
+  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 text-center animate-on-scroll">
     <h2 class="text-4xl font-bold mb-10 shine">O Que Você Ganha com o Álibis Digital?</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <div class="text-purple-500 mb-4 scale-up">
+      <div class="bg-[#2D3748] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <div class="text-[#7C3AED] mb-4 scale-up">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
             <path d="M15 8a7.002 7.002 0 0 1-11.027 5.733c.107-.325.347-.573.677-.65a1 1 0 0 0 .707-.707 1 1 0 0 1 .65-.677A4 4 0 0 0 11 8V7a4 4 0 0 0-8 0v1a4.992 4.992 0 0 0 .336 1.813M12 8a5 5 0 0 1-1.367 3.443"/>
             <path d="M16 8A8 8 0 0 1 0 8v1a5 5 0 1 0 10 0V8a3 3 0 1 1 6 0v1a7 7 0 0 1-7 7h-1.5"/>
@@ -209,10 +331,10 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Scanner Emocional</h3>
         <p class="mb-3">Identifique estresse ou cansaço em segundos com IA.</p>
-        <a href="/scanner.html" class="text-purple-700 font-semibold hover:underline shine">Experimente agora →</a>
+        <a href="/scanner.html" class="text-[#7C3AED] font-semibold hover:underline shine">Experimente agora →</a>
       </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
-        <div class="text-purple-500 mb-4 scale-up">
+      <div class="bg-[#2D3748] p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <div class="text-[#7C3AED] mb-4 scale-up">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/>
             <path d="M12 6a1 1 0 0 0-1 1v6a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 12.586V7a1 1 0 0 0-1-1z"/>
@@ -220,52 +342,52 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Avaliação Detalhada</h3>
         <p class="mb-3">Relatórios personalizados para seu bem-estar.</p>
-        <a href="/emotional-evaluation.html" class="text-purple-700 font-semibold hover:underline shine">Faça agora →</a>
+        <a href="/emotional-evaluation.html" class="text-[#7C3AED] font-semibold hover:underline shine">Faça agora →</a>
       </div>
-      <div class="bg-purple-50 p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <div class="text-purple-500 mb-4 scale-up">
+      <div class="bg-[#2D3748] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <div class="text-[#7C3AED] mb-4 scale-up">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
           </svg>
         </div>
         <h3 class="text-2xl font-semibold mb-4">Álibis Personalizados</h3>
         <p class="mb-3">Desculpas realistas com textos e provas digitais.</p>
-        <a href="#checkout" class="text-purple-700 font-semibold hover:underline shine">Desbloqueie agora →</a>
+        <a href="#checkout" class="text-[#7C3AED] font-semibold hover:underline shine">Desbloqueie agora →</a>
       </div>
     </div>
     <div class="mt-12 pulse">
-      <a href="#checkout" class="animated-btn bg-purple-700 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-800 transition-all duration-300">
+      <a href="#checkout" class="animated-btn bg-[#7C3AED] text-white font-bold py-3 px-8 rounded-full hover:bg-[#6D28D9] transition-all duration-300">
         Assine o Plano Premium
       </a>
     </div>
   </section>
 
   <!-- Bloco 3: Prova Social (Meio do Funil - MoFu) -->
-  <section class="py-16 px-6 bg-gray-100 text-gray-800 text-center animate-on-scroll">
+  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 text-center animate-on-scroll">
     <h2 class="text-4xl font-bold mb-10 shine">O Que Nossos Usuários Dizem</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <p class="italic text-gray-600 mb-4">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
-        <p class="font-semibold text-purple-700">- Ana S., 34 anos</p>
+      <div class="bg-[#2D3748] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <p class="italic text-gray-400 mb-4">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
+        <p class="font-semibold text-[#7C3AED]">- Ana S., 34 anos</p>
       </div>
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <p class="italic text-gray-600 mb-4">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
-        <p class="font-semibold text-purple-700">- João P., 28 anos</p>
+      <div class="bg-[#2D3748] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <p class="italic text-gray-400 mb-4">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
+        <p class="font-semibold text-[#7C3AED]">- João P., 28 anos</p>
       </div>
     </div>
   </section>
 
   <!-- Bloco 4: Chamada Final (Meio para Fundo do Funil - MoFu/BoFu) -->
-  <section class="py-20 bg-gray-900 text-white text-center animate-on-scroll">
+  <section class="py-20 bg-[#0f172a] text-white text-center animate-on-scroll">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Sua Privacidade Está em Jogo!</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Transforme Suas Emoções Agora!</h2>
       <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">
-        Teste o Scanner agora e garanta álibis sob medida.
+        Teste o Scanner e receba insights personalizados para o seu dia.
       </p>
       <div class="mb-10">
         <span class="text-lg text-gray-400 italic">Apenas <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas, fecha em <span id="timer-final">2:00</span>!</span>
       </div>
-      <a href="#checkout" class="inline-block bg-white text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-200 transition duration-300 animated-btn bounce-in">
+      <a href="#checkout" class="inline-block bg-[#E2E8F0] text-[#0f172a] font-semibold py-3 px-8 rounded-full shadow-md hover:bg-[#CBD5E1] transition duration-300 animated-btn bounce-in">
         Garanta Seu Plano Agora
       </a>
       <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
@@ -273,15 +395,15 @@
   </section>
 
   <!-- Bloco 5: Checkout (Fundo do Funil - BoFu) -->
-  <section id="checkout" class="py-16 px-6 bg-white text-gray-900 text-center animate-on-scroll">
+  <section id="checkout" class="py-16 px-6 bg-[#1E293B] text-gray-200 text-center animate-on-scroll">
     <div class="max-w-3xl mx-auto">
       <h2 class="text-3xl font-bold mb-6 shine">Escolha Seu Plano</h2>
       <p class="text-lg mb-8 fade-in">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://pagamento.exemplo.com/pix" class="bg-green-600 text-white py-3 px-6 rounded-full hover:bg-green-700 animated-btn w-full sm:w-auto">Pagar com PIX</a>
-        <a href="https://pagamento.exemplo.com/cartao" class="bg-blue-600 text-white py-3 px-6 rounded-full hover:bg-blue-700 animated-btn w-full sm:w-auto">Pagar com Cartão</a>
+        <a href="https://pagamento.exemplo.com/pix" class="bg-[#16A34A] text-white py-3 px-6 rounded-full hover:bg-[#15803d] animated-btn w-full sm:w-auto">Pagar com PIX</a>
+        <a href="https://pagamento.exemplo.com/cartao" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full hover:bg-[#6D28D9] animated-btn w-full sm:w-auto">Pagar com Cartão</a>
       </div>
-      <p class="mt-4 text-sm text-gray-600 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
+      <p class="mt-4 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
       <div class="flex justify-center gap-4 mt-4">
         <img src="https://via.placeholder.com/50?text=SSL" alt="SSL Seguro" class="h-10">
         <img src="https://via.placeholder.com/50?text=Privacidade" alt="Privacidade Garantida" class="h-10">
@@ -290,16 +412,16 @@
   </section>
 
   <!-- Bloco 6: Suporte (Apoio em Todo o Funil) -->
-  <section id="suporte" class="bg-gray-900 py-16 px-6 text-white animate-on-scroll">
+  <section id="suporte" class="bg-[#0f172a] py-16 px-6 text-white animate-on-scroll">
     <div class="max-w-3xl mx-auto text-center">
       <h3 class="text-3xl font-bold mb-4 float">Estamos Aqui para Ajudar</h3>
       <p class="text-gray-400 mb-8 fade-in">Suporte imediato com discrição total.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://wa.me/5511912345678" class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-full flex items-center transition animated-btn slide-in-left">
+        <a href="https://wa.me/5511912345678" class="bg-[#374151] hover:bg-[#4B5563] text-white font-medium py-3 px-6 rounded-full flex items-center transition animated-btn slide-in-left">
           <svg class="w-5 h-5 mr-2 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
           WhatsApp
         </a>
-        <a href="mailto:contato@alibisdigital.com" class="bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-full transition animated-btn slide-in-right">
+        <a href="mailto:contato@alibisdigital.com" class="bg-[#374151] hover:bg-[#4B5563] text-white font-medium py-3 px-6 rounded-full transition animated-btn slide-in-right">
           Enviar E-mail
         </a>
       </div>
@@ -307,17 +429,21 @@
   </section>
 
   <!-- Bloco 7: Rodapé (Reforço de Marca) -->
-  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
+  <footer class="bg-[#0b1120] text-gray-400 py-12 animate-on-scroll">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
+        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
         <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Medical</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Emotional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Alibi</a></li>
           <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
           <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
           <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
@@ -393,6 +519,13 @@
       const mobileMenu = document.getElementById('mobile-menu');
       hamburger.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
+      });
+
+      // Toggle do Submenu no Mobile
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+      servicesToggle.addEventListener('click', () => {
+        servicesMenu.classList.toggle('hidden');
       });
 
       window.addEventListener('scroll', () => {
