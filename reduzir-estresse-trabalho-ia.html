@@ -1,0 +1,204 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Descubra como a IA da Álibis Digital, com o scanner facial de estresse e o Abili, pode ajudar a reduzir o estresse no trabalho e melhorar seu bem-estar.">
+  <meta name="keywords" content="IA para estresse, reduzir estresse no trabalho, Álibis Digital, scanner facial, Abili, saúde mental, bem-estar profissional">
+  <meta name="author" content="Álibis Digital">
+  <title>Reduza o Estresse no Trabalho com Inteligência Artificial - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { position: relative; overflow-x: hidden; }
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+    .animated-btn { transition: all 0.4s ease; position: relative; overflow: hidden; z-index: 1; border: 1px solid #7C3AED; }
+    .animated-btn:after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.1); z-index: -2; }
+    .animated-btn:before { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 100%; background: linear-gradient(90deg, #7C3AED, #16A34A); transition: width 0.4s ease; z-index: -1; }
+    .animated-btn:hover:before { width: 100%; }
+    .animate-on-scroll { opacity: 0; transform: translateY(50px); transition: opacity 0.9s ease-out, transform 0.9s ease-out; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+    .tech-gradient { background: linear-gradient(135deg, #1e293b, #4c1d95, #0f172a); }
+    @media (max-width: 768px) { h1 { font-size: 2.5rem; } h2 { font-size: 1.8rem; } .max-w-4xl { max-width: 100%; padding: 0 1rem; } .grid { grid-template-columns: 1fr; } .flex { flex-direction: column; } .animated-btn { width: 100%; margin-bottom: 0.5rem; } #navbar, #mobile-menu { width: 100%; } #mobile-menu a { width: 100%; text-align: center; } }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-white font-sans">
+  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/">
+          <img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
+        </a>
+      </div>
+      <div class="md:hidden flex items-center">
+        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+        <a href="/alibi.html" class="hover:text-green-400 transition">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
+        <a href="/medical-ai.html" class="hover:text-green-400 transition">Diagnóstico Médico</a>
+        <a href="/blog.html" class="text-green-400 font-bold transition">Blog</a>
+        <a href="/order.html" class="hover:text-green-400 transition">Meus Pedidos</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
+        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Avaliação Emocional</a>
+        <a href="/medical-ai.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Diagnóstico Médico</a>
+        <a href="/blog.html" class="text-green-400 font-bold py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="/order.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Meus Pedidos</a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <section id="hero" class="tech-gradient text-white text-center py-20 px-6 relative">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight fade-in">
+        Reduza o Estresse no Trabalho com Inteligência Artificial
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
+        Transforme sua rotina profissional com tecnologia de IA que cuida do seu bem-estar.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 animate-on-scroll">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Quando o Trabalho Se Torna um Peso</h2>
+      <p class="text-gray-400 mb-6">Você já sentiu o coração acelerar antes de uma reunião ou passou noites em claro pensando em prazos? O estresse no trabalho é uma realidade para muitos, e seus efeitos vão além da produtividade: insônia, dores de cabeça e até problemas cardíacos podem surgir. Mas há uma solução – e ela está na palma da sua mão.</p>
+      
+      <h2 class="text-2xl font-bold mb-4">IA: Sua Aliada Contra o Estresse</h2>
+      <p class="text-gray-400 mb-4">Na Álibis Digital, desenvolvemos ferramentas de IA que ajudam você a retomar o controle. Nosso <strong>scanner facial de estresse</strong> analisa microexpressões para identificar sinais de tensão antes que você perceba. Já o <strong>Abili</strong>, nosso assistente virtual, organiza sua agenda para incluir pausas estratégicas e atividades que aliviam a pressão, como uma caminhada rápida ou uma sessão de respiração guiada.</p>
+      
+      <h3 class="text-xl font-semibold mb-3">Como Começar: 3 Passos Simples</h3>
+      <ul class="list-disc list-inside text-gray-400 mb-6">
+        <li><strong>Monitore seu estresse:</strong> Use o scanner facial pela manhã para entender como você está se sentindo e identificar padrões ao longo da semana.</li>
+        <li><strong>Planeje pausas inteligentes:</strong> Deixe o Abili reservar 10 minutos a cada duas horas para você se desconectar – seja com uma música relaxante ou um alongamento.</li>
+        <li><strong>Receba dicas personalizadas:</strong> Com base nos dados do scanner, o Abili sugere técnicas de relaxamento, como respiração profunda, adaptadas ao seu nível de estresse.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mb-4">Por Que Escolher a Álibis Digital?</h2>
+      <p class="text-gray-400 mb-6">Nossa tecnologia é mais do que um recurso – é um parceiro para sua saúde mental. Imagine trabalhar com mais foco, sem a sensação de estar sempre correndo contra o tempo. Com o scanner facial e o Abili, você pode transformar seus dias, encontrando equilíbrio e bem-estar. Milhares de usuários já experimentaram a diferença. E você, está pronto para mudar?</p>
+      <a href="/scanner.html" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full animated-btn hover:bg-[#6D28D9]">Experimente o Scanner com IA</a>
+    </div>
+  </section>
+
+  <footer class="bg-[#0b1120] text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner com IA</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
+          <li><a href="/order.html" class="hover:text-white transition">Meus Pedidos</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const animItems = document.querySelectorAll('.animate-on-scroll');
+      const windowHeight = window.innerHeight;
+      function animOnScroll() {
+        animItems.forEach(item => {
+          const itemTop = item.getBoundingClientRect().top;
+          const animStart = 150;
+          if (itemTop < windowHeight - animStart) {
+            item.classList.add('visible');
+          }
+        });
+      }
+      animOnScroll();
+      window.addEventListener('scroll', animOnScroll);
+
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          document.querySelector('header').classList.add('shadow-lg');
+        } else {
+          document.querySelector('header').classList.remove('shadow-lg');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
