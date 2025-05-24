@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Leia artigos educativos sobre IA, privacidade e bem-estar no blog da Álibis Digital.">
-  <meta name="keywords" content="blog, IA, privacidade, Álibis Digital, saúde mental, estresse, bem-estar">
+  <meta name="description" content="Descubra como o scanner facial de estresse e o Abili podem ajudar a aliviar a tensão no trabalho com dicas personalizadas.">
+  <meta name="keywords" content="IA, estresse, trabalho, Álibis Digital, bem-estar">
   <meta name="author" content="Álibis Digital">
-  <title>Blog - Álibis Digital</title>
+  <title>Como Reduzir o Estresse no Trabalho com Inteligência Artificial - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -14,37 +14,23 @@
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
-    .pulse { animation: pulse 2.5s infinite ease-in-out; }
-    .float { animation: float 4s infinite ease-in-out; }
-    .scale-up { animation: scaleUp 0.8s ease-in-out; }
-    .neon-glow { box-shadow: 0 0 10px #23d5ab, 0 0 20px #23a6d5, 0 0 30px #e73c7e; }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.1); } 75% { transform: scale(0.9); } 100% { transform: scale(1); } }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
-    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
-    @keyframes scaleUp { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
     .animated-btn { transition: all 0.4s ease; position: relative; overflow: hidden; z-index: 1; border: 1px solid #7C3AED; }
     .animated-btn:after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.1); z-index: -2; }
     .animated-btn:before { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 100%; background: linear-gradient(90deg, #7C3AED, #16A34A); transition: width 0.4s ease; z-index: -1; }
     .animated-btn:hover:before { width: 100%; }
     .animate-on-scroll { opacity: 0; transform: translateY(50px); transition: opacity 0.9s ease-out, transform 0.9s ease-out; }
     .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
-    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
     .tech-gradient { background: linear-gradient(135deg, #1e293b, #4c1d95, #0f172a); }
-    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(11, 17, 32, 0.9) 100%); }
-    .particle { position: absolute; background: #7C3AED; border-radius: 50%; opacity: 0.4; animation: particleFloat 10s infinite linear; }
-    @keyframes particleFloat { 0% { transform: translateY(100vh) scale(1); opacity: 0.4; } 50% { opacity: 0.2; } 100% { transform: translateY(-100vh) scale(0.5); opacity: 0; } }
     @media (max-width: 768px) { h1 { font-size: 2.5rem; } h2 { font-size: 1.8rem; } .max-w-4xl { max-width: 100%; padding: 0 1rem; } .grid { grid-template-columns: 1fr; } .flex { flex-direction: column; } .animated-btn { width: 100%; margin-bottom: 0.5rem; } #navbar, #mobile-menu { width: 100%; } #mobile-menu a { width: 100%; text-align: center; } }
   </style>
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
-  <div class="particles" id="particles"></div>
-
   <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
@@ -83,76 +69,34 @@
 
   <section id="hero" class="tech-gradient text-white text-center py-20 px-6 relative">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
-        Blog Álibis Digital 🤖
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight fade-in">
+        Como Reduzir o Estresse no Trabalho com Inteligência Artificial
       </h1>
       <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
-        Leia artigos educativos sobre IA, privacidade e bem-estar.
+        Aprenda a usar tecnologia para aliviar a tensão e melhorar sua produtividade.
       </p>
     </div>
   </section>
 
-  <section id="artigos" class="py-16 px-6 bg-[#1E293B] text-gray-200 text-center animate-on-scroll">
+  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 animate-on-scroll">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-4xl font-bold mb-6 shine">Últimos Artigos</h2>
-      <div class="space-y-6 text-left">
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
-          <p class="text-gray-400 mt-2">Descubra como o scanner facial de estresse e o Abili podem ajudar a aliviar a tensão no trabalho com dicas personalizadas.</p>
-          <a href="/reduzir-estresse-trabalho-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
-          <p class="text-gray-400 mt-2">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
-          <a href="/gerenciar-financas-estresse" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
-          <p class="text-gray-400 mt-2">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
-          <a href="/prevenir-burnout-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Melhore Seu Sono com Inteligência Artificial</h3>
-          <p class="text-gray-400 mt-2">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
-          <a href="/melhorar-sono-com-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
-          <p class="text-gray-400 mt-2">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
-          <a href="/produtividade-trabalho-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
-          <p class="text-gray-400 mt-2">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
-          <a href="/equilibre-vida-pessoal-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Como a IA Pode Fortalecer Seus Relacionamentos</h3>
-          <p class="text-gray-400 mt-2">Aprenda a usar o apoio emocional por IA para resolver conflitos e melhorar a comunicação com base em sinais de estresse detectados.</p>
-          <a href="/fortalecer-relacionamentos-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Dicas para Criar Álibis Realistas com Tecnologia</h3>
-          <p class="text-gray-400 mt-2">Veja como o Abili ajuda a criar desculpas convincentes com suporte de IA, equilibrando privacidade e bem-estar.</p>
-          <a href="/criar-alibis-realistas-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Saúde Emocional: O Papel da Triagem Médica por IA</h3>
-          <p class="text-gray-400 mt-2">Entenda como a triagem médica por IA identifica problemas de saúde ligados ao estresse e sugere cuidados personalizados.</p>
-          <a href="/saude-emocional-triagem-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-        <div class="p-4 bg-[#2D3748] rounded-lg animate-on-scroll">
-          <h3 class="text-xl font-semibold">Rotinas de Autocuidado com Inteligência Artificial</h3>
-          <p class="text-gray-400 mt-2">Descubra como o scanner facial e o Abili criam rotinas diárias para reduzir estresse e melhorar sua qualidade de vida.</p>
-          <a href="/rotinas-autocuidado-ia" class="text-[#7C3AED] font-semibold hover:underline">Leia mais →</a>
-        </div>
-      </div>
-    </div>
-  </section>
+      <h2 class="text-2xl font-bold mb-4">O Impacto do Estresse no Trabalho</h2>
+      <p class="text-gray-400 mb-6">O estresse no ambiente de trabalho pode levar a problemas como burnout, insônia e até doenças físicas. Identificar os sinais precocemente é essencial para manter o equilíbrio.</p>
+      
+      <h2 class="text-2xl font-bold mb-4">Como a IA Pode Ajudar</h2>
+      <p class="text-gray-400 mb-4">Na Álibis Digital, usamos ferramentas avançadas de IA para ajudar a reduzir o estresse. Nosso <strong>scanner facial de estresse</strong> analisa expressões faciais e detecta sinais de tensão, enquanto o <strong>Abili</strong> organiza sua agenda para incluir pausas estratégicas e momentos de relaxamento.</p>
+      
+      <h3 class="text-xl font-semibold mb-3">Dicas Práticas com IA</h3>
+      <ul class="list-disc list-inside text-gray-400 mb-6">
+        <li>Faça uma análise diária com o scanner facial para monitorar seu nível de estresse.</li>
+        <li>Use o Abili para reservar 15 minutos diários para meditação ou uma caminhada.</li>
+        <li>Receba sugestões personalizadas de respiração guiada com base nos dados do scanner.</li>
+      </ul>
 
-  <section class="py-16 px-6 bg-[#1E293B] text-white text-center animate-on-scroll">
-    <h2 class="text-3xl font-bold mb-6 shine">Pronto para Melhorar Seu Bem-Estar?</h2>
-    <a href="/scanner.html" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full animated-btn hover:bg-[#6D28D9]">Teste o Scanner com IA</a>
+      <h2 class="text-2xl font-bold mb-4">Comece Hoje</h2>
+      <p class="text-gray-400 mb-6">Reduza o estresse e melhore sua qualidade de vida com nossas soluções de IA. Experimente o scanner facial e o Abili agora!</p>
+      <a href="/scanner.html" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full animated-btn hover:bg-[#6D28D9]">Teste o Scanner com IA</a>
+    </div>
   </section>
 
   <footer class="bg-[#0b1120] text-gray-400 py-12 animate-on-scroll">
@@ -186,52 +130,7 @@
     </div>
   </footer>
 
-  <script type="text/javascript">
-    var gk_isXlsx = false;
-    var gk_xlsxFileLookup = {};
-    var gk_fileData = {};
-    function filledCell(cell) {
-      return cell !== '' && cell != null;
-    }
-    function loadFileData(filename) {
-      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-        try {
-          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-          var filteredData = jsonData.filter(row => row.some(filledCell));
-          var headerRowIndex = filteredData.findIndex((row, index) =>
-            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-          );
-          if (headerRowIndex === -1 || headerRowIndex > 25) {
-            headerRowIndex = 0;
-          }
-          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-          return csv;
-        } catch (e) {
-          console.error(e);
-          return "";
-        }
-      }
-      return gk_fileData[filename] || "";
-    }
-
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.width = `${Math.random() * 2 + 1}px`;
-        particle.style.height = particle.style.width;
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 5}s`;
-        particlesContainer.appendChild(particle);
-      }
-    }
-    createParticles();
-
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
       const animItems = document.querySelectorAll('.animate-on-scroll');
       const windowHeight = window.innerHeight;
@@ -258,24 +157,6 @@
           document.querySelector('header').classList.add('shadow-lg');
         } else {
           document.querySelector('header').classList.remove('shadow-lg');
-        }
-      });
-
-      document.querySelectorAll('a[href]').forEach(link => {
-        const validArticles = [
-          '/reduzir-estresse-trabalho-ia',
-          '/gerenciar-financas-estresse',
-          '/prevenir-burnout-ia',
-          '/melhorar-sono-com-ia',
-          '/produtividade-trabalho-ia',
-          '/equilibre-vida-pessoal-ia',
-          '/fortalecer-relacionamentos-ia',
-          '/criar-alibis-realistas-ia',
-          '/saude-emocional-triagem-ia',
-          '/rotinas-autocuidado-ia'
-        ];
-        if (!validArticles.includes(link.getAttribute('href')) && link.getAttribute('href').startsWith('/')) {
-          link.href = '/blog.html';
         }
       });
     });
