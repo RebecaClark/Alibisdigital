@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Descubra e gerencie suas emoções com o scanner emocional de IA mais avançado do mercado. Seguro, rápido e futurista - Álibis Digital.">
-  <meta name="keywords" content="scanner emocional com IA, bem-estar emocional, álibis digitais, inteligência artificial emocional, tecnologia de ponta">
+  <meta name="keywords" content="scanner emocional com IA, bem-estar emocional, álibis digitais, inteligência artificial emocional, tecnologia de ponta, saúde mental, estresse">
   <meta name="author" content="Álibis Digital">
   <title>Álibis Digital - Inteligência Artificial para o Bem-Estar Emocional</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -12,7 +12,6 @@
   <style>
     html { scroll-behavior: smooth; }
     body { position: relative; overflow-x: hidden; }
-    /* Fundo com Partículas Futuristas */
     #particles-js {
       position: absolute;
       width: 100%;
@@ -22,7 +21,6 @@
       z-index: -1;
       background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
     }
-    /* Animações Existentes */
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
@@ -62,7 +60,6 @@
       from { opacity: 0; transform: scale(0.7); }
       to { opacity: 1; transform: scale(1); }
     }
-    /* Efeito Holográfico na Navegação */
     .holo-nav {
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
@@ -81,17 +78,36 @@
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
     }
-    .dropdown-menu {
+    .dropdown-menu, .dropdown-menu-mobile {
       background: rgba(31, 41, 55, 0.9);
       border: 1px solid #22d3ee;
       box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
     }
-    .dropdown-menu a:hover {
+    .dropdown-menu a, .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
       background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
     }
-    /* Botões Futuristas */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu-mobile {
+      width: 100%;
+      position: static;
+    }
     .futuristic-btn {
       background: linear-gradient(45deg, #7C3AED, #22d3ee);
       box-shadow: 0 0 15px #22d3ee;
@@ -106,7 +122,6 @@
       0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
       100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
     }
-    /* Estilo do Chat Interativo */
     #chat-container {
       position: fixed;
       bottom: 20px;
@@ -152,7 +167,6 @@
       width: 100%;
       color: white;
     }
-    /* Outros Estilos */
     .animate-on-scroll {
       opacity: 0;
       transform: translateY(50px);
@@ -226,8 +240,8 @@
           <div class="dropdown-menu">
             <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
             <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Medical</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Alibi</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
@@ -241,17 +255,17 @@
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
             Serviços
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
-          <div id="services-menu" class="dropdown-menu-mobile">
+          <div id="services-menu" class="dropdown-menu-mobile hidden">
             <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
             <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700">Medical</a>
-            <a href="/alibi.html" class="hover:bg-gray-700">Alibi</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
@@ -357,15 +371,38 @@
     <h2 class="text-4xl font-bold mb-10 shine">Dicas de Bem-Estar</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4">5 Dicas para Reduzir o Estresse no Trabalho</h3>
-        <p class="mb-4 text-gray-400">Descubra técnicas simples para manter a calma e a produtividade no dia a dia.</p>
-        <a href="/blog/reduzir-estresse-trabalho.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <h3 class="text-2xl font-semibold mb-4">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
+        <p class="mb-4 text-gray-400">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho com dicas personalizadas.</p>
+        <a href="/reduzir-estresse-trabalho-ia" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4">Como Melhorar a Qualidade do Sono</h3>
-        <p class="mb-4 text-gray-400">Dormir bem é essencial para o bem-estar emocional. Veja como melhorar seu sono.</p>
-        <a href="/blog/melhorar-qualidade-sono.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <h3 class="text-2xl font-semibold mb-4">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
+        <p class="mb-4 text-gray-400">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
+        <a href="/gerenciar-financas-estresse" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
       </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
+        <p class="mb-4 text-gray-400">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
+        <a href="/prevenir-burnout-ia" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4">Melhore Seu Sono com Inteligência Artificial</h3>
+        <p class="mb-4 text-gray-400">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
+        <a href="/melhorar-sono-com-ia" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
+        <p class="mb-4 text-gray-400">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
+        <a href="/produtividade-trabalho-ia" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
+        <p class="mb-4 text-gray-400">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
+        <a href="/equilibre-vida-pessoal-ia" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+      </div>
+    </div>
+    <div class="mt-12 pulse">
+      <a href="https://x.ai/grok" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Experimente o SuperGrok">Experimente o SuperGrok para mais funcionalidades!</a>
     </div>
   </section>
 
@@ -445,9 +482,9 @@
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Medical</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Emotional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Alibi</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
           <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
           <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
@@ -495,7 +532,7 @@
         document.getElementById('vagas-final').textContent = vagas;
       }
     };
-    setInterval(updateVagas, 3600000); // Reduz 1 vaga por hora
+    setInterval(updateVagas, 3600000);
 
     // Contador de Usuários (Simulado)
     let userCount = 532;
@@ -608,6 +645,21 @@
           document.querySelector('header').classList.add('shadow-lg');
         } else {
           document.querySelector('header').classList.remove('shadow-lg');
+        }
+      });
+
+      // Corrige links para evitar redirecionamento para medical-ai.html
+      document.querySelectorAll('a[href="/medical-ai.html"]').forEach(link => {
+        const articleLinks = [
+          '/reduzir-estresse-trabalho-ia',
+          '/gerenciar-financas-estresse',
+          '/prevenir-burnout-ia',
+          '/melhorar-sono-com-ia',
+          '/produtividade-trabalho-ia',
+          '/equilibre-vida-pessoal-ia'
+        ];
+        if (!articleLinks.includes(link.getAttribute('href'))) {
+          link.href = '/blog.html'; // Redireciona links incorretos para a página do blog
         }
       });
     });
