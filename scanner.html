@@ -7,6 +7,81 @@
   <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS'); document.getElementById('scanner-result').textContent = 'Erro: Falha ao carregar recursos necessários.'"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css'); document.getElementById('scanner-result').textContent = 'Erro: Falha ao carregar recursos necessários.'">
+  <style>
+    .scan-line {
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(to right, transparent, #00e9ff, transparent);
+      animation: scan 3s infinite linear;
+      z-index: 10;
+    }
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(240px); }
+    }
+    .scanner-glow {
+      box-shadow: 0 0 15px #00e9ff, 0 0 30px #22C55E;
+      transition: box-shadow 0.3s ease;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #22C55E;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .pulse-enhanced {
+      animation: pulse-enhanced 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse-enhanced {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); box-shadow: 0 0 10px #22C55E; }
+      100% { transform: scale(1); box-shadow: none; }
+    }
+    .fade-in-slow { animation: fadeIn 1.5s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .bounce-in-slow { animation: bounceIn 1.5s ease-in-out; }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      75% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    .scale-in-slow { animation: scaleUp 1.2s ease-in-out; }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .shine::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+      transform: rotate(20deg);
+      animation: shine 4s infinite linear;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-120%) rotate(20deg); }
+      100% { transform: translateX(120%) rotate(20deg); }
+    }
+    @media (max-width: 768px) {
+      #video { width: 100%; height: auto; }
+      .scan-line { height: 1px; }
+    }
+  </style>
 </head>
 <body class="bg-[#0b1120] text-white font-sans">
   <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
@@ -40,22 +115,25 @@
   <div class="h-20"></div>
 
   <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
-    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Ative a câmera manualmente e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex justify-center mb-4 scale-in">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" style="display: none;"></video>
+    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos escanear?</h2>
+    <p class="text-lg mb-8 text-gray-300 fade-in-slow">Ative a câmera e veja a IA revelar seu estado emocional com precisão.</p>
+    <div class="relative flex justify-center mb-4 scale-in-slow">
+      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse-enhanced" style="display: none;">
+        <div id="scan-line" class="scan-line hidden"></div>
+      </video>
+      <div id="loading-spinner" class="loading-spinner hidden"></div>
     </div>
     <div class="flex justify-center">
-      <button id="startCamera" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in" aria-label="Iniciar a câmera para análise emocional">
-        Iniciar Câmera
+      <button id="startCamera" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in-slow scanner-glow" aria-label="Iniciar a câmera para análise emocional">
+        Iniciar Scanner
       </button>
-      <button id="captureAndAnalyze" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in hidden" aria-label="Analisar estado emocional">
-        Analisar Estado Emocional
+      <button id="captureAndAnalyze" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in-slow scanner-glow hidden" aria-label="Analisar estado emocional">
+        Escanear Agora
       </button>
     </div>
     <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold" role="alert" aria-live="polite"></div>
-    <div id="emotional-help" class="mt-6 hidden scale-in">
-      <a href="/emotional-evaluation.html" class="bg-white text-[#0b1120] font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition animated-btn bounce-in" aria-label="Buscar apoio emocional agora">
+    <div id="emotional-help" class="mt-6 hidden scale-in-slow">
+      <a href="/emotional-evaluation.html" class="bg-white text-[#0b1120] font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition animated-btn bounce-in-slow" aria-label="Buscar apoio emocional agora">
         Buscar Apoio Emocional Agora
       </a>
     </div>
@@ -66,9 +144,9 @@
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
+        <p class="fade-in-slow">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
       </div>
-      <div class="fade-in">
+      <div class="fade-in-slow">
         <h4 class="text-white font-semibold mb-4">Navegação</h4>
         <ul class="space-y-2">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
@@ -80,8 +158,8 @@
       <div class="slide-in-right">
         <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
         <ul class="space-y-2">
-          <li class="fade-in">Email: contato@alibisdigital.com</li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+          <li class="fade-in-slow">Email: contato@alibisdigital.com</li>
+          <li class="fade-in-slow">WhatsApp: (11) 91234-5678</li>
         </ul>
       </div>
     </div>
@@ -93,12 +171,27 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
+      const scanLine = document.getElementById('scan-line');
+      const loadingSpinner = document.getElementById('loading-spinner');
       const startCameraBtn = document.getElementById('startCamera');
       const captureBtn = document.getElementById('captureAndAnalyze');
       const result = document.getElementById('scanner-result');
       const helpButton = document.getElementById('emotional-help');
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
+
+      // Reiniciar estado ao carregar/atualizar
+      result.textContent = '';
+      video.style.display = 'none';
+      scanLine.classList.add('hidden');
+      loadingSpinner.classList.add('hidden');
+      startCameraBtn.classList.remove('hidden');
+      captureBtn.classList.add('hidden');
+      helpButton.classList.add('hidden');
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
 
       // Controle do menu hambúrguer
       hamburger.addEventListener('click', () => {
@@ -107,23 +200,30 @@
 
       // Iniciar câmera manualmente
       startCameraBtn.addEventListener('click', () => {
-        result.textContent = '⏳ Iniciando câmera...';
+        result.textContent = '';
+        loadingSpinner.classList.remove('hidden');
         navigator.mediaDevices.getUserMedia({ video: true })
           .then(stream => {
             video.srcObject = stream;
             video.style.display = 'block';
+            loadingSpinner.classList.add('hidden');
             startCameraBtn.classList.add('hidden');
             captureBtn.classList.remove('hidden');
-            result.textContent = '✅ Câmera iniciada com sucesso. Clique em "Analisar" quando estiver pronto.';
+            result.textContent = '✅ Scanner iniciado. Posicione-se e clique em "Escanear Agora".';
           })
           .catch(error => {
             console.error('Erro ao acessar a câmera:', error);
+            loadingSpinner.classList.add('hidden');
             result.textContent = '🚫 Erro: Não foi possível acessar a câmera. Verifique as permissões e tente novamente.';
           });
       });
 
       // Capturar e analisar
       captureBtn.addEventListener('click', () => {
+        loadingSpinner.classList.remove('hidden');
+        scanLine.classList.remove('hidden');
+        video.classList.add('scanner-glow');
+        captureBtn.classList.add('scanner-glow');
         captureAndAnalyze();
       });
 
@@ -146,6 +246,14 @@
       window.addEventListener('scroll', checkIfInView);
       window.addEventListener('resize', checkIfInView);
 
+      // Liberar câmera ao descarregar a página
+      window.onunload = () => {
+        if (video.srcObject) {
+          video.srcObject.getTracks().forEach(track => track.stop());
+          video.srcObject = null;
+        }
+      };
+
       function speak(text) {
         const synth = window.speechSynthesis;
         const utter = new SpeechSynthesisUtterance(text);
@@ -156,10 +264,12 @@
       function captureAndAnalyze() {
         const canvas = document.getElementById('canvas');
         const video = document.getElementById('video');
+        const scanLine = document.getElementById('scan-line');
+        const loadingSpinner = document.getElementById('loading-spinner');
         const result = document.getElementById('scanner-result');
         const helpButton = document.getElementById('emotional-help');
 
-        result.textContent = '⏳ Analisando sua expressão facial...';
+        result.textContent = '⏳ Escaneando sua expressão facial...';
         helpButton.classList.add('hidden');
 
         const context = canvas.getContext('2d');
@@ -178,6 +288,11 @@
         })
           .then(res => res.json())
           .then(data => {
+            loadingSpinner.classList.add('hidden');
+            scanLine.classList.add('hidden');
+            video.classList.remove('scanner-glow');
+            captureBtn.classList.remove('scanner-glow');
+
             if (data.faces && data.faces.length > 0) {
               const face = data.faces[0];
               const age = face.attributes.age.value;
@@ -230,8 +345,8 @@
               }
 
               result.innerHTML = `
-                <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
-                  <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
+                <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8 fade-in-slow">
+                  <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados do Escaneamento</h3>
                   <div class="text-white mb-4">
                     <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
                     <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
@@ -246,12 +361,16 @@
               speak(`Diagnóstico emocional: ${diagnosis}`);
               if (showHelp) helpButton.classList.remove('hidden');
             } else {
-              result.textContent = '🤖 Nenhum rosto detectado. Tente novamente com boa iluminação e centralize seu rosto na câmera.';
+              result.textContent = '🤖 Nenhum rosto detectado. Tente novamente com boa iluminação e centralize seu rosto no scanner.';
             }
           })
           .catch(err => {
             console.error('Erro na análise facial:', err);
-            result.textContent = '🚫 Erro ao analisar a imagem. Verifique sua conexão e tente novamente.';
+            loadingSpinner.classList.add('hidden');
+            scanLine.classList.add('hidden');
+            video.classList.remove('scanner-glow');
+            captureBtn.classList.remove('scanner-glow');
+            result.textContent = '🚫 Erro ao escanear a imagem. Verifique sua conexão e tente novamente.';
           });
       }
     });
