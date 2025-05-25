@@ -13,6 +13,16 @@
       width: 320px;
       height: 240px;
       overflow: hidden;
+      display: block;
+      margin: 0 auto;
+    }
+    .scan-container video {
+      width: 320px !important;
+      height: 240px !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
     }
     .scan-line {
       position: absolute;
@@ -28,10 +38,10 @@
       100% { transform: translateY(238px); }
     }
     .scanner-glow {
-      transition: transform 0.3s ease;
+      transition: opacity 0.3s ease;
     }
     .scanner-glow.active {
-      transform: scale(1.02);
+      opacity: 0.8;
     }
     .loading-spinner {
       width: 40px;
@@ -40,7 +50,8 @@
       border-top: 4px solid transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto;
+      margin: 10px auto;
+      display: none;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -50,9 +61,9 @@
       animation: pulse-enhanced 1.5s infinite ease-in-out;
     }
     @keyframes pulse-enhanced {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); box-shadow: 0 0 10px #22C55E; }
-      100% { transform: scale(1); box-shadow: none; }
+      0% { opacity: 1; }
+      50% { opacity: 0.7; border-color: #00e9ff; }
+      100% { opacity: 1; }
     }
     .fade-in-slow { animation: fadeIn 1.5s ease-in-out; }
     @keyframes fadeIn {
@@ -88,7 +99,7 @@
     }
     @media (max-width: 768px) {
       .scan-container { width: 100%; height: auto; }
-      #video { width: 100% !important; height: auto !important; }
+      .scan-container video { width: 100% !important; height: auto !important; }
       .scan-line { height: 1px; }
     }
   </style>
@@ -127,12 +138,12 @@
   <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos escanear?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in-slow">Ative a câmera e veja a IA revelar seu estado emocional com precisão.</p>
-    <div class="relative flex justify-center mb-4 scale-in-slow">
+    <div class="relative flex flex-col items-center mb-4 scale-in-slow">
       <div class="scan-container">
-        <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse-enhanced" style="display: none;"></video>
+        <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse-enhanced"></video>
         <div id="scan-line" class="scan-line hidden"></div>
       </div>
-      <div id="loading-spinner" class="loading-spinner hidden"></div>
+      <div id="loading-spinner" class="loading-spinner"></div>
     </div>
     <div class="flex justify-center">
       <button id="startCamera" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in-slow scanner-glow" aria-label="Iniciar a câmera para análise emocional">
@@ -335,7 +346,7 @@
               const isMale = gender === 'Male';
               const timeSuggestion = 'Neste domingo de manhã cedo, aproveite para';
 
-              // Diagnóstico aprimorado
+              // Diagnóstico
               switch (primaryEmotion) {
                 case 'sadness':
                   diagnosis = `Detectamos sinais de ${primaryInPortuguese}. ${ageGroup === 'jovem' ? 'Como jovem,' : ageGroup === 'maduro(a)' ? 'Com sua experiência,' : ''} pode ser um reflexo de um momento difícil. ${secondaryEmotions.some(([e]) => e === 'fear') ? 'Parece haver um toque de medo também, talvez ansiedade.' : ''} ${timeSuggestion} relaxar com uma caminhada ou conversar com alguém de confiança.`;
