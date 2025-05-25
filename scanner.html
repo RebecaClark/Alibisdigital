@@ -8,6 +8,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css'); document.getElementById('scanner-result').textContent = 'Erro: Falha ao carregar recursos necessários.'">
   <style>
+    .scan-container {
+      position: relative;
+      width: 320px;
+      height: 240px;
+      overflow: hidden;
+    }
     .scan-line {
       position: absolute;
       height: 2px;
@@ -15,14 +21,17 @@
       background: linear-gradient(to right, transparent, #00e9ff, transparent);
       animation: scan 3s infinite linear;
       z-index: 10;
+      top: 0;
     }
     @keyframes scan {
       0% { transform: translateY(0); }
-      100% { transform: translateY(240px); }
+      100% { transform: translateY(238px); }
     }
     .scanner-glow {
-      box-shadow: 0 0 15px #00e9ff, 0 0 30px #22C55E;
-      transition: box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
+    }
+    .scanner-glow.active {
+      transform: scale(1.02);
     }
     .loading-spinner {
       width: 40px;
@@ -78,7 +87,8 @@
       100% { transform: translateX(120%) rotate(20deg); }
     }
     @media (max-width: 768px) {
-      #video { width: 100%; height: auto; }
+      .scan-container { width: 100%; height: auto; }
+      #video { width: 100% !important; height: auto !important; }
       .scan-line { height: 1px; }
     }
   </style>
@@ -118,9 +128,10 @@
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos escanear?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in-slow">Ative a câmera e veja a IA revelar seu estado emocional com precisão.</p>
     <div class="relative flex justify-center mb-4 scale-in-slow">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse-enhanced" style="display: none;">
+      <div class="scan-container">
+        <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse-enhanced" style="display: none;"></video>
         <div id="scan-line" class="scan-line hidden"></div>
-      </video>
+      </div>
       <div id="loading-spinner" class="loading-spinner hidden"></div>
     </div>
     <div class="flex justify-center">
@@ -222,8 +233,8 @@
       captureBtn.addEventListener('click', () => {
         loadingSpinner.classList.remove('hidden');
         scanLine.classList.remove('hidden');
-        video.classList.add('scanner-glow');
-        captureBtn.classList.add('scanner-glow');
+        video.classList.add('scanner-glow', 'active');
+        captureBtn.classList.add('scanner-glow', 'active');
         captureAndAnalyze();
       });
 
@@ -290,15 +301,15 @@
           .then(data => {
             loadingSpinner.classList.add('hidden');
             scanLine.classList.add('hidden');
-            video.classList.remove('scanner-glow');
-            captureBtn.classList.remove('scanner-glow');
+            video.classList.remove('scanner-glow', 'active');
+            captureBtn.classList.remove('scanner-glow', 'active');
 
             if (data.faces && data.faces.length > 0) {
               const face = data.faces[0];
               const age = face.attributes.age.value;
               const gender = face.attributes.gender.value;
               const emotion = face.attributes.emotion;
-              const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+              const emotionsSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
 
               const emotionPortuguese = {
                 'sadness': 'tristeza',
@@ -310,38 +321,49 @@
                 'disgust': 'desgosto'
               };
 
-              const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+              // Identificar emoção predominante e secundárias (acima de 20%)
+              const primaryEmotion = emotionsSorted[0][0];
+              const secondaryEmotions = emotionsSorted.filter(([_, value]) => value > 20 && value < emotionsSorted[0][1]);
+              const primaryInPortuguese = emotionPortuguese[primaryEmotion] || primaryEmotion;
+
               let diagnosis = '';
               let showHelp = false;
+              let ageGroup = '';
+              if (age < 20) ageGroup = 'jovem';
+              else if (age < 40) ageGroup = 'adulto(a)';
+              else ageGroup = 'maduro(a)';
+              const isMale = gender === 'Male';
+              const timeSuggestion = 'Neste domingo de manhã cedo, aproveite para';
 
-              switch (emotionSorted) {
+              // Diagnóstico aprimorado
+              switch (primaryEmotion) {
                 case 'sadness':
-                  diagnosis = 'Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.';
+                  diagnosis = `Detectamos sinais de ${primaryInPortuguese}. ${ageGroup === 'jovem' ? 'Como jovem,' : ageGroup === 'maduro(a)' ? 'Com sua experiência,' : ''} pode ser um reflexo de um momento difícil. ${secondaryEmotions.some(([e]) => e === 'fear') ? 'Parece haver um toque de medo também, talvez ansiedade.' : ''} ${timeSuggestion} relaxar com uma caminhada ou conversar com alguém de confiança.`;
                   showHelp = true;
                   break;
                 case 'anger':
-                  diagnosis = 'Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.';
+                  diagnosis = `Sua expressão mostra ${primaryInPortuguese} ou frustração. ${isMale ? 'Homem,' : 'Mulher,'} ${ageGroup}, isso pode vir de pressão acumulada. ${secondaryEmotions.some(([e]) => e === 'disgust') ? 'Há também um leve incômodo detectado.' : ''} ${timeSuggestion} respirar fundo e tentar uma atividade como alongamento.`;
                   showHelp = true;
                   break;
                 case 'happiness':
-                  diagnosis = 'Você parece feliz! Que tal espalhar isso pra mais gente hoje?';
+                  diagnosis = `Que ótimo! Você está irradiando ${primaryInPortuguese}. ${ageGroup === 'jovem' ? 'Jovem,' : ageGroup === 'maduro(a)' ? 'Com sua maturidade,' : ''} isso pode inspirar outros. ${secondaryEmotions.some(([e]) => e === 'surprise') ? 'Parece que algo te surpreendeu positivamente!' : ''} ${timeSuggestion} compartilhar essa energia com amigos.`;
                   break;
                 case 'surprise':
-                  diagnosis = 'Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.';
+                  diagnosis = `Há ${primaryInPortuguese} em sua expressão. ${ageGroup}, isso pode indicar algo inesperado. ${secondaryEmotions.some(([e]) => e === 'happiness') ? 'Talvez uma surpresa agradável!' : secondaryEmotions.some(([e]) => e === 'fear') ? 'Ou algo que te deixou alerta.' : ''} ${timeSuggestion} refletir sobre o que causou isso.`;
                   break;
                 case 'neutral':
-                  diagnosis = 'Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pausa?';
+                  diagnosis = `Sua expressão é ${primaryInPortuguese}. ${ageGroup}, isso pode ser calma ou cansaço. ${secondaryEmotions.some(([e]) => e === 'sadness') ? 'Há um leve sinal de tristeza por trás.' : ''} ${timeSuggestion} descansar ou fazer algo leve, como ler.`;
                   break;
                 case 'fear':
-                  diagnosis = 'Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.';
+                  diagnosis = `Detectamos ${primaryInPortuguese} ou ansiedade. ${isMale ? 'Homem' : 'Mulher'}, ${ageGroup}, isso pode ser comum em momentos de incerteza. ${secondaryEmotions.some(([e]) => e === 'sadness') ? 'A tristeza também parece presente.' : ''} ${timeSuggestion} tentar uma meditação guiada.`;
                   showHelp = true;
                   break;
                 case 'disgust':
-                  diagnosis = 'Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.';
+                  diagnosis = `Sua expressão indica ${primaryInPortuguese} ou incômodo. ${ageGroup}, isso pode vir de algo que te desagrada. ${secondaryEmotions.some(([e]) => e === 'anger') ? 'Há um toque de raiva também.' : ''} ${timeSuggestion} afastar-se do que incomoda e respirar.`;
                   showHelp = true;
                   break;
                 default:
-                  diagnosis = 'Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.';
+                  diagnosis = 'Não consegui interpretar suas emoções com clareza, mas cuidar da mente é sempre um bom passo. Que tal refletir sobre seu dia?';
               }
 
               result.innerHTML = `
@@ -350,7 +372,7 @@
                   <div class="text-white mb-4">
                     <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
                     <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
-                    <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
+                    <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${primaryInPortuguese}</span></p>
                     <hr class="border-blue-600 opacity-30 my-4">
                     <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
                     <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
@@ -368,8 +390,8 @@
             console.error('Erro na análise facial:', err);
             loadingSpinner.classList.add('hidden');
             scanLine.classList.add('hidden');
-            video.classList.remove('scanner-glow');
-            captureBtn.classList.remove('scanner-glow');
+            video.classList.remove('scanner-glow', 'active');
+            captureBtn.classList.remove('scanner-glow', 'active');
             result.textContent = '🚫 Erro ao escanear a imagem. Verifique sua conexão e tente novamente.';
           });
       }
