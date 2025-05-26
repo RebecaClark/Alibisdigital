@@ -1,0 +1,272 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanner Emocional - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com" defer onerror="console.error('Erro ao carregar Tailwind CSS')"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <link rel="stylesheet" href="/styles/global.css" onerror="console.error('Erro ao carregar global.css')">
+</head>
+<body class="bg-[#0b1120] text-white font-sans">
+  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/"><img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')"></a>
+      </div>
+      <div class="md:hidden">
+        <button id="hamburger-menu" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm">
+        <a href="/alibi.html" class="hover:text-[#22C55E] transition">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-[#22C55E] transition">Scanner com IA</a>
+        <a href="/emotional-evaluation.html" class="hover:text-[#22C55E] transition">Avaliação Emocional</a>
+        <a href="#suporte" class="hover:text-[#22C55E] transition">Suporte</a>
+      </nav>
+    </div>
+  </header>
+  <div id="mobile-menu" class="md:hidden bg-[#0f172a] w-full hidden py-6">
+    <nav class="flex flex-col items-center">
+      <a href="/alibi.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Criar Álibi</a>
+      <a href="/scanner.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Scanner com IA</a>
+      <a href="/emotional-evaluation.html" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Avaliação Emocional</a>
+      <a href="#suporte" class="text-white py-3 text-lg hover:text-[#22C55E] transition">Suporte</a>
+    </nav>
+  </div>
+  <div class="h-20"></div>
+
+  <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
+    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
+    <div class="flex justify-center mb-4 scale-in">
+      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse"></video>
+    </div>
+    <div class="flex justify-center">
+      <button onclick="captureAndAnalyze()" class="mt-4 bg-[#22C55E] text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in">
+        Analisar Estado Emocional
+      </button>
+    </div>
+    <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold"></div>
+    <div id="emotional-help" class="mt-6 hidden scale-in">
+      <a href="/emotional-evaluation.html" class="bg-white text-[#0b1120] font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition animated-btn bounce-in">
+        Buscar Apoio Emocional Agora
+      </a>
+    </div>
+    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+  </section>
+
+  <footer class="bg-gray-950 text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Desculpas sob medida, realistas e sigilosas. Usamos IA, criatividade e bom senso para salvar seu tempo e sua paz.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner Facial</a></li>
+          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Fale com a gente</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">Email: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
+    const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
+
+    window.onload = function () {
+      const video = document.getElementById('video');
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => video.srcObject = stream)
+        .catch(error => {
+          console.error("Erro ao acessar a câmera:", error);
+          document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
+        });
+      initScrollAnimations();
+    };
+
+    function initScrollAnimations() {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      function checkIfInView() {
+        const windowHeight = window.innerHeight;
+        const windowTopPosition = window.scrollY;
+        const windowBottomPosition = windowTopPosition + windowHeight;
+        animatedElements.forEach(element => {
+          const elementHeight = element.offsetHeight;
+          const elementTopPosition = element.offsetTop;
+          const elementBottomPosition = elementTopPosition + elementHeight;
+          if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
+            element.classList.add('visible');
+          }
+        });
+      }
+      checkIfInView();
+      window.addEventListener('scroll', checkIfInView);
+      window.addEventListener('resize', checkIfInView);
+    }
+
+    function speak(text) {
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "pt-BR";
+      synth.speak(utter);
+    }
+
+    function captureAndAnalyze() {
+      const canvas = document.getElementById('canvas');
+      const video = document.getElementById('video');
+      const result = document.getElementById('scanner-result');
+      const helpButton = document.getElementById('emotional-help');
+
+      result.textContent = "⏳ Analisando sua expressão facial...";
+      helpButton.classList.add('hidden');
+
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+
+      const formData = new FormData();
+      formData.append('api_key', apiKey);
+      formData.append('api_secret', apiSecret);
+      formData.append('image_base64', imageBase64);
+      formData.append('return_attributes', 'age,gender,emotion');
+
+      fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.faces && data.faces.length > 0) {
+            const face = data.faces[0];
+            const age = face.attributes.age.value;
+            const gender = face.attributes.gender.value;
+            const emotion = face.attributes.emotion;
+            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+
+            const emotionPortuguese = {
+              'sadness': 'tristeza',
+              'anger': 'raiva',
+              'happiness': 'felicidade',
+              'surprise': 'surpresa',
+              'neutral': 'neutra',
+              'fear': 'medo',
+              'disgust': 'desgosto'
+            };
+
+            const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+            let diagnosis = '';
+            let showHelp = false;
+
+            switch (emotionSorted) {
+              case 'sadness':
+                diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
+                showHelp = true;
+                break;
+              case 'anger':
+                diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
+                showHelp = true;
+                break;
+              case 'happiness':
+                diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
+                break;
+              case 'surprise':
+                diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
+                break;
+              case 'neutral':
+                diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pausa?";
+                break;
+              case 'fear':
+                diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
+                showHelp = true;
+                break;
+              case 'disgust':
+                diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
+                showHelp = true;
+                break;
+              default:
+                diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
+            }
+
+            result.innerHTML = `
+              <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
+                <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
+                <div class="text-white mb-4">
+                  <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
+                  <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
+                  <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
+                  <hr class="border-blue-600 opacity-30 my-4">
+                  <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
+                  <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
+                </div>
+              </div>
+            `;
+
+            speak(`Diagnóstico emocional: ${diagnosis}`);
+            if (showHelp) helpButton.classList.remove('hidden');
+          } else {
+            result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
+          }
+        })
+        .catch(err => {
+          console.error("Erro na análise facial:", err);
+          result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
+        });
+    }
+  </script>
+  <script src="/scripts/navbar.js" defer onerror="console.error('Erro ao carregar navbar.js')"></script>
+</body>
+</html>
