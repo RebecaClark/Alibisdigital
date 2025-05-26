@@ -373,6 +373,11 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
+      const result = document.getElementById('scanner-result');
+      if (result) {
+        result.style.display = 'none';
+        result.innerHTML = ''; // Limpa o resultado ao carregar a página
+      }
       if (video) {
         navigator.mediaDevices.getUserMedia({ video: true })
           .then(stream => {
@@ -380,7 +385,6 @@
           })
           .catch(error => {
             console.error("Erro ao acessar a câmera:", error);
-            const result = document.getElementById('scanner-result');
             if (result) {
               const lang = document.getElementById('language-selector')?.value || 'pt-BR';
               result.style.display = 'block';
@@ -453,7 +457,11 @@
         return;
       }
       const synth = window.speechSynthesis;
-      const utter = new SpeechSynthesisUtterance(text);
+      // Criar um elemento temporário para extrair apenas o texto visível
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = text;
+      const plainText = tempDiv.textContent || tempDiv.innerText || '';
+      const utter = new SpeechSynthesisUtterance(plainText);
       const lang = document.getElementById('language-selector')?.value || 'pt-BR';
       utter.lang = lang;
       synth.speak(utter);
@@ -588,7 +596,7 @@
             }
 
             result.innerHTML = `<p class="fade-in">Pré-diagnóstico emocional: ${diagnosis}</p><p class="fade-in mt-2">${suggestion}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${getTranslation(lang, 'disclaimer')}</p>${additionalButton}`;
-            speak(diagnosis + " " + suggestion);
+            speak(result.innerHTML);
           } else {
             result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${getTranslation(lang, 'no-face-detected')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
             speak(getTranslation(lang, 'no-face-detected'));
