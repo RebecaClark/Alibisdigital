@@ -1,592 +1,181 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scanner Emocional - Álibis Digital</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    body { 
-      position: relative; 
-      overflow-x: hidden; 
-      min-height: 100vh; 
-      color: #e5e7eb; 
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-    }
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
-    }
-    .fade-in { animation: fadeIn 1s ease-in-out; }
-    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
-    .pulse { animation: pulse 2s infinite ease-in-out; }
-    .float { animation: float 4s infinite ease-in-out; }
-    .scale-up { animation: scaleUp 0.8s ease-in-out; }
-    .scale-in { animation: scaleIn 0.8s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.1); } 75% { transform: scale(0.9); } 100% { transform: scale(1); } }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
-    @keyframes scaleUp { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-    @keyframes scaleIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
-    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
-    .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
-    .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
-    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
-    .holo-nav {
-      background: rgba(17, 24, 39, 0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      animation: holoGlow 2s infinite alternate;
-    }
-    @keyframes holoGlow {
-      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
-      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
-    }
-    .holo-nav a, .holo-nav button {
-      position: relative;
-      transition: color 0.3s ease;
-    }
-    .holo-nav a:hover, .holo-nav button:hover {
-      color: #22d3ee;
-      text-shadow: 0 0 5px #22d3ee;
-    }
-    .dropdown-menu {
-      background: rgba(31, 41, 55, 0.9);
-      border: 1px solid #22d3ee;
-      box-shadow: 0 0 10px #22d3ee;
-      border-radius: 8px;
-      padding: 8px 0;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      display: none;
-      width: 200px;
-    }
-    .dropdown-menu a {
-      display: block;
-      padding: 8px 16px;
-      color: #e5e7eb;
-      transition: all 0.3s ease;
-    }
-    .dropdown-menu a:hover {
-      background: rgba(55, 65, 81, 0.8);
-      color: #22d3ee;
-      text-shadow: 0 0 5px #22d3ee;
-    }
-    .dropdown:hover .dropdown-menu {
-      display: block;
-    }
-    .dropdown-menu-mobile {
-      background: rgba(31, 41, 55, 0.9);
-      border: 1px solid #22d3ee;
-      box-shadow: 0 0 10px #22d3ee;
-      border-radius: 8px;
-      padding: 8px 0;
-      width: 100%;
-      position: static;
-    }
-    .dropdown-menu-mobile a {
-      display: block;
-      padding: 8px 16px;
-      color: #e5e7eb;
-      transition: all 0.3s ease;
-    }
-    .dropdown-menu-mobile a:hover {
-      background: rgba(55, 65, 81, 0.8);
-      color: #22d3ee;
-      text-shadow: 0 0 5px #22d3ee;
-    }
-    .animate-on-scroll {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-    }
-    .animate-on-scroll.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .neon-box {
-      background: linear-gradient(45deg, #1e1b4b, #22d3ee);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 10px #22d3ee;
-      animation: fadeIn 1s ease-in-out;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    .loading-dots::after {
-      content: '';
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-      animation: dots 1.5s steps(3, end) infinite;
-    }
-    @keyframes dots {
-      0% { content: '.'; }
-      33% { content: '..'; }
-      66% { content: '...'; }
-      100% { content: '.'; }
-    }
-    @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      h2 { font-size: 1.8rem; }
-      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-      .grid { grid-template-columns: 1fr; }
-      .flex { flex-direction: column; }
-      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-      video { width: 100%; height: auto; }
-      .neon-box { padding: 15px; }
-    }
-  </style>
-</head>
-<body class="bg-transparent text-white font-sans">
-  <!-- Fundo com Partículas -->
-  <div id="particles-js"></div>
+<!-- BLOCO 5 - Scanner Facial Médico com IA + Diagnóstico Real + Leitura em Voz -->
+<section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
+  <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+  <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
 
-  <!-- Cabeçalho com Efeito Holográfico -->
-  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')">
-        </a>
-      </div>
-      <div class="flex items-center space-x-3">
-        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
-          <option value="pt-BR">Português</option>
-          <option value="en-US">English</option>
-        </select>
-        <div class="md:hidden">
-          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
-    </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div id="services-menu" class="dropdown-menu-mobile">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
-    </div>
-  </header>
-  <div class="h-20"></div>
+  <div class="flex justify-center mb-4 scale-in">
+    <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-green-600 pulse"></video>
+  </div>
 
-  <!-- Seção do Scanner -->
-  <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
-    <h2 class="text-4xl font-bold mb-6 text-white shine" data-i18n="scanner-title">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in" data-i18n="scanner-subtitle">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex justify-center mb-12 scale-in">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" aria-label="Vídeo da câmera para análise emocional"></video>
-    </div>
-    <div class="flex justify-center mb-12">
-      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine" aria-label="Iniciar análise emocional" data-i18n="analyze-emotion">
-        Analisar Estado Emocional
-      </button>
-    </div>
-    <div id="scanner-result" class="neon-box" style="display: none;"></div>
-    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
-  </section>
+  <div class="flex justify-center">
+    <button onclick="captureAndAnalyze()" class="mt-4 bg-green-600 text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in">
+      Analisar Estado Emocional
+    </button>
+  </div>
 
-  <!-- Rodapé -->
-  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-      <div class="slide-in-left">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
-      </div>
-      <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition" data-i18n="home">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
-          <li><a href="/blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
-          <li><a href="#checkout" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
-          <li><a href="#suporte" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
-          <li><a href="/politica-privacidade" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
-        </ul>
-      </div>
-      <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
-        <ul class="space-y-2">
-          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
-        </ul>
-      </div>
-    </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">Todos os direitos reservados.</span></p>
-    </div>
-  </footer>
+  <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold"></div>
 
-  <script>
-    // Inicializar Partículas com mais densidade
-    particlesJS('particles-js', {
-      "particles": {
-        "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#22d3ee" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.5, "random": true },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#22d3ee", "opacity": 0.4, "width": 1 },
-        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-        "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
-      },
-      "retina_detect": true
-    });
+  <div id="emotional-help" class="mt-6 hidden scale-in">
+    <a href="#avaliacao-emocional" class="bg-white text-[#0b1120] font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition animated-btn bounce-in">
+      Buscar Apoio Emocional Agora
+    </a>
+  </div>
 
-    const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
-    const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
+  <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+</section>
 
-    // Textos para internacionalização
-    const translations = {
-      "pt-BR": {
-        "services": "Serviços",
-        "scanner": "Scanner com IA",
-        "emotional-evaluation": "Avaliação Emocional",
-        "medical-ai": "Diagnóstico Médico",
-        "alibi": "Criar Álibi",
-        "blog": "Blog",
-        "plans": "Planos",
-        "support": "Suporte",
-        "test-free": "🔍 Teste Grátis",
-        "scanner-title": "Seu rosto carrega sinais. Vamos descobrir o que ele diz?",
-        "scanner-subtitle": "Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.",
-        "analyze-emotion": "Analisar Estado Emocional",
-        "analyzing": "⏳ Analisando sua expressão facial",
-        "no-face-detected": "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.",
-        "error-analyzing": "🚫 Erro ao analisar a expressão facial. Tente novamente.",
-        "camera-error": "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.",
-        "try-again": "Tentar Novamente",
-        "disclaimer": "Nota: Estas sugestões são baseadas em pesquisas preliminares e não substituem avaliação médica ou psicológica profissional.",
-        "composite-preview": "Análise detalhada: {emotion1} ({conf1}%), {emotion2} ({conf2}%), {emotion3} ({conf3}%). Este padrão pode indicar {interpretation}.",
-        "sadness-interpretation": "um estado reflexivo ou desafiador, possivelmente intensificado por longas horas de trabalho.",
-        "fear-disgust-anger-interpretation": "uma situação que pode ter desafiado ou incomodado, possivelmente amplificada por estresse.",
-        "default-interpretation": "como você está se sentindo agora, possivelmente influenciado por fatores externos.",
-        "get-full-diagnosis": "Obter Diagnóstico Completo",
-        "get-full-diagnosis-now": "Obter Diagnóstico Completo Agora",
-        "emotional-support": "Ter Apoio Emocional",
-        "medical-ai-support": "Apoio IA Médica",
-        "footer-about": "Soluções de bem-estar com tecnologia avançada.",
-        "footer-navigate": "Navegue",
-        "home": "Início",
-        "privacy": "Privacidade",
-        "footer-contact": "Contato",
-        "footer-rights": "Todos os direitos reservados."
-      },
-      "en-US": {
-        "services": "Services",
-        "scanner": "AI Scanner",
-        "emotional-evaluation": "Emotional Evaluation",
-        "medical-ai": "Medical Diagnosis",
-        "alibi": "Create Alibi",
-        "blog": "Blog",
-        "plans": "Plans",
-        "support": "Support",
-        "test-free": "🔍 Try Free",
-        "scanner-title": "Your face carries signals. Let's find out what it says.",
-        "scanner-subtitle": "Activate your camera and receive an emotional pre-diagnosis as if you were with an experienced clinician.",
-        "analyze-emotion": "Analyze Emotional State",
-        "analyzing": "⏳ Analyzing your facial expression",
-        "no-face-detected": "🤔 We couldn't detect a face. Try adjusting the lighting or your position.",
-        "error-analyzing": "🚫 Error analyzing facial expression. Please try again.",
-        "camera-error": "🚫 Error: Could not access the camera. Allow access and reload the page.",
-        "try-again": "Try Again",
-        "disclaimer": "Note: These suggestions are based on preliminary research and do not replace professional medical or psychological evaluation.",
-        "composite-preview": "Detailed analysis: {emotion1} ({conf1}%), {emotion2} ({conf2}%), {emotion3} ({conf3}%). This pattern may indicate {interpretation}.",
-        "sadness-interpretation": "a reflective or challenging state, possibly intensified by long working hours.",
-        "fear-disgust-anger-interpretation": "a situation that may have challenged or upset you, possibly amplified by stress.",
-        "default-interpretation": "how you're feeling now, possibly influenced by external factors.",
-        "get-full-diagnosis": "Get Full Diagnosis",
-        "get-full-diagnosis-now": "Get Full Diagnosis Now",
-        "emotional-support": "Get Emotional Support",
-        "medical-ai-support": "Medical AI Support",
-        "footer-about": "Well-being solutions with advanced technology.",
-        "footer-navigate": "Navigate",
-        "home": "Home",
-        "privacy": "Privacy",
-        "footer-contact": "Contact",
-        "footer-rights": "All rights reserved."
-      }
-    };
+<script>
+  const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
+  const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
 
-    // Função para obter traduções com fallback
-    function getTranslation(lang, key) {
-      const trans = translations[lang] || translations['pt-BR'];
-      return trans[key] || translations['pt-BR'][key] || key;
-    }
+  window.onload = function () {
+    const video = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(error => {
+        console.error("Erro ao acessar a câmera:", error);
+        document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
+      });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const video = document.getElementById('video');
-      if (video) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(stream => {
-            video.srcObject = stream;
-          })
-          .catch(error => {
-            console.error("Erro ao acessar a câmera:", error);
-            const result = document.getElementById('scanner-result');
-            if (result) {
-              const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-              result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'camera-error')}</p>`;
-            }
-          });
-      } else {
-        console.error("Elemento 'video' não encontrado no DOM.");
-      }
+    initScrollAnimations();
+  };
 
-      initScrollAnimations();
-      updateLanguage();
+  function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    function checkIfInView() {
+      const windowHeight = window.innerHeight;
+      const windowTopPosition = window.scrollY;
+      const windowBottomPosition = windowTopPosition + windowHeight;
 
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-          mobileMenu.classList.toggle('hidden');
-        });
-      }
-
-      const servicesToggle = document.getElementById('services-toggle');
-      const servicesMenu = document.getElementById('services-menu');
-      if (servicesToggle && servicesMenu) {
-        servicesToggle.addEventListener('click', () => {
-          servicesMenu.classList.toggle('hidden');
-        });
-      }
-
-      window.addEventListener('scroll', () => {
-        const header = document.querySelector('header');
-        if (header) {
-          if (window.scrollY > 50) {
-            header.classList.add('shadow-lg');
-          } else {
-            header.classList.remove('shadow-lg');
-          }
+      animatedElements.forEach(function (element) {
+        const elementHeight = element.offsetHeight;
+        const elementTopPosition = element.offsetTop;
+        const elementBottomPosition = elementTopPosition + elementHeight;
+        if (
+          (elementBottomPosition >= windowTopPosition) &&
+          (elementTopPosition <= windowBottomPosition)
+        ) {
+          element.classList.add('visible');
         }
       });
+    }
+    checkIfInView();
+    window.addEventListener('scroll', checkIfInView);
+    window.addEventListener('resize', checkIfInView);
+  }
 
-      const languageSelector = document.getElementById('language-selector');
-      if (languageSelector) {
-        languageSelector.addEventListener('change', updateLanguage);
-      }
-    });
+  function speak(text) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "pt-BR";
+    synth.speak(utter);
+  }
 
-    function initScrollAnimations() {
-      const animatedElements = document.querySelectorAll('.animate-on-scroll');
-      function checkIfInView() {
-        const windowHeight = window.innerHeight;
-        const windowTopPosition = window.scrollY;
-        const windowBottomPosition = windowTopPosition + windowHeight;
-        animatedElements.forEach(element => {
-          const elementHeight = element.offsetHeight;
-          const elementTopPosition = element.offsetTop;
-          const elementBottomPosition = elementTopPosition + elementHeight;
-          if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
-            element.classList.add('visible');
+  function captureAndAnalyze() {
+    const canvas = document.getElementById('canvas');
+    const video = document.getElementById('video');
+    const result = document.getElementById('scanner-result');
+    const helpButton = document.getElementById('emotional-help');
+
+    result.textContent = "⏳ Analisando sua expressão facial...";
+    helpButton.classList.add('hidden');
+
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+
+    const formData = new FormData();
+    formData.append('api_key', apiKey);
+    formData.append('api_secret', apiSecret);
+    formData.append('image_base64', imageBase64);
+    formData.append('return_attributes', 'age,gender,emotion');
+
+    fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.faces && data.faces.length > 0) {
+          const face = data.faces[0];
+          const age = face.attributes.age.value;
+          const gender = face.attributes.gender.value;
+          const emotion = face.attributes.emotion;
+
+          const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+
+          const emotionPortuguese = {
+            'sadness': 'tristeza',
+            'anger': 'raiva',
+            'happiness': 'felicidade',
+            'surprise': 'surpresa',
+            'neutral': 'neutra',
+            'fear': 'medo',
+            'disgust': 'desgosto'
+          };
+
+          const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+          let diagnosis = '';
+          let showHelp = false;
+
+          switch (emotionSorted) {
+            case 'sadness':
+              diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
+              showHelp = true;
+              break;
+            case 'anger':
+              diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
+              showHelp = true;
+              break;
+            case 'happiness':
+              diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
+              break;
+            case 'surprise':
+              diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
+              break;
+            case 'neutral':
+              diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pausa?";
+              break;
+            case 'fear':
+              diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
+              showHelp = true;
+              break;
+            case 'disgust':
+              diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
+              showHelp = true;
+              break;
+            default:
+              diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
           }
-        });
-      }
-      checkIfInView();
-      window.addEventListener('scroll', checkIfInView);
-      window.addEventListener('resize', checkIfInView);
-    }
 
-    function speak(text) {
-      if (!window.speechSynthesis) {
-        console.warn("API de síntese de voz não suportada neste navegador.");
-        return;
-      }
-      const synth = window.speechSynthesis;
-      const utter = new SpeechSynthesisUtterance(text);
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      utter.lang = lang;
-      synth.speak(utter);
-    }
+          result.innerHTML = `
+            <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
+              <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
+              <div class="text-white mb-4">
+                <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
+                <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
+                <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
+                <hr class="border-blue-600 opacity-30 my-4">
+                <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
+                <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
+              </div>
+            </div>
+          `;
 
-    function updateLanguage() {
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        element.textContent = getTranslation(lang, key);
-      });
-    }
+          speak(`Diagnóstico emocional: ${diagnosis}`);
 
-    function captureAndAnalyze() {
-      const canvas = document.getElementById('canvas');
-      const video = document.getElementById('video');
-      const result = document.getElementById('scanner-result');
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-
-      if (!canvas || !video || !result) {
-        console.error("Elementos necessários não encontrados: canvas, video ou scanner-result.");
-        return;
-      }
-
-      result.style.display = 'block';
-      result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'analyzing')}<span class="loading-dots"></span></p>`;
-
-      const context = canvas.getContext('2d');
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
-
-      const formData = new FormData();
-      formData.append('api_key', apiKey);
-      formData.append('api_secret', apiSecret);
-      formData.append('image_base64', imageBase64);
-      formData.append('return_attributes', 'age,gender,emotion,face_rectangle');
-
-      fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
-        method: 'POST',
-        body: formData
+          if (showHelp) {
+            helpButton.classList.remove('hidden');
+          }
+        } else {
+          result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
+        }
       })
-        .then(res => res.json())
-        .then(data => {
-          if (data.faces && data.faces.length > 0) {
-            const face = data.faces[0];
-            const emotion = face.attributes.emotion;
-            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
-            const topEmotions = emotionSorted.slice(0, 3).map(([emotion, confidence]) => ({ emotion, confidence }));
-            let totalConfidence = topEmotions.reduce((sum, e) => sum + e.confidence, 0);
-
-            // Normalizar confidências para somar 100% entre as top 3
-            topEmotions.forEach(e => e.confidence = Math.round((e.confidence / totalConfidence) * 100));
-
-            const emotionPortuguese = {
-              'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
-              'anger': lang === 'pt-BR' ? 'raiva' : 'anger',
-              'happiness': lang === 'pt-BR' ? 'felicidade' : 'happiness',
-              'surprise': lang === 'pt-BR' ? 'surpresa' : 'surprise',
-              'neutral': lang === 'pt-BR' ? 'neutra' : 'neutral',
-              'fear': lang === 'pt-BR' ? 'medo' : 'fear',
-              'disgust': lang === 'pt-BR' ? 'desgosto' : 'disgust'
-            };
-
-            // Rejeitar "neutro" como dominante a menos que tenha margem clara (>70% e 20% acima da segunda)
-            if (topEmotions[0].emotion === 'neutral' && (topEmotions[0].confidence <= 70 || topEmotions[0].confidence - topEmotions[1].confidence < 20)) {
-              topEmotions.shift(); // Remove "neutral" da lista dominante
-              if (topEmotions.length < 3) {
-                const nextEmotion = emotionSorted.find(e => e[0] !== 'neutral' && !topEmotions.some(te => te.emotion === e[0]));
-                if (nextEmotion) topEmotions.push({ emotion: nextEmotion[0], confidence: Math.round((nextEmotion[1] / totalConfidence) * 100) });
-              }
-            }
-
-            if (topEmotions[0].confidence < 30) {
-              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara com confiança suficiente.' : '🤔 We couldn’t identify a clear emotion with sufficient confidence.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
-              speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara com confiança suficiente.' : 'We couldn’t identify a clear emotion with sufficient confidence.');
-              return;
-            }
-
-            const [e1, e2, e3] = topEmotions;
-            const e1Name = emotionPortuguese[e1.emotion] || e1.emotion;
-            const e2Name = emotionPortuguese[e2.emotion] || e2.emotion;
-            const e3Name = emotionPortuguese[e3.emotion] || e3.emotion;
-            let interpretation = getTranslation(lang, 'default-interpretation');
-
-            if (e1.emotion === 'sadness') {
-              interpretation = getTranslation(lang, 'sadness-interpretation');
-            } else if (['fear', 'disgust', 'anger'].includes(e1.emotion)) {
-              interpretation = getTranslation(lang, 'fear-disgust-anger-interpretation');
-            }
-
-            const preview = getTranslation(lang, 'composite-preview')
-              .replace('{emotion1}', e1Name)
-              .replace('{conf1}', e1.confidence)
-              .replace('{emotion2}', e2Name)
-              .replace('{conf2}', e2.confidence)
-              .replace('{emotion3}', e3Name)
-              .replace('{conf3}', e3.confidence)
-              .replace('{interpretation}', interpretation);
-
-            const checkoutUrl = `/checkout.html?emotion=${e1.emotion}&confidence=${e1.confidence}`;
-            let additionalButton = '';
-            if (e1.emotion === 'sadness' && e1.confidence > 50) {
-              additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${getTranslation(lang, 'emotional-support')}</button></div>`;
-            } else if (['fear', 'disgust', 'anger'].includes(e1.emotion) && e1.confidence > 70) {
-              additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${getTranslation(lang, 'medical-ai-support')}</button></div>`;
-            }
-
-            result.innerHTML = `<p class="fade-in">${preview}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${getTranslation(lang, 'disclaimer')}</p><div class="mt-4"><button onclick="window.location.href='${checkoutUrl}'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" aria-label="${lang === 'pt-BR' ? 'Obter diagnóstico completo' : 'Get full diagnosis'}" data-i18n="${additionalButton ? 'get-full-diagnosis' : 'get-full-diagnosis-now'}">${additionalButton ? getTranslation(lang, 'get-full-diagnosis') : getTranslation(lang, 'get-full-diagnosis-now')}</button>${additionalButton}</div>`;
-            speak(preview);
-          } else {
-            result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${getTranslation(lang, 'no-face-detected')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
-            speak(getTranslation(lang, 'no-face-detected'));
-          }
-        })
-        .catch(error => {
-          console.error("Erro ao analisar:", error);
-          result.innerHTML = `<p class="fade-in" data-i18n="error-analyzing">${getTranslation(lang, 'error-analyzing')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
-          speak(getTranslation(lang, 'error-analyzing'));
-        });
-    }
-  </script>
-</body>
-</html>
+      .catch(err => {
+        console.error("Erro na análise facial:", err);
+        result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
+      });
+  }
+</script>
