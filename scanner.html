@@ -238,7 +238,6 @@
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine" data-i18n="scanner-title">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in" data-i18n="scanner-subtitle">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <p class="text-sm mb-4 text-gray-400" data-i18n="expression-tip">Dica: Tente expressar suas emoções de forma clara, como um sorriso ou franzir a testa, para melhorar a detecção.</p>
     <div class="flex justify-center mb-12 scale-in">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" aria-label="Vídeo da câmera para análise emocional"></video>
     </div>
@@ -322,7 +321,6 @@
         "test-free": "🔍 Teste Grátis",
         "scanner-title": "Seu rosto carrega sinais. Vamos descobrir o que ele diz?",
         "scanner-subtitle": "Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.",
-        "expression-tip": "Dica: Tente expressar suas emoções de forma clara, como um sorriso ou franzir a testa, para melhorar a detecção.",
         "analyze-emotion": "Analisar Estado Emocional",
         "analyzing": "⏳ Analisando sua expressão facial",
         "no-face-detected": "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.",
@@ -330,11 +328,10 @@
         "camera-error": "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.",
         "try-again": "Tentar Novamente",
         "disclaimer": "Nota: Estas sugestões são baseadas em pesquisas preliminares e não substituem avaliação médica ou psicológica profissional.",
-        "sadness-preview": "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
-        "fear-disgust-anger-preview": "Detectamos {emotion}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
-        "default-preview": "Detectamos {emotion}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
-        "secondary-emotion": " Também notamos traços de {secondaryEmotion}, o que pode indicar sentimentos mistos.",
-        "neutral-retry": "Detectamos uma expressão neutra. Tente exagerar sua expressão (como sorrir ou franzir a testa) para uma análise mais precisa.",
+        "composite-preview": "Análise detalhada: {emotion1} ({conf1}%), {emotion2} ({conf2}%), {emotion3} ({conf3}%). Este padrão pode indicar {interpretation}.",
+        "sadness-interpretation": "um estado reflexivo ou desafiador, possivelmente intensificado por longas horas de trabalho.",
+        "fear-disgust-anger-interpretation": "uma situação que pode ter desafiado ou incomodado, possivelmente amplificada por estresse.",
+        "default-interpretation": "como você está se sentindo agora, possivelmente influenciado por fatores externos.",
         "get-full-diagnosis": "Obter Diagnóstico Completo",
         "get-full-diagnosis-now": "Obter Diagnóstico Completo Agora",
         "emotional-support": "Ter Apoio Emocional",
@@ -358,7 +355,6 @@
         "test-free": "🔍 Try Free",
         "scanner-title": "Your face carries signals. Let's find out what it says.",
         "scanner-subtitle": "Activate your camera and receive an emotional pre-diagnosis as if you were with an experienced clinician.",
-        "expression-tip": "Tip: Try to clearly express your emotions, like smiling or frowning, to improve detection.",
         "analyze-emotion": "Analyze Emotional State",
         "analyzing": "⏳ Analyzing your facial expression",
         "no-face-detected": "🤔 We couldn't detect a face. Try adjusting the lighting or your position.",
@@ -366,11 +362,10 @@
         "camera-error": "🚫 Error: Could not access the camera. Allow access and reload the page.",
         "try-again": "Try Again",
         "disclaimer": "Note: These suggestions are based on preliminary research and do not replace professional medical or psychological evaluation.",
-        "sadness-preview": "We detected sadness, possibly linked to a reflective or challenging moment in your heart. Often, long working hours can intensify these emotions.",
-        "fear-disgust-anger-preview": "We detected {emotion}, possibly reflecting a situation that challenged or upset you. Often, long working hours can intensify these emotions.",
-        "default-preview": "We detected {emotion}, a state that reflects how you're feeling now. Often, long working hours can intensify these emotions.",
-        "secondary-emotion": " We also noticed traces of {secondaryEmotion}, which may indicate mixed feelings.",
-        "neutral-retry": "We detected a neutral expression. Try exaggerating your expression (like smiling or frowning) for a more accurate analysis.",
+        "composite-preview": "Detailed analysis: {emotion1} ({conf1}%), {emotion2} ({conf2}%), {emotion3} ({conf3}%). This pattern may indicate {interpretation}.",
+        "sadness-interpretation": "a reflective or challenging state, possibly intensified by long working hours.",
+        "fear-disgust-anger-interpretation": "a situation that may have challenged or upset you, possibly amplified by stress.",
+        "default-interpretation": "how you're feeling now, possibly influenced by external factors.",
         "get-full-diagnosis": "Get Full Diagnosis",
         "get-full-diagnosis-now": "Get Full Diagnosis Now",
         "emotional-support": "Get Emotional Support",
@@ -507,7 +502,7 @@
       formData.append('api_key', apiKey);
       formData.append('api_secret', apiSecret);
       formData.append('image_base64', imageBase64);
-      formData.append('return_attributes', 'age,gender,emotion');
+      formData.append('return_attributes', 'age,gender,emotion,face_rectangle');
 
       fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
         method: 'POST',
@@ -519,22 +514,11 @@
             const face = data.faces[0];
             const emotion = face.attributes.emotion;
             const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
-            let primaryEmotion = emotionSorted[0][0];
-            let primaryConfidence = emotionSorted[0][1];
-            const secondaryEmotion = emotionSorted[1][0];
-            const secondaryConfidence = emotionSorted[1][1];
+            const topEmotions = emotionSorted.slice(0, 3).map(([emotion, confidence]) => ({ emotion, confidence }));
+            let totalConfidence = topEmotions.reduce((sum, e) => sum + e.confidence, 0);
 
-            // Se a emoção dominante for "neutral", verificamos se há outras emoções próximas
-            if (primaryEmotion === 'neutral' && primaryConfidence < 60) {
-              for (let i = 1; i < emotionSorted.length; i++) {
-                const [emotionName, confidence] = emotionSorted[i];
-                if (confidence >= primaryConfidence - 10 && emotionName !== 'neutral') {
-                  primaryEmotion = emotionName;
-                  primaryConfidence = confidence;
-                  break;
-                }
-              }
-            }
+            // Normalizar confidências para somar 100% entre as top 3
+            topEmotions.forEach(e => e.confidence = Math.round((e.confidence / totalConfidence) * 100));
 
             const emotionPortuguese = {
               'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
@@ -546,52 +530,52 @@
               'disgust': lang === 'pt-BR' ? 'desgosto' : 'disgust'
             };
 
-            if (primaryConfidence < 40) {
-              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : '🤔 We couldn’t identify a clear emotion. Try adjusting your expression or lighting.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
-              speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : 'We couldn’t identify a clear emotion. Try adjusting your expression or lighting.');
+            // Rejeitar "neutro" como dominante a menos que tenha margem clara (>70% e 20% acima da segunda)
+            if (topEmotions[0].emotion === 'neutral' && (topEmotions[0].confidence <= 70 || topEmotions[0].confidence - topEmotions[1].confidence < 20)) {
+              topEmotions.shift(); // Remove "neutral" da lista dominante
+              if (topEmotions.length < 3) {
+                const nextEmotion = emotionSorted.find(e => e[0] !== 'neutral' && !topEmotions.some(te => te.emotion === e[0]));
+                if (nextEmotion) topEmotions.push({ emotion: nextEmotion[0], confidence: Math.round((nextEmotion[1] / totalConfidence) * 100) });
+              }
+            }
+
+            if (topEmotions[0].confidence < 30) {
+              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara com confiança suficiente.' : '🤔 We couldn’t identify a clear emotion with sufficient confidence.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
+              speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara com confiança suficiente.' : 'We couldn’t identify a clear emotion with sufficient confidence.');
               return;
             }
 
-            if (primaryEmotion === 'neutral') {
-              result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'neutral-retry')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
-              speak(getTranslation(lang, 'neutral-retry'));
-              return;
+            const [e1, e2, e3] = topEmotions;
+            const e1Name = emotionPortuguese[e1.emotion] || e1.emotion;
+            const e2Name = emotionPortuguese[e2.emotion] || e2.emotion;
+            const e3Name = emotionPortuguese[e3.emotion] || e3.emotion;
+            let interpretation = getTranslation(lang, 'default-interpretation');
+
+            if (e1.emotion === 'sadness') {
+              interpretation = getTranslation(lang, 'sadness-interpretation');
+            } else if (['fear', 'disgust', 'anger'].includes(e1.emotion)) {
+              interpretation = getTranslation(lang, 'fear-disgust-anger-interpretation');
             }
 
-            const primaryEmotionInLang = emotionPortuguese[primaryEmotion] || primaryEmotion;
-            const secondaryEmotionInLang = emotionPortuguese[secondaryEmotion] || secondaryEmotion;
-            let preview = '';
-            let spokenPreview = '';
+            const preview = getTranslation(lang, 'composite-preview')
+              .replace('{emotion1}', e1Name)
+              .replace('{conf1}', e1.confidence)
+              .replace('{emotion2}', e2Name)
+              .replace('{conf2}', e2.confidence)
+              .replace('{emotion3}', e3Name)
+              .replace('{conf3}', e3.confidence)
+              .replace('{interpretation}', interpretation);
+
+            const checkoutUrl = `/checkout.html?emotion=${e1.emotion}&confidence=${e1.confidence}`;
             let additionalButton = '';
-            let secondaryMessage = secondaryConfidence > 30 ? getTranslation(lang, 'secondary-emotion').replace('{secondaryEmotion}', secondaryEmotionInLang) : '';
-
-            switch (primaryEmotion) {
-              case 'sadness':
-                preview = getTranslation(lang, 'sadness-preview') + secondaryMessage;
-                spokenPreview = preview;
-                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${getTranslation(lang, 'emotional-support')}</button></div>`;
-                break;
-              case 'fear':
-              case 'disgust':
-              case 'anger':
-                if (primaryConfidence > 70) {
-                  preview = getTranslation(lang, 'fear-disgust-anger-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                  spokenPreview = preview;
-                  additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${getTranslation(lang, 'medical-ai-support')}</button></div>`;
-                } else {
-                  preview = getTranslation(lang, 'default-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                  spokenPreview = preview;
-                }
-                break;
-              default:
-                preview = getTranslation(lang, 'default-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                spokenPreview = preview;
-                break;
+            if (e1.emotion === 'sadness' && e1.confidence > 50) {
+              additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${getTranslation(lang, 'emotional-support')}</button></div>`;
+            } else if (['fear', 'disgust', 'anger'].includes(e1.emotion) && e1.confidence > 70) {
+              additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${getTranslation(lang, 'medical-ai-support')}</button></div>`;
             }
 
-            const checkoutUrl = `/checkout.html?emotion=${primaryEmotion}&confidence=${primaryConfidence}`;
             result.innerHTML = `<p class="fade-in">${preview}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${getTranslation(lang, 'disclaimer')}</p><div class="mt-4"><button onclick="window.location.href='${checkoutUrl}'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" aria-label="${lang === 'pt-BR' ? 'Obter diagnóstico completo' : 'Get full diagnosis'}" data-i18n="${additionalButton ? 'get-full-diagnosis' : 'get-full-diagnosis-now'}">${additionalButton ? getTranslation(lang, 'get-full-diagnosis') : getTranslation(lang, 'get-full-diagnosis-now')}</button>${additionalButton}</div>`;
-            speak(spokenPreview);
+            speak(preview);
           } else {
             result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${getTranslation(lang, 'no-face-detected')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
             speak(getTranslation(lang, 'no-face-detected'));
