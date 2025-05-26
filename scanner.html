@@ -1,181 +1,384 @@
-<!-- BLOCO 5 - Scanner Facial Médico com IA + Diagnóstico Real + Leitura em Voz -->
-<section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
-  <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-  <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-
-  <div class="flex justify-center mb-4 scale-in">
-    <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-green-600 pulse"></video>
-  </div>
-
-  <div class="flex justify-center">
-    <button onclick="captureAndAnalyze()" class="mt-4 bg-green-600 text-white font-bold px-8 py-3 rounded-full hover:bg-green-700 transition animated-btn bounce-in">
-      Analisar Estado Emocional
-    </button>
-  </div>
-
-  <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold"></div>
-
-  <div id="emotional-help" class="mt-6 hidden scale-in">
-    <a href="#avaliacao-emocional" class="bg-white text-[#0b1120] font-bold px-6 py-2 rounded-full hover:bg-gray-200 transition animated-btn bounce-in">
-      Buscar Apoio Emocional Agora
-    </a>
-  </div>
-
-  <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
-</section>
-
-<script>
-  const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
-  const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
-
-  window.onload = function () {
-    const video = document.getElementById('video');
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        video.srcObject = stream;
-      })
-      .catch(error => {
-        console.error("Erro ao acessar a câmera:", error);
-        document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
-      });
-
-    initScrollAnimations();
-  };
-
-  function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    function checkIfInView() {
-      const windowHeight = window.innerHeight;
-      const windowTopPosition = window.scrollY;
-      const windowBottomPosition = windowTopPosition + windowHeight;
-
-      animatedElements.forEach(function (element) {
-        const elementHeight = element.offsetHeight;
-        const elementTopPosition = element.offsetTop;
-        const elementBottomPosition = elementTopPosition + elementHeight;
-        if (
-          (elementBottomPosition >= windowTopPosition) &&
-          (elementTopPosition <= windowBottomPosition)
-        ) {
-          element.classList.add('visible');
-        }
-      });
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanner Emocional - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { position: relative; overflow-x: hidden; }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
     }
-    checkIfInView();
-    window.addEventListener('scroll', checkIfInView);
-    window.addEventListener('resize', checkIfInView);
-  }
+    /* Animações Alinhadas com o Index */
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    .float { animation: float 4s infinite ease-in-out; }
+    .scale-up { animation: scaleUp 0.8s ease-in-out; }
+    .scale-in { animation: scaleIn 0.8s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.1); } 75% { transform: scale(0.9); } 100% { transform: scale(1); } }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
+    @keyframes scaleUp { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
+    .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
+    .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
+    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
+    /* Efeito Holográfico na Navegação */
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown-menu {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+    }
+    .dropdown-menu a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .flex { flex-direction: column; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      video { width: 100%; height: auto; }
+    }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-white font-sans">
+  <!-- Fundo com Partículas -->
+  <div id="particles-js"></div>
 
-  function speak(text) {
-    const synth = window.speechSynthesis;
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = "pt-BR";
-    synth.speak(utter);
-  }
+  <!-- Cabeçalho com Efeito Holográfico -->
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')">
+        </a>
+      </div>
+      <div class="md:hidden flex items-center">
+        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+        <div class="dropdown relative">
+          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            Serviços
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Medical</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Alibi</a>
+          </div>
+        </div>
+        <a href="#suporte" class="hover:text-[#22d3ee] transition">Suporte</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <div class="w-full">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+            Serviços
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="services-menu" class="dropdown-menu-mobile">
+            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Medical</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Alibi</a>
+          </div>
+        </div>
+        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
 
-  function captureAndAnalyze() {
-    const canvas = document.getElementById('canvas');
-    const video = document.getElementById('video');
-    const result = document.getElementById('scanner-result');
-    const helpButton = document.getElementById('emotional-help');
+  <!-- Seção do Scanner -->
+  <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
+    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
+    <div class="flex justify-center mb-4 scale-in">
+      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse"></video>
+    </div>
+    <div class="flex justify-center">
+      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine">
+        Analisar Estado Emocional
+      </button>
+    </div>
+    <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold slide-in-left"></div>
+    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+  </section>
 
-    result.textContent = "⏳ Analisando sua expressão facial...";
-    helpButton.classList.add('hidden');
+  <!-- Rodapé -->
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegue</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Medical</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Emotional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Alibi</a></li>
+          <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
+          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
+          <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    </div>
+  </footer>
 
-    const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+  <script>
+    // Inicializar Partículas
+    particlesJS('particles-js', {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#22d3ee" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5, "random": true },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#22d3ee", "opacity": 0.4, "width": 1 },
+        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+        "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+      },
+      "retina_detect": true
+    });
 
-    const formData = new FormData();
-    formData.append('api_key', apiKey);
-    formData.append('api_secret', apiSecret);
-    formData.append('image_base64', imageBase64);
-    formData.append('return_attributes', 'age,gender,emotion');
+    const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
+    const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
 
-    fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
-      method: 'POST',
-      body: formData
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.faces && data.faces.length > 0) {
-          const face = data.faces[0];
-          const age = face.attributes.age.value;
-          const gender = face.attributes.gender.value;
-          const emotion = face.attributes.emotion;
+    window.onload = function () {
+      const video = document.getElementById('video');
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => video.srcObject = stream)
+        .catch(error => {
+          console.error("Erro ao acessar a câmera:", error);
+          document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
+        });
+      initScrollAnimations();
+    };
 
-          const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
-
-          const emotionPortuguese = {
-            'sadness': 'tristeza',
-            'anger': 'raiva',
-            'happiness': 'felicidade',
-            'surprise': 'surpresa',
-            'neutral': 'neutra',
-            'fear': 'medo',
-            'disgust': 'desgosto'
-          };
-
-          const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
-          let diagnosis = '';
-          let showHelp = false;
-
-          switch (emotionSorted) {
-            case 'sadness':
-              diagnosis = "Sinais de tristeza detectados. Talvez um momento difícil esteja te rondando. Um papo pode aliviar.";
-              showHelp = true;
-              break;
-            case 'anger':
-              diagnosis = "Expressão carregada de raiva ou frustração. Respira, se precisar, busque um ombro amigo.";
-              showHelp = true;
-              break;
-            case 'happiness':
-              diagnosis = "Você parece feliz! Que tal espalhar isso pra mais gente hoje?";
-              break;
-            case 'surprise':
-              diagnosis = "Algo te surpreendeu? Nem sempre é ruim. Pode ser o universo mudando o jogo.";
-              break;
-            case 'neutral':
-              diagnosis = "Expressão neutra. Pode ser foco... ou cansaço. Vale dar um pausa?";
-              break;
-            case 'fear':
-              diagnosis = "Medo ou ansiedade detectados. Respira. Você não está sozinho nisso.";
-              showHelp = true;
-              break;
-            case 'disgust':
-              diagnosis = "Expressão de incômodo ou repulsa. Tá tudo bem se algo não tá legal. Fala com a gente.";
-              showHelp = true;
-              break;
-            default:
-              diagnosis = "Não consegui ler bem suas emoções, mas sempre é válido cuidar da mente.";
+    function initScrollAnimations() {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      function checkIfInView() {
+        const windowHeight = window.innerHeight;
+        const windowTopPosition = window.scrollY;
+        const windowBottomPosition = windowTopPosition + windowHeight;
+        animatedElements.forEach(element => {
+          const elementHeight = element.offsetHeight;
+          const elementTopPosition = element.offsetTop;
+          const elementBottomPosition = elementTopPosition + elementHeight;
+          if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
+            element.classList.add('visible');
           }
+        });
+      }
+      checkIfInView();
+      window.addEventListener('scroll', checkIfInView);
+      window.addEventListener('resize', checkIfInView);
+    }
 
-          result.innerHTML = `
-            <div class="bg-[#051428] p-6 rounded-xl border border-[#00e9ff] shadow-lg mb-8">
-              <h3 class="text-[#00e9ff] text-xl font-bold mb-4 text-center">Resultados da Análise</h3>
-              <div class="text-white mb-4">
-                <p class="mb-2">👤 <strong>Gênero:</strong> ${gender === "Male" ? "Homem" : "Mulher"}</p>
-                <p class="mb-2">🎂 <strong>Idade estimada:</strong> ${age} anos</p>
-                <p class="mb-4">😊 <strong>Emoção predominante:</strong> <span class="font-bold">${emotionInPortuguese}</span></p>
-                <hr class="border-blue-600 opacity-30 my-4">
-                <p class="text-[#00e9ff] font-semibold mb-2">Diagnóstico da IA:</p>
-                <p id="diagnosis-text" class="italic text-gray-300">"${diagnosis}"</p>
-              </div>
-            </div>
-          `;
+    function speak(text) {
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "pt-BR";
+      synth.speak(utter);
+    }
 
-          speak(`Diagnóstico emocional: ${diagnosis}`);
+    function captureAndAnalyze() {
+      const canvas = document.getElementById('canvas');
+      const video = document.getElementById('video');
+      const result = document.getElementById('scanner-result');
 
-          if (showHelp) {
-            helpButton.classList.remove('hidden');
-          }
-        } else {
-          result.textContent = "🤖 Nenhum rosto detectado. Tente novamente com boa iluminação.";
-        }
+      result.textContent = "⏳ Analisando sua expressão facial...";
+
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+
+      const formData = new FormData();
+      formData.append('api_key', apiKey);
+      formData.append('api_secret', apiSecret);
+      formData.append('image_base64', imageBase64);
+      formData.append('return_attributes', 'age,gender,emotion');
+
+      fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
+        method: 'POST',
+        body: formData
       })
-      .catch(err => {
-        console.error("Erro na análise facial:", err);
-        result.textContent = "🚫 Erro ao analisar a imagem. Tente novamente.";
+        .then(res => res.json())
+        .then(data => {
+          if (data.faces && data.faces.length > 0) {
+            const face = data.faces[0];
+            const age = face.attributes.age.value;
+            const gender = face.attributes.gender.value;
+            const emotion = face.attributes.emotion;
+            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+
+            const emotionPortuguese = {
+              'sadness': 'tristeza',
+              'anger': 'raiva',
+              'happiness': 'felicidade',
+              'surprise': 'surpresa',
+              'neutral': 'neutra',
+              'fear': 'medo',
+              'disgust': 'desgosto'
+            };
+
+            const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+            let diagnosis = '';
+            let suggestion = '';
+
+            switch (emotionSorted) {
+              case 'sadness':
+                diagnosis = "Detectamos sinais de tristeza em sua expressão. Isso pode indicar que você está passando por um momento de melancolia ou saudade, talvez devido a uma situação recente que mexeu com seus sentimentos.";
+                suggestion = "Que tal tirar um momento para relaxar? Escrever sobre o que está sentindo ou conversar com alguém de confiança pode ajudar a aliviar. Se quiser, você também pode explorar nosso artigo com dicas para melhorar o sono, que pode ajudar no seu bem-estar: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>.";
+                break;
+              case 'anger':
+                diagnosis = "Sua expressão mostra traços de raiva ou frustração. Isso pode ser um reflexo de algo que te irritou profundamente ou de um acúmulo de tensões do dia a dia.";
+                suggestion = "Respire fundo algumas vezes: inspire por 4 segundos, segure por 4, e expire por 8. Isso pode ajudar a acalmar os ânimos. Se precisar de mais ideias para lidar com o estresse, confira nosso artigo: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.";
+                break;
+              case 'happiness':
+                diagnosis = "Você está com uma expressão de felicidade! Isso é maravilhoso e indica que você está em um momento de leveza e alegria, talvez por algo que aconteceu recentemente e te trouxe satisfação.";
+                suggestion = "Aproveite esse momento para espalhar positividade! Que tal compartilhar algo que te fez sorrir com um amigo ou fazer uma atividade que você ama, como ouvir música ou sair para um passeio?";
+                break;
+              case 'surprise':
+                diagnosis = "Sua expressão mostra surpresa. Você pode ter se deparado com algo inesperado, que te deixou curioso ou intrigado.";
+                suggestion = "Surpresas podem ser ótimas para sair da rotina! Se for algo positivo, aproveite para explorar essa novidade. Caso tenha sido algo desafiador, respire fundo e avalie com calma antes de agir.";
+                break;
+              case 'neutral':
+                diagnosis = "Sua expressão está neutra, o que pode indicar que você está concentrado ou talvez um pouco cansado. Às vezes, isso reflete um momento de introspecção ou foco.";
+                suggestion = "Se sentir que precisa de uma pausa, que tal fazer um alongamento rápido ou tomar um copo d’água? Pequenas ações podem ajudar a recarregar. Se estiver cansado, nosso artigo sobre sono pode te ajudar: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>.";
+                break;
+              case 'fear':
+                diagnosis = "Detectamos sinais de medo ou preocupação em sua expressão. Isso pode indicar que você está enfrentando uma situação que te deixa inseguro ou ansioso.";
+                suggestion = "Tente focar em algo que te traga conforto, como ouvir uma música calma ou praticar a respiração profunda. Se precisar de mais suporte, confira nosso artigo sobre redução de estresse: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.";
+                break;
+              case 'disgust':
+                diagnosis = "Sua expressão sugere desgosto, o que pode indicar que você está reagindo a algo que te incomodou ou que não está alinhado aos seus valores.";
+                suggestion = "Se possível, afaste-se daquilo que está te incomodando e foque em algo que te traga bem-estar. Um pequeno intervalo pode fazer diferença!";
+                break;
+              default:
+                diagnosis = `Detectamos uma emoção predominante de ${emotionInPortuguese}.`;
+                suggestion = "Continue explorando como você se sente e o que pode estar causando essa emoção.";
+            }
+
+            result.innerHTML = `<p class="fade-in">Pré-diagnóstico emocional: ${diagnosis}</p><p class="fade-in mt-2">${suggestion}</p>`;
+            speak(diagnosis + " " + suggestion);
+          } else {
+            result.textContent = "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.";
+            speak("Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.");
+          }
+        })
+        .catch(error => {
+          console.error("Erro ao analisar:", error);
+          result.textContent = "🚫 Erro ao analisar a expressão facial. Tente novamente.";
+          speak("Erro ao analisar a expressão facial. Tente novamente.");
+        });
+    }
+
+    // Scripts de Navegação
+    document.addEventListener('DOMContentLoaded', () => {
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
       });
-  }
-</script>
+
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+      servicesToggle.addEventListener('click', () => {
+        servicesMenu.classList.toggle('hidden');
+      });
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          document.querySelector('header').classList.add('shadow-lg');
+        } else {
+          document.querySelector('header').classList.remove('shadow-lg');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
