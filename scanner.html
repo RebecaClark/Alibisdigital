@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  </scrit<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -9,8 +9,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* Copied styles from index.html, excluding animations */
     html { scroll-behavior: smooth; }
     body { position: relative; overflow-x: hidden; }
     #particles-js {
@@ -26,20 +26,72 @@
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown-menu, .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      display: none;
+      min-width: 180px;
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 50;
+    }
+    .dropdown-menu-mobile {
+      width: 100%;
+      position: static;
+    }
+    .dropdown:hover .dropdown-menu, .dropdown-menu-mobile.show {
+      display: block;
+    }
+    .dropdown-menu a, .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
     }
     .futuristic-btn {
       background: linear-gradient(45deg, #7C3AED, #22d3ee);
       box-shadow: 0 0 15px #22d3ee;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: neonPulse 1.5s infinite alternate;
     }
     .futuristic-btn:hover {
       transform: translateY(-5px);
       box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
     }
+    @keyframes neonPulse {
+      0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
+      100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-      video { width: 100%; height: auto; }
+      video, canvas { width: 100%; height: auto; }
+      .dropdown-menu { position: static; width: 100%; }
     }
   </style>
 </head>
@@ -47,14 +99,14 @@
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
 
-  <!-- Cabeçalho (Copiado de index.html, sem animações) -->
-  <header class="holo-nav fixed top-0 left-0 w-full z-50">
+  <!-- Cabeçalho -->
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <a href="/"><img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto"></a>
       </div>
       <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded">
+        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -62,7 +114,7 @@
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
         <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] transition flex items-center">
+          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
             Serviços
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -70,8 +122,8 @@
           </button>
           <div class="dropdown-menu">
             <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/blog.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/blog.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
             <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
@@ -84,7 +136,7 @@
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
             Serviços
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -92,8 +144,8 @@
           </button>
           <div id="services-menu" class="dropdown-menu-mobile hidden">
             <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/blog.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/blog.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
             <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
@@ -109,8 +161,8 @@
   <!-- Scanner Section -->
   <section id="scanner" class="text-white text-center py-20 px-6">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-5xl font-extrabold mb-6">Scanner Emocional com IA</h1>
-      <p class="text-lg text-gray-300 mb-10">Identifique estresse, fadiga e emoções em segundos usando nossa tecnologia de ponta.</p>
+      <h1 class="text-5xl font-extrabold mb-6 fade-in">Scanner Emocional com IA</h1>
+      <p class="text-lg text-gray-300 mb-10 fade-in">Identifique estresse, fadiga e emoções em segundos usando nossa tecnologia de ponta.</p>
       <div class="mb-10">
         <video id="video" width="640" height="480" autoplay muted class="mx-auto rounded-xl border-2 border-[#22d3ee]"></video>
         <canvas id="canvas" class="hidden"></canvas>
@@ -121,32 +173,32 @@
     </div>
   </section>
 
-  <!-- Footer (Copied from index.html, no animations) -->
+  <!-- Footer -->
   <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-      <div>
-        <h3 class="text-white text-2xl font-bold mb-4">Álibis Digital</h3>
-        <p>Soluções de bem-estar com tecnologia avançada.</p>
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
-      <div>
+      <div class="fade-in">
         <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Avaliação Emocional</a></li>
           <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="/#checkout" class="hover:text-white transition">Planos</a></li>
           <li><a href="/#suporte" class="hover:text-white transition">Suporte</a></li>
           <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
         </ul>
       </div>
-      <div>
+      <div class="slide-in-right">
         <h4 class="text-white font-semibold mb-4">Contato</h4>
         <ul class="space-y-2">
-          <li>E-mail: contato@alibisdigital.com</li>
-          <li>WhatsApp: (11) 91234-5678</li>
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
         </ul>
       </div>
     </div>
@@ -156,7 +208,7 @@
   </footer>
 
   <script>
-    // Initialize Particles (copied from index.html)
+    // Particles.js
     particlesJS('particles-js', {
       "particles": {
         "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
@@ -186,8 +238,8 @@
       // Load face-api.js models
       try {
         await Promise.all([
-          faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-          faceapi.nets.faceExpressionNet.loadFromUri('/models')
+          faceapi.nets.tinyFaceDetector.loadFromUri('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights'),
+          faceapi.nets.faceExpressionNet.loadFromUri('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights')
         ]);
       } catch (err) {
         console.error('Error loading models:', err);
@@ -226,20 +278,50 @@
               }
             }
             const translatedEmotions = {
-              neutral: 'Neutro',
-              happy: 'Feliz',
-              sad: 'Triste',
-              angry: 'Irritado',
-              fearful: 'Com medo',
-              disgusted: 'Com nojo',
-              surprised: 'Surpreso'
+              neutral: 'Neutro', happy: 'Feliz', sad: 'Triste', angry: 'Irritado',
+              fearful: 'Com medo', disgusted: 'Com nojo', surprised: 'Surpreso'
             };
+            const stressLevel = maxValue > 0.7 && ['sad', 'angry', 'fearful'].includes(primaryEmotion) ? 'Alto' : 'Baixo';
+            const fatigue = emotions.happy < 0.2 && emotions.neutral < 0.3 && (emotions.sad > 0.4 || emotions.fearful > 0.4)
+              ? 'Possível fadiga detectada. Recomendamos descanso.'
+              : 'Sem sinais de fadiga.';
+            const recommendations = stressLevel === 'Alto'
+              ? 'Considere técnicas de relaxamento, como respiração profunda, ou consulte um profissional. <a href="/reduzir-estresse-trabalho-ia" class="text-[#22d3ee] hover:underline">Leia nossas dicas</a>.'
+              : 'Continue mantendo seu bem-estar! Veja mais em <a href="/blog.html" class="text-[#22d3ee] hover:underline">nosso blog</a>.';
+
             resultsDiv.innerHTML = `
               <h3 class="text-2xl font-semibold mb-4">Resultados do Scanner</h3>
               <p><strong>Emoção Principal:</strong> ${translatedEmotions[primaryEmotion] || primaryEmotion} (${(maxValue * 100).toFixed(2)}%)</p>
-              <p><strong>Estresse Detectado:</strong> ${maxValue > 0.7 && ['sad', 'angry', 'fearful'].includes(primaryEmotion) ? 'Alto' : 'Baixo'}</p>
-              <p><strong>Recomendações:</strong> ${maxValue > 0.7 ? 'Considere técnicas de relaxamento ou consulte um profissional.' : 'Continue mantendo seu bem-estar!'}</p>
+              <p><strong>Detalhamento:</strong></p>
+              <ul class="list-disc list-inside">
+                ${Object.entries(emotions)
+                  .map(([emotion, value]) => `<li>${translatedEmotions[emotion] || emotion}: ${(value * 100).toFixed(2)}%</li>`)
+                  .join('')}
+              </ul>
+              <p><strong>Estresse:</strong> ${stressLevel}</p>
+              <p><strong>Fadiga:</strong> ${fatigue}</p>
+              <p><strong>Recomendações:</strong> ${recommendations}</p>
+              <button id="download-report" class="futuristic-btn text-white py-2 px-4 rounded-full mt-4">Baixar Relatório</button>
             `;
+
+            document.getElementById('download-report').addEventListener('click', () => {
+              const { jsPDF } = window.jspdf;
+              const doc = new jsPDF();
+              doc.setFontSize(16);
+              doc.text('Relatório do Scanner Emocional - Álibis Digital', 10, 10);
+              doc.setFontSize(12);
+              doc.text(`Data: ${new Date().toLocaleString('pt-BR')}`, 10, 20);
+              doc.text(`Emoção Principal: ${translatedEmotions[primaryEmotion]} (${(maxValue * 100).toFixed(2)}%)`, 10, 30);
+              doc.text('Detalhamento:', 10, 40);
+              Object.entries(emotions).forEach(([emotion, value], i) => {
+                doc.text(`${translatedEmotions[emotion] || emotion}: ${(value * 100).toFixed(2)}%`, 10, 50 + i * 10);
+              });
+              doc.text(`Estresse: ${stressLevel}`, 10, 120);
+              doc.text(`Fadiga: ${fatigue}`, 10, 130);
+              doc.text('Recomendações:', 10, 140);
+              doc.text(stressLevel === 'Alto' ? 'Considere técnicas de relaxamento ou consulte um profissional.' : 'Continue mantendo seu bem-estar!', 10, 150);
+              doc.save('relatorio-emocional.pdf');
+            });
           } else {
             resultsDiv.innerHTML = '<p>Nenhum rosto detectado. Ajuste a posição da câmera.</p>';
           }
@@ -247,7 +329,7 @@
           console.error('Scan error:', err);
           resultsDiv.innerHTML = '<p>Erro ao analisar emoções. Tente novamente.</p>';
         }
-        setTimeout(scanEmotions, 1000); // Continuous scanning
+        setTimeout(scanEmotions, 1000);
       }
 
       startButton.addEventListener('click', async () => {
@@ -256,7 +338,7 @@
         startButton.disabled = true;
       });
 
-      // Navigation (copied from index.html)
+      // Navigation
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
       hamburger.addEventListener('click', () => {
@@ -266,7 +348,13 @@
       const servicesToggle = document.getElementById('services-toggle');
       const servicesMenu = document.getElementById('services-menu');
       servicesToggle.addEventListener('click', () => {
+        servicesMenu.classList.toggle('show');
         servicesMenu.classList.toggle('hidden');
+      });
+
+      // Header shadow on scroll
+      window.addEventListener('scroll', () => {
+        document.querySelector('header').classList.toggle('shadow-lg', window.scrollY > 50);
       });
     });
   </script>
