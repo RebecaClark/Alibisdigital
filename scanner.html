@@ -238,6 +238,7 @@
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine" data-i18n="scanner-title">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in" data-i18n="scanner-subtitle">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
+    <p class="text-sm mb-4 text-gray-400" data-i18n="expression-tip">Dica: Tente expressar suas emoções de forma clara, como um sorriso ou franzir a testa, para melhorar a detecção.</p>
     <div class="flex justify-center mb-12 scale-in">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" aria-label="Vídeo da câmera para análise emocional"></video>
     </div>
@@ -321,6 +322,7 @@
         "test-free": "🔍 Teste Grátis",
         "scanner-title": "Seu rosto carrega sinais. Vamos descobrir o que ele diz?",
         "scanner-subtitle": "Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.",
+        "expression-tip": "Dica: Tente expressar suas emoções de forma clara, como um sorriso ou franzir a testa, para melhorar a detecção.",
         "analyze-emotion": "Analisar Estado Emocional",
         "analyzing": "⏳ Analisando sua expressão facial",
         "no-face-detected": "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.",
@@ -332,6 +334,7 @@
         "fear-disgust-anger-preview": "Detectamos {emotion}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
         "default-preview": "Detectamos {emotion}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
         "secondary-emotion": " Também notamos traços de {secondaryEmotion}, o que pode indicar sentimentos mistos.",
+        "neutral-retry": "Detectamos uma expressão neutra. Tente exagerar sua expressão (como sorrir ou franzir a testa) para uma análise mais precisa.",
         "get-full-diagnosis": "Obter Diagnóstico Completo",
         "get-full-diagnosis-now": "Obter Diagnóstico Completo Agora",
         "emotional-support": "Ter Apoio Emocional",
@@ -355,6 +358,7 @@
         "test-free": "🔍 Try Free",
         "scanner-title": "Your face carries signals. Let's find out what it says.",
         "scanner-subtitle": "Activate your camera and receive an emotional pre-diagnosis as if you were with an experienced clinician.",
+        "expression-tip": "Tip: Try to clearly express your emotions, like smiling or frowning, to improve detection.",
         "analyze-emotion": "Analyze Emotional State",
         "analyzing": "⏳ Analyzing your facial expression",
         "no-face-detected": "🤔 We couldn't detect a face. Try adjusting the lighting or your position.",
@@ -366,6 +370,7 @@
         "fear-disgust-anger-preview": "We detected {emotion}, possibly reflecting a situation that challenged or upset you. Often, long working hours can intensify these emotions.",
         "default-preview": "We detected {emotion}, a state that reflects how you're feeling now. Often, long working hours can intensify these emotions.",
         "secondary-emotion": " We also noticed traces of {secondaryEmotion}, which may indicate mixed feelings.",
+        "neutral-retry": "We detected a neutral expression. Try exaggerating your expression (like smiling or frowning) for a more accurate analysis.",
         "get-full-diagnosis": "Get Full Diagnosis",
         "get-full-diagnosis-now": "Get Full Diagnosis Now",
         "emotional-support": "Get Emotional Support",
@@ -514,10 +519,22 @@
             const face = data.faces[0];
             const emotion = face.attributes.emotion;
             const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
-            const primaryEmotion = emotionSorted[0][0];
-            const primaryConfidence = emotionSorted[0][1];
+            let primaryEmotion = emotionSorted[0][0];
+            let primaryConfidence = emotionSorted[0][1];
             const secondaryEmotion = emotionSorted[1][0];
             const secondaryConfidence = emotionSorted[1][1];
+
+            // Se a emoção dominante for "neutral", verificamos se há outras emoções próximas
+            if (primaryEmotion === 'neutral' && primaryConfidence < 60) {
+              for (let i = 1; i < emotionSorted.length; i++) {
+                const [emotionName, confidence] = emotionSorted[i];
+                if (confidence >= primaryConfidence - 10 && emotionName !== 'neutral') {
+                  primaryEmotion = emotionName;
+                  primaryConfidence = confidence;
+                  break;
+                }
+              }
+            }
 
             const emotionPortuguese = {
               'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
@@ -529,9 +546,15 @@
               'disgust': lang === 'pt-BR' ? 'desgosto' : 'disgust'
             };
 
-            if (primaryConfidence < 50) {
+            if (primaryConfidence < 40) {
               result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : '🤔 We couldn’t identify a clear emotion. Try adjusting your expression or lighting.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
               speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : 'We couldn’t identify a clear emotion. Try adjusting your expression or lighting.');
+              return;
+            }
+
+            if (primaryEmotion === 'neutral') {
+              result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'neutral-retry')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
+              speak(getTranslation(lang, 'neutral-retry'));
               return;
             }
 
