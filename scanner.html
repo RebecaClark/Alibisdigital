@@ -13,10 +13,12 @@
     body { 
       position: relative; 
       overflow-x: hidden; 
-      min-height: 100vh; /* Garante que o fundo cubra toda a altura */
+      min-height: 100vh; 
+      color: #e5e7eb; /* Texto claro para legibilidade com partículas */
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para melhorar legibilidade */
     }
     #particles-js {
-      position: fixed; /* Muda para fixed para cobrir toda a tela ao rolar */
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
@@ -119,6 +121,16 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .neon-box {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px #22d3ee, 0 0 25px #7C3AED;
+      animation: neonPulse 1.5s infinite alternate, fadeIn 1s ease-in-out;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -127,10 +139,11 @@
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       video { width: 100%; height: auto; }
+      .neon-box { padding: 15px; }
     }
   </style>
 </head>
-<body class="bg-[#0b1120] text-white font-sans">
+<body class="bg-transparent text-white font-sans">
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
 
@@ -203,7 +216,7 @@
   <div class="h-20"></div>
 
   <!-- Seção do Scanner -->
-  <section class="py-20 px-6 bg-[#0b1120] text-center animate-on-scroll" id="scanner">
+  <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
     <div class="flex justify-center mb-4 scale-in">
@@ -214,7 +227,9 @@
         Analisar Estado Emocional
       </button>
     </div>
-    <div id="scanner-result" class="mt-8 text-xl text-gray-300 font-semibold slide-in-left"></div>
+    <div class="mt-8">
+      <div id="scanner-result" class="neon-box"></div>
+    </div>
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
 
@@ -256,7 +271,7 @@
     // Inicializar Partículas com mais densidade
     particlesJS('particles-js', {
       "particles": {
-        "number": { "value": 120, "density": { "enable": true, "value_area": 800 } }, // Aumentado para 120
+        "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
         "color": { "value": "#22d3ee" },
         "shape": { "type": "circle" },
         "opacity": { "value": 0.5, "random": true },
@@ -412,13 +427,13 @@
             result.innerHTML = `<p class="fade-in">Pré-diagnóstico emocional: ${diagnosis}</p><p class="fade-in mt-2">${suggestion}</p>`;
             speak(spokenDiagnosis + " " + spokenSuggestion);
           } else {
-            result.textContent = "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.";
+            result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p>';
             speak("Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.");
           }
         })
         .catch(error => {
           console.error("Erro ao analisar:", error);
-          result.textContent = "🚫 Erro ao analisar a expressão facial. Tente novamente.";
+          result.innerHTML = '<p class="fade-in">🚫 Erro ao analisar a expressão facial. Tente novamente.</p>';
           speak("Erro ao analisar a expressão facial. Tente novamente.");
         });
     }
