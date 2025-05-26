@@ -20,7 +20,6 @@
       z-index: -1;
       background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
     }
-    /* Animações Alinhadas com o Index */
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
@@ -43,7 +42,6 @@
     .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
     .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
     @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
-    /* Efeito Holográfico na Navegação */
     .holo-nav {
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
@@ -66,8 +64,44 @@
       background: rgba(31, 41, 55, 0.9);
       border: 1px solid #22d3ee;
       box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
     }
     .dropdown-menu a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      width: 100%;
+      position: static;
+    }
+    .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu-mobile a:hover {
       background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
@@ -125,11 +159,16 @@
           <div class="dropdown-menu">
             <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
             <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Medical</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Alibi</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+        <a href="#checkout" class="hover:text-[#22d3ee] transition">Planos</a>
         <a href="#suporte" class="hover:text-[#22d3ee] transition">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">
+          🔍 Teste Grátis
+        </a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
@@ -144,11 +183,16 @@
           <div id="services-menu" class="dropdown-menu-mobile">
             <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
             <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700">Medical</a>
-            <a href="/alibi.html" class="hover:bg-gray-700">Alibi</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
         <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis">
+          🔍 Teste Grátis
+        </a>
       </nav>
     </div>
   </header>
@@ -183,9 +227,9 @@
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Medical</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Emotional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Alibi</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
           <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
           <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
