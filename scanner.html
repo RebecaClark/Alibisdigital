@@ -122,11 +122,11 @@
       transform: translateY(0);
     }
     .neon-box {
-      background: linear-gradient(45deg, #1e1b4b, #22d3ee); /* Gradiente mais suave */
+      background: linear-gradient(45deg, #1e1b4b, #22d3ee);
       border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 0 10px #22d3ee; /* Sombra menos intensa */
-      animation: fadeIn 1s ease-in-out; /* Apenas fadeIn */
+      box-shadow: 0 0 10px #22d3ee;
+      animation: fadeIn 1s ease-in-out;
       max-width: 600px;
       margin: 0 auto;
       text-align: left;
@@ -219,7 +219,7 @@
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex justify-center mb-12 scale-in"> <!-- Aumentei o espaçamento com mb-12 -->
+    <div class="flex justify-center mb-12 scale-in">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse"></video>
     </div>
     <div class="flex justify-center mb-12">
@@ -227,7 +227,7 @@
         Analisar Estado Emocional
       </button>
     </div>
-    <div id="scanner-result" class="neon-box" style="display: none;"></div> <!-- Inicialmente oculto -->
+    <div id="scanner-result" class="neon-box" style="display: none;"></div>
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
 
@@ -331,7 +331,7 @@
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
 
-      result.style.display = 'block'; // Mostra a caixa do resultado
+      result.style.display = 'block';
       result.innerHTML = '<p class="fade-in">⏳ Analisando sua expressão facial...</p>';
 
       const context = canvas.getContext('2d');
@@ -366,10 +366,44 @@
             };
 
             const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
-            let preview = `Detectamos ${emotionInPortuguese}.`;
-            let spokenPreview = `Detectamos ${emotionInPortuguese}.`;
+            let preview = '';
+            let spokenPreview = '';
 
-            result.innerHTML = `<p class="fade-in">${preview}</p><p class="fade-in mt-2">Para receber o diagnóstico completo com sugestões personalizadas, <a href="/checkout.html" class="text-[#22d3ee] hover:underline">clique aqui para pagar</a>.</p>`;
+            switch (emotionSorted) {
+              case 'sadness':
+                preview = "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração.";
+                spokenPreview = "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração.";
+                break;
+              case 'anger':
+                preview = "Detectamos raiva, possivelmente resultado de uma situação que te desafiou ou irritou hoje.";
+                spokenPreview = "Detectamos raiva, possivelmente resultado de uma situação que te desafiou ou irritou hoje.";
+                break;
+              case 'happiness':
+                preview = "Detectamos felicidade, um sinal de que você está vivendo um momento de alegria ou leveza.";
+                spokenPreview = "Detectamos felicidade, um sinal de que você está vivendo um momento de alegria ou leveza.";
+                break;
+              case 'surprise':
+                preview = "Detectamos surpresa, talvez por algo inesperado que chamou sua atenção ou te intrigou.";
+                spokenPreview = "Detectamos surpresa, talvez por algo inesperado que chamou sua atenção ou te intrigou.";
+                break;
+              case 'neutral':
+                preview = "Detectamos uma expressão neutra, sugerindo um estado de calma ou introspecção neste momento.";
+                spokenPreview = "Detectamos uma expressão neutra, sugerindo um estado de calma ou introspecção neste momento.";
+                break;
+              case 'fear':
+                preview = "Detectamos medo, talvez refletindo uma situação que te deixou ansioso ou em alerta.";
+                spokenPreview = "Detectamos medo, talvez refletindo uma situação que te deixou ansioso ou em alerta.";
+                break;
+              case 'disgust':
+                preview = "Detectamos desgosto, possivelmente por algo que te incomodou ou foi contra seus valores.";
+                spokenPreview = "Detectamos desgosto, possivelmente por algo que te incomodou ou foi contra seus valores.";
+                break;
+              default:
+                preview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora.`;
+                spokenPreview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora.`;
+            }
+
+            result.innerHTML = `<p class="fade-in">${preview}</p><div class="mt-4"><button onclick="window.location.href='/checkout.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Diagnóstico Completo Agora</button></div>`;
             speak(spokenPreview);
           } else {
             result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p>';
