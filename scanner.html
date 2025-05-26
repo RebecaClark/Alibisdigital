@@ -379,17 +379,66 @@
       }
     };
 
-    window.onload = function () {
+    // Função para obter traduções com fallback
+    function getTranslation(lang, key) {
+      const trans = translations[lang] || translations['pt-BR'];
+      return trans[key] || translations['pt-BR'][key] || key;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => video.srcObject = stream)
-        .catch(error => {
-          console.error("Erro ao acessar a câmera:", error);
-          document.getElementById('scanner-result').innerHTML = `<p class="fade-in" data-i18n="camera-error">${translations['pt-BR'].camera_error}</p>`;
-        });
+      if (video) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            video.srcObject = stream;
+          })
+          .catch(error => {
+            console.error("Erro ao acessar a câmera:", error);
+            const result = document.getElementById('scanner-result');
+            if (result) {
+              const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+              result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'camera-error')}</p>`;
+            }
+          });
+      } else {
+        console.error("Elemento 'video' não encontrado no DOM.");
+      }
+
       initScrollAnimations();
       updateLanguage();
-    };
+
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+      if (servicesToggle && servicesMenu) {
+        servicesToggle.addEventListener('click', () => {
+          servicesMenu.classList.toggle('hidden');
+        });
+      }
+
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (header) {
+          if (window.scrollY > 50) {
+            header.classList.add('shadow-lg');
+          } else {
+            header.classList.remove('shadow-lg');
+          }
+        }
+      });
+
+      const languageSelector = document.getElementById('language-selector');
+      if (languageSelector) {
+        languageSelector.addEventListener('change', updateLanguage);
+      }
+    });
 
     function initScrollAnimations() {
       const animatedElements = document.querySelectorAll('.animate-on-scroll');
@@ -412,18 +461,22 @@
     }
 
     function speak(text) {
+      if (!window.speechSynthesis) {
+        console.warn("API de síntese de voz não suportada neste navegador.");
+        return;
+      }
       const synth = window.speechSynthesis;
       const utter = new SpeechSynthesisUtterance(text);
-      const lang = document.getElementById('language-selector').value;
+      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
       utter.lang = lang;
       synth.speak(utter);
     }
 
     function updateLanguage() {
-      const lang = document.getElementById('language-selector').value;
+      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
       document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        element.textContent = translations[lang][key] || translations['pt-BR'][key];
+        element.textContent = getTranslation(lang, key);
       });
     }
 
@@ -431,11 +484,15 @@
       const canvas = document.getElementById('canvas');
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
-      const lang = document.getElementById('language-selector').value;
-      const trans = translations[lang];
+      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+
+      if (!canvas || !video || !result) {
+        console.error("Elementos necessários não encontrados: canvas, video ou scanner-result.");
+        return;
+      }
 
       result.style.display = 'block';
-      result.innerHTML = `<p class="fade-in" data-i18n="analyzing">${trans.analyzing}<span class="loading-dots"></span></p>`;
+      result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'analyzing')}<span class="loading-dots"></span></p>`;
 
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -458,9 +515,9 @@
             const emotion = face.attributes.emotion;
             const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
             const primaryEmotion = emotionSorted[0][0];
-            const primaryConfidence = emotionSorted[0][1]; // Confiança da emoção principal
+            const primaryConfidence = emotionSorted[0][1];
             const secondaryEmotion = emotionSorted[1][0];
-            const secondaryConfidence = emotionSorted[1][1]; // Confiança da emoção secundária
+            const secondaryConfidence = emotionSorted[1][1];
 
             const emotionPortuguese = {
               'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
@@ -473,7 +530,7 @@
             };
 
             if (primaryConfidence < 50) {
-              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : '🤔 We couldn’t identify a clear emotion. Try adjusting your expression or lighting.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again">${trans.try_again}</button></div>`;
+              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : '🤔 We couldn’t identify a clear emotion. Try adjusting your expression or lighting.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
               speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : 'We couldn’t identify a clear emotion. Try adjusting your expression or lighting.');
               return;
             }
@@ -483,72 +540,46 @@
             let preview = '';
             let spokenPreview = '';
             let additionalButton = '';
-            let secondaryMessage = secondaryConfidence > 30 ? (lang === 'pt-BR' ? ` Também notamos traços de ${secondaryEmotionInLang}, o que pode indicar sentimentos mistos.` : ` We also noticed traces of ${secondaryEmotionInLang}, which may indicate mixed feelings.`) : '';
+            let secondaryMessage = secondaryConfidence > 30 ? getTranslation(lang, 'secondary-emotion').replace('{secondaryEmotion}', secondaryEmotionInLang) : '';
 
             switch (primaryEmotion) {
               case 'sadness':
-                preview = trans.sadness_preview + secondaryMessage;
-                spokenPreview = trans.sadness_preview + secondaryMessage;
-                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${trans.emotional_support}</button></div>`;
+                preview = getTranslation(lang, 'sadness-preview') + secondaryMessage;
+                spokenPreview = preview;
+                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${getTranslation(lang, 'emotional-support')}</button></div>`;
                 break;
               case 'fear':
               case 'disgust':
               case 'anger':
                 if (primaryConfidence > 70) {
-                  preview = trans.fear_disgust_anger_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                  spokenPreview = trans.fear_disgust_anger_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                  additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${trans.medical_ai_support}</button></div>`;
+                  preview = getTranslation(lang, 'fear-disgust-anger-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  spokenPreview = preview;
+                  additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${getTranslation(lang, 'medical-ai-support')}</button></div>`;
                 } else {
-                  preview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                  spokenPreview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  preview = getTranslation(lang, 'default-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  spokenPreview = preview;
                 }
                 break;
               default:
-                preview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
-                spokenPreview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                preview = getTranslation(lang, 'default-preview').replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                spokenPreview = preview;
                 break;
             }
 
             const checkoutUrl = `/checkout.html?emotion=${primaryEmotion}&confidence=${primaryConfidence}`;
-            result.innerHTML = `<p class="fade-in">${preview}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${trans.disclaimer}</p><div class="mt-4"><button onclick="window.location.href='${checkoutUrl}'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" aria-label="${lang === 'pt-BR' ? 'Obter diagnóstico completo' : 'Get full diagnosis'}" data-i18n="${additionalButton ? 'get-full-diagnosis' : 'get-full-diagnosis-now'}">${additionalButton ? trans.get_full_diagnosis : trans.get_full_diagnosis_now}</button>${additionalButton}</div>`;
+            result.innerHTML = `<p class="fade-in">${preview}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${getTranslation(lang, 'disclaimer')}</p><div class="mt-4"><button onclick="window.location.href='${checkoutUrl}'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" aria-label="${lang === 'pt-BR' ? 'Obter diagnóstico completo' : 'Get full diagnosis'}" data-i18n="${additionalButton ? 'get-full-diagnosis' : 'get-full-diagnosis-now'}">${additionalButton ? getTranslation(lang, 'get-full-diagnosis') : getTranslation(lang, 'get-full-diagnosis-now')}</button>${additionalButton}</div>`;
             speak(spokenPreview);
           } else {
-            result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${trans.no_face_detected}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${trans.try_again}</button></div>`;
-            speak(trans.no_face_detected);
+            result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${getTranslation(lang, 'no-face-detected')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
+            speak(getTranslation(lang, 'no-face-detected'));
           }
         })
         .catch(error => {
           console.error("Erro ao analisar:", error);
-          result.innerHTML = `<p class="fade-in" data-i18n="error-analyzing">${trans.error_analyzing}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${trans.try_again}</button></div>`;
-          speak(trans.error_analyzing);
+          result.innerHTML = `<p class="fade-in" data-i18n="error-analyzing">${getTranslation(lang, 'error-analyzing')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${getTranslation(lang, 'try-again')}</button></div>`;
+          speak(getTranslation(lang, 'error-analyzing'));
         });
     }
-
-    // Scripts de Navegação e Internacionalização
-    document.addEventListener('DOMContentLoaded', () => {
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-
-      const servicesToggle = document.getElementById('services-toggle');
-      const servicesMenu = document.getElementById('services-menu');
-      servicesToggle.addEventListener('click', () => {
-        servicesMenu.classList.toggle('hidden');
-      });
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          document.querySelector('header').classList.add('shadow-lg');
-        } else {
-          document.querySelector('header').classList.remove('shadow-lg');
-        }
-      });
-
-      const languageSelector = document.getElementById('language-selector');
-      languageSelector.addEventListener('change', updateLanguage);
-    });
   </script>
 </body>
 </html>
