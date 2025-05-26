@@ -14,8 +14,8 @@
       position: relative; 
       overflow-x: hidden; 
       min-height: 100vh; 
-      color: #e5e7eb; /* Texto claro para legibilidade com partículas */
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para melhorar legibilidade */
+      color: #e5e7eb; 
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
     }
     #particles-js {
       position: fixed;
@@ -122,11 +122,11 @@
       transform: translateY(0);
     }
     .neon-box {
-      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      background: linear-gradient(45deg, #1e1b4b, #22d3ee); /* Gradiente mais suave */
       border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 0 15px #22d3ee, 0 0 25px #7C3AED;
-      animation: neonPulse 1.5s infinite alternate, fadeIn 1s ease-in-out;
+      box-shadow: 0 0 10px #22d3ee; /* Sombra menos intensa */
+      animation: fadeIn 1s ease-in-out; /* Apenas fadeIn */
       max-width: 600px;
       margin: 0 auto;
       text-align: left;
@@ -219,17 +219,15 @@
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex justify-center mb-4 scale-in">
+    <div class="flex justify-center mb-12 scale-in"> <!-- Aumentei o espaçamento com mb-12 -->
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse"></video>
     </div>
-    <div class="flex justify-center">
+    <div class="flex justify-center mb-12">
       <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine">
         Analisar Estado Emocional
       </button>
     </div>
-    <div class="mt-8">
-      <div id="scanner-result" class="neon-box"></div>
-    </div>
+    <div id="scanner-result" class="neon-box" style="display: none;"></div> <!-- Inicialmente oculto -->
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
 
@@ -296,7 +294,7 @@
         .then(stream => video.srcObject = stream)
         .catch(error => {
           console.error("Erro ao acessar a câmera:", error);
-          document.getElementById('scanner-result').textContent = "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.";
+          document.getElementById('scanner-result').innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.</p>';
         });
       initScrollAnimations();
     };
@@ -333,7 +331,8 @@
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
 
-      result.textContent = "⏳ Analisando sua expressão facial...";
+      result.style.display = 'block'; // Mostra a caixa do resultado
+      result.innerHTML = '<p class="fade-in">⏳ Analisando sua expressão facial...</p>';
 
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -353,8 +352,6 @@
         .then(data => {
           if (data.faces && data.faces.length > 0) {
             const face = data.faces[0];
-            const age = face.attributes.age.value;
-            const gender = face.attributes.gender.value;
             const emotion = face.attributes.emotion;
             const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
 
@@ -369,63 +366,11 @@
             };
 
             const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
-            let diagnosis = '';
-            let suggestion = '';
-            let spokenDiagnosis = '';
-            let spokenSuggestion = '';
+            let preview = `Detectamos ${emotionInPortuguese}.`;
+            let spokenPreview = `Detectamos ${emotionInPortuguese}.`;
 
-            switch (emotionSorted) {
-              case 'sadness':
-                diagnosis = "Parece que você está sentindo um pouco de tristeza. Isso pode estar ligado a uma perda recente, uma mudança significativa ou até mesmo o peso do dia a dia. Às vezes, nosso rosto reflete o que o coração está processando.";
-                suggestion = "Vamos tentar algo para te ajudar a se sentir melhor? Experimente escrever 3 coisas pelas quais você é grato hoje – pode ser algo simples, como o calor do sol ou um sorriso que recebeu. Se preferir, ouvir uma música que você ama ou conversar com um amigo pode trazer um pouco de leveza. Além disso, temos um artigo que pode te ajudar a relaxar e melhorar seu sono: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>.";
-                spokenDiagnosis = "Parece que você está sentindo um pouco de tristeza. Isso pode estar ligado a uma perda recente, uma mudança significativa ou até mesmo o peso do dia a dia. Às vezes, nosso rosto reflete o que o coração está processando.";
-                spokenSuggestion = "Vamos tentar algo para te ajudar a se sentir melhor? Experimente escrever 3 coisas pelas quais você é grato hoje – pode ser algo simples, como o calor do sol ou um sorriso que recebeu. Se preferir, ouvir uma música que você ama ou conversar com um amigo pode trazer um pouco de leveza. Além disso, temos um artigo que pode te ajudar a relaxar e melhorar seu sono.";
-                break;
-              case 'anger':
-                diagnosis = "Detectamos sinais de raiva ou frustração em sua expressão. Isso pode ser resultado de um dia desafiador, uma situação que te irritou ou até mesmo tensões acumuladas que estão vindo à tona.";
-                suggestion = "Vamos tentar acalmar um pouco? Experimente esta técnica de respiração: inspire lentamente pelo nariz por 4 segundos, segure por 4 segundos, e expire pela boca por 8 segundos. Repita algumas vezes. Você também pode dar uma caminhada curta para liberar a tensão. Se precisar de mais ideias, confira nosso artigo: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.";
-                spokenDiagnosis = "Detectamos sinais de raiva ou frustração em sua expressão. Isso pode ser resultado de um dia desafiador, uma situação que te irritou ou até mesmo tensões acumuladas que estão vindo à tona.";
-                spokenSuggestion = "Vamos tentar acalmar um pouco? Experimente esta técnica de respiração: inspire lentamente pelo nariz por 4 segundos, segure por 4 segundos, e expire pela boca por 8 segundos. Repita algumas vezes. Você também pode dar uma caminhada curta para liberar a tensão. Se precisar de mais ideias, confira nosso artigo sobre como reduzir o estresse no trabalho.";
-                break;
-              case 'happiness':
-                diagnosis = "Que bom ver essa felicidade no seu rosto! Parece que você está vivendo um momento de alegria e leveza, talvez por algo especial que aconteceu hoje ou por estar se sentindo bem consigo mesmo.";
-                suggestion = "Aproveite esse momento ao máximo! Que tal compartilhar essa energia positiva com alguém querido, como enviar uma mensagem para um amigo ou celebrar com uma atividade que você ama, como dançar ou assistir a um filme leve? Continue espalhando essa alegria!";
-                spokenDiagnosis = "Que bom ver essa felicidade no seu rosto! Parece que você está vivendo um momento de alegria e leveza, talvez por algo especial que aconteceu hoje ou por estar se sentindo bem consigo mesmo.";
-                spokenSuggestion = "Aproveite esse momento ao máximo! Que tal compartilhar essa energia positiva com alguém querido, como enviar uma mensagem para um amigo ou celebrar com uma atividade que você ama, como dançar ou assistir a um filme leve? Continue espalhando essa alegria!";
-                break;
-              case 'surprise':
-                diagnosis = "Sua expressão mostra surpresa! Talvez você tenha se deparado com algo inesperado ou intrigante, que despertou sua curiosidade ou te pegou desprevenido.";
-                suggestion = "Surpresas podem ser uma ótima oportunidade para aprender algo novo! Se for algo positivo, aproveite para explorar mais sobre o que te surpreendeu. Se for algo mais desafiador, respire fundo e avalie com calma antes de tomar uma decisão.";
-                spokenDiagnosis = "Sua expressão mostra surpresa! Talvez você tenha se deparado com algo inesperado ou intrigante, que despertou sua curiosidade ou te pegou desprevenido.";
-                spokenSuggestion = "Surpresas podem ser uma ótima oportunidade para aprender algo novo! Se for algo positivo, aproveite para explorar mais sobre o que te surpreendeu. Se for algo mais desafiador, respire fundo e avalie com calma antes de tomar uma decisão.";
-                break;
-              case 'neutral':
-                diagnosis = "Sua expressão está neutra, o que pode significar que você está em um momento de calma, foco ou até mesmo cansaço. É como se seu rosto estivesse em um estado de equilíbrio ou introspecção.";
-                suggestion = "Se você está se sentindo cansado, que tal fazer uma pausa rápida? Experimente alongar o corpo por 2 minutos ou tomar um copo d’água para recarregar. Se quiser relaxar ainda mais, temos um artigo que pode te ajudar: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>.";
-                spokenDiagnosis = "Sua expressão está neutra, o que pode significar que você está em um momento de calma, foco ou até mesmo cansaço. É como se seu rosto estivesse em um estado de equilíbrio ou introspecção.";
-                spokenSuggestion = "Se você está se sentindo cansado, que tal fazer uma pausa rápida? Experimente alongar o corpo por 2 minutos ou tomar um copo d’água para recarregar. Se quiser relaxar ainda mais, temos um artigo que pode te ajudar a melhorar seu sono.";
-                break;
-              case 'fear':
-                diagnosis = "Detectamos sinais de medo ou preocupação em sua expressão. Talvez você esteja enfrentando uma situação que te deixa inseguro, ansioso ou em alerta.";
-                suggestion = "Vamos tentar trazer um pouco de calma? Feche os olhos por um momento e imagine um lugar onde você se sente seguro e tranquilo – pode ser uma praia, uma floresta ou sua casa. Respire fundo enquanto visualiza esse lugar. Se precisar de mais apoio, confira nosso artigo: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.";
-                spokenDiagnosis = "Detectamos sinais de medo ou preocupação em sua expressão. Talvez você esteja enfrentando uma situação que te deixa inseguro, ansioso ou em alerta.";
-                spokenSuggestion = "Vamos tentar trazer um pouco de calma? Feche os olhos por um momento e imagine um lugar onde você se sente seguro e tranquilo – pode ser uma praia, uma floresta ou sua casa. Respire fundo enquanto visualiza esse lugar. Se precisar de mais apoio, confira nosso artigo sobre como reduzir o estresse no trabalho.";
-                break;
-              case 'disgust':
-                diagnosis = "Sua expressão sugere um sentimento de desgosto. Isso pode indicar que você está lidando com algo que te incomoda profundamente ou que vai contra o que você acredita.";
-                suggestion = "Se possível, afaste-se do que está te causando esse desconforto e foque em algo que te traga bem-estar. Que tal ouvir uma música relaxante ou fazer uma pausa para tomar um chá? Pequenas ações podem ajudar a mudar o seu estado de espírito.";
-                spokenDiagnosis = "Sua expressão sugere um sentimento de desgosto. Isso pode indicar que você está lidando com algo que te incomoda profundamente ou que vai contra o que você acredita.";
-                spokenSuggestion = "Se possível, afaste-se do que está te causando esse desconforto e foque em algo que te traga bem-estar. Que tal ouvir uma música relaxante ou fazer uma pausa para tomar um chá? Pequenas ações podem ajudar a mudar o seu estado de espírito.";
-                break;
-              default:
-                diagnosis = `Detectamos uma emoção predominante de ${emotionInPortuguese}.`;
-                suggestion = "Continue explorando como você se sente e o que pode estar causando essa emoção. Se precisar de apoio, estamos aqui para ajudar.";
-                spokenDiagnosis = `Detectamos uma emoção predominante de ${emotionInPortuguese}.`;
-                spokenSuggestion = "Continue explorando como você se sente e o que pode estar causando essa emoção. Se precisar de apoio, estamos aqui para ajudar.";
-            }
-
-            result.innerHTML = `<p class="fade-in">Pré-diagnóstico emocional: ${diagnosis}</p><p class="fade-in mt-2">${suggestion}</p>`;
-            speak(spokenDiagnosis + " " + spokenSuggestion);
+            result.innerHTML = `<p class="fade-in">${preview}</p><p class="fade-in mt-2">Para receber o diagnóstico completo com sugestões personalizadas, <a href="/checkout.html" class="text-[#22d3ee] hover:underline">clique aqui para pagar</a>.</p>`;
+            speak(spokenPreview);
           } else {
             result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p>';
             speak("Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.");
