@@ -131,6 +131,19 @@
       margin: 0 auto;
       text-align: left;
     }
+    .loading-dots::after {
+      content: '';
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+    @keyframes dots {
+      0% { content: '.'; }
+      33% { content: '..'; }
+      66% { content: '...'; }
+      100% { content: '.'; }
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -155,12 +168,18 @@
           <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')">
         </a>
       </div>
-      <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+      <div class="flex items-center space-x-3">
+        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
+          <option value="pt-BR">Português</option>
+          <option value="en-US">English</option>
+        </select>
+        <div class="md:hidden">
+          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
         <div class="dropdown relative">
@@ -168,22 +187,22 @@
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
-            Serviços
+            <span data-i18n="services">Serviços</span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
-        <a href="#checkout" class="hover:text-[#22d3ee] transition">Planos</a>
-        <a href="#suporte" class="hover:text-[#22d3ee] transition">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
+        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
+        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
           🔍 Teste Grátis
         </a>
       </nav>
@@ -192,22 +211,22 @@
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
           <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
-            Serviços
+            <span data-i18n="services">Serviços</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="services-menu" class="dropdown-menu-mobile">
-            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
-        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
-        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis">
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
+        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
+        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
           🔍 Teste Grátis
         </a>
       </nav>
@@ -217,13 +236,13 @@
 
   <!-- Seção do Scanner -->
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
-    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
+    <h2 class="text-4xl font-bold mb-6 text-white shine" data-i18n="scanner-title">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+    <p class="text-lg mb-8 text-gray-300 fade-in" data-i18n="scanner-subtitle">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
     <div class="flex justify-center mb-12 scale-in">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse"></video>
+      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" aria-label="Vídeo da câmera para análise emocional"></video>
     </div>
     <div class="flex justify-center mb-12">
-      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine">
+      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine" aria-label="Iniciar análise emocional" data-i18n="analyze-emotion">
         Analisar Estado Emocional
       </button>
     </div>
@@ -236,24 +255,24 @@
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
+        <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegue</h4>
+        <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
         <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
-          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
-          <li><a href="#checkout" class="hover:text-white transition">Planos</a></li>
-          <li><a href="#suporte" class="hover:text-white transition">Suporte</a></li>
-          <li><a href="/politica-privacidade" class="hover:text-white transition">Privacidade</a></li>
+          <li><a href="/" class="hover:text-white transition" data-i18n="home">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
+          <li><a href="#checkout" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
+          <li><a href="#suporte" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
+          <li><a href="/politica-privacidade" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
         </ul>
       </div>
       <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
         <ul class="space-y-2">
           <li class="fade-in">E-mail: contato@alibisdigital.com</li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
@@ -261,7 +280,7 @@
       </div>
     </div>
     <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+      <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">Todos os direitos reservados.</span></p>
     </div>
   </footer>
 
@@ -288,15 +307,88 @@
     const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
     const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
 
+    // Textos para internacionalização
+    const translations = {
+      "pt-BR": {
+        "services": "Serviços",
+        "scanner": "Scanner com IA",
+        "emotional-evaluation": "Avaliação Emocional",
+        "medical-ai": "Diagnóstico Médico",
+        "alibi": "Criar Álibi",
+        "blog": "Blog",
+        "plans": "Planos",
+        "support": "Suporte",
+        "test-free": "🔍 Teste Grátis",
+        "scanner-title": "Seu rosto carrega sinais. Vamos descobrir o que ele diz?",
+        "scanner-subtitle": "Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.",
+        "analyze-emotion": "Analisar Estado Emocional",
+        "analyzing": "⏳ Analisando sua expressão facial",
+        "no-face-detected": "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.",
+        "error-analyzing": "🚫 Erro ao analisar a expressão facial. Tente novamente.",
+        "camera-error": "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.",
+        "try-again": "Tentar Novamente",
+        "disclaimer": "Nota: Estas sugestões são baseadas em pesquisas preliminares e não substituem avaliação médica ou psicológica profissional.",
+        "sadness-preview": "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
+        "fear-disgust-anger-preview": "Detectamos {emotion}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
+        "default-preview": "Detectamos {emotion}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.",
+        "secondary-emotion": " Também notamos traços de {secondaryEmotion}, o que pode indicar sentimentos mistos.",
+        "get-full-diagnosis": "Obter Diagnóstico Completo",
+        "get-full-diagnosis-now": "Obter Diagnóstico Completo Agora",
+        "emotional-support": "Ter Apoio Emocional",
+        "medical-ai-support": "Apoio IA Médica",
+        "footer-about": "Soluções de bem-estar com tecnologia avançada.",
+        "footer-navigate": "Navegue",
+        "home": "Início",
+        "privacy": "Privacidade",
+        "footer-contact": "Contato",
+        "footer-rights": "Todos os direitos reservados."
+      },
+      "en-US": {
+        "services": "Services",
+        "scanner": "AI Scanner",
+        "emotional-evaluation": "Emotional Evaluation",
+        "medical-ai": "Medical Diagnosis",
+        "alibi": "Create Alibi",
+        "blog": "Blog",
+        "plans": "Plans",
+        "support": "Support",
+        "test-free": "🔍 Try Free",
+        "scanner-title": "Your face carries signals. Let's find out what it says.",
+        "scanner-subtitle": "Activate your camera and receive an emotional pre-diagnosis as if you were with an experienced clinician.",
+        "analyze-emotion": "Analyze Emotional State",
+        "analyzing": "⏳ Analyzing your facial expression",
+        "no-face-detected": "🤔 We couldn't detect a face. Try adjusting the lighting or your position.",
+        "error-analyzing": "🚫 Error analyzing facial expression. Please try again.",
+        "camera-error": "🚫 Error: Could not access the camera. Allow access and reload the page.",
+        "try-again": "Try Again",
+        "disclaimer": "Note: These suggestions are based on preliminary research and do not replace professional medical or psychological evaluation.",
+        "sadness-preview": "We detected sadness, possibly linked to a reflective or challenging moment in your heart. Often, long working hours can intensify these emotions.",
+        "fear-disgust-anger-preview": "We detected {emotion}, possibly reflecting a situation that challenged or upset you. Often, long working hours can intensify these emotions.",
+        "default-preview": "We detected {emotion}, a state that reflects how you're feeling now. Often, long working hours can intensify these emotions.",
+        "secondary-emotion": " We also noticed traces of {secondaryEmotion}, which may indicate mixed feelings.",
+        "get-full-diagnosis": "Get Full Diagnosis",
+        "get-full-diagnosis-now": "Get Full Diagnosis Now",
+        "emotional-support": "Get Emotional Support",
+        "medical-ai-support": "Medical AI Support",
+        "footer-about": "Well-being solutions with advanced technology.",
+        "footer-navigate": "Navigate",
+        "home": "Home",
+        "privacy": "Privacy",
+        "footer-contact": "Contact",
+        "footer-rights": "All rights reserved."
+      }
+    };
+
     window.onload = function () {
       const video = document.getElementById('video');
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => video.srcObject = stream)
         .catch(error => {
           console.error("Erro ao acessar a câmera:", error);
-          document.getElementById('scanner-result').innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.</p>';
+          document.getElementById('scanner-result').innerHTML = `<p class="fade-in" data-i18n="camera-error">${translations['pt-BR'].camera_error}</p>`;
         });
       initScrollAnimations();
+      updateLanguage();
     };
 
     function initScrollAnimations() {
@@ -322,17 +414,28 @@
     function speak(text) {
       const synth = window.speechSynthesis;
       const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "pt-BR";
+      const lang = document.getElementById('language-selector').value;
+      utter.lang = lang;
       synth.speak(utter);
+    }
+
+    function updateLanguage() {
+      const lang = document.getElementById('language-selector').value;
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        element.textContent = translations[lang][key] || translations['pt-BR'][key];
+      });
     }
 
     function captureAndAnalyze() {
       const canvas = document.getElementById('canvas');
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
+      const lang = document.getElementById('language-selector').value;
+      const trans = translations[lang];
 
       result.style.display = 'block';
-      result.innerHTML = '<p class="fade-in">⏳ Analisando sua expressão facial...</p>';
+      result.innerHTML = `<p class="fade-in" data-i18n="analyzing">${trans.analyzing}<span class="loading-dots"></span></p>`;
 
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -353,64 +456,75 @@
           if (data.faces && data.faces.length > 0) {
             const face = data.faces[0];
             const emotion = face.attributes.emotion;
-            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0];
-            const emotionName = emotionSorted[0];
-            const emotionConfidence = emotionSorted[1]; // Confiança da emoção detectada (0-100)
+            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
+            const primaryEmotion = emotionSorted[0][0];
+            const primaryConfidence = emotionSorted[0][1]; // Confiança da emoção principal
+            const secondaryEmotion = emotionSorted[1][0];
+            const secondaryConfidence = emotionSorted[1][1]; // Confiança da emoção secundária
 
             const emotionPortuguese = {
-              'sadness': 'tristeza',
-              'anger': 'raiva',
-              'happiness': 'felicidade',
-              'surprise': 'surpresa',
-              'neutral': 'neutra',
-              'fear': 'medo',
-              'disgust': 'desgosto'
+              'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
+              'anger': lang === 'pt-BR' ? 'raiva' : 'anger',
+              'happiness': lang === 'pt-BR' ? 'felicidade' : 'happiness',
+              'surprise': lang === 'pt-BR' ? 'surpresa' : 'surprise',
+              'neutral': lang === 'pt-BR' ? 'neutra' : 'neutral',
+              'fear': lang === 'pt-BR' ? 'medo' : 'fear',
+              'disgust': lang === 'pt-BR' ? 'desgosto' : 'disgust'
             };
 
-            const emotionInPortuguese = emotionPortuguese[emotionName] || emotionName;
+            if (primaryConfidence < 50) {
+              result.innerHTML = `<p class="fade-in">${lang === 'pt-BR' ? '🤔 Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : '🤔 We couldn’t identify a clear emotion. Try adjusting your expression or lighting.'}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again">${trans.try_again}</button></div>`;
+              speak(lang === 'pt-BR' ? 'Não conseguimos identificar uma emoção clara. Tente ajustar sua expressão ou iluminação.' : 'We couldn’t identify a clear emotion. Try adjusting your expression or lighting.');
+              return;
+            }
+
+            const primaryEmotionInLang = emotionPortuguese[primaryEmotion] || primaryEmotion;
+            const secondaryEmotionInLang = emotionPortuguese[secondaryEmotion] || secondaryEmotion;
             let preview = '';
             let spokenPreview = '';
             let additionalButton = '';
+            let secondaryMessage = secondaryConfidence > 30 ? (lang === 'pt-BR' ? ` Também notamos traços de ${secondaryEmotionInLang}, o que pode indicar sentimentos mistos.` : ` We also noticed traces of ${secondaryEmotionInLang}, which may indicate mixed feelings.`) : '';
 
-            switch (emotionName) {
+            switch (primaryEmotion) {
               case 'sadness':
-                preview = `Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                spokenPreview = `Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                additionalButton = '<div class="mt-4"><button onclick="window.location.href=\'/apoio-emocional\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2">Ter Apoio Emocional</button></div>';
+                preview = trans.sadness_preview + secondaryMessage;
+                spokenPreview = trans.sadness_preview + secondaryMessage;
+                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="emotional-support" aria-label="${lang === 'pt-BR' ? 'Obter apoio emocional' : 'Get emotional support'}">${trans.emotional_support}</button></div>`;
                 break;
               case 'fear':
               case 'disgust':
               case 'anger':
-                if (emotionConfidence > 70) { // Limiar de confiança para sugerir apoio médico
-                  preview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                  spokenPreview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                  additionalButton = '<div class="mt-4"><button onclick="window.location.href=\'/apoio-medico\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2">Apoio IA Médica</button></div>';
+                if (primaryConfidence > 70) {
+                  preview = trans.fear_disgust_anger_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  spokenPreview = trans.fear_disgust_anger_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-medico'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2" data-i18n="medical-ai-support" aria-label="${lang === 'pt-BR' ? 'Obter suporte médico com IA' : 'Get medical AI support'}">${trans.medical_ai_support}</button></div>`;
                 } else {
-                  preview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou intrigou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                  spokenPreview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou intrigou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                  preview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                  spokenPreview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
                 }
                 break;
               default:
-                preview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
-                spokenPreview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                preview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
+                spokenPreview = trans.default_preview.replace('{emotion}', primaryEmotionInLang) + secondaryMessage;
                 break;
             }
 
-            result.innerHTML = `<p class="fade-in">${preview}</p><div class="mt-4"><button onclick="window.location.href='/checkout.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">${additionalButton ? 'Obter Diagnóstico Completo' : 'Obter Diagnóstico Completo Agora'}</button>${additionalButton}</div>`;
+            const checkoutUrl = `/checkout.html?emotion=${primaryEmotion}&confidence=${primaryConfidence}`;
+            result.innerHTML = `<p class="fade-in">${preview}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${trans.disclaimer}</p><div class="mt-4"><button onclick="window.location.href='${checkoutUrl}'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" aria-label="${lang === 'pt-BR' ? 'Obter diagnóstico completo' : 'Get full diagnosis'}" data-i18n="${additionalButton ? 'get-full-diagnosis' : 'get-full-diagnosis-now'}">${additionalButton ? trans.get_full_diagnosis : trans.get_full_diagnosis_now}</button>${additionalButton}</div>`;
             speak(spokenPreview);
           } else {
-            result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p>';
-            speak("Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.");
+            result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${trans.no_face_detected}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${trans.try_again}</button></div>`;
+            speak(trans.no_face_detected);
           }
         })
         .catch(error => {
           console.error("Erro ao analisar:", error);
-          result.innerHTML = '<p class="fade-in">🚫 Erro ao analisar a expressão facial. Tente novamente.</p>';
-          speak("Erro ao analisar a expressão facial. Tente novamente.");
+          result.innerHTML = `<p class="fade-in" data-i18n="error-analyzing">${trans.error_analyzing}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again" aria-label="${lang === 'pt-BR' ? 'Tentar novamente a análise' : 'Try analyzing again'}">${trans.try_again}</button></div>`;
+          speak(trans.error_analyzing);
         });
     }
 
-    // Scripts de Navegação
+    // Scripts de Navegação e Internacionalização
     document.addEventListener('DOMContentLoaded', () => {
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -431,6 +545,9 @@
           document.querySelector('header').classList.remove('shadow-lg');
         }
       });
+
+      const languageSelector = document.getElementById('language-selector');
+      languageSelector.addEventListener('change', updateLanguage);
     });
   </script>
 </body>
