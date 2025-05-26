@@ -353,7 +353,9 @@
           if (data.faces && data.faces.length > 0) {
             const face = data.faces[0];
             const emotion = face.attributes.emotion;
-            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0];
+            const emotionName = emotionSorted[0];
+            const emotionConfidence = emotionSorted[1]; // Confiança da emoção detectada (0-100)
 
             const emotionPortuguese = {
               'sadness': 'tristeza',
@@ -365,45 +367,36 @@
               'disgust': 'desgosto'
             };
 
-            const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+            const emotionInPortuguese = emotionPortuguese[emotionName] || emotionName;
             let preview = '';
             let spokenPreview = '';
+            let additionalButton = '';
 
-            switch (emotionSorted) {
+            switch (emotionName) {
               case 'sadness':
-                preview = "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração.";
-                spokenPreview = "Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração.";
-                break;
-              case 'anger':
-                preview = "Detectamos raiva, possivelmente resultado de uma situação que te desafiou ou irritou hoje.";
-                spokenPreview = "Detectamos raiva, possivelmente resultado de uma situação que te desafiou ou irritou hoje.";
-                break;
-              case 'happiness':
-                preview = "Detectamos felicidade, um sinal de que você está vivendo um momento de alegria ou leveza.";
-                spokenPreview = "Detectamos felicidade, um sinal de que você está vivendo um momento de alegria ou leveza.";
-                break;
-              case 'surprise':
-                preview = "Detectamos surpresa, talvez por algo inesperado que chamou sua atenção ou te intrigou.";
-                spokenPreview = "Detectamos surpresa, talvez por algo inesperado que chamou sua atenção ou te intrigou.";
-                break;
-              case 'neutral':
-                preview = "Detectamos uma expressão neutra, sugerindo um estado de calma ou introspecção neste momento.";
-                spokenPreview = "Detectamos uma expressão neutra, sugerindo um estado de calma ou introspecção neste momento.";
+                preview = `Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                spokenPreview = `Detectamos tristeza, talvez ligada a um momento reflexivo ou desafiador que está em seu coração. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                additionalButton = '<div class="mt-4"><button onclick="window.location.href=\'/apoio-emocional\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2">Ter Apoio Emocional</button></div>';
                 break;
               case 'fear':
-                preview = "Detectamos medo, talvez refletindo uma situação que te deixou ansioso ou em alerta.";
-                spokenPreview = "Detectamos medo, talvez refletindo uma situação que te deixou ansioso ou em alerta.";
-                break;
               case 'disgust':
-                preview = "Detectamos desgosto, possivelmente por algo que te incomodou ou foi contra seus valores.";
-                spokenPreview = "Detectamos desgosto, possivelmente por algo que te incomodou ou foi contra seus valores.";
+              case 'anger':
+                if (emotionConfidence > 70) { // Limiar de confiança para sugerir apoio médico
+                  preview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                  spokenPreview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou incomodou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                  additionalButton = '<div class="mt-4"><button onclick="window.location.href=\'/apoio-medico\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine mr-2">Apoio IA Médica</button></div>';
+                } else {
+                  preview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou intrigou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                  spokenPreview = `Detectamos ${emotionInPortuguese}, possivelmente refletindo uma situação que te desafiou ou intrigou. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                }
                 break;
               default:
-                preview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora.`;
-                spokenPreview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora.`;
+                preview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                spokenPreview = `Detectamos ${emotionInPortuguese}, um estado que reflete como você está se sentindo agora. Muitas vezes, longas horas de trabalho podem intensificar essas emoções.`;
+                break;
             }
 
-            result.innerHTML = `<p class="fade-in">${preview}</p><div class="mt-4"><button onclick="window.location.href='/checkout.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Diagnóstico Completo Agora</button></div>`;
+            result.innerHTML = `<p class="fade-in">${preview}</p><div class="mt-4"><button onclick="window.location.href='/checkout.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">${additionalButton ? 'Obter Diagnóstico Completo' : 'Obter Diagnóstico Completo Agora'}</button>${additionalButton}</div>`;
             speak(spokenPreview);
           } else {
             result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p>';
