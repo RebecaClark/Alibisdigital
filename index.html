@@ -839,111 +839,188 @@
       document.getElementById('user-count').textContent = userCount;
     }, 10000);
 
-    // Chat Interativo com Voz
-    const chatBubble = document.getElementById('chat-bubble');
-    const chatWindow = document.getElementById('chat-window');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chat-input');
-    const listeningIndicator = document.getElementById('listening-indicator');
-    const synth = window.speechSynthesis;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    let lastUserMessage = '';
+   // Chat Interativo com Voz
+const chatBubble = document.getElementById('chat-bubble');
+const chatWindow = document.getElementById('chat-window');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const listeningIndicator = document.getElementById('listening-indicator');
+const synth = window.speechSynthesis;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let lastUserMessage = '';
+let inactivityTimer = null;
 
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-      recognition.interimResults = false;
-    }
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.interimResults = false;
+}
 
-    const speak = (text) => {
-      if (!synth) {
-        console.warn("API de síntese de voz não suportada neste navegador.");
-        return;
-      }
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = lang;
-      synth.speak(utter);
-    };
+const speak = (text) => {
+  if (!synth) {
+    console.warn("API de síntese de voz não suportada neste navegador.");
+    return;
+  }
+  const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang;
+  synth.speak(utter);
+};
 
-    const addMessage = (message, isUser = false) => {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%]`;
-      messageDiv.textContent = message;
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
+const addMessage = (message, isUser = false) => {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%]`;
+  messageDiv.textContent = message;
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+};
 
-    chatBubble.addEventListener('click', () => {
-      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
-      if (chatWindow.style.display === 'block') {
-        const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-        const welcomeMessage = getTranslation(lang, 'chat-welcome');
-        addMessage(welcomeMessage, false);
-        speak(welcomeMessage);
-      }
-    });
+chatBubble.addEventListener('click', () => {
+  chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+  if (chatWindow.style.display === 'block') {
+    const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+    const welcomeMessage = getTranslation(lang, 'chat-welcome');
+    addMessage(welcomeMessage, false);
+    speak(welcomeMessage);
+    startInactivityTimer();
+  } else {
+    clearTimeout(inactivityTimer);
+  }
+});
 
-    chatInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && chatInput.value.trim()) {
-        const userMessage = chatInput.value.trim();
-        addMessage(userMessage, true);
-        lastUserMessage = userMessage.toLowerCase();
-        chatInput.value = '';
-        respondToUser(lastUserMessage);
-      }
-    });
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && chatInput.value.trim()) {
+    const userMessage = chatInput.value.trim();
+    addMessage(userMessage, true);
+    lastUserMessage = userMessage.toLowerCase();
+    chatInput.value = '';
+    respondToUser(lastUserMessage);
+    resetInactivityTimer();
+  }
+});
 
-    if (recognition) {
-      recognition.onstart = () => {
-        listeningIndicator.classList.add('active');
-      };
-      recognition.onend = () => {
-        listeningIndicator.classList.remove('active');
-      };
-      recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript;
-        chatInput.value = spokenText;
-        const eventEnter = new Event('keypress');
-        eventEnter.key = 'Enter';
-        chatInput.dispatchEvent(eventEnter);
-      };
-      recognition.onerror = (event) => {
-        console.error("Erro no reconhecimento de voz:", event.error);
-        listeningIndicator.classList.remove('active');
-        const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-        addMessage(getTranslation(lang, 'chat-voice-unavailable'), false);
-      };
-      chatInput.addEventListener('focus', () => {
-        recognition.lang = document.getElementById('language-selector')?.value || 'pt-BR';
-        recognition.start();
-      });
-    } else {
-      chatInput.addEventListener('focus', () => {
-        const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-        addMessage(getTranslation(lang, 'chat-voice-unavailable'), false);
-      });
-    }
+if (recognition) {
+  recognition.onstart = () => {
+    listeningIndicator.classList.add('active');
+  };
+  recognition.onend = () => {
+    listeningIndicator.classList.remove('active');
+  };
+  recognition.onresult = (event) => {
+    const spokenText = event.results[0][0].transcript;
+    chatInput.value = spokenText;
+    const eventEnter = new Event('keypress');
+    eventEnter.key = 'Enter';
+    chatInput.dispatchEvent(eventEnter);
+  };
+  recognition.onerror = (event) => {
+    console.error("Erro no reconhecimento de voz:", event.error);
+    listeningIndicator.classList.remove('active');
+    const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+    addMessage(getTranslation(lang, 'chat-voice-unavailable'), false);
+  };
+  chatInput.addEventListener('focus', () => {
+    recognition.lang = document.getElementById('language-selector')?.value || 'pt-BR';
+    recognition.start();
+  });
+} else {
+  chatInput.addEventListener('focus', () => {
+    const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+    addMessage(getTranslation(lang, 'chat-voice-unavailable'), false);
+  });
+}
 
-    function respondToUser(message) {
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      let response = getTranslation(lang, 'chat-default');
+function startInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+    const proactiveMessage = getTranslation(lang, 'chat-yes');
+    addMessage(proactiveMessage, false);
+    speak(proactiveMessage);
+  }, 10000); // 10 segundos de inatividade
+}
 
-      if (message.includes('sim') || message.includes('gostaria') || message.includes('yes') || message.includes('sure') || message.includes('sí')) {
-        response = getTranslation(lang, 'chat-yes');
-      } else if (message.includes('não') || message.includes('agora não') || message.includes('no') || message.includes('not now') || message.includes('ahora no')) {
-        response = getTranslation(lang, 'chat-no');
-      } else if (message.includes('como') || message.includes('funciona') || message.includes('how') || message.includes('works') || message.includes('cómo')) {
-        response = getTranslation(lang, 'chat-how');
-      } else if (message.includes('planos') || message.includes('preço') || message.includes('plans') || message.includes('price') || message.includes('planes')) {
-        response = getTranslation(lang, 'chat-plans');
-        setTimeout(() => {
-          addMessage(getTranslation(lang, 'chat-redirect'), false);
-          speak(getTranslation(lang, 'chat-redirect'));
-          window.location.href = '#checkout';
-        }, 1500);
-      } else if (message.includes('suporte') || message.includes('ajuda') || message.includes('support') || message.includes('help') || message.includes('soporte')) {
-        response = getTranslation(lang, 'chat-support');
-        setTimeout(() => {
-          addMessage(getTranslation(lang, 'chat-redirect'), false);
-          speak(getTranslation(lang
+function resetInactivityTimer() {
+  startInactivityTimer();
+}
+
+function respondToUser(message) {
+  const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+  let response = getTranslation(lang, 'chat-default');
+
+  if (message.includes('sim') || message.includes('gostaria') || message.includes('yes') || message.includes('sure') || message.includes('sí')) {
+    response = getTranslation(lang, 'chat-yes');
+  } else if (message.includes('não') || message.includes('agora não') || message.includes('no') || message.includes('not now') || message.includes('ahora no')) {
+    response = getTranslation(lang, 'chat-no');
+  } else if (message.includes('como') || message.includes('funciona') || message.includes('how') || message.includes('works') || message.includes('cómo')) {
+    response = getTranslation(lang, 'chat-how');
+  } else if (message.includes('planos') || message.includes('preço') || message.includes('plans') || message.includes('price') || message.includes('planes')) {
+    response = getTranslation(lang, 'chat-plans');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '#checkout';
+    }, 1500);
+  } else if (message.includes('suporte') || message.includes('ajuda') || message.includes('support') || message.includes('help') || message.includes('soporte')) {
+    response = getTranslation(lang, 'chat-support');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '#suporte';
+    }, 1500);
+  } else if (message.includes('scanner') || message.includes('teste') || message.includes('experimentar') || message.includes('try') || message.includes('prueba')) {
+    response = getTranslation(lang, 'chat-yes');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '/scanner.html';
+    }, 1500);
+  } else if (message.includes('blog') || message.includes('dicas') || message.includes('tips') || message.includes('consejos')) {
+    response = getTranslation(lang, 'chat-default');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '/blog.html';
+    }, 1500);
+  } else if (message.includes('álibi') || message.includes('alibi') || message.includes('desculpa') || message.includes('excuse') || message.includes('coartada')) {
+    response = getTranslation(lang, 'chat-plans');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '#checkout';
+    }, 1500);
+  } else if (message.includes('avaliação') || message.includes('evaluation') || message.includes('evaluación')) {
+    response = getTranslation(lang, 'chat-default');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '/emotional-evaluation.html';
+    }, 1500);
+  } else if (message.includes('diagnóstico') || message.includes('médico') || message.includes('diagnosis') || message.includes('medical') || message.includes('diagnóstico')) {
+    response = getTranslation(lang, 'chat-default');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '/medical-ai.html';
+    }, 1500);
+  } else if (message.includes('supergrok') || message.includes('mais funcionalidades') || message.includes('more features') || message.includes('más funciones')) {
+    response = getTranslation(lang, 'try-supergrok');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = 'https://x.ai/grok';
+    }, 1500);
+  } else if (message.includes('seguro') || message.includes('privacidade') || message.includes('dados') || message.includes('safe') || message.includes('privacy') || message.includes('seguro')) {
+    response = getTranslation(lang, 'chat-privacy');
+    setTimeout(() => {
+      addMessage(getTranslation(lang, 'chat-redirect'), false);
+      speak(getTranslation(lang, 'chat-redirect'));
+      window.location.href = '/politica-privacidade';
+    }, 1500);
+  } else {
+    response = getTranslation(lang, 'chat-default');
+  }
+
+  addMessage(response, false);
+  speak(response);
+}
