@@ -223,77 +223,145 @@
 
   <!-- Cabeçalho com Efeito Holográfico -->
   <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
-        </a>
-      </div>
-      <div class="flex items-center space-x-3">
-        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
-          <option value="pt-BR">Português</option>
-          <option value="en-US">English</option>
-        </select>
-        <div class="md:hidden">
-          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <a href="/">
+        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+      </a>
     </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+    <div class="flex items-center space-x-3">
+      <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
+        <option value="pt-BR">Português</option>
+        <option value="en-US">English</option>
+      </select>
+      <div class="md:hidden">
+        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
-  </header>
-  <div class="h-20"></div>
+    <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+      <div class="dropdown relative">
+        <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+          <span>Serviços</span>
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div class="dropdown-menu">
+          <a href="/scanner.html" class="hover:text-[#22d3ee] transition flex items-center" aria-label="Ir para Scanner com IA">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            Scanner com IA
+          </a>
+          <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition flex items-center" aria-label="Ir para Avaliação Emocional">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            Avaliação Emocional
+          </a>
+          <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition flex items-center" aria-label="Ir para Diagnóstico Médico">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Diagnóstico Médico
+          </a>
+          <a href="/alibi.html" class="hover:text-[#22d3ee] transition flex items-center" aria-label="Ir para Criar Álibi">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Criar Álibi
+          </a>
+        </div>
+      </div>
+      <a href="/blog.html" class="hover:text-[#22d3ee] transition" aria-label="Ir para Blog">Blog</a>
+      <a href="#checkout" class="hover:text-[#22d3ee] transition" aria-label="Ir para Planos">Planos</a>
+      <a href="#suporte" class="hover:text-[#22d3ee] transition" aria-label="Ir para Suporte">Suporte</a>
+      <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
+    </nav>
+  </div>
+  <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4 transition-all duration-300">
+    <nav class="flex flex-col items-center space-y-4">
+      <div class="w-full">
+        <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center transition" aria-label="Abrir menu de serviços">
+          <span>Serviços</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div id="services-menu" class="flex flex-col items-center space-y-2 mt-2 overflow-hidden transition-all duration-300">
+          <a href="/scanner.html" class="hover:bg-gray-700 w-full text-center py-2 rounded" aria-label="Ir para Scanner com IA">Scanner com IA</a>
+          <a href="/emotional-evaluation.html" class="hover:bg-gray-700 w-full text-center py-2 rounded" aria-label="Ir para Avaliação Emocional">Avaliação Emocional</a>
+          <a href="/medical-ai.html" class="hover:bg-gray-700 w-full text-center py-2 rounded" aria-label="Ir para Diagnóstico Médico">Diagnóstico Médico</a>
+          <a href="/alibi.html" class="hover:bg-gray-700 w-full text-center py-2 rounded" aria-label="Ir para Criar Álibi">Criar Álibi</a>
+        </div>
+      </div>
+      <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded transition" aria-label="Ir para Blog">Blog</a>
+      <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded transition" aria-label="Ir para Planos">Planos</a>
+      <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded transition" aria-label="Ir para Suporte">Suporte</a>
+      <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center transition" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Estilos do cabeçalho */
+  .holo-nav {
+    background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    animation: holoGlow 2s infinite alternate;
+  }
+  @keyframes holoGlow { 0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; } 100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; } }
+  .holo-nav a, .holo-nav button { position: relative; transition: color 0.3s ease; }
+  .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
+  .dropdown-menu {
+    background: rgba(31, 41, 55, 0.9); border: 1px solid #22d3ee; box-shadow: 0 0 10px #22d3ee;
+    border-radius: 8px; padding: 8px 0; position: absolute; top: 100%; left: 0; display: none; width: 220px;
+  }
+  .dropdown-menu a {
+    display: flex; align-items: center; padding: 8px 16px; color: #e5e7eb; transition: all 0.3s ease;
+  }
+  .dropdown-menu a:hover {
+    background: rgba(55, 65, 81, 0.8); color: #22d3ee; text-shadow: 0 0 5px #22d3ee;
+  }
+  .dropdown:hover .dropdown-menu { display: block; }
+  .futuristic-btn {
+    background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate;
+  }
+  .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
+  @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
+  #mobile-menu {
+    max-height: 0; overflow: hidden;
+  }
+  #mobile-menu.active {
+    max-height: 500px; /* Ajuste conforme necessário */
+  }
+  @media (max-width: 768px) {
+    #mobile-menu a { width: 100%; }
+  }
+</style>
+
+<script>
+  // Controle do menu hamburger
+  document.getElementById('hamburger-menu').addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('active');
+  });
+
+  // Controle do dropdown de serviços no mobile
+  document.getElementById('services-toggle').addEventListener('click', () => {
+    const servicesMenu = document.getElementById('services-menu');
+    servicesMenu.style.display = servicesMenu.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  // Atualizar idioma dinamicamente
+  document.getElementById('language-selector').addEventListener('change', () => {
+    const lang = document.getElementById('language-selector').value;
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      element.textContent = key === 'services' ? 'Serviços' : key; // Placeholder simples, substitua por traduções reais
+    });
+  });
+</script>
 
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
