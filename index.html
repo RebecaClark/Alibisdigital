@@ -219,37 +219,11 @@
       box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
       border: 0.125rem solid #22d3ee;
     }
-    /* Ajustes para o cabeçalho com bandeiras */
-    .language-switch,
-    .language-switch-mobile {
-      display: flex;
-      align-items: center;
-    }
-    .language-switch img,
-    .language-switch-mobile img {
-      margin-right: 0.5rem;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      border-radius: 0.125rem;
-      vertical-align: middle;
-      animation: pulse 2s infinite;
-    }
-    .language-switch img:hover,
-    .language-switch-mobile img:hover {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
-    .language-switch-mobile {
-      justify-content: center;
-      margin-bottom: 0.625rem;
-    }
-    /* Ajustes responsivos para bandeiras e outras seções */
+    /* Remover estilos relacionados às bandeiras, já que a troca de idiomas será removida */
     @media (max-width: 768px) {
       .holo-nav .header-right {
         flex-direction: column;
         align-items: flex-end;
-      }
-      .language-switch {
-        margin-bottom: 0.5rem;
       }
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -275,11 +249,6 @@
         </a>
       </div>
       <div class="flex items-center space-x-3">
-        <div class="language-switch">
-          <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5"></a>
-          <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5"></a>
-          <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5"></a>
-        </div>
         <div class="md:hidden">
           <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -291,54 +260,46 @@
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
         <div class="dropdown relative">
           <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            <span data-i18n="services">Serviços</span>
+            <span>Serviços</span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+        <a href="#checkout" class="hover:text-[#22d3ee] transition">Planos</a>
+        <a href="#suporte" class="hover:text-[#22d3ee] transition">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">
           🔍 Teste Grátis
         </a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
-        <div class="language-switch-mobile w-full text-center">
-          <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5 inline-block mr-2"></a>
-          <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5 inline-block mr-2"></a>
-          <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5 inline-block"></a>
-        </div>
         <div class="w-full">
           <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
-            <span data-i18n="services">Serviços</span>
+            <span>Serviços</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
+        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis">
           🔍 Teste Grátis
         </a>
       </nav>
@@ -349,132 +310,36 @@
   <!-- Hero -->
   <section id="hero" class="text-white text-center py-20 px-6 relative">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in" data-i18n="hero-title">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
         Transforme Seu Dia com IA Emocional
       </h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in" data-i18n="hero-subtitle">
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
         Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
       </p>
       <div class="mb-10 relative">
         <video controls preload="auto" autoplay class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
-          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação" data-i18n="play-video">Tocar Vídeo</button>
+          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação">Tocar Vídeo</button>
         </video>
       </div>
-      <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis" data-i18n="test-scanner">
+      <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis">
         🔍 Teste o Scanner Grátis
       </a>
       <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
-        <h3 class="text-xl font-semibold mb-4 fade-in" data-i18n="exclusive-tips">Receba Dicas Exclusivas</h3>
+        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
         <div class="flex flex-col sm:flex-row gap-4">
-          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas" data-i18n-placeholder="email-placeholder">
-          <button class="futuristic-btn text-white py-3 px-6 rounded-lg" aria-label="Inscrever-se para receber dicas exclusivas" data-i18n="subscribe">Inscrever-se</button>
+          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas">
+          <button class="futuristic-btn text-white py-3 px-6 rounded-lg" aria-label="Inscrever-se para receber dicas exclusivas">Inscrever-se</button>
         </div>
-        <p class="text-sm text-gray-500 mt-2" data-i18n="data-protected">🔒 Seus dados são protegidos.</p>
+        <p class="text-sm text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
       </div>
     </div>
   </section>
 
-  <!-- Script para troca de idioma e inicialização de partículas -->
+  <!-- Script para inicialização de partículas e menu -->
   <script>
-    // Objeto com traduções
-    const translations = {
-      'pt-BR': {
-        services: 'Serviços',
-        scanner: 'Scanner com IA',
-        'emotional-evaluation': 'Avaliação Emocional',
-        'medical-ai': 'Diagnóstico Médico',
-        alibi: 'Criar Álibi',
-        blog: 'Blog',
-        plans: 'Planos',
-        support: 'Suporte',
-        'test-free': '🔍 Teste Grátis',
-        'hero-title': 'Transforme Seu Dia com IA Emocional',
-        'hero-subtitle': 'Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.',
-        'play-video': 'Tocar Vídeo',
-        'test-scanner': '🔍 Teste o Scanner Grátis',
-        'exclusive-tips': 'Receba Dicas Exclusivas',
-        'email-placeholder': 'Seu e-mail',
-        'subscribe': 'Inscrever-se',
-        'data-protected': '🔒 Seus dados são protegidos.'
-      },
-      'en-US': {
-        services: 'Services',
-        scanner: 'AI Scanner',
-        'emotional-evaluation': 'Emotional Evaluation',
-        'medical-ai': 'Medical Diagnosis',
-        alibi: 'Create Alibi',
-        blog: 'Blog',
-        plans: 'Plans',
-        support: 'Support',
-        'test-free': '🔍 Free Test',
-        'hero-title': 'Transform Your Day with Emotional AI',
-        'hero-subtitle': 'Discover and manage your emotions with the most advanced emotional scanner of the future.',
-        'play-video': 'Play Video',
-        'test-scanner': '🔍 Test the Scanner Free',
-        'exclusive-tips': 'Receive Exclusive Tips',
-        'email-placeholder': 'Your email',
-        'subscribe': 'Subscribe',
-        'data-protected': '🔒 Your data is protected.'
-      },
-      'es-ES': {
-        services: 'Servicios',
-        scanner: 'Escáner con IA',
-        'emotional-evaluation': 'Evaluación Emocional',
-        'medical-ai': 'Diagnóstico Médico',
-        alibi: 'Crear Alibi',
-        blog: 'Blog',
-        plans: 'Planes',
-        support: 'Soporte',
-        'test-free': '🔍 Prueba Gratis',
-        'hero-title': 'Transforma Tu Día con IA Emocional',
-        'hero-subtitle': 'Descubre y gestiona tus emociones con el escáner emocional más avanzado del futuro.',
-        'play-video': 'Reproducir Video',
-        'test-scanner': '🔍 Prueba el Escáner Gratis',
-        'exclusive-tips': 'Recibe Consejos Exclusivos',
-        'email-placeholder': 'Tu correo',
-        'subscribe': 'Suscribirse',
-        'data-protected': '🔒 Tus datos están protegidos.'
-      }
-    };
-
-    // Função para obter o idioma da URL
-    function getLanguageFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('lang') || 'pt-BR'; // Padrão para pt-BR se não especificado
-    }
-
-    // Função para atualizar o idioma
-    function updateLanguage(lang) {
-      const elements = document.querySelectorAll('[data-i18n]');
-      elements.forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        if (element.tagName === 'INPUT' && element.hasAttribute('data-i18n-placeholder')) {
-          element.placeholder = translations[lang][key] || key;
-        } else {
-          element.textContent = translations[lang][key] || key;
-        }
-      });
-      // Atualiza a URL sem recarregar a página
-      window.history.pushState({}, '', `?lang=${lang}`);
-      // Atualiza o atributo lang do HTML
-      document.documentElement.lang = lang;
-    }
-
-    // Função para inicializar o idioma ao carregar a página
+    // Função para inicializar o site ao carregar a página
     document.addEventListener('DOMContentLoaded', () => {
-      const initialLang = getLanguageFromURL();
-      updateLanguage(initialLang);
-
-      // Adiciona evento de clique nas bandeiras
-      document.querySelectorAll('.language-switch a, .language-switch-mobile a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const lang = link.getAttribute('href').split('=')[1];
-          updateLanguage(lang);
-        });
-      });
-
       // Inicializa partículas
       particlesJS.load('particles-js', 'particles.json', function() {
         console.log('Partículas carregadas');
@@ -495,6 +360,8 @@
       });
     });
   </script>
+</body>
+</html>
   <!-- O documento permanece aberto para o conteúdo adicional -->
 
   <!-- Chat Interativo com Voz -->
