@@ -9,423 +9,494 @@
   <title>Álibis Digital - Inteligência Artificial para o Bem-Estar Emocional</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
- <style>
-  html { scroll-behavior: smooth; }
-  body { position: relative; overflow-x: hidden; }
-  #particles-js {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
-  }
-  .fade-in { animation: fadeIn 1s ease-in-out; }
-  .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-  .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-  .bounce-in { animation: bounceIn 1.2s ease-in-out; }
-  .pulse { animation: pulse 2s infinite ease-in-out; }
-  .float { animation: float 4s infinite ease-in-out; }
-  .scale-up { animation: scaleUp 0.8s ease-in-out; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-60px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(60px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes bounceIn {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1.1); }
-    75% { transform: scale(0.9); }
-    100% { transform: scale(1); }
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  @keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0); }
-  }
-  @keyframes scaleUp {
-    from { opacity: 0; transform: scale(0.7); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  .holo-nav {
-    background: rgba(17, 24, 39, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    animation: holoGlow 2s infinite alternate;
-  }
-  @keyframes holoGlow {
-    0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
-    100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
-  }
-  .holo-nav a, .holo-nav button {
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  .holo-nav a:hover, .holo-nav button:hover {
-    color: #22d3ee;
-    text-shadow: 0 0 5px #22d3ee;
-  }
-  .dropdown-menu, .dropdown-menu-mobile {
-    background: rgba(31, 41, 55, 0.9);
-    border: 1px solid #22d3ee;
-    box-shadow: 0 0 10px #22d3ee;
-    border-radius: 8px;
-    padding: 8px 0;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    width: 200px;
-  }
-  .dropdown-menu a, .dropdown-menu-mobile a {
-    display: block;
-    padding: 8px 16px;
-    color: #e5e7eb;
-    transition: all 0.3s ease;
-  }
-  .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
-    background: rgba(55, 65, 81, 0.8);
-    color: #22d3ee;
-    text-shadow: 0 0 5px #22d3ee;
-  }
-  .dropdown:hover .dropdown-menu {
-    display: block;
-  }
-  .dropdown-menu-mobile {
-    width: 100%;
-    position: static;
-  }
-  .futuristic-btn {
-    background: linear-gradient(45deg, #7C3AED, #22d3ee);
-    box-shadow: 0 0 15px #22d3ee;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: neonPulse 1.5s infinite alternate;
-  }
-  .futuristic-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
-  }
-  @keyframes neonPulse {
-    0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
-    100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
-  }
-  #chat-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
-  #chat-bubble {
-    background: linear-gradient(45deg, #7C3AED, #22d3ee);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 0 15px #22d3ee;
-    animation: pulse 2s infinite;
-  }
-  #chat-window {
-    display: none;
-    background: rgba(17, 24, 39, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid #22d3ee;
-    border-radius: 15px;
-    width: 300px;
-    height: 400px;
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    box-shadow: 0 0 20px #22d3ee;
-  }
-  #chat-messages {
-    height: 300px;
-    overflow-y: auto;
-    padding: 10px;
-    color: #e5e7eb;
-  }
-  #chat-input {
-    background: rgba(55, 65, 81, 0.8);
-    border: 1px solid #22d3ee;
-    border-radius: 20px;
-    padding: 10px;
-    width: 100%;
-    color: white;
-  }
-  .listening-indicator {
-    display: none;
-    color: #22d3ee;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 5px;
-  }
-  .listening-indicator.active {
-    display: block;
-  }
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-  }
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .shine {
-    position: relative;
-    overflow: hidden;
-  }
-  .shine::after {
-    content: '';
-    position: absolute;
-    top: -60%;
-    left: -60%;
-    width: 220%;
-    height: 220%;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-    transform: rotate(20deg);
-    animation: shine 4s infinite linear;
-  }
-  @keyframes shine {
-    0% { transform: translateX(-120%) rotate(20deg); }
-    100% { transform: translateX(120%) rotate(20deg); }
-  }
-
-  /* Ajustes para o cabeçalho com bandeiras */
-  .language-switch,
-  .language-switch-mobile {
-    display: flex;
-    align-items: center;
-  }
-  .language-switch img,
-  .language-switch-mobile img {
-    margin-right: 0.5rem;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: 0.125rem;
-    vertical-align: middle;
-    animation: pulse 2s infinite;
-  }
-  .language-switch img:hover,
-  .language-switch-mobile img:hover {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
-  .language-switch-mobile {
-    justify-content: center;
-    margin-bottom: 0.625rem;
-  }
-
-  /* Ajustes responsivos para bandeiras */
-  @media (max-width: 768px) {
-    .holo-nav .header-right {
-      flex-direction: column;
-      align-items: flex-end;
+  <style>
+    html { scroll-behavior: smooth; }
+    body { position: relative; overflow-x: hidden; }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
     }
-    .language-switch {
-      margin-bottom: 0.5rem;
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    .float { animation: float 4s infinite ease-in-out; }
+    .scale-up { animation: scaleUp 0.8s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 1.8rem; }
-    .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-    .grid { grid-template-columns: 1fr; }
-    .flex { flex-direction: column; }
-    .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-    video { width: 100%; height: auto; }
-    #chat-window { width: 90%; right: 5%; }
-  }
-</style>
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      75% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown-menu, .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
+    }
+    .dropdown-menu a, .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu-mobile {
+      width: 100%;
+      position: static;
+    }
+    .futuristic-btn {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      box-shadow: 0 0 15px #22d3ee;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: neonPulse 1.5s infinite alternate;
+    }
+    .futuristic-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
+    }
+    @keyframes neonPulse {
+      0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
+      100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+    }
+    #chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    #chat-bubble {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px #22d3ee;
+      animation: pulse 2s infinite;
+    }
+    #chat-window {
+      display: none;
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #22d3ee;
+      border-radius: 15px;
+      width: 300px;
+      height: 400px;
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      box-shadow: 0 0 20px #22d3ee;
+    }
+    #chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      color: #e5e7eb;
+    }
+    #chat-input {
+      background: rgba(55, 65, 81, 0.8);
+      border: 1px solid #22d3ee;
+      border-radius: 20px;
+      padding: 10px;
+      width: 100%;
+      color: white;
+    }
+    .listening-indicator {
+      display: none;
+      color: #22d3ee;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .listening-indicator.active {
+      display: block;
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .shine::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+      transform: rotate(20deg);
+      animation: shine 4s infinite linear;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-120%) rotate(20deg); }
+      100% { transform: translateX(120%) rotate(20deg); }
+    }
+    /* Esconde o botão "Tocar Vídeo" já que o vídeo inicia automaticamente */
+    #play-video {
+      display: none;
+    }
+    /* Estilo adicional para o vídeo */
+    video {
+      width: 100%;
+      max-width: 48rem;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 0.75rem;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+      border: 0.125rem solid #22d3ee;
+    }
+    /* Ajustes para o cabeçalho com bandeiras */
+    .language-switch,
+    .language-switch-mobile {
+      display: flex;
+      align-items: center;
+    }
+    .language-switch img,
+    .language-switch-mobile img {
+      margin-right: 0.5rem;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      border-radius: 0.125rem;
+      vertical-align: middle;
+      animation: pulse 2s infinite;
+    }
+    .language-switch img:hover,
+    .language-switch-mobile img:hover {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+    .language-switch-mobile {
+      justify-content: center;
+      margin-bottom: 0.625rem;
+    }
+    /* Ajustes responsivos para bandeiras e outras seções */
+    @media (max-width: 768px) {
+      .holo-nav .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .language-switch {
+        margin-bottom: 0.5rem;
+      }
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .flex { flex-direction: column; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      video { width: 100%; height: auto; }
+      #chat-window { width: 90%; right: 5%; }
+    }
+  </style>
 </head>
-  <script>
-  // Objeto com traduções
-  const translations = {
-    'pt-BR': {
-      services: 'Serviços',
-      scanner: 'Scanner com IA',
-      'emotional-evaluation': 'Avaliação Emocional',
-      'medical-ai': 'Diagnóstico Médico',
-      alibi: 'Criar Álibi',
-      blog: 'Blog',
-      plans: 'Planos',
-      support: 'Suporte',
-      'test-free': '🔍 Teste Grátis',
-      'hero-title': 'Transforme Seu Dia com IA Emocional',
-      'hero-subtitle': 'Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.',
-      'play-video': 'Tocar Vídeo',
-      'test-scanner': '🔍 Teste o Scanner Grátis',
-      'offer-valid': '🚨 Oferta válida até 31/05/2025 ou até acabarem as vagas! Restam 12 vagas!',
-      'exclusive-tips': 'Receba Dicas Exclusivas',
-      'subscribe': 'Inscrever-se',
-      'data-protected': '🔒 Seus dados são protegidos.'
-    },
-    'en-US': {
-      services: 'Services',
-      scanner: 'AI Scanner',
-      'emotional-evaluation': 'Emotional Evaluation',
-      'medical-ai': 'Medical Diagnosis',
-      alibi: 'Create Alibi',
-      blog: 'Blog',
-      plans: 'Plans',
-      support: 'Support',
-      'test-free': '🔍 Free Test',
-      'hero-title': 'Transform Your Day with Emotional AI',
-      'hero-subtitle': 'Discover and manage your emotions with the most advanced emotional scanner of the future.',
-      'play-video': 'Play Video',
-      'test-scanner': '🔍 Test the Scanner Free',
-      'offer-valid': '🚨 Offer valid until 05/31/2025 or until spots run out! 12 spots left!',
-      'exclusive-tips': 'Receive Exclusive Tips',
-      'subscribe': 'Subscribe',
-      'data-protected': '🔒 Your data is protected.'
-    },
-    'es-ES': {
-      services: 'Servicios',
-      scanner: 'Escáner con IA',
-      'emotional-evaluation': 'Evaluación Emocional',
-      'medical-ai': 'Diagnóstico Médico',
-      alibi: 'Crear Alibi',
-      blog: 'Blog',
-      plans: 'Planes',
-      support: 'Soporte',
-      'test-free': '🔍 Prueba Gratis',
-      'hero-title': 'Transforma Tu Día con IA Emocional',
-      'hero-subtitle': 'Descubre y gestiona tus emociones con el escáner emocional más avanzado del futuro.',
-      'play-video': 'Reproducir Video',
-      'test-scanner': '🔍 Prueba el Escáner Gratis',
-      'offer-valid': '🚨 Oferta válida hasta 31/05/2025 o hasta que se agoten las plazas! Quedan 12 plazas!',
-      'exclusive-tips': 'Recibe Consejos Exclusivos',
-      'subscribe': 'Suscribirse',
-      'data-protected': '🔒 Tus datos están protegidos.'
-    };
-
-  // Função para obter o idioma da URL
-  function getLanguageFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('lang') || 'pt-BR'; // Padrão para pt-BR se não especificado
-  }
-
-  // Função para atualizar o idioma
-  function updateLanguage(lang) {
-    const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(element => {
-      const key = element.getAttribute('data-i18n');
-      element.textContent = translations[lang][key] || key; // Usa a tradução ou a chave como fallback
-    });
-    // Atualiza a URL sem recarregar a página
-    window.history.pushState({}, '', `?lang=${lang}`);
-  }
-
-  // Função para inicializar o idioma ao carregar a página
-  document.addEventListener('DOMContentLoaded', () => {
-    const initialLang = getLanguageFromURL();
-    updateLanguage(initialLang);
-
-    // Adiciona evento de clique nas bandeiras
-    document.querySelectorAll('.language-switch a, .language-switch-mobile a').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const lang = link.getAttribute('href').split('=')[1];
-        updateLanguage(lang);
-      });
-    });
-  });
-</script>
 <body class="bg-[#0b1120] text-white font-sans">
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
 
- <!-- Cabeçalho com Efeito Holográfico -->
-<header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-      <a href="/">
-        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
-      </a>
-    </div>
-    <div class="flex items-center space-x-3">
-      <div class="language-switch">
-        <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5"></a>
-        <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5"></a>
-        <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5"></a>
+  <!-- Cabeçalho com Efeito Holográfico -->
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+        </a>
       </div>
-      <div class="md:hidden">
-        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </div>
-    <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-      <div class="dropdown relative">
-        <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-          <span data-i18n="services">Serviços</span>
-          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div class="dropdown-menu">
-          <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-          <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-          <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-          <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
+      <div class="flex items-center space-x-3">
+        <div class="language-switch">
+          <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5"></a>
+          <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5"></a>
+          <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5"></a>
+        </div>
+        <div class="md:hidden">
+          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
       </div>
-      <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-      <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-      <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-      <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-        🔍 Teste Grátis
-      </a>
-    </nav>
-  </div>
-  <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-    <nav class="flex flex-col items-center space-y-4">
-      <div class="language-switch-mobile w-full text-center">
-        <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5 inline-block mr-2"></a>
-        <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5 inline-block mr-2"></a>
-        <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5 inline-block"></a>
-      </div>
-      <div class="w-full">
-        <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
-          <span data-i18n="services">Serviços</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-        <div id="services-menu" class="dropdown-menu-mobile hidden">
-          <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-          <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-          <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-          <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+        <div class="dropdown relative">
+          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            <span data-i18n="services">Serviços</span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
+          </div>
         </div>
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
+        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
+        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+          🔍 Teste Grátis
+        </a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <div class="language-switch-mobile w-full text-center">
+          <a href="?lang=pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Português (Brasil)" title="Português" class="h-5 w-5 inline-block mr-2"></a>
+          <a href="?lang=en-US"><img src="https://flagcdn.com/w20/gb.png" alt="English (UK)" title="English" class="h-5 w-5 inline-block mr-2"></a>
+          <a href="?lang=es-ES"><img src="https://flagcdn.com/w20/es.png" alt="Español (España)" title="Español" class="h-5 w-5 inline-block"></a>
+        </div>
+        <div class="w-full">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
+            <span data-i18n="services">Serviços</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="services-menu" class="dropdown-menu-mobile hidden">
+            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
+        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
+        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+          🔍 Teste Grátis
+        </a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <!-- Hero -->
+  <section id="hero" class="text-white text-center py-20 px-6 relative">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in" data-i18n="hero-title">
+        Transforme Seu Dia com IA Emocional
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in" data-i18n="hero-subtitle">
+        Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
+      </p>
+      <div class="mb-10 relative">
+        <video controls preload="auto" autoplay class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+          <source src="/assets/vsl-video.mp4" type="video/mp4">
+          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação" data-i18n="play-video">Tocar Vídeo</button>
+        </video>
       </div>
-      <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-      <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-      <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-      <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-        🔍 Teste Grátis
+      <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis" data-i18n="test-scanner">
+        🔍 Teste o Scanner Grátis
       </a>
-    </nav>
-  </div>
-</header>
-<div class="h-20"></div>
+      <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 fade-in" data-i18n="exclusive-tips">Receba Dicas Exclusivas</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas" data-i18n-placeholder="email-placeholder">
+          <button class="futuristic-btn text-white py-3 px-6 rounded-lg" aria-label="Inscrever-se para receber dicas exclusivas" data-i18n="subscribe">Inscrever-se</button>
+        </div>
+        <p class="text-sm text-gray-500 mt-2" data-i18n="data-protected">🔒 Seus dados são protegidos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script para troca de idioma e inicialização de partículas -->
+  <script>
+    // Objeto com traduções
+    const translations = {
+      'pt-BR': {
+        services: 'Serviços',
+        scanner: 'Scanner com IA',
+        'emotional-evaluation': 'Avaliação Emocional',
+        'medical-ai': 'Diagnóstico Médico',
+        alibi: 'Criar Álibi',
+        blog: 'Blog',
+        plans: 'Planos',
+        support: 'Suporte',
+        'test-free': '🔍 Teste Grátis',
+        'hero-title': 'Transforme Seu Dia com IA Emocional',
+        'hero-subtitle': 'Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.',
+        'play-video': 'Tocar Vídeo',
+        'test-scanner': '🔍 Teste o Scanner Grátis',
+        'exclusive-tips': 'Receba Dicas Exclusivas',
+        'email-placeholder': 'Seu e-mail',
+        'subscribe': 'Inscrever-se',
+        'data-protected': '🔒 Seus dados são protegidos.'
+      },
+      'en-US': {
+        services: 'Services',
+        scanner: 'AI Scanner',
+        'emotional-evaluation': 'Emotional Evaluation',
+        'medical-ai': 'Medical Diagnosis',
+        alibi: 'Create Alibi',
+        blog: 'Blog',
+        plans: 'Plans',
+        support: 'Support',
+        'test-free': '🔍 Free Test',
+        'hero-title': 'Transform Your Day with Emotional AI',
+        'hero-subtitle': 'Discover and manage your emotions with the most advanced emotional scanner of the future.',
+        'play-video': 'Play Video',
+        'test-scanner': '🔍 Test the Scanner Free',
+        'exclusive-tips': 'Receive Exclusive Tips',
+        'email-placeholder': 'Your email',
+        'subscribe': 'Subscribe',
+        'data-protected': '🔒 Your data is protected.'
+      },
+      'es-ES': {
+        services: 'Servicios',
+        scanner: 'Escáner con IA',
+        'emotional-evaluation': 'Evaluación Emocional',
+        'medical-ai': 'Diagnóstico Médico',
+        alibi: 'Crear Alibi',
+        blog: 'Blog',
+        plans: 'Planes',
+        support: 'Soporte',
+        'test-free': '🔍 Prueba Gratis',
+        'hero-title': 'Transforma Tu Día con IA Emocional',
+        'hero-subtitle': 'Descubre y gestiona tus emociones con el escáner emocional más avanzado del futuro.',
+        'play-video': 'Reproducir Video',
+        'test-scanner': '🔍 Prueba el Escáner Gratis',
+        'exclusive-tips': 'Recibe Consejos Exclusivos',
+        'email-placeholder': 'Tu correo',
+        'subscribe': 'Suscribirse',
+        'data-protected': '🔒 Tus datos están protegidos.'
+      }
+    };
+
+    // Função para obter o idioma da URL
+    function getLanguageFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('lang') || 'pt-BR'; // Padrão para pt-BR se não especificado
+    }
+
+    // Função para atualizar o idioma
+    function updateLanguage(lang) {
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (element.tagName === 'INPUT' && element.hasAttribute('data-i18n-placeholder')) {
+          element.placeholder = translations[lang][key] || key;
+        } else {
+          element.textContent = translations[lang][key] || key;
+        }
+      });
+      // Atualiza a URL sem recarregar a página
+      window.history.pushState({}, '', `?lang=${lang}`);
+      // Atualiza o atributo lang do HTML
+      document.documentElement.lang = lang;
+    }
+
+    // Função para inicializar o idioma ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+      const initialLang = getLanguageFromURL();
+      updateLanguage(initialLang);
+
+      // Adiciona evento de clique nas bandeiras
+      document.querySelectorAll('.language-switch a, .language-switch-mobile a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const lang = link.getAttribute('href').split('=')[1];
+          updateLanguage(lang);
+        });
+      });
+
+      // Inicializa partículas
+      particlesJS.load('particles-js', 'particles.json', function() {
+        console.log('Partículas carregadas');
+      });
+
+      // Adiciona funcionalidade ao menu hamburguer
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+
+      hamburgerMenu.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      servicesToggle.addEventListener('click', () => {
+        servicesMenu.classList.toggle('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
 
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
