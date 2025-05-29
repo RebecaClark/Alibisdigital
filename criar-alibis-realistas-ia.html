@@ -1,159 +1,323 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Crie álibis realistas e confiáveis com a inteligência artificial da Álibis Digital. Proteja sua privacidade com tecnologia avançada.">
-  <meta name="keywords" content="IA para álibis, criar álibis realistas, Álibis Digital, privacidade, tecnologia, segurança">
+  <meta name="description" content="Escolha seu plano na Álibis Digital: Básico, Padrão ou Premium. Garanta privacidade e bem-estar com IA avançada!">
+  <meta name="keywords" content="planos, assinatura, scanner emocional, criar álibi, medical IA, apoio emocional">
   <meta name="author" content="Álibis Digital">
-  <title>Crie Álibis Realistas com Inteligência Artificial - Álibis Digital</title>
+  <title>Planos - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
     html { scroll-behavior: smooth; }
-    body { position: relative; overflow-x: hidden; }
+    body { 
+      position: relative; 
+      overflow-x: hidden; 
+      min-height: 100vh; 
+      color: #e5e7eb; 
+      text-shadow: 0 0.5px rgba(0, 0, 0, 0.5); 
+    }
+    #particles-js { 
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+    }
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
-    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    .animated-btn { transition: all 0.4s ease; position: relative; overflow: hidden; z-index: 1; border: 1px solid #7C3AED; }
-    .animated-btn:after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.1); z-index: -2; }
-    .animated-btn:before { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 100%; background: linear-gradient(90deg, #7C3AED, #16A34A); transition: width 0.4s ease; z-index: -1; }
-    .animated-btn:hover:before { width: 100%; }
-    .animate-on-scroll { opacity: 0; transform: translateY(50px); transition: opacity 0.9s ease-out, transform 0.9s ease-out; }
-    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-    .tech-gradient { background: linear-gradient(135deg, #1e293b, #4c1d95, #0f172a); }
-    @media (max-width: 768px) { h1 { font-size: 2.5rem; } h2 { font-size: 1.8rem; } .max-w-4xl { max-width: 100%; padding: 0 1rem; } .grid { grid-template-columns: 1fr; } .flex { flex-direction: column; } .animated-btn { width: 100%; margin-bottom: 0.5rem; } #navbar, #mobile-menu { width: 100%; } #mobile-menu a { width: 100%; text-align: center; } }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
+    .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
+    .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
+    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
+    .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
+    .dropdown-menu {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+    }
+    .dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      width: 100%;
+      position: static;
+    }
+    .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu-mobile a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .neon-box {
+      background: rgba(31, 41, 55, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 10px #22d3ee;
+      animation: fadeIn 1s ease-in-out;
+      text-align: left;
+    }
+    .plan-card { transition: transform 0.3s ease; }
+    .plan-card:hover { transform: scale(1.05); }
+    .recommended { border: 2px solid #22d3ee; box-shadow: 0 0 20px #22d3ee; }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .flex { flex-direction: column; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      section { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+    }
   </style>
 </head>
-<body class="bg-[#0b1120] text-white font-sans">
-  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+<body class="bg-transparent text-white font-sans">
+  <div id="particles-js"></div>
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
+      <div class="flex items-center">
+        <a href="/index.html" aria-label="Página inicial da Álibis Digital">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo'; console.error('Erro ao carregar logo.png')">
         </a>
       </div>
-      <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+      <div class="flex items-center">
+        <div class="md:hidden">
+          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
       <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <a href="/alibi.html" class="hover:text-green-400 transition">Criar Álibi</a>
-        <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
-        <a href="/medical-ai.html" class="hover:text-green-400 transition">Diagnóstico Médico</a>
-        <a href="/blog.html" class="text-green-400 font-bold transition">Blog</a>
-        <a href="/order.html" class="hover:text-green-400 transition">Meus Pedidos</a>
+        <div class="dropdown relative">
+          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            <span>Serviços</span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/criar-alibis-realistas-ia.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+        <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
+        <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+        <a href="/dashboard.html" class="hover:text-[#22d3ee] transition">Meus Pedidos</a>
+        <a href="/dashboard.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Assinar Agora">Assinar Agora</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
-        <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
-        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Avaliação Emocional</a>
-        <a href="/medical-ai.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Diagnóstico Médico</a>
-        <a href="/blog.html" class="text-green-400 font-bold py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
-        <a href="/order.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Meus Pedidos</a>
+        <div class="w-full">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+            <span>Serviços</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="services-menu" class="dropdown-menu-mobile hidden">
+            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/criar-alibis-realistas-ia.html" class="hover:bg-gray-700">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+        <a href="/dashboard.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Meus Pedidos</a>
+        <a href="/dashboard.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Assinar Agora">Assinar Agora</a>
       </nav>
     </div>
   </header>
   <div class="h-20"></div>
 
-  <section id="hero" class="tech-gradient text-white text-center py-20 px-6 relative">
+  <section id="hero" class="text-white text-center py-20 px-6 relative animate-on-scroll">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight fade-in">Escolha Sua Tranquilidade Hoje</h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">Assine um plano e tenha privacidade, descanso sem culpa e cuidado com sua saúde mental.</p>
+      <div class="flex justify-center gap-4">
+        <a href="/dashboard.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Assinar Agora">Assinar Agora</a>
+        <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Teste Grátis">🔍 Teste Grátis</a>
+      </div>
+      <p class="text-sm mt-4 text-red-400">🚨 Apenas 12 vagas restantes, oferta expira em 24h!</p>
+    </div>
+  </section>
+
+  <section id="plans" class="py-16 px-6 lg:px-32 animate-on-scroll">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold text-center mb-6 shine">Nossos Planos</h2>
+      <p class="text-lg text-center text-gray-300 mb-10">Escolha o plano ideal para suas necessidades de privacidade e bem-estar.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="neon-box plan-card">
+          <h3 class="text-2xl font-semibold mb-4">Básico</h3>
+          <p class="text-gray-300 mb-4">Perfeito para começar</p>
+          <ul class="space-y-2 mb-6">
+            <li>✔ Scanner Emocional (1x/mês)</li>
+            <li>✔ 1 Álibi/mês</li>
+            <li>✖ Medical IA</li>
+            <li>✖ Apoio Emocional</li>
+          </ul>
+          <a href="/dashboard.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full w-full text-center">Escolher Básico</a>
+        </div>
+        <div class="neon-box plan-card recommended">
+          <h3 class="text-2xl font-semibold mb-4">Padrão</h3>
+          <p class="text-gray-300 mb-4">Mais Popular</p>
+          <ul class="space-y-2 mb-6">
+            <li>✔ Scanner Emocional Ilimitado</li>
+            <li>✔ 5 Álibis/mês</li>
+            <li>✔ Medical IA Básica</li>
+            <li>✖ Apoio Emocional</li>
+          </ul>
+          <a href="/dashboard.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full w-full text-center">Escolher Padrão</a>
+        </div>
+        <div class="neon-box plan-card">
+          <h3 class="text-2xl font-semibold mb-4">Premium</h3>
+          <p class="text-gray-300 mb-4">Cuidado Completo</p>
+          <ul class="space-y-2 mb-6">
+            <li>✔ Scanner Emocional Ilimitado</li>
+            <li>✔ Álibis Ilimitados</li>
+            <li>✔ Medical IA Avançada</li>
+            <li>✔ Apoio Emocional</li>
+            <li>✔ Áudios/Prints Falsos</li>
+          </ul>
+          <a href="/dashboard.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full w-full text-center">Escolher Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 px-6 text-center animate-on-scroll">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight fade-in">
-        Crie Álibis Realistas com Inteligência Artificial
-      </h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
-        Proteja sua privacidade com a tecnologia mais avançada do mercado.
-      </p>
+      <h2 class="text-3xl font-bold mb-6 shine">Por que Escolher Álibis Digital?</h2>
+      <p class="text-lg mb-6 text-gray-300 fade-in">Nossos planos combinam privacidade, tecnologia de ponta e cuidado com sua saúde mental, garantindo descanso sem culpa.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="neon-box fade-in">
+          <h3 class="text-xl font-semibold mb-2">Tecnologia Avançada</h3>
+          <p>IA de última geração para álibis realistas e diagnósticos precisos.</p>
+        </div>
+        <div class="neon-box fade-in">
+          <h3 class="text-xl font-semibold mb-2">Suporte 24/7</h3>
+          <p>Estamos aqui para ajudar a qualquer momento.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 animate-on-scroll">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-bold mb-4">Privacidade em Primeiro Lugar</h2>
-      <p class="text-gray-400 mb-6">Em um mundo onde a privacidade é cada vez mais difícil de manter, ter um álibi confiável pode ser essencial. Seja para proteger sua rotina, evitar perguntas indesejadas ou simplesmente garantir sua tranquilidade, a Álibis Digital oferece uma solução inovadora para criar álibis realistas e seguros.</p>
-      
-      <h2 class="text-2xl font-bold mb-4">IA para Álibis Perfeitos</h2>
-      <p class="text-gray-400 mb-4">Nossa inteligência artificial foi projetada para criar álibis que parecem naturais e detalhados. Usando dados contextuais, a IA da Álibis Digital constrói histórias consistentes, completas com horários, locais e até detalhes que tornam seu álibi crível – como um compromisso fictício que se encaixa perfeitamente na sua agenda.</p>
-      
-      <h3 class="text-xl font-semibold mb-3">3 Passos para Criar seu Álibi com IA</h3>
-      <ul class="list-disc list-inside text-gray-400 mb-6">
-        <li><strong>Defina suas necessidades:</strong> Informe à IA o período e o tipo de álibi que você precisa – seja um evento social ou uma reunião de trabalho.</li>
-        <li><strong>Receba um álibi detalhado:</strong> A IA gera uma história realista, incluindo detalhes como local, horário e contexto, para que tudo pareça natural.</li>
-        <li><strong>Mantenha a discrição:</strong> Use o álibi com confiança, sabendo que ele foi criado para proteger sua privacidade sem levantar suspeitas.</li>
-      </ul>
-
-      <h2 class="text-2xl font-bold mb-4">Por Que Escolher a Álibis Digital?</h2>
-      <p class="text-gray-400 mb-6">Nossa tecnologia combina segurança e criatividade para oferecer álibis que realmente funcionam. Seja para um compromisso pessoal ou uma necessidade mais complexa, a Álibis Digital está aqui para ajudar você a manter sua privacidade com confiança. Experimente hoje e descubra como a IA pode simplificar sua vida.</p>
-      <a href="/alibi.html" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full animated-btn hover:bg-[#6D28D9]">Crie seu Álibi Agora</a>
+  <section class="py-10 px-6 animate-on-scroll">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 shine">Perguntas Frequentes</h2>
+      <div class="space-y-4">
+        <div class="neon-box">
+          <h3 class="text-xl font-semibold mb-2">É seguro usar os serviços?</h3>
+          <p>Sua privacidade é nossa prioridade. Todos os dados são criptografados e nunca compartilhados.</p>
+        </div>
+        <div class="neon-box">
+          <h3 class="text-xl font-semibold mb-2">Posso cancelar minha assinatura?</h3>
+          <p>Sim, você pode cancelar a qualquer momento sem taxas adicionais.</p>
+        </div>
+        <div class="neon-box">
+          <h3 class="text-xl font-semibold mb-2">Como funcionam os álibis?</h3>
+          <p>Nossa IA gera histórias realistas com base em suas necessidades, incluindo prints e áudios se desejar.</p>
+        </div>
+        <div class="neon-box">
+          <h3 class="text-xl font-semibold mb-2">O que é Medical IA Avançada?</h3>
+          <p>Triagem detalhada com integração futura a médicos reais via API certificada.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <footer class="bg-[#0b1120] text-gray-400 py-12 animate-on-scroll">
+  <section class="py-10 px-6 text-center animate-on-scroll">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 shine">Ainda não decidiu?</h2>
+      <p class="text-lg mb-6 text-gray-300">Experimente nosso Scanner Emocional grátis ou crie um álibi agora!</p>
+      <div class="flex justify-center gap-4">
+        <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full">Teste Grátis</a>
+        <a href="/criar-alibis-realistas-ia.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full">Criar Álibi</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
         <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition">Início</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/index.html" class="hover:text-white transition">Início</a></li>
+          <li><a href="/criar-alibis-realistas-ia.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner com IA</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white transition">Avaliação Emocional</a></li>
           <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/order.html" class="hover:text-white transition">Meus Pedidos</a></li>
+          <li><a href="/dashboard.html" class="hover:text-white transition">Meus Pedidos</a></li>
+          <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
+          <li><a href="/politica-privacidade.html" class="hover:text-white transition">Privacidade</a></li>
         </ul>
       </div>
       <div class="slide-in-right">
@@ -170,35 +334,66 @@
   </footer>
 
   <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 120, density: { enable: true, value_area: 800 } },
+        color: { value: '#22d3ee' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
-      const animItems = document.querySelectorAll('.animate-on-scroll');
-      const windowHeight = window.innerHeight;
-      function animOnScroll() {
-        animItems.forEach(item => {
-          const itemTop = item.getBoundingClientRect().top;
-          const animStart = 150;
-          if (itemTop < windowHeight - animStart) {
-            item.classList.add('visible');
-          }
-        });
-      }
-      animOnScroll();
-      window.addEventListener('scroll', animOnScroll);
+      console.log('DOM carregado, inicializando página...');
+      initScrollAnimations();
 
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+          console.log('Menu mobile toggled');
+        });
+      }
 
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          document.querySelector('header').classList.add('shadow-lg');
-        } else {
-          document.querySelector('header').classList.remove('shadow-lg');
-        }
-      });
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+      if (servicesToggle && servicesMenu) {
+        servicesToggle.addEventListener('click', () => {
+          servicesMenu.classList.toggle('hidden');
+          console.log('Menu de serviços mobile toggled');
+        });
+      }
     });
+
+    function initScrollAnimations() {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      function checkIfInView() {
+        const windowHeight = window.innerHeight;
+        const windowTopPosition = window.scrollY;
+        const windowBottomPosition = windowTopPosition + windowHeight;
+        animatedElements.forEach(element => {
+          const elementHeight = element.offsetHeight;
+          const elementTopPosition = element.offsetTop;
+          const elementBottomPosition = elementTopPosition + elementHeight;
+          if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
+            element.classList.add('visible');
+          }
+        });
+      }
+      checkIfInView();
+      window.addEventListener('scroll', checkIfInView);
+      window.addEventListener('resize', checkIfInView);
+    }
   </script>
 </body>
 </html>
