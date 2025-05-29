@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Assine o Scanner Emocional da Álibis Digital para gerenciar estresse, criar álibis realistas e monitorar sua saúde com IA.">
+  <meta name="description" content="Teste o Scanner Emocional da Álibis Digital para um diagnóstico emocional preciso e descubra planos para bem-estar.">
   <meta name="keywords" content="scanner emocional, criar álibi, apoio emocional, medical IA, bem-estar, estresse">
   <meta name="author" content="Álibis Digital">
   <title>Scanner Emocional - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -32,21 +31,11 @@
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
-    .pulse { animation: pulse 2s infinite ease-in-out; }
-    .float { animation: float 4s infinite ease-in-out; }
-    .scale-up { animation: scaleUp 0.8s ease-in-out; }
-    .scale-in { animation: scaleIn 0.8s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.1); } 75% { transform: scale(0.9); } 100% { transform: scale(1); } }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
-    @keyframes scaleUp { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-    @keyframes scaleIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
     .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
     @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
     .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
     .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
@@ -144,12 +133,12 @@
     }
     video {
       width: 100%;
-      max-width: 36rem;
+      max-width: 280px;
       margin-left: auto;
       margin-right: auto;
       border-radius: 0.75rem;
       box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-      border: 0.125rem solid #22d3ee;
+      border: 1px solid #22d3ee;
     }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
@@ -158,8 +147,7 @@
       .grid { grid-template-columns: 1fr; }
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-      video { width: 100%; height: auto; }
-      .neon-box { padding: 15px; }
+      video { max-width: 100%; }
     }
   </style>
 </head>
@@ -170,16 +158,12 @@
   <!-- Cabeçalho -->
   <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center">
         <a href="/index.html" aria-label="Página inicial da Álibis Digital">
           <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')">
         </a>
       </div>
-      <div class="flex items-center space-x-3">
-        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
-          <option value="pt-BR">Português</option>
-          <option value="en-US">English</option>
-        </select>
+      <div class="flex items-center">
         <div class="md:hidden">
           <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -194,179 +178,72 @@
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
-            <span data-i18n="services">Serviços</span>
+            <span>Serviços</span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstica Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="#pricing" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="/suporte.html" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="#pricing" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Assine Agora" data-i18n="subscribe-now">Assine Agora</a>
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+        <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
+        <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold">🔍 Teste Grátis</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
           <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
-            <span data-i18n="services">Serviços</span>
+            <span>Serviços</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7-7"></path>
             </svg>
           </button>
           <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/apoio-emocional.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstica Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="#pricing" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="#pricing" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Assine Agora" data-i18n="subscribe-now">Assine Agora</a>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center">🔍 Teste Grátis</a>
       </nav>
     </div>
   </header>
   <div class="h-20"></div>
 
-  <!-- Hero Section with VSL -->
-  <section id="hero" class="text-white text-center py-20 px-6 relative animate-on-scroll">
+  <!-- Hero Section -->
+  <section id="hero" class="text-white text-center py-20 px-6 relative">
     <div class="max-w-6xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight fade-in" data-i18n="hero-title">Transforme Sua Vida com o Scanner Emocional</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in" data-i18n="hero-subtitle">Gerencie estresse, crie álibis realistas e monitore sua saúde com IA avançada. Assine hoje!</p>
-      <div class="mb-10 relative">
-        <video controls preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
-          <source src="/assets/scanner-vsl.mp4" type="video/mp4">
-          <span data-i18n="video-error">Seu navegador não suporta o elemento de vídeo.</span>
-        </video>
-      </div>
-      <div class="mt-10 pulse">
-        <a href="#pricing" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Assine Agora" data-i18n="subscribe-now">Assine Agora</a>
+      <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight fade-in">Transforme Sua Vida com o Scanner Emocional</h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">Gerencie estresse e descubra seu estado emocional com IA avançada. Teste grátis agora!</p>
+      <div>
+        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Teste Grátis">🔍 Teste Grátis</a>
       </div>
     </div>
   </section>
 
   <!-- Scanner Section -->
   <section class="py-20 px-6 text-center animate-on-scroll" id="scanner">
-    <h2 class="text-4xl font-bold mb-6 text-white shine" data-i18n="scanner-title">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in" data-i18n="scanner-subtitle">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex justify-center mb-12 scale-in">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border-4 border-[#22C55E] pulse" aria-label="Vídeo da câmera para análise emocional"></video>
+    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional detalhado com idade aparente.</p>
+    <div class="flex justify-center mb-12">
+      <video id="video" width="280" height="210" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
     </div>
     <div class="flex justify-center mb-12">
-      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine" aria-label="Iniciar análise emocional" data-i18n="analyze-emotion">Analisar Estado Emocional</button>
+      <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-8 py-3 rounded-full text-lg shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
     </div>
     <div id="scanner-result" class="neon-box" style="display: none;"></div>
-    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
-  </section>
-
-  <!-- Benefits Section -->
-  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="benefits-title">Por que Escolher a Álibis Digital?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="scanner-benefit-title">Scanner Emocional</h3>
-        <p class="text-gray-400" data-i18n="scanner-benefit-desc">Detecte estresse e emoções com precisão usando IA avançada.</p>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="support-benefit-title">Apoio Emocional</h3>
-        <p class="text-gray-400" data-i18n="support-benefit-desc">Receba suporte personalizado via Abili para seu bem-estar.</p>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="alibi-benefit-title">Criar Álibi</h3>
-        <p class="text-gray-400" data-i18n="alibi-benefit-desc">Gere álibis realistas para proteger sua privacidade e reduzir estresse.</p>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="medical-benefit-title">Medical IA</h3>
-        <p class="text-gray-400" data-i18n="medical-benefit-desc">Monitore sua saúde mental com triagem premium (plano Premium).</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section class="py-16 px-6 text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="testimonials-title">What Our Users Say</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,55,72,0.9)]" p-6 rounded-xl2 shadow-md slide-in-left">
-        <p class="text-gray-400 mb-4" data-i18n="testimonial-1">"The Emotional Scanner helped me identify stress and Apoio Emocional gave me clarity!"</p>
-        <p class="text-white font-semibold">— Ana S.</p>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md slide-in-right">
-        <p class="text-gray-400 mb-4" data-i18n="testimonial-2">"Criar Álibi gave me peace of mind. The AI is incredibly realistic!"</p>
-        <p class="text-white font-semibold">— João P.</p>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md slide-in-left">
-        <p class="text-gray-400 mb-4" data-i18n="testimonial-3">"Medical IA alerted me to burnout risks. Worth every penny!"</p>
-        <p class="text-white font-semibold">— Maria L.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing Section -->
-  <section id="pricing" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="pricing-title">Escolha Seu Plano</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="basic-plan-title">Básico</h3>
-        <p class="text-3xl font-bold mb-4" data-i18n="basic-plan-price">R$29/mês</p>
-        <ul class="text-left text-gray-400 mb-6 space-y-2">
-          <li data-i18n="basic-plan-feature-1">✅ Scanner Emocional</li>
-          <li data-i18n="basic-plan-feature-2">✅ Apoio Emocional</li>
-          <li data-i18n="basic-plan-feature-3">❌ Criar Álibi</li>
-          <li data-i18n="basic-plan-feature-4">❌ Medical IA</li>
-        </ul>
-        <a href="/criar-alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Básico" data-i18n="subscribe-now" onclick="simulatePurchase('basic')">Assine Agora</a>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right border-2 border-[#22d3ee]">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="standard-plan-title">Padrão</h3>
-        <p class="text-3xl font-bold mb-4" data-i18n="standard-plan-price">R$49/mês</p>
-        <ul class="text-left text-gray-400 mb-6 space-y-2">
-          <li data-i18n="standard-plan-feature-1">✅ Scanner Emocional</li>
-          <li data-i18n="standard-plan-feature-2">✅ Apoio Emocional</li>
-          <li data-i18n="standard-plan-feature-3">✅ Criar Álibi</li>
-          <li data-i18n="standard-plan-feature-4">❌ Medical IA</li>
-        </ul>
-        <a href="/criar-alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Padrão" data-i18n="subscribe-now" onclick="simulatePurchase('standard')">Assine Agora</a>
-      </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="premium-plan-title">Premium</h3>
-        <p class="text-3xl font-bold mb-4" data-i18n="premium-plan-price">R$79/mês</p>
-        <ul class="text-left text-gray-400 mb-6 space-y-2">
-          <li data-i18n="premium-plan-feature-1">✅ Scanner Emocional</li>
-          <li data-i18n="premium-plan-feature-2">✅ Apoio Emocional</li>
-          <li data-i18n="premium-plan-feature-3">✅ Criar Álibi</li>
-          <li data-i18n="premium-plan-feature-4">✅ Medical IA</li>
-        </ul>
-        <a href="/criar-alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Premium" data-i18n="subscribe-now" onclick="simulatePurchase('premium')">Assine Agora</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="py-16 px-6 text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="faq-title">Perguntas Frequentes</h2>
-    <div class="max-w-4xl mx-auto text-left">
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q1">O Scanner Emocional é preciso?</h3>
-        <p class="text-gray-400" data-i18n="faq-a1">O Scanner usa IA avançada para detectar emoções com base em expressões faciais. Embora altamente preciso, é um pré-diagnóstico e não substitui avaliação profissional.</p>
-      </div>
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q2">Posso cancelar minha assinatura?</h3>
-        <p class="text-gray-400" data-i18n="faq-a2">Sim, você pode cancelar a qualquer momento pelo painel do usuário ou contatando nosso suporte.</p>
-      </div>
-      <div class="mb-6">
-        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q3">O que é Medical IA?</h3>
-        <p class="text-gray-400" data-i18n="faq-a3">Medical IA é uma ferramenta premium que monitora sua saúde mental, alertando sobre riscos como burnout, incluída no plano Premium.</p>
-      </div>
-    </div>
+    <canvas id="canvas" width="280" height="210" style="display: none;"></canvas>
   </section>
 
   <!-- Footer -->
@@ -374,24 +251,24 @@
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
         <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
+        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
+        <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
-          <li><a href="/index.html" class="hover:text-white transition" data-i18n="home">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
-          <li><a href="/blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
-          <li><a href="/apoio-emocional.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
-          <li><a href="#pricing" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
-          <li><a href="/suporte.html" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
-          <li><a href="/politica-privacidade.html" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
+          <li><a href="/index.html" class="hover:text-white transition">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstica Médico</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/planos.html" class="hover:text-white transition">Planos</a></li>
+          <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
+          <li><a href="/politica-privacidade.html" class="hover:text-white transition">Privacidade</a></li>
         </ul>
       </div>
       <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
         <ul class="space-y-2">
           <li class="fade-in">E-mail: contato@alibisdigital.com</li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
@@ -399,11 +276,11 @@
       </div>
     </div>
     <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">All rights reserved.</span></p>
+      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-<script>
+  <script>
     // Initialize Particles
     particlesJS('particles-js', {
       particles: {
@@ -426,154 +303,6 @@
     const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
     const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
 
-    // Translations
-    const translations = {
-      "pt-BR": {
-        "services": "Serviços",
-        "scanner": "Scanner com IA",
-        "emotional-evaluation": "Avaliação Emocional",
-        "medical-ai": "Diagnóstico Médico",
-        "alibi": "Criar Álibi",
-        "blog": "Blog",
-        "plans": "Planos",
-        "support": "Suporte",
-        "subscribe-now": "Assine Agora",
-        "hero-title": "Transforme Sua Vida com o Scanner Emocional",
-        "hero-subtitle": "Gerencie estresse, crie álibis realistas e monitore sua saúde com IA avançada. Assine hoje!",
-        "video-error": "Seu navegador não suporta o elemento de vídeo.",
-        "scanner-title": "Seu rosto carrega sinais. Vamos descobrir o que ele diz?",
-        "scanner-subtitle": "Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.",
-        "analyze-emotion": "Analisar Estado Emocional",
-        "analyzing": "⏳ Analisando sua expressão facial",
-        "no-face-detected": "🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.",
-        "error-analyzing": "🚫 Erro ao analisar a expressão facial. Tente novamente.",
-        "camera-error": "🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.",
-        "try-again": "Tentar Novamente",
-        "disclaimer": "Nota: Estas sugestões são baseadas em pesquisas preliminares e não substituem avaliação médica ou psicológica profissional.",
-        "emotional-support": "Ter Apoio Emocional",
-        "benefits-title": "Por que Escolher a Álibis Digital?",
-        "scanner-benefit-title": "Scanner Emocional",
-        "scanner-benefit-desc": "Detecte estresse e emoções com precisão usando IA avançada.",
-        "support-benefit-title": "Apoio Emocional",
-        "support-benefit-desc": "Receba suporte personalizado via Abili para seu bem-estar.",
-        "alibi-benefit-title": "Criar Álibi",
-        "alibi-benefit-desc": "Gere álibis realistas para proteger sua privacidade e reduzir estresse.",
-        "medical-benefit-title": "Medical IA",
-        "medical-benefit-desc": "Monitore sua saúde mental com triagem premium (plano Premium).",
-        "testimonials-title": "O que Nossos Usuários Dizem",
-        "testimonial-1": "O Scanner Emocional me ajudou a identificar meu estresse e o Apoio Emocional me deu clareza!",
-        "testimonial-2": "Criar Álibi me deu paz de espírito. A IA é incrivelmente realista!",
-        "testimonial-3": "O Medical IA me alertou sobre riscos de burnout. Vale cada centavo!",
-        "pricing-title": "Escolha Seu Plano",
-        "basic-plan-title": "Básico",
-        "basic-plan-price": "R$29/mês",
-        "basic-plan-feature-1": "✅ Scanner Emocional",
-        "basic-plan-feature-2": "✅ Apoio Emocional",
-        "basic-plan-feature-3": "❌ Criar Álibi",
-        "basic-plan-feature-4": "❌ Medical IA",
-        "standard-plan-title": "Padrão",
-        "standard-plan-price": "R$49/mês",
-        "standard-plan-feature-1": "✅ Scanner Emocional",
-        "standard-plan-feature-2": "✅ Apoio Emocional",
-        "standard-plan-feature-3": "✅ Criar Álibi",
-        "standard-plan-feature-4": "❌ Medical IA",
-        "premium-plan-title": "Premium",
-        "premium-plan-price": "R$79/mês",
-        "premium-plan-feature-1": "✅ Scanner Emocional",
-        "premium-plan-feature-2": "✅ Apoio Emocional",
-        "premium-plan-feature-3": "✅ Criar Álibi",
-        "premium-plan-feature-4": "✅ Medical IA",
-        "faq-title": "Perguntas Frequentes",
-        "faq-q1": "O Scanner Emocional é preciso?",
-        "faq-a1": "O Scanner usa IA avançada para detectar emoções com base em expressões faciais. Embora altamente preciso, é um pré-diagnóstico e não substitui avaliação profissional.",
-        "faq-q2": "Posso cancelar minha assinatura?",
-        "faq-a2": "Sim, você pode cancelar a qualquer momento pelo painel do usuário ou contatando nosso suporte.",
-        "faq-q3": "O que é Medical IA?",
-        "faq-a3": "Medical IA é uma ferramenta premium que monitora sua saúde mental, alertando sobre riscos como burnout, incluída no plano Premium.",
-        "footer-about": "Soluções de bem-estar com tecnologia avançada.",
-        "footer-navigate": "Navegue",
-        "home": "Início",
-        "privacy": "Privacidade",
-        "footer-contact": "Contato",
-        "footer-rights": "Todos os direitos reservados."
-      },
-      "en-US": {
-        "services": "Services",
-        "scanner": "AI Scanner",
-        "emotional-evaluation": "Emotional Evaluation",
-        "medical-ai": "Medical Diagnosis",
-        "alibi": "Create Alibi",
-        "blog": "Blog",
-        "plans": "Plans",
-        "support": "Support",
-        "subscribe-now": "Subscribe Now",
-        "hero-title": "Transform Your Life with the Emotional Scanner",
-        "hero-subtitle": "Manage stress, create realistic alibis, and monitor your health with advanced AI. Subscribe today!",
-        "video-error": "Your browser does not support the video element.",
-        "scanner-title": "Your face carries signals. Let's find out what it says.",
-        "scanner-subtitle": "Activate your camera and receive an emotional pre-diagnosis as if you were with an experienced clinician.",
-        "analyze-emotion": "Analyze Emotional State",
-        "analyzing": "⏳ Analyzing your facial expression",
-        "no-face-detected": "🤔 We couldn't detect a face. Try adjusting the lighting or your position.",
-        "error-analyzing": "🚫 Error analyzing facial expression. Please try again.",
-        "camera-error": "🚫 Error: Could not access the camera. Allow access and reload the page.",
-        "try-again": "Try Again",
-        "disclaimer": "Note: These suggestions are based on preliminary research and do not replace professional medical or psychological evaluation.",
-        "emotional-support": "Get Emotional Support",
-        "benefits-title": "Why Choose Álibis Digital?",
-        "scanner-benefit-title": "Emotional Scanner",
-        "scanner-benefit-desc": "Detect stress and emotions with precision using advanced AI.",
-        "support-benefit-title": "Emotional Support",
-        "support-benefit-desc": "Receive personalized support via Abili for your well-being.",
-        "alibi-benefit-title": "Create Alibi",
-        "alibi-benefit-desc": "Generate realistic alibis to protect your privacy and reduce stress.",
-        "medical-benefit-title": "Medical AI",
-        "medical-benefit-desc": "Monitor your mental health with premium triage (Premium plan).",
-        "testimonials-title": "What Our Users Say",
-        "testimonial-1": "The Emotional Scanner helped me identify my stress, and Emotional Support gave me clarity!",
-        "testimonial-2": "Create Alibi gave me peace of mind. The AI is incredibly realistic!",
-        "testimonial-3": "Medical AI alerted me to burnout risks. Worth every penny!",
-        "pricing-title": "Choose Your Plan",
-        "basic-plan-title": "Basic",
-        "basic-plan-price": "$29/month",
-        "basic-plan-feature-1": "✅ Emotional Scanner",
-        "basic-plan-feature-2": "✅ Emotional Support",
-        "basic-plan-feature-3": "❌ Create Alibi",
-        "basic-plan-feature-4": "❌ Medical AI",
-        "standard-plan-title": "Standard",
-        "standard-plan-price": "$49/month",
-        "standard-plan-feature-1": "✅ Emotional Scanner",
-        "standard-plan-feature-2": "✅ Emotional Support",
-        "standard-plan-feature-3": "✅ Create Alibi",
-        "standard-plan-feature-4": "❌ Medical AI",
-        "premium-plan-title": "Premium",
-        "premium-plan-price": "$79/month",
-        "premium-plan-feature-1": "✅ Emotional Scanner",
-        "premium-plan-feature-2": "✅ Emotional Support",
-        "premium-plan-feature-3": "✅ Create Alibi",
-        "premium-plan-feature-4": "✅ Medical AI",
-        "faq-title": "Frequently Asked Questions",
-        "faq-q1": "Is the Emotional Scanner accurate?",
-        "faq-a1": "The Scanner uses advanced AI to detect emotions based on facial expressions. While highly accurate, it is a pre-diagnosis and does not replace professional evaluation.",
-        "faq-q2": "Can I cancel my subscription?",
-        "faq-a2": "Yes, you can cancel anytime through the user dashboard or by contacting our support.",
-        "faq-q3": "What is Medical AI?",
-        "faq-a3": "Medical AI is a premium tool that monitors your mental health, alerting you to risks like burnout, included in the Premium plan.",
-        "footer-about": "Well-being solutions with advanced technology.",
-        "footer-navigate": "Navigate",
-        "home": "Home",
-        "privacy": "Privacy",
-        "footer-contact": "Contact",
-        "footer Rights": "All rights reserved."
-      }
-    };
-
-    // Translation function
-    function getTranslation(lang, key) {
-      const trans = translations[lang] || translations['pt-BR'];
-      return trans[key] || translations['pt-BR'][key] || key;
-    }
-
     // DOMContentLoaded
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('video');
@@ -590,15 +319,13 @@
           .catch(error => {
             console.error("Erro ao acessar a câmera:", error);
             if (result) {
-              const lang = document.getElementById('language-selector')?.value || 'pt-BR';
               result.style.display = 'block';
-              result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'camera-error')}</p>`;
+              result.innerHTML = `<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o uso e recarregue a página.</p>`;
             }
           });
       }
 
       initScrollAnimations();
-      updateLanguage();
 
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -626,11 +353,6 @@
           }
         }
       });
-
-      const languageSelector = document.getElementById('language-selector');
-      if (languageSelector) {
-        languageSelector.addEventListener('change', updateLanguage);
-      }
     });
 
     // Scroll animations
@@ -660,23 +382,14 @@
         console.warn("API de síntese de voz não suportada.");
         return;
       }
+      window.speechSynthesis.cancel(); // Stop any ongoing speech
       const synth = window.speechSynthesis;
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = text;
       const plainText = tempDiv.textContent || tempDiv.innerText || '';
       const utter = new SpeechSynthesisUtterance(plainText);
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      utter.lang = lang;
+      utter.lang = 'pt-BR';
       synth.speak(utter);
-    }
-
-    // Update language
-    function updateLanguage() {
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
-      document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        element.textContent = getTranslation(lang, key);
-      });
     }
 
     // Scanner analysis
@@ -684,15 +397,16 @@
       const canvas = document.getElementById('canvas');
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
-      const lang = document.getElementById('language-selector')?.value || 'pt-BR';
 
       if (!canvas || !video || !result) {
         console.error("Elementos necessários não encontrados.");
         return;
       }
 
+      // Clear previous results and stop speech
+      window.speechSynthesis.cancel();
       result.style.display = 'block';
-      result.innerHTML = `<p class="fade-in">${getTranslation(lang, 'analyzing')}<span class="loading-dots"></span></p>`;
+      result.innerHTML = `<p class="fade-in">⏳ Analisando sua expressão facial<span class="loading-dots"></span></p>`;
 
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -702,7 +416,7 @@
       formData.append('api_key', apiKey);
       formData.append('api_secret', apiSecret);
       formData.append('image_base64', imageBase64);
-      formData.append('return_attributes', 'age,gender,emotion');
+      formData.append('return_attributes', 'emotion,age');
 
       fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
         method: 'POST',
@@ -712,110 +426,97 @@
         .then(data => {
           if (data.faces && data.faces.length > 0) {
             const face = data.faces[0];
-            const age = face.attributes.age.value;
-            const gender = face.attributes.gender.value;
             const emotion = face.attributes.emotion;
-            const emotionSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1])[0][0];
+            const age = face.attributes.age.value;
+            const emotionsSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
+            const primaryEmotion = emotionsSorted[0][0];
+            const primaryEmotionValue = emotionsSorted[0][1];
 
             const emotionPortuguese = {
-              'sadness': lang === 'pt-BR' ? 'tristeza' : 'sadness',
-              'anger': lang === 'pt-BR' ? 'raiva' : 'anger',
-              'happiness': lang === 'pt-BR' ? 'felicidade' : 'happiness',
-              'surprise': lang === 'pt-BR' ? 'surpresa' : 'surprise',
-              'neutral': lang === 'pt-BR' ? 'neutra' : 'neutral',
-              'fear': lang === 'pt-BR' ? 'medo' : 'fear',
-              'disgust': lang === 'pt-BR' ? 'desgosto' : 'disgust'
+              'sadness': 'tristeza',
+              'anger': 'raiva',
+              'happiness': 'felicidade',
+              'surprise': 'surpresa',
+              'neutral': 'neutra',
+              'fear': 'medo',
+              'disgust': 'desgosto'
             };
 
-            const emotionInPortuguese = emotionPortuguese[emotionSorted] || emotionSorted;
+            const primaryEmotionInPortuguese = emotionPortuguese[primaryEmotion] || primaryEmotion;
+            const ageRangeMin = Math.max(18, age - 5);
+            const ageRangeMax = age + 5;
+
+            let emotionBreakdown = '<ul class="list-disc pl-5 mb-4">';
+            emotionsSorted.forEach(([emo, value]) => {
+              if (value > 0) {
+                emotionBreakdown += `<li>${emotionPortuguese[emo] || emo}: ${value.toFixed(1)}%</li>`;
+              }
+            });
+            emotionBreakdown += '</ul>';
+
             let diagnosis = '';
             let suggestion = '';
             let additionalButton = '';
 
-            switch (emotionSorted) {
+            switch (primaryEmotion) {
               case 'sadness':
-                diagnosis = getTranslation(lang, 'sadness-diagnosis') || (lang === 'pt-BR' 
-                  ? "Detectamos sinais de tristeza em sua expressão. Isso pode indicar que você está passando por um momento de melancolia ou saudade."
-                  : "We detected signs of sadness in your expression. This may indicate a moment of melancholy or longing.");
-                suggestion = getTranslation(lang, 'sadness-suggestion') || (lang === 'pt-BR'
-                  ? "Que tal tirar um momento para relaxar? Escrever sobre o que está sentindo ou conversar com alguém de confiança pode ajudar. Confira nosso artigo: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>."
-                  : "How about taking a moment to relax? Writing about your feelings or talking to someone trusted can help. Check our article: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>How to Improve Sleep Quality</a>.");
-                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="emotional-support">${getTranslation(lang, 'emotional-support')}</button></div>`;
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Isso pode indicar melancolia, saudade ou estresse acumulado.`;
+                suggestion = `Tente escrever sobre seus sentimentos ou conversar com alguém próximo. Práticas de relaxamento, como meditação, podem ajudar. Veja nossos artigos: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a> e <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.`;
+                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Receber Apoio Emocional</button></div>`;
                 break;
               case 'anger':
-                diagnosis = getTranslation(lang, 'anger-diagnosis') || (lang === 'pt-BR'
-                  ? "Sua expressão mostra traços de raiva ou frustração. Isso pode ser um reflexo de algo que te irritou profundamente."
-                  : "Your expression shows signs of anger or frustration. This may reflect something that deeply irritated you.");
-                suggestion = getTranslation(lang, 'anger-suggestion') || (lang === 'pt-BR'
-                  ? "Respire fundo: inspire por 4 segundos, segure por 4, e expire por 8. Confira nosso artigo: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>."
-                  : "Take deep breaths: inhale for 4 seconds, hold for 4, exhale for 8. Check our article: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Tips to Reduce Workplace Stress</a>.");
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Isso pode refletir frustração, irritação ou tensão.`;
+                suggestion = `Experimente a técnica de respiração 4-4-8: inspire por 4 segundos, segure por 4 segundos, expire por 8 segundos. Consulte: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.`;
+                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Receber Apoio Emocional</button></div>`;
                 break;
               case 'happiness':
-                diagnosis = getTranslation(lang, 'happiness-diagnosis') || (lang === 'pt-BR'
-                  ? "Você está com uma expressão de felicidade! Isso indica um momento de leveza e alegria."
-                  : "You have a happy expression! This indicates a moment of lightness and joy.");
-                suggestion = getTranslation(lang, 'happiness-suggestion') || (lang === 'pt-BR'
-                  ? "Aproveite para espalhar positividade! Compartilhe algo que te fez sorrir com um amigo."
-                  : "Spread positivity! Share something that made you smile with a friend.");
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Sua expressão reflete alegria e leveza!`;
+                suggestion = `Aproveite essa energia positiva! Compartilhe algo que te fez sorrir ou planeje uma atividade prazerosa.`;
                 break;
               case 'surprise':
-                diagnosis = getTranslation(lang, 'surprise-diagnosis') || (lang === 'pt-BR'
-                  ? "Sua expressão mostra surpresa. Você pode ter se deparado com algo inesperado."
-                  : "Your expression shows surprise. You may have encountered something unexpected.");
-                suggestion = getTranslation(lang, 'surprise-suggestion') || (lang === 'pt-BR'
-                  ? "Surpresas podem ser ótimas! Se for positivo, explore essa novidade."
-                  : "Surprises can be great! If positive, explore this novelty.");
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Algo inesperado parece ter captado sua atenção.`;
+                suggestion = `Surpresas podem ser inspiradoras. Se for algo positivo, explore essa novidade!`;
                 break;
               case 'neutral':
-                diagnosis = getTranslation(lang, 'neutral-diagnosis') || (lang === 'pt-BR'
-                  ? "Sua expressão está neutra, indicando concentração ou cansaço."
-                  : "Your expression is neutral, indicating focus or tiredness.");
-                suggestion = getTranslation(lang, 'neutral-suggestion') || (lang === 'pt-BR'
-                  ? "Faça um alongamento rápido ou confira nosso artigo sobre sono: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>."
-                  : "Do a quick stretch or check our article on sleep: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>How to Improve Sleep Quality</a>.");
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Sua expressão sugere concentração, calma ou possível cansaço.`;
+                suggestion = `Faça um breve alongamento ou pausa. Veja: <a href='/blog/melhorar-qualidade-sono.html' class='text-[#22d3ee] hover:underline'>Como Melhorar a Qualidade do Sono</a>.`;
                 break;
               case 'fear':
-                diagnosis = getTranslation(lang, 'fear-diagnosis') || (lang === 'pt-BR'
-                  ? "Detectamos sinais de medo ou preocupação em sua expressão."
-                  : "We detected signs of fear or concern in your expression.");
-                suggestion = getTranslation(lang, 'fear-suggestion') || (lang === 'pt-BR'
-                  ? "Tente ouvir música calma ou confira nosso artigo: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>."
-                  : "Listen to calm music or check our article: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Tips to Reduce Workplace Stress</a>.");
-                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="emotional-support">${getTranslation(lang, 'emotional-support')}</button></div>`;
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Isso pode indicar preocupação, ansiedade ou insegurança.`;
+                suggestion = `Ouça música calma ou pratique mindfulness. Consulte: <a href='/blog/reduzir-estresse-trabalho.html' class='text-[#22d3ee] hover:underline'>5 Dicas para Reduzir o Estresse no Trabalho</a>.`;
+                additionalButton = `<div class="mt-4"><button onclick="window.location.href='/apoio-emocional.html'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Receber Apoio Emocional</button></div>`;
                 break;
               case 'disgust':
-                diagnosis = getTranslation(lang, 'disgust-diagnosis') || (lang === 'pt-BR'
-                  ? "Sua expressão sugere desgosto, indicando algo que te incomodou."
-                  : "Your expression suggests disgust, indicating something that bothered you.");
-                suggestion = getTranslation(lang, 'disgust-suggestion') || (lang === 'pt-BR'
-                  ? "Afaste-se do que está te incomodando e foque no bem-estar."
-                  : "Step away from what’s bothering you and focus on well-being.");
+                diagnosis = `Detectamos predominância de ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%). Isso sugere que algo te incomodou ou causou repulsa.`;
+                suggestion = `Afaste-se do que te incomoda, se possível, e foque em atividades que promovam bem-estar.`;
                 break;
               default:
-                diagnosis = lang === 'pt-BR' ? `Detectamos ${emotionInPortuguese}.` : `We detected ${emotionInPortuguese}.`;
-                suggestion = lang === 'pt-BR' ? "Continue explorando suas emoções." : "Continue exploring your emotions.";
+                diagnosis = `Detectamos ${primaryEmotionInPortuguese} (${primaryEmotionValue.toFixed(1)}%).`;
+                suggestion = `Continue monitorando suas emoções para maior autoconhecimento.`;
             }
 
-            result.innerHTML = `<p class="fade-in">Pré-diagnóstico emocional: ${diagnosis}</p><p class="fade-in mt-2">${suggestion}</p><p class="text-sm mt-2 text-gray-300" data-i18n="disclaimer">${getTranslation(lang, 'disclaimer')}</p>${additionalButton}<div class="mt-4"><a href="#pricing" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="subscribe-now">Desbloqueie Insights Completos</a></div>`;
-            speak(result.innerHTML);
+            result.innerHTML = `
+              <p class="fade-in"><strong>Pré-diagnóstico emocional:</strong> ${diagnosis}</p>
+              <p class="fade-in mt-2"><strong>Detalhamento das emoções:</strong></p>
+              ${emotionBreakdown}
+              <p class="fade-in mt-2"><strong>Idade aparente:</strong> Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos (estimativa baseada em IA, pode variar).</p>
+              <p class="fade-in mt-2"><strong>Sugestões:</strong> ${suggestion}</p>
+              <p class="text-sm mt-2 text-gray-300">Nota: Este diagnóstico é preliminar e não substitui avaliação médica ou psicológica profissional.</p>
+              ${additionalButton}
+              <div class="mt-4"><a href="/planos.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Desbloqueie Insights Completos</a></div>
+              <div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Novo Diagnóstico</button></div>
+            `;
+            speak(`${diagnosis} Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion}`);
           } else {
-            result.innerHTML = `<p class="fade-in" data-i18n="no-face-detected">${getTranslation(lang, 'no-face-detected')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again">${getTranslation(lang, 'try-again')}</button></div>`;
-            speak(getTranslation(lang, 'no-face-detected'));
+            result.innerHTML = `<p class="fade-in">🤔 Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
+            speak("Não conseguimos detectar um rosto. Tente ajustar a iluminação ou a posição do rosto.");
           }
         })
         .catch(error => {
           console.error("Erro ao analisar:", error);
-          result.innerHTML = `<p class="fade-in" data-i18n="error-analyzing">${getTranslation(lang, 'error-analyzing')}</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine" data-i18n="try-again">${getTranslation(lang, 'try-again')}</button></div>`;
-          speak(getTranslation(lang, 'error-analyzing'));
+          result.innerHTML = `<p class="fade-in">🚫 Erro ao analisar a expressão facial. Tente novamente.</p><div class="mt-4"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
+          speak("Erro ao analisar a expressão facial. Tente novamente.");
         });
-    }
-
-    // Simulate purchase
-    function simulatePurchase(plan) {
-      localStorage.setItem('selectedPlan', plan);
-      setTimeout(() => {
-        window.location.href = '/criar-alibi.html';
-      }, 1000);
     }
   </script>
 </body>
