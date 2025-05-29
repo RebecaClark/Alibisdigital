@@ -1,0 +1,632 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Escolha seu plano na Álibis Digital: Scanner Emocional, Apoio Emocional, Criar Álibi e Medical IA para bem-estar e privacidade.">
+  <meta name="keywords" content="planos Álibis Digital, scanner emocional, criar álibi, medical IA, assinatura, bem-estar">
+  <meta name="author" content="Álibis Digital">
+  <title>Planos - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { 
+      position: relative; 
+      overflow-x: hidden; 
+      min-height: 100vh; 
+      color: #e5e7eb; 
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+    }
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
+    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
+    .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
+    .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
+    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button {
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown-menu {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+    }
+    .dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
+      width: 100%;
+      position: static;
+    }
+    .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu-mobile a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+    }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .pricing-card {
+      background: rgba(45, 55, 72, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px #22d3ee;
+    }
+    .highlight-card {
+      border: 2px solid #22d3ee;
+      box-shadow: 0 0 15px #22d3ee;
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .flex { flex-direction: column; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+    }
+  </style>
+</head>
+<body class="bg-transparent text-white font-sans">
+  <!-- Fundo com Partículas -->
+  <div id="particles-js"></div>
+
+  <!-- Cabeçalho -->
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/index.html" aria-label="Página inicial da Álibis Digital">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="console.error('Erro ao carregar logo.png')">
+        </a>
+      </div>
+      <div class="flex items-center space-x-3">
+        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
+          <option value="pt-BR">Português</option>
+          <option value="en-US">English</option>
+        </select>
+        <div class="md:hidden">
+          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+        <div class="dropdown relative">
+          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            <span data-i18n="services">Serviços</span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
+        <a href="/planos.html" class="text-[#22d3ee] font-bold transition" data-i18n="plans">Planos</a>
+        <a href="/suporte.html" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
+        <a href="/alibi.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Assine Agora" data-i18n="subscribe-now">Assine Agora</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <div class="w-full">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+            <span data-i18n="services">Serviços</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="services-menu" class="dropdown-menu-mobile hidden">
+            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
+        <a href="/planos.html" class="text-[#22d3ee] py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
+        <a href="/alibi.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Assine Agora" data-i18n="subscribe-now">Assine Agora</a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <!-- Hero Section -->
+  <section id="hero" class="text-white text-center py-20 px-6 relative animate-on-scroll">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight fade-in" data-i18n="hero-title">Escolha o Plano Perfeito para Sua Tranquilidade</h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in" data-i18n="hero-subtitle">Acesse Scanner Emocional, Apoio Emocional, Criar Álibi e Medical IA para bem-estar e privacidade.</p>
+      <div class="pulse">
+        <a href="#pricing" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Ver Planos" data-i18n="view-plans">Ver Planos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="pricing-title">Nossos Planos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="pricing-card slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="basic-plan-title">Básico</h3>
+        <p class="text-3xl font-bold mb-2" data-i18n="basic-plan-price">R$29/mês</p>
+        <p class="text-sm text-gray-400 mb-4" data-i18n="basic-plan-annual">ou R$278/ano (economize 20%)</p>
+        <ul class="text-left text-gray-400 mb-6 space-y-2">
+          <li data-i18n="basic-plan-feature-1">✅ Scanner Emocional</li>
+          <li data-i18n="basic-plan-feature-2">✅ Apoio Emocional</li>
+          <li data-i18n="basic-plan-feature-3">❌ Criar Álibi</li>
+          <li data-i18n="basic-plan-feature-4">❌ Medical IA</li>
+        </ul>
+        <a href="/alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Básico" data-i18n="subscribe-now" onclick="simulatePurchase('basic')">Assine Agora</a>
+      </div>
+      <div class="pricing-card highlight-card slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="standard-plan-title">Padrão</h3>
+        <p class="text-3xl font-bold mb-2" data-i18n="standard-plan-price">R$49/mês</p>
+        <p class="text-sm text-gray-400 mb-4" data-i18n="standard-plan-annual">ou R$470/ano (economize 20%)</p>
+        <ul class="text-left text-gray-400 mb-6 space-y-2">
+          <li data-i18n="standard-plan-feature-1">✅ Scanner Emocional</li>
+          <li data-i18n="standard-plan-feature-2">✅ Apoio Emocional</li>
+          <li data-i18n="standard-plan-feature-3">✅ Criar Álibi (até 5/mês)</li>
+          <li data-i18n="standard-plan-feature-4">❌ Medical IA</li>
+        </ul>
+        <a href="/alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Padrão" data-i18n="subscribe-now" onclick="simulatePurchase('standard')">Assine Agora</a>
+      </div>
+      <div class="pricing-card slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="premium-plan-title">Premium</h3>
+        <p class="text-3xl font-bold mb-2" data-i18n="premium-plan-price">R$79/mês</p>
+        <p class="text-sm text-gray-400 mb-4" data-i18n="premium-plan-annual">ou R$758/ano (economize 20%)</p>
+        <ul class="text-left text-gray-400 mb-6 space-y-2">
+          <li data-i18n="premium-plan-feature-1">✅ Scanner Emocional</li>
+          <li data-i18n="premium-plan-feature-2">✅ Apoio Emocional</li>
+          <li data-i18n="premium-plan-feature-3">✅ Criar Álibi (ilimitado)</li>
+          <li data-i18n="premium-plan-feature-4">✅ Medical IA</li>
+        </ul>
+        <a href="/alibi.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Assinar Plano Premium" data-i18n="subscribe-now" onclick="simulatePurchase('premium')">Assine Agora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="benefits-title">Por que Escolher a Álibis Digital?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="scanner-benefit-title">Scanner Emocional</h3>
+        <p class="text-gray-400" data-i18n="scanner-benefit-desc">Detecte estresse e emoções com precisão usando IA avançada.</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="support-benefit-title">Apoio Emocional</h3>
+        <p class="text-gray-400" data-i18n="support-benefit-desc">Receba suporte personalizado via Abili para seu bem-estar.</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="alibi-benefit-title">Criar Álibi</h3>
+        <p class="text-gray-400" data-i18n="alibi-benefit-desc">Gere álibis realistas para proteger sua privacidade e reduzir estresse.</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4" data-i18n="medical-benefit">Medical IA</h3>
+        <p class="text-gray-400" data-i18n="medical-benefit-desc">Monitore sua saúde mental com triagem premium (plano Premium).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 px-6 text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="testimonials-title">O que Nossos Usuários Dizem</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md slide-in-left">
+        <p class="text-gray-400 mb-4" data-i18n="testimonial-1">"O Scanner Emocional me ajudou a identificar meu estresse e o Apoio Emocional me deu clareza!"</p>
+        <p class="text-white font-semibold">— Ana S.</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md slide-in-right">
+        <p class="text-gray-400 mb-4" data-i18n="testimonial-2">"Criar Álibi me deu paz de espírito. A IA é incrivelmente realista!"</p>
+        <p class="text-white font-semibold">— João P.</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md slide-in-left">
+        <p class="text-gray-400 mb-4" data-i18n="testimonial-3">"Medical IA me alertou sobre riscos de burnout. Vale cada centavo!"</p>
+        <p class="text-white font-semibold">— Maria L.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 px-6 text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="faq-title">Perguntas Frequentes</h2>
+    <div class="max-w-4xl mx-auto text-left">
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q1">Quais são as diferenças entre os planos?</h3>
+        <p class="text-gray-400" data-i18n="faq-a1">O plano Básico inclui Scanner Emocional e Apoio Emocional. O Padrão adiciona Criar Álibi (até 5/mês). O Premium inclui todos os recursos, com Criar Álibi ilimitado e Medical IA.</p>
+      </div>
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q2">Posso cancelar minha assinatura?</h3>
+        <p class="text-gray-400" data-i18n="faq-a2">Sim, você pode cancelar a qualquer momento pelo painel do usuário ou contatando nosso suporte.</p>
+      </div>
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold mb-2" data-i18n="faq-q3">O que é Criar Álibi?</h3>
+        <p class="text-gray-400" data-i18n="faq-a3">Criar Álibi usa IA para gerar histórias realistas que protegem sua privacidade, disponíveis nos planos Padrão e Premium.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
+        <ul class="space-y-2">
+          <li><a href="/index.html" class="hover:text-white transition" data-i18n="home">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
+          <li><a href="/planos.html" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
+          <li><a href="/suporte.html" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
+          <li><a href="/politica-privacidade.html" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">Todos os direitos reservados.</span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Particles
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 120, density: { enable: true, value_area: 800 } },
+        color: { value: '#22d3ee' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { repulse: { distance: '100', duration: 0.4 }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+
+    // Translations
+    const translations = {
+      "pt-BR": {
+        "services": "Serviços",
+        "scanner": "Scanner com IA",
+        "emotional-evaluation": "Avaliação Emocional",
+        "medical-ai": "Diagnóstico Médico",
+        "alibi": "Criar Álibi",
+        "blog": "Blog",
+        "plans": "Planos",
+        "support": "Suporte",
+        "subscribe-now": "Assine Agora",
+        "view-plans": "Ver Planos",
+        "hero-title": "Escolha o Plano Perfeito para Sua Tranquilidade",
+        "hero-subtitle": "Acesse Scanner Emocional, Apoio Emocional, Criar Álibi e Medical IA para bem-estar e privacidade.",
+        "pricing-title": "Nossos Planos",
+        "basic-plan-title": "Básico",
+        "basic-plan-price": "R$29/mês",
+        "basic-plan-annual": "ou R$278",
+        "basic-plan-feature-1": "✅ Scanner Emocional",
+        "basic-plan-feature-2": "✅ Apoio Emocional",
+        "basic-plan-feature-3": "❌ Criar Álibi",
+        "basic-plan-feature-4": "❌ Medical IA",
+        "standard-plan-title": "Padrão",
+        "standard-plan-price": "R$49/mês",
+        "standard-plan-annual": "ou R$470/ano (economize 20%)",
+        "standard-plan-feature-1": "✅ Scanner Emocional",
+        "standard-plan-feature-2": "✅ Apoio Emocional",
+        "standard-plan-feature-3": "✅ Criar Álibi (até 5/mês)",
+        "standard-plan-feature-4": "❌ Medical IA",
+        "premium-plan-title": "Premium",
+        "premium-plan-price": "R$79/mês",
+        "premium-plan-annual": "ou R$758/ano (economize 20%)",
+        "premium-plan-feature-1": "✅ Scanner Emocional",
+        "premium-plan-feature-2": "✅ Apoio Emocional",
+        "premium-plan-feature-3": "✅ Criar Álibi (ilimitado)",
+        "premium-plan-feature-4": "✅ Medical IA",
+        "benefits-title": "Por que Escolher a Álibis Digital?",
+        "scanner-benefit-title": "Scanner Emocional",
+        "scanner-benefit-description": "Detecte estresse e emoções com precisão usando IA avançada.",
+        "support-benefit-title": "Apoio Emocional",
+        "support-benefit-description": "Receba suporte personalizado via Abili para seu bem-estar.",
+        "alibi-benefit-title": "Criar Álibi",
+        "alibi-benefit-description": "Gere álibis realistas para proteger sua privacidade e reduzir estresse.",
+        "medical-benefit-title": "Medical IA",
+        "medical-benefit-desc": "Monitore sua saúde mental com triagem premium (plano Premium).",
+        "testimonials-title": "O que Nossos Usuários Dizem",
+        "testimonial-1": "O Scanner Emocional me ajudou a identificar meu estresse e o Apoio Emocional me deu clareza!",
+        "testimonial-2": "Criar Álibi me deu paz de espírito. A IA é incrivelmente realista!",
+        "testimonial-3": "Medical IA me alertou sobre riscos de burnout. Vale cada centavo!",
+        "faq-title": "Perguntas Frequentes",
+        "faq-q1": "Quais são as diferenças entre os planos?",
+        "faq-a1": "O plano Básico inclui Scanner Emocional e Apoio Emocional. O Padrão adiciona Criar Álibi (até 5/mês). O Premium inclui todos os recursos, com Criar Álibi ilimitado e Medical IA.",
+        "faq-q2": "Posso cancelar minha assinatura?",
+        "faq-a2": "Sim, você pode cancelar a qualquer momento pelo painel do usuário ou contatando nosso suporte.",
+        "faq-q3": "O que é Criar Álibi?",
+        "faq-a3": "Criar Álibi usa IA para gerar histórias realistas que protegem sua privacidade, disponíveis nos planos Padrão e Premium.",
+        "footer-about": "Soluções de bem-estar com tecnologia avançada.",
+        "footer-navigate": "Navegar",
+        "home": "Início",
+        "privacy": "Privacidade",
+        "footer-contact": "Contato",
+        "footer-rights": "Todos os direitos reservados."
+      },
+      "en-US": {
+        "services": "Services",
+        "scanner": "AI Scanner",
+        "emotional-evaluation": "Emotional Evaluation",
+        "medical-aid": "Medical Diagnosis",
+        "alibi": "Create Alibi",
+        "blog": "Blog",
+        "plans": "Plans",
+        "support": "Support",
+        "subscribe-now": "Subscribe Now",
+        "view-plans": "View Plans",
+        "hero-title": "Choose the Perfect Plan for Your Peace of Mind",
+        "hero-subtitle": "Access Emotional Scanner, Emotional Support, Create Alibi, and Medical AI for well-being and privacy.",
+        "pricing-title": "Our Plans",
+        "basic-plan-title": "Basic",
+        "basic-plan-price": "$29/month",
+        "basic-plan-annual": "or $278/year (save 20%)",
+        "basic-plan-feature-1": "✅ Emotional Scanner",
+        "basic-plan-feature-2": "✅ Emotional Support",
+        "basic-plan-feature-3": "❌ Create Alibi",
+        "basic-plan-feature-4": "❌ Medical AI",
+        "standard-plan-title": "Standard",
+        "standard-plan-price": "$49/month",
+        "standard-plan-annual": "or $470/year (save 20%)",
+        "standard-plan-feature-1": "✅ Emotional Scanner",
+        "standard-plan-feature-2": "✅ Emotional Support",
+        "standard-plan-feature-3": "✅ Create Alibi (up to 5/month)",
+        "standard-plan-feature-4": "❌ Medical AI",
+        "premium-plan": "Premium",
+        "premium-plan-price": "$79/month",
+        "premium-plan-annual": "or $758/year (save 20%)",
+        "premium-plan-feature-1": "✅ Emotional Scanner",
+        "premium-plan-feature-2": "✅ Emotional Support",
+        "premium-plan-feature-3": "✅ Create Alibi (unlimited)",
+        "premium-plan-feature-4": "✅ Medical AI",
+        "benefits-title": "Why Choose Álibis Digital?",
+        "scanner-benefit-title": "Emotional Scanner",
+        "scanner-benefit-desc": "Detect stress and emotions with precision using advanced AI.",
+        "support-benefit-title": "Emotional Support",
+        "support-benefit-desc": "Receive personalized support via Abili for your well-being.",
+        "alibi-benefit-title": "Create Alibi",
+        "alibi-benefit-desc": "Generate realistic alibis to protect your privacy and reduce stress.",
+        "medical-benefit-title": "Medical AI",
+        "medical-benefit-desc": "Monitor your mental health with premium triage (Premium plan).",
+        "testimonials-title": "What Our Users Say",
+        "testimonial-1": "The Emotional Scanner helped me identify my stress, and Emotional Support gave me clarity!",
+        "testimonial-2": "Create Alibi gave me peace of mind! The AI is incredibly realistic.",
+        "testimonial-3": "Medical AI alerted me to signs of burnout, preventing a serious issue. Worth every penny!",
+        "faq-title": "Frequently Asked Questions",
+        "faq-q1": "What are the differences between the plans?",
+        "faq-a1": "The Basic plan includes Emotional Scanner and Emotional Support. The Standard plan also includes Create Alibi (up to 5/month). The Premium plan includes all features, with unlimited Alibis and Medical AI.",
+        "faq-q2": "Can I cancel my subscription?",
+        "faq-a2": "Yes, you can cancel anytime through the user dashboard or by contacting our support.",
+        "faq-q3": "What is Create Alibi?",
+        "faq-a3": "Create Alibi uses AI to generate realistic stories that protect your privacy, available on Standard and Premium plans.",
+        "footer-about": "Well-being solutions with advanced technology.",
+        "footer-navigate": "Navigate",
+        "home": "Home",
+        "privacy": "Privacy",
+        "footer-contact": "Contact",
+        "footer Rights": "All rights reserved."
+      }
+    };
+
+    // Translation function
+    function getTranslation(lang, key) {
+      const trans = translations[lang] || translations['pt-BR'];
+      return trans[key] || translations['pt-BR'][key] || key;
+    }
+
+    // DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      initScrollAnimations();
+      updateLanguage();
+
+      // Hamburger menu
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      // Services toggle
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+      if (servicesToggle && servicesMenu) {
+        servicesToggle.addEventListener('click', () => {
+          servicesMenu.classList.toggle('hidden');
+        });
+      }
+
+      // Header shadow on scroll
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (header) {
+          if (window.scrollY > 50) {
+            header.classList.add('shadow-lg');
+            } else {
+              header.classList.remove('shadow-lg');
+            }
+          }
+        }
+
+        // Language selector
+        const languageSelector = document.getElementById('language-selector');
+        if (languageSelector) {
+          languageSelector.addEventListener('change', updateLanguage);
+        });
+      });
+
+      // Scroll animations
+      function initScrollAnimations() {
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        function checkScroll() {
+          const windowHeight = window.innerHeight;
+          const windowTopPosition = window.scrollY;
+          const windowBottomPosition = windowTopPosition + windowHeight;
+          animatedElements.forEach(element => {
+            const elementHeight = element.offsetHeight;
+            const elementTopPosition = element.offsetTop;
+            const elementBottomPosition = elementTopPosition + elementHeight;
+            if (elementBottomPosition >= windowTopPosition && element.elementTopPosition <= windowBottomPosition) {
+              element.classList.add('visible');
+            }
+          });
+          document.checkScroll();
+          window.addEventListener('scroll', checkScroll);
+          window.addEventListener('resize', checkScroll);
+        });
+
+        // Update language
+        function updateLanguage() {
+          const lang = document.getElementById('language-selector')?.value || 'pt-BR';
+          document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            element.textContent = getTranslation(lang, key);
+          });
+        }
+
+        // Simulate purchase
+        function simulatePurchase(plan) {
+          localStorage.setItem('selectedPlan', plan);
+          setTimeout(() => {
+            window.location.href = '/alibi.html';
+          }, 1000);
+        }
+      </script>
+    </body>
+  </html>
