@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Receba apoio emocional personalizado com a Avaliação Emocional da Álibis Digital. Responda perguntas e compartilhe seus sentimentos para um diagnóstico falado.">
+  <meta name="keywords" content="apoio emocional, avaliação emocional, scanner com IA, bem-estar, privacidade">
+  <meta name="author" content="Álibis Digital">
+  <title>Avaliação Emocional - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      position: relative;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+    }
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    .shine { position: relative; overflow: hidden; }
+    .shine::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+      transform: rotate(20deg); animation: shine 4s infinite linear;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      animation: holoGlow 2s infinite alternate;
+    }
+    @keyframes holoGlow {
+      0% { box-shadow: 0 0 8px #22d3ee; }
+      100% { box-shadow: 0 0 15px #22d3ee; }
+    }
+    .holo-nav a, .holo-nav button {
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .futuristic-btn {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      box-shadow: 0 0 8px #22d3ee;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: neonPulse 1.5s infinite alternate;
+    }
+    .futuristic-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+    }
+    @keyframes neonPulse {
+      0% { box-shadow: 0 0 5px #22d3ee; }
+      100% { box-shadow: 0 0 15px #22d3ee; }
+    }
+    #chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    #chat-bubble {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px #22d3ee;
+      animation: pulse 2s infinite;
+    }
+    #chat-window {
+      display: none;
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #22d3ee;
+      border-radius: 15px;
+      width: 320px;
+      height: 420px;
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      box-shadow: 0 0 15px #22d3ee;
+    }
+    #chat-messages {
+      height: 340px;
+      overflow-y: auto;
+      padding: 12px;
+      color: #e5e7eb;
+    }
+    #chat-input {
+      background: rgba(55, 65, 81, 0.8);
+      border: 1px solid #22d3ee;
+      border-radius: 20px;
+      padding: 10px;
+      width: 100%;
+      color: white;
+    }
+    .listening-indicator {
+      display: none;
+      color: #22d3ee;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .listening-indicator.active { display: block; }
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .form-input, .form-textarea {
+      background: rgba(55, 65, 81, 0.8);
+      border: 1px solid #22d3ee;
+      border-radius: 8px;
+      padding: 12px;
+      color: white;
+      width: 100%;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #22d3ee;
+      box-shadow: 0 0 8px #22d3ee;
+    }
+    .screen {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .screen.active {
+      display: block;
+      opacity: 1;
+    }
+    @media (max-width: 768px) {
+      .holo-nav .header-right { flex-direction: column; align-items: flex-end; }
+      h1 { font-size: 2.25rem; line-height: 2.5rem; }
+      h2 { font-size: 1.5rem; }
+      .max-w-3xl { max-width: 100%; padding: 0 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      #chat-window { width: 95%; right: 2.5%; }
+    }
+  </style>
+</head>
+<body class="text-white">
+  <!-- Fundo com Partículas -->
+  <div id="particles-js"></div>
+
+  <!-- Cabeçalho com Efeito Holográfico -->
+  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/index.html" aria-label="Página inicial da Álibis Digital">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+        </a>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="md:hidden">
+          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+        <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+        <a href="/criar-alibis-realistas-ia.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+        <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+        <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Apoio Emocional</a>
+        <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="/criar-alibis-realistas-ia.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
+        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
+        <a href="/apoio-emocional.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Apoio Emocional</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <!-- Avaliação Emocional -->
+  <section id="avaliacao-emocional" class="py-20 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4 text-[#22d3ee] fade-in shine">Como Você Está Se Sentindo?</h2>
+      <p class="text-lg text-gray-300 mb-10 fade-in">Responda algumas perguntas e compartilhe seus sentimentos para receber um diagnóstico personalizado falado pelo nosso terapeuta virtual.</p>
+
+      <form id="evaluation-form" onsubmit="event.preventDefault(); avaliarBemEstar();" class="space-y-6 bg-[rgba(45,55,72,0.9)] p-8 rounded-2xl shadow-md slide-in-right">
+        <!-- Tela 1: Perguntas 1-3 -->
+        <div id="screen-1" class="screen active">
+          <div class="mb-4">
+            <label for="estresse" class="block text-left mb-2 text-sm">Você tem se sentido estressado(a) ultimamente?</label>
+            <select id="estresse" required class="form-input">
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="relaxar" class="block text-left mb-2 text-sm">Tem dificuldade em relaxar mesmo quando está descansando?</label>
+            <select id="relaxar" required class="form-input">
+              <option value="">Selecione...</option>
+              <option value="Sim">Sim</option>
+              <option value="Não">Não</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="manha" class="block text-left mb-2 text-sm">Como você se sente ao acordar pela manhã?</label>
+            <select id="manha" required class="form-input">
+              <option value="">Selecione...</option>
+              <option value="Revigorado">Revigorado</option>
+              <option value="Cansado">Cansado</option>
+              <option value="Indiferente">Indiferente</option>
+            </select>
+          </div>
+          <div class="flex justify-end mt-6">
+            <button type="button" onclick="nextScreen(1)" class="futuristic-btn text-white font-bold py-2 px-4 rounded pulse">Próximo</button>
+          </div>
+        </div>
+
+        <!-- Tela 2: Perguntas 4-6 -->
+        <div id="screen-2" class="screen">
+          <div class="mb-4">
+            <label for="humor" class="block text-left mb-2 text-sm">Nos últimos dias, como você tem se sentido na maior parte do tempo?</label>
+            <select id="humor" required class="form-input">
+              <option value="">Refletindo...</option>
+              <option value="Triste">Triste ou desanimado</option>
+              <option value="Ansioso">Ansioso ou preocupado</option>
+              <option value="Irritado">Irritado ou frustrado</option>
+              <option value="Neutro">Neutro ou bem</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="anedonia" class="block text-left mb-2 text-sm">Você tem sentido prazer ou interesse nas atividades que normalmente gosta?</label>
+            <select id="anedonia" required class="form-input">
+              <option value="">Pensando...</option>
+              <option value="Sim">Sim, como sempre</option>
+              <option value="Pouco">Um pouco menos</option>
+              <option value="QuaseNunca">Quase nunca</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="pensamentos" class="block text-left mb-2 text-sm">Você tem tido pensamentos repetitivos ou preocupações?</label>
+            <select id="pensamentos" required class="form-input">
+              <option value="">Refletindo...</option>
+              <option value="Sim">Sim, o tempo todo</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(2)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="button" onclick="nextScreen(2)" class="futuristic-btn text-white font-bold py-2 px-4 rounded pulse">Próximo</button>
+          </div>
+        </div>
+
+        <!-- Tela 3: Perguntas 7-9 -->
+        <div id="screen-3" class="screen">
+          <div class="mb-4">
+            <label for="concentracao" class="block text-left mb-2 text-sm">Como está sua capacidade de se concentrar ou tomar decisões?</label>
+            <select id="concentracao" required class="form-input">
+              <option value="">Pensando...</option>
+              <option value="Dificil">Muito difícil</option>
+              <option value="PoucoDificil">Um pouco difícil</option>
+              <option value="Normal">Normal</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="habitos" class="block text-left mb-2 text-sm">Notou mudanças nos seus hábitos diários?</label>
+            <select id="habitos" required class="form-input">
+              <option value="">Refletindo...</option>
+              <option value="Muito">Sim, bastante</option>
+              <option value="Pouco">Sim, um pouco</option>
+              <option value="Nao">Não</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="sono" class="block text-left mb-2 text-sm">Como tem sido seu sono ultimamente?</label>
+            <select id="sono" required class="form-input">
+              <option value="">Pensando...</option>
+              <option value="Mal">Durmo mal (insônia ou acordar muito)</option>
+              <option value="Muito">Durmo demais</option>
+              <option value="Normal">Normal</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(3)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="button" onclick="nextScreen(3)" class="futuristic-btn text-white font-bold py-2 px-4 rounded pulse">Próximo</button>
+          </div>
+        </div>
+
+        <!-- Tela 4: Perguntas 10-13 + Free-Text -->
+        <div id="screen-4" class="screen">
+          <div class="mb-4">
+            <label for="energia" class="block text-left mb-2 text-sm">Você tem se sentido cansado(a) ou sem energia?</label>
+            <select id="energia" required class="form-input">
+              <option value="">Refletindo...</option>
+              <option value="Sempre">Sim, o tempo todo</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="relacoes" class="block text-left mb-2 text-sm">Como estão suas relações com amigos, família ou colegas?</label>
+            <select id="relacoes" required class="form-input">
+              <option value="">Pensando...</option>
+              <option value="Isolado">Me sinto isolado(a)</option>
+              <option value="Distante">Tenho apoio, mas me sinto distante</option>
+              <option value="Apoiado">Me sinto bem e apoiado(a)</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="fisicos" class="block text-left mb-2 text-sm">Você tem sentido desconforto físico?</label>
+            <select id="fisicos" required class="form-input">
+              <option value="">Refletindo...</option>
+              <option value="Frequentemente">Sim, frequentemente</option>
+              <option value="AsVezes">Às vezes</option>
+              <option value="Raramente">Raramente</option>
+              <option value="Nao">Não</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="eventos" class="block text-left mb-2 text-sm">Passou por algum evento marcante recentemente?</label>
+            <select id="eventos" required class="form-input">
+              <option value="">Pensando...</option>
+              <option value="Significativo">Sim, algo significativo</option>
+              <option value="Leve">Sim, algo leve</option>
+              <option value="Nao">Não</option>
+              <option value="NaoSei">Não sei</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="sentimentos" class="block text-left mb-2 text-sm">Descreva como você está se sentindo agora:</label>
+            <textarea id="sentimentos" class="form-textarea" rows="4" placeholder="Ex.: Estou sobrecarregado com o trabalho..." aria-label="Descreva seus sentimentos"></textarea>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" onclick="prevScreen(4)" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Anterior</button>
+            <button type="submit" class="futuristic-btn text-white font-bold py-2 px-4 rounded pulse">Obter Meu Diagnóstico</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="resultado" class="mt-10 hidden fade-in text-left">
+        <h3 class="text-xl font-semibold mb-4 text-[#22d3ee] shine">Seu Diagnóstico Emocional:</h3>
+        <p id="mensagemResultado" class="text-lg text-gray-200 italic mb-4">...</p>
+        <p id="mensagemSentimentos" class="text-lg text-gray-200 italic mb-4">...</p>
+        <p class="mt-4 text-sm text-gray-400">Para um suporte mais aprofundado, incluindo Scanner com IA e Diagnóstico Médico, clique abaixo.</p>
+        <div class="flex space-x-4 mt-4">
+          <a href="/scanner.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded pulse">Testar Scanner Grátis</a>
+          <a href="/upsell.html" class="bg-gray-600 text-white font-bold py-2 px-4 rounded hover:bg-gray-500 transition">Diagnóstico Completo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chat Interativo com Voz -->
+  <div id="chat-container">
+    <div id="chat-bubble">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+      </svg>
+    </div>
+    <div id="chat-window">
+      <div id="chat-messages"></div>
+      <div class="p-4">
+        <input id="chat-input" type="text" class="w-full" placeholder="Digite ou fale sua mensagem" aria-label="Digite ou fale sua mensagem">
+        <div id="listening-indicator" class="listening-indicator">🎙️ Ouvindo...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+      <div class="slide-in-left">
+        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
+      </div>
+      <div class="fade-in">
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
+        <ul class="space-y-2">
+          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
+          <li><a href="/criar-alibis-realistas-ia.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white transition">Scanner com IA</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white transition">Apoio Emocional</a></li>
+          <li><a href="/medical-ia.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
+        </ul>
+      </div>
+      <div class="slide-in-right">
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <ul class="space-y-2">
+          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Inicializar Partículas
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 100, density: { enable: true, value_area: 800 } },
+        color: { value: ['#22d3ee', '#7C3AED', '#ffffff'] },
+        shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+        opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+        size: { value: 4, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
+        line_linked: { enable: true, distance: 120, color: '#22d3ee', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 4, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'bubble' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: {
+          bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8, speed: 3 },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Animação de Scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const animItems = document.querySelectorAll('.animate-on-scroll');
+      const windowHeight = window.innerHeight;
+      function animOnScroll() {
+        animItems.forEach(item => {
+          const itemTop = item.getBoundingClientRect().top;
+          if (itemTop < windowHeight - 100) {
+            item.classList.add('visible');
+          }
+        });
+      }
+      animOnScroll();
+      window.addEventListener('scroll', animOnScroll);
+
+      // Menu Hamburguer
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Efeito de Sombra no Header
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 50) {
+          header.classList.add('shadow-lg');
+        } else {
+          header.classList.remove('shadow-lg');
+        }
+      });
+    });
+
+    // Navegação entre Telas
+    function nextScreen(currentScreen) {
+      document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+      document.getElementById(`screen-${currentScreen + 1}`).classList.add('active');
+    }
+
+    function prevScreen(currentScreen) {
+      document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+      document.getElementById(`screen-${currentScreen - 1}`).classList.add('active');
+    }
+
+    // Diagnóstico Falado
+    function speakDiagnosis(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      const voices = speechSynthesis.getVoices();
+      const softVoice = voices.find(voice => voice.name.includes('Google') || voice.name.includes('Microsoft') || voice.lang === 'pt-BR') || voices[0];
+      utterance.voice = softVoice;
+      speechSynthesis.speak(utterance);
+    }
+
+    // Avaliação Emocional
+    function avaliarBemEstar() {
+      const estresse = document.getElementById('estresse').value;
+      const relaxar = document.getElementById('relaxar').value;
+      const manha = document.getElementById('manha').value;
+      const humor = document.getElementById('humor').value;
+      const anedonia = document.getElementById('anedonia').value;
+      const pensamentos = document.getElementById('pensamentos').value;
+      const concentracao = document.getElementById('concentracao').value;
+      const habitos = document.getElementById('habitos').value;
+      const sono = document.getElementById('sono').value;
+      const energia = document.getElementById('energia').value;
+      const relacoes = document.getElementById('relacoes').value;
+      const fisicos = document.getElementById('fisicos').value;
+      const eventos = document.getElementById('eventos').value;
+      const sentimentos = document.getElementById('sentimentos').value.toLowerCase();
+
+      // Diagnóstico Baseado no Questionário
+      let resultado = "Obrigado por compartilhar. Vamos analisar como você está se sentindo.";
+      if (estresse === "Sim" && relaxar === "Sim" && manha === "Cansado" && energia === "Sempre" && habitos === "Muito") {
+        resultado = "Suas respostas indicam sinais de burnout. Você está muito estressado, com dificuldade para relaxar, cansaço constante e mudanças nos hábitos. Um momento de pausa é essencial.";
+      } else if (estresse === "Não" && relaxar === "Não" && manha === "Revigorado" && anedonia === "Sim" && relacoes === "Apoiado") {
+        resultado = "Você está em um bom equilíbrio emocional, sentindo-se revigorado e apoiado. Continue cuidando de si!";
+      } else if (manha === "Indiferente" && concentracao === "Dificil" && pensamentos === "Sim") {
+        resultado = "Você pode estar enfrentando ansiedade. Sentir-se indiferente, com dificuldade de concentração e pensamentos repetitivos sugere sobrecarga mental.";
+      } else if (humor === "Triste" && anedonia === "QuaseNunca" && sono === "Mal" && energia === "Sempre") {
+        resultado = "Suas respostas sugerem sinais de depressão. Sentir-se triste, sem prazer, com sono ruim e cansaço pode indicar a necessidade de apoio.";
+      } else if (humor === "Ansioso" && pensamentos === "Sim" && fisicos === "Frequentemente" && eventos === "Significativo") {
+        resultado = "Você pode estar com ansiedade, influenciada por eventos recentes. Sintomas físicos e pensamentos repetitivos são sinais importantes.";
+      } else if (humor === "Irritado" && relacoes === "Isolado" && concentracao === "Dificil") {
+        resultado = "Você parece estar lidando com irritabilidade e isolamento. Dificuldade de concentração pode indicar estresse emocional.";
+      } else if (sono === "Muito" && energia === "Sempre" && habitos === "Muito") {
+        resultado = "Suas respostas apontam para letargia. Dormir demais, cansaço constante e mudanças nos hábitos sugerem desmotivação.";
+      } else if (estresse === "Sim" && eventos === "Significativo" && fisicos === "Frequentemente") {
+        resultado = "Você está sob estresse elevado, possivelmente por eventos marcantes. Sintomas físicos frequentes indicam impacto no bem-estar.";
+      } else {
+        resultado = "Seu estado emocional parece moderado, com alguns desafios como cansaço ou dificuldade de concentração. Vamos explorar mais.";
+      }
+
+      // Diagnóstico Baseado no Free-Text
+      let mensagemSentimentos = "";
+      if (sentimentos) {
+        if (sentimentos.includes("sobrecarregado") || sentimentos.includes("estressado") || sentimentos.includes("cansado")) {
+          mensagemSentimentos = "Parece que você está se sentindo sobrecarregado. É normal sentir isso às vezes. Tente reservar um momento para respirar fundo ou fazer uma pausa curta.";
+        } else if (sentimentos.includes("triste") || sentimentos.includes("desanimado") || sentimentos.includes("sozinho")) {
+          mensagemSentimentos = "Entendo que você está se sentindo triste ou sozinho. Você não está só nisso. Conectar-se com alguém de confiança ou praticar autocuidado pode ajudar.";
+        } else if (sentimentos.includes("ansioso") || sentimentos.includes("preocupado") || sentimentos.includes("nervoso")) {
+          mensagemSentimentos = "Você parece estar ansioso. Essas sensações podem ser difíceis. Experimente técnicas de relaxamento, como meditação guiada, para acalmar a mente.";
+        } else if (sentimentos.includes("feliz") || sentimentos.includes("bem") || sentimentos.includes("grato")) {
+          mensagemSentimentos = "Que bom ouvir que você está se sentindo bem! Continue valorizando esses momentos positivos.";
+        } else {
+          mensagemSentimentos = "Obrigado por compartilhar seus sentimentos. Eles são importantes, e estamos aqui para ajudar a entender melhor o que você está passando.";
+        }
+      } else {
+        mensagemSentimentos = "Você não compartilhou detalhes, mas suas respostas já nos ajudam a entender seu estado emocional.";
+      }
+
+      document.getElementById('mensagemResultado').innerText = resultado;
+      document.getElementById('mensagemSentimentos').innerText = mensagemSentimentos;
+      document.getElementById('resultado').classList.remove('hidden');
+
+      // Fala o Diagnóstico Completo
+      const fullDiagnosis = `${resultado} ${mensagemSentimentos}`;
+      speakDiagnosis(fullDiagnosis);
+
+      // Scroll para o Resultado
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Chat Interativo com Voz
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const listeningIndicator = document.getElementById('listening-indicator');
+    const synth = window.speechSynthesis;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = SpeechRecognition ? new SpeechRecognition() : null;
+    let lastUserMessage = '';
+
+    const speak = (text) => {
+      if (!synth) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'pt-BR';
+      synth.speak(utter);
+    };
+
+    const addMessage = (message, isUser = false) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%]`;
+      messageDiv.textContent = message;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    chatBubble.addEventListener('click', () => {
+      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+      if (chatWindow.style.display === 'block') {
+        const welcomeMessage = 'Olá! Estou aqui para ajudar com sua avaliação emocional. Quer começar?';
+        addMessage(welcomeMessage, false);
+        speak(welcomeMessage);
+      }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        const userMessage = chatInput.value.trim();
+        addMessage(userMessage, true);
+        lastUserMessage = userMessage.toLowerCase();
+        chatInput.value = '';
+        respondToUser(lastUserMessage);
+      }
+    });
+
+    if (recognition) {
+      recognition.lang = 'pt-BR';
+      recognition.onstart = () => listeningIndicator.classList.add('active');
+      recognition.onend = () => listeningIndicator.classList.remove('active');
+      recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript;
+        chatInput.value = spokenText;
+        const eventEnter = new Event('keypress');
+        eventEnter.key = 'Enter';
+        chatInput.dispatchEvent(eventEnter);
+      };
+      recognition.onerror = () => {
+        listeningIndicator.classList.remove('active');
+        addMessage('Erro no reconhecimento de voz. Tente novamente.', false);
+      };
+      chatInput.addEventListener('focus', () => recognition.start());
+    } else {
+      chatInput.addEventListener('focus', () => {
+        addMessage('Reconhecimento de voz não disponível.', false);
+      });
+    }
+
+    function respondToUser(message) {
+      let response = 'Continue sua avaliação emocional ou explore o Scanner com IA!';
+      if (message.includes('álibi') || message.includes('privacidade')) {
+        response = 'Quer criar álibis realistas? Saiba mais!';
+        setTimeout(() => window.location.href = '/criar-alibis-realistas-ia.html', 1500);
+      } else if (message.includes('estresse') || message.includes('ansiedade')) {
+        response = 'Vamos avaliar seu estresse. Continue o questionário!';
+        setTimeout(() => document.getElementById('evaluation-form').scrollIntoView({ behavior: 'smooth' }), 1500);
+      } else if (message.includes('scanner')) {
+        response = 'Teste o Scanner com IA grátis!';
+        setTimeout(() => window.location.href = '/scanner.html', 1500);
+      } else if (message.includes('apoio') || message.includes('emocional')) {
+        response = 'Você está no lugar certo! Complete a avaliação para suporte personalizado.';
+        setTimeout(() => document.getElementById('evaluation-form').scrollIntoView({ behavior: 'smooth' }), 1500);
+      } else if (message.includes('diagnóstico') || message.includes('médico')) {
+        response = 'Descubra o Diagnóstico Médico por IA!';
+        setTimeout(() => window.location.href = '/upsell.html', 1500);
+      } else if (message.includes('suporte') || message.includes('ajuda')) {
+        response = 'Nosso suporte está aqui para você!';
+        setTimeout(() => window.location.href = '/suporte.html', 1500);
+      }
+      setTimeout(() => {
+        addMessage(response, false);
+        speak(response);
+      }, 500);
+    }
+  </script>
+</body>
+</html>
