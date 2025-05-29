@@ -1,51 +1,12 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Dashboard do usuário da Álibis Digital para gerenciar pedidos e criar álibis.">
-  <meta name="keywords" content="dashboard, pedidos, álibis">
+  <meta name="description" content="Gerencie seus álibis criados com a Álibis Digital.">
+  <meta name="keywords" content="álibis, desculpas, privacidade, IA">
   <meta name="author" content="Álibis Digital">
-  <title>Dashboard - Álibis Digital</title>
+  <title>Meus Pedidos - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
   <style>
@@ -77,6 +38,16 @@
       transform: translateY(-3px); 
       box-shadow: 0 0 20px #22d3ee; 
     }
+    .action-btn {
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      transition: background 0.3s;
+    }
+    .delete-btn { background: #ef4444; }
+    .delete-btn:hover { background: #dc2626; }
+    .edit-btn { background: #3b82f6; }
+    .edit-btn:hover { background: #2563eb; }
     .holo-nav {
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
@@ -103,7 +74,7 @@
       transition: all 0.3s ease;
     }
     .dropdown-menu a:hover {
-      background: rgba(55, 65, 81, 0.8);
+      background: rgba(55, 65, 81, 0.95);
       color: #22d3ee;
     }
     .dropdown:hover .dropdown-menu { display: block; }
@@ -118,7 +89,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(31, 41, 55, 0.95);
+      background: rgba(17, 25, 40, 0.95);
       border-top: 2px solid #22d3ee;
       padding: 16px;
       display: none;
@@ -128,14 +99,70 @@
     }
     .cookie-banner p { font-size: 14px; max-width: 70%; }
     .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
-    .table-container { overflow-x: auto; }
+    .holoGlow { animation: holoGlow 2s infinite alternate; }
+    @keyframes holoGlow { from { box-shadow: 0 0 5px #22d3ee; } to { box-shadow: 0 0 15px #22d3ee; } }
+    .neonPulse { animation: neonPulse 1.5s infinite; }
+    @keyframes neonPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    .error-message, .success-message { font-size: 0.875rem; margin-top: 8px; }
+    .error-message { color: #ef4444; }
+    .success-message { color: #22d3ee; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(31, 41, 55, 0.8);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #4b5563;
+    }
+    th {
+      background: rgba(55, 65, 81, 0.8);
+      color: #ffffff;
+    }
+    tr:hover {
+      background: rgba(55, 65, 81, 0.4);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: rgba(31, 41, 55, 0.95);
+      border-radius: 10px;
+      padding: 24px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 0 15px #22d3ee;
+    }
+    .loader {
+      border: 4px solid #4b5563;
+      border-top: 4px solid #22d3ee;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
-      .max-w-6xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .max-w-6xl { max-width: 100%; padding: 0 1rem; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       .cookie-banner { flex-direction: column; text-align: center; }
       .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+      table { font-size: 0.9rem; }
+      th, td { padding: 8px; }
+      .modal-content { margin: 0 16px; }
     }
   </style>
 </head>
@@ -171,7 +198,7 @@
         <a href="/blog.html" class="hover:text-[#22d3ee]">Blog</a>
         <a href="/planos.html" class="hover:text-[#22d3ee]">Planos</a>
         <a href="/suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-        <a href="/dashboard.html" class="hover:text-[#22d3ee]">Meus Pedidos</a>
+        <a href="/dashboard.html" class="hover:text-[#ffffff]">Meus Pedidos</a>
         <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full">Assinar Agora</a>
       </nav>
     </div>
@@ -201,71 +228,98 @@
   </header>
   <div class="h-20"></div>
 
-  <section id="hero" class="text-white text-center py-16 px-4">
+  <section id="dashboard" class="text-white py-12 px-4 md:px-8">
     <div class="max-w-6xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 fade-in">Seu Dashboard</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">Gerencie seus pedidos e crie álibis personalizados.</p>
-      <div class="flex flex-col md:flex-row justify-center gap-4">
-        <a href="/alibis.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Álibi</a>
-        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="dashboard" class="py-12 px-4 md:px-8">
-    <div class="max-w-4xl mx-auto">
-      <div id="login-prompt" class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">Acesso Restrito</h3>
-        <p>Por favor, faça login para acessar seu dashboard. <a href="/index.html" class="text-[#22d3ee] hover:underline">Ir para Login</a></p>
-      </div>
-      <div class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">Meus Pedidos</h3>
-        <div class="table-container">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b border-gray-600">
-                <th class="py-2">ID do Pedido</th>
-                <th class="py-2">Serviço</th>
-                <th class="py-2">Data</th>
-                <th class="py-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="py-2">001</td>
-                <td class="py-2">Criar Álibi</td>
-                <td class="py-2">01/05/2025</td>
-                <td class="py-2">Concluído</td>
-              </tr>
-              <tr>
-                <td class="py-2">002</td>
-                <td class="py-2">Scanner com IA</td>
-                <td class="py-2">02/05/2025</td>
-                <td class="py-2">Pendente</td>
-              </tr>
-            </tbody>
-          </table>
+      <h2 class="text-3xl font-bold text-center mb-6 fade-in">Meus Pedidos</h2>
+      <p class="text-lg text-center mb-8 text-gray-300 neonPulse">Gerencie seus álibis com facilidade.</p>
+      <div class="neon-box p-6 holoGlow">
+        <div class="flex flex-col md:flex-row justify-between mb-4 gap-4">
+          <div>
+            <label for="type-filter" class="block text-sm font-medium mb-2">Filtrar por tipo:</label>
+            <select id="type-filter" class="w-full max-w-xs bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]">
+              <option value="">Todos</option>
+              <option value="pessoal">Pessoal</option>
+              <option value="profissional">Profissional</option>
+              <option value="social">Social</option>
+              <option value="familiar">Familiar</option>
+              <option value="emergência">Emergência</option>
+              <option value="acadêmica">Acadêmica</option>
+            </select>
+          </div>
+          <button id="export-csv" class="futuristic-btn text-white py-2 px-4 rounded-full self-end">Exportar CSV</button>
         </div>
-      </div>
-      <div class="neon-box">
-        <h3 class="text-xl font-semibold mb-4">Criar Novo Álibi</h3>
-        <p>Comece agora mesmo e crie um álibi personalizado. <a href="/alibis.html" class="text-[#22d3ee] hover:underline">Criar Álibi</a></p>
+        <div id="loader" class="loader hidden"></div>
+        <table id="alibis-table" class="hidden">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Data</th>
+              <th>Destinatário</th>
+              <th>Conteúdo</th>
+              <th>Formato</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="alibis-body"></tbody>
+        </table>
+        <div id="status-message" class="mt-4"></div>
       </div>
     </div>
   </section>
 
-  <section class="py-12 px-4 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6">Precisa de Ajuda?</h2>
-      <p class="text-lg mb-6 text-gray-300">Entre em contato com nossa equipe de suporte.</p>
-      <div class="flex flex-col md:flex-row justify-center gap-4">
-        <a href="/suporte.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Suporte</a>
-        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
-      </div>
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <h3 class="text-xl font-semibold mb-4">Editar Álibi</h3>
+      <form id="edit-form">
+        <div class="mb-4">
+          <label for="edit-recipient" class="block text-sm font-medium mb-2">Destinatário</label>
+          <input type="text" id="edit-recipient" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" required>
+          <p id="edit-recipient-error" class="error-message hidden">Campo obrigatório.</p>
+        </div>
+        <div class="mb-4">
+          <label for="edit-content" class="block text-sm font-medium mb-2">Motivo</label>
+          <textarea id="edit-content" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" rows="4" required></textarea>
+          <p id="edit-content-error" class="error-message hidden">Campo obrigatório.</p>
+        </div>
+        <div class="mb-4">
+          <label for="edit-type" class="block text-sm font-medium mb-2">Tipo</label>
+          <select id="edit-type" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" required>
+            <option value="pessoal">Pessoal</option>
+            <option value="profissional">Profissional</option>
+            <option value="social">Social</option>
+            <option value="familiar">Familiar</option>
+            <option value="emergência">Emergência</option>
+            <option value="acadêmica">Acadêmica</option>
+          </select>
+          <p id="edit-type-error" class="error-message hidden">Selecione um tipo.</p>
+        </div>
+        <div class="mb-4">
+          <label for="edit-format" class="block text-sm font-medium mb-2">Formato</label>
+          <select id="edit-format" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" required>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="audio">Áudio</option>
+            <option value="email">E-mail</option>
+            <option value="pdf">PDF</option>
+            <option value="sms">SMS</option>
+          </select>
+          <p id="edit-format-error" class="error-message hidden">Selecione um formato.</p>
+        </div>
+        <div class="mb-4">
+          <label for="edit-date" class="block text-sm font-medium mb-2">Data (opcional)</label>
+          <input type="date" id="edit-date" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]">
+        </div>
+        <div class="mb-4">
+          <label for="edit-time" class="block text-sm font-medium mb-2">Hora (opcional)</label>
+          <input type="time" id="edit-time" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]">
+        </div>
+        <div class="flex justify-end gap-4">
+          <button type="button" onclick="closeModal()" class="futuristic-btn text-white py-2 px-4 rounded-full">Cancelar</button>
+          <button type="submit" class="futuristic-btn text-white py-2 px-4 rounded-full">Salvar</button>
+        </div>
+      </form>
     </div>
-  </section>
-
-  <a href="/suporte.html" class="futuristic-btn fixed bottom-4 right-4 text-white font-bold py-2 px-4 rounded-full text-sm">💬 Suporte</a>
+  </div>
 
   <div id="cookie-banner" class="cookie-banner">
     <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
@@ -292,7 +346,7 @@
           <li><a href="/blog.html" class="hover:text-white">Blog</a></li>
           <li><a href="/planos.html" class="hover:text-white">Planos</a></li>
           <li><a href="/suporte.html" class="hover:text-white">Suporte</a></li>
-          <li><a href="/dashboard.html" class="hover:text-white">Dashboard</a></li>
+          <li><a href="/dashboard.html" class="hover:text-white">Meus Pedidos</a></li>
           <li><a href="/privacidade.html" class="hover:text-white">Privacidade</a></li>
           <li><a href="/politicas.html" class="hover:text-white">Políticas</a></li>
           <li><a href="/termos.html" class="hover:text-white">Termos</a></li>
@@ -314,30 +368,28 @@
 
   <script>
     function toggleMobileMenu() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenu.classList.toggle('hidden');
-      console.log('Menu mobile toggled');
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+      console.log('Mobile menu toggled');
     }
 
     function toggleServicesMenu() {
-      const servicesMenu = document.getElementById('services-menu');
-      servicesMenu.classList.toggle('hidden');
-      console.log('Menu de serviços toggled');
+      document.getElementById('services-menu').classList.toggle('hidden');
+      console.log('Services menu toggled');
     }
 
     function setCookie(name, value, days) {
-      let expires = "";
+      let expires = '';
       if (days) {
         const date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
+        expires = '; expires=' + date.toUTCString();
       }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+      document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Strict';
       console.log(`Cookie set: ${name}=${value}`);
     }
 
     function getCookie(name) {
-      const nameEQ = name + "=";
+      const nameEQ = name + '=';
       const ca = document.cookie.split(';');
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
@@ -350,13 +402,225 @@
     function acceptCookies() {
       setCookie('cookies_accepted', 'true', 365);
       document.getElementById('cookie-banner').style.display = 'none';
-      console.log('Cookies aceitos');
+      console.log('Cookies accepted');
     }
 
     function declineCookies() {
       setCookie('cookies_accepted', 'false', 365);
       document.getElementById('cookie-banner').style.display = 'none';
-      console.log('Cookies recusados');
+      console.log('Cookies declined');
+    }
+
+    function showLoader() {
+      document.getElementById('loader').classList.remove('hidden');
+      document.getElementById('alibis-table').classList.add('hidden');
+    }
+
+    function hideLoader() {
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('alibis-table').classList.remove('hidden');
+    }
+
+    function showMessage(text, isError = false) {
+      const statusMessage = document.getElementById('status-message');
+      statusMessage.textContent = text;
+      statusMessage.className = isError ? 'error-message' : 'success-message';
+    }
+
+    async function loadAlibis(filterType = '') {
+      showLoader();
+      const alibisBody = document.getElementById('alibis-body');
+      try {
+        const response = await fetch('http://localhost:3000/api/get-alibis', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Erro ao recuperar álibis');
+        }
+
+        console.log('Álibis recuperados:', result);
+
+        alibisBody.innerHTML = '';
+        const filteredAlibis = filterType ? result.alibis.filter(alibi => alibi.type === filterType) : result.alibis;
+
+        if (filteredAlibis.length === 0) {
+          alibisBody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum álibi encontrado.</td></tr>';
+        } else {
+          filteredAlibis.forEach(alibi => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${alibi.id}</td>
+              <td>${new Date(alibi.createdAt).toLocaleDateString('pt-BR')}</td>
+              <td>${alibi.recipient}</td>
+              <td>${alibi.content.substring(0, 50)}${alibi.content.length > 50 ? '...' : ''}</td>
+              <td>${alibi.format.charAt(0).toUpperCase() + alibi.format.slice(1)}</td>
+              <td>${alibi.type.charAt(0).toUpperCase() + alibi.type.slice(1)}</td>
+              <td>
+                <button class="action-btn edit-btn mr-2" onclick="openEditModal(${alibi.id})">Editar</button>
+                <button class="action-btn delete-btn" onclick="deleteAlibi(${alibi.id})">Excluir</button>
+              </td>
+            `;
+            alibisBody.appendChild(row);
+          });
+        }
+        showMessage('');
+      } catch (error) {
+        console.error('Erro ao recuperar álibis:', error);
+        showMessage(`Erro ao carregar álibis: ${error.message}`, true);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    async function deleteAlibi(id) {
+      if (!confirm('Confirmar exclusão do álibi?')) return;
+
+      showLoader();
+      try {
+        const response = await fetch(`http://localhost:3000/api/delete-alibi/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || 'Erro ao excluir álibi');
+        }
+
+        console.log('Álibi excluído:', id);
+        showMessage('Álibi excluído com sucesso!');
+        loadAlibis(document.getElementById('type-filter').value);
+      } catch (error) {
+        console.error('Erro ao excluir álibi:', error);
+        showMessage(`Erro ao excluir: ${error.message}`, true);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function openEditModal(id) {
+      const modal = document.getElementById('edit-modal');
+      const form = document.getElementById('edit-form');
+
+      fetch(`http://localhost:3000/api/get-alibis`)
+        .then(response => response.json())
+        .then(result => {
+          const alibi = result.alibis.find(a => a.id === id);
+          if (alibi) {
+            document.getElementById('edit-recipient').value = alibi.recipient;
+            document.getElementById('edit-content').value = alibi.content;
+            document.getElementById('edit-type').value = alibi.type;
+            document.getElementById('edit-format').value = alibi.format;
+            document.getElementById('edit-date').value = alibi.date;
+            document.getElementById('edit-time').value = alibi.time;
+            modal.style.display = 'flex';
+
+            form.onsubmit = async (e) => {
+              e.preventDefault();
+
+              let hasError = false;
+              const fields = ['edit-recipient', 'edit-content', 'edit-type', 'edit-format'];
+              fields.forEach(field => {
+                const input = document.getElementById(field);
+                const error = document.getElementById(`${field}-error`);
+                if (!input.value) {
+                  input.classList.add('border-red-500');
+                  error.classList.remove('hidden');
+                  hasError = true;
+                } else {
+                  input.classList.remove('border-red-500');
+                  error.classList.add('hidden');
+                }
+              });
+
+              if (hasError) return;
+
+              showLoader();
+              try {
+                const response = await fetch(`http://localhost:3000/api/update-alibi/${id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    recipient: document.getElementById('edit-recipient').value,
+                    content: document.getElementById('edit-content').value,
+                    type: document.getElementById('edit-type').value,
+                    format: document.getElementById('edit-format').value,
+                    date: document.getElementById('edit-date').value,
+                    time: document.getElementById('edit-time').value,
+                  }),
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                  throw new Error(result.error || 'Erro ao atualizar álibi');
+                }
+
+                console.log('Álibi atualizado:', id);
+                showMessage('Álibi atualizado com sucesso!');
+                closeModal();
+                loadAlibis(document.getElementById('type-filter').value);
+              } catch (error) {
+                console.error('Erro ao atualizar álibi:', error);
+                showMessage(`Erro ao atualizar: ${error.message}`, true);
+              } finally {
+                hideLoader();
+              }
+            };
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao carregar álibi:', error);
+          showMessage(`Erro ao carregar álibi: ${error.message}`, true);
+        });
+    }
+
+    function closeModal() {
+      document.getElementById('edit-modal').style.display = 'none';
+      document.getElementById('edit-form').reset();
+      document.querySelectorAll('.error-message').forEach(e => e.classList.add('hidden'));
+      document.querySelectorAll('input, select, textarea').forEach(e => e.classList.remove('border-red-500'));
+    }
+
+    function exportToCSV() {
+      fetch('http://localhost:3000/api/get-alibis')
+        .then(response => response.json())
+        .then(result => {
+          if (result.alibis.length === 0) {
+            showMessage('Nenhum álibi para exportar.', true);
+            return;
+          }
+
+          const headers = ['ID', 'Data', 'Destinatário', 'Conteúdo', 'Formato', 'Tipo'];
+          const rows = result.alibis.map(alibi => [
+            alibi.id,
+            new Date(alibi.createdAt).toLocaleDateString('pt-BR'),
+            `"${alibi.recipient.replace(/"/g, '""')}"`,
+            `"${alibi.content.replace(/"/g, '""')}"`,
+            alibi.format,
+            alibi.type,
+          ]);
+
+          const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.join(',')),
+          ].join('\n');
+
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.setAttribute('href', url);
+          link.setAttribute('download', 'alibis_export.csv');
+          link.click();
+          URL.revokeObjectURL(url);
+          console.log('CSV exportado');
+        })
+        .catch(error => {
+          console.error('Erro ao exportar CSV:', error);
+          showMessage(`Erro ao exportar: ${error.message}`, true);
+        });
     }
 
     try {
@@ -369,17 +633,17 @@
             opacity: { value: 0.5, random: true },
             size: { value: 3, random: true },
             line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out' }
+            move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out' },
           },
           interactivity: {
             detect_on: 'canvas',
             events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-            modes: { repulse: { distance: 100, duration: 0.4 } }
-          }
+            modes: { repulse: { distance: 100, duration: 0.4 } },
+          },
         });
         console.log('particles.js inicializado');
       } else {
-        console.warn('particles.js não foi carregado');
+        console.warn('particles.js não carregado');
       }
     } catch (e) {
       console.error('Erro ao inicializar particles.js:', e);
@@ -389,11 +653,21 @@
       console.log('DOM carregado: dashboard.html');
       try {
         if (!getCookie('cookies_accepted')) {
-          document.getElementById='cookie-banner').style.display = 'flex';
+          document.getElementById('cookie-banner').style.display = 'flex';
           console.log('Cookie banner exibido');
         }
+
+        loadAlibis();
+
+        document.getElementById('type-filter').addEventListener('change', (e) => {
+          loadAlibis(e.target.value);
+          console.log('Filtro aplicado:', e.target.value);
+        });
+
+        document.getElementById('export-csv').addEventListener('click', exportToCSV);
       } catch (e) {
         console.error('Erro na inicialização:', e);
+        showMessage('Erro ao inicializar página.', true);
       }
     });
   </script>
