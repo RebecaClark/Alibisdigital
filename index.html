@@ -250,6 +250,99 @@
   }
 </style>
 </head>
+  <script>
+  // Objeto com traduções
+  const translations = {
+    'pt-BR': {
+      services: 'Serviços',
+      scanner: 'Scanner com IA',
+      'emotional-evaluation': 'Avaliação Emocional',
+      'medical-ai': 'Diagnóstico Médico',
+      alibi: 'Criar Álibi',
+      blog: 'Blog',
+      plans: 'Planos',
+      support: 'Suporte',
+      'test-free': '🔍 Teste Grátis',
+      'hero-title': 'Transforme Seu Dia com IA Emocional',
+      'hero-subtitle': 'Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.',
+      'play-video': 'Tocar Vídeo',
+      'test-scanner': '🔍 Teste o Scanner Grátis',
+      'offer-valid': '🚨 Oferta válida até 31/05/2025 ou até acabarem as vagas! Restam 12 vagas!',
+      'exclusive-tips': 'Receba Dicas Exclusivas',
+      'subscribe': 'Inscrever-se',
+      'data-protected': '🔒 Seus dados são protegidos.'
+    },
+    'en-US': {
+      services: 'Services',
+      scanner: 'AI Scanner',
+      'emotional-evaluation': 'Emotional Evaluation',
+      'medical-ai': 'Medical Diagnosis',
+      alibi: 'Create Alibi',
+      blog: 'Blog',
+      plans: 'Plans',
+      support: 'Support',
+      'test-free': '🔍 Free Test',
+      'hero-title': 'Transform Your Day with Emotional AI',
+      'hero-subtitle': 'Discover and manage your emotions with the most advanced emotional scanner of the future.',
+      'play-video': 'Play Video',
+      'test-scanner': '🔍 Test the Scanner Free',
+      'offer-valid': '🚨 Offer valid until 05/31/2025 or until spots run out! 12 spots left!',
+      'exclusive-tips': 'Receive Exclusive Tips',
+      'subscribe': 'Subscribe',
+      'data-protected': '🔒 Your data is protected.'
+    },
+    'es-ES': {
+      services: 'Servicios',
+      scanner: 'Escáner con IA',
+      'emotional-evaluation': 'Evaluación Emocional',
+      'medical-ai': 'Diagnóstico Médico',
+      alibi: 'Crear Alibi',
+      blog: 'Blog',
+      plans: 'Planes',
+      support: 'Soporte',
+      'test-free': '🔍 Prueba Gratis',
+      'hero-title': 'Transforma Tu Día con IA Emocional',
+      'hero-subtitle': 'Descubre y gestiona tus emociones con el escáner emocional más avanzado del futuro.',
+      'play-video': 'Reproducir Video',
+      'test-scanner': '🔍 Prueba el Escáner Gratis',
+      'offer-valid': '🚨 Oferta válida hasta 31/05/2025 o hasta que se agoten las plazas! Quedan 12 plazas!',
+      'exclusive-tips': 'Recibe Consejos Exclusivos',
+      'subscribe': 'Suscribirse',
+      'data-protected': '🔒 Tus datos están protegidos.'
+    };
+
+  // Função para obter o idioma da URL
+  function getLanguageFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || 'pt-BR'; // Padrão para pt-BR se não especificado
+  }
+
+  // Função para atualizar o idioma
+  function updateLanguage(lang) {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      element.textContent = translations[lang][key] || key; // Usa a tradução ou a chave como fallback
+    });
+    // Atualiza a URL sem recarregar a página
+    window.history.pushState({}, '', `?lang=${lang}`);
+  }
+
+  // Função para inicializar o idioma ao carregar a página
+  document.addEventListener('DOMContentLoaded', () => {
+    const initialLang = getLanguageFromURL();
+    updateLanguage(initialLang);
+
+    // Adiciona evento de clique nas bandeiras
+    document.querySelectorAll('.language-switch a, .language-switch-mobile a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const lang = link.getAttribute('href').split('=')[1];
+        updateLanguage(lang);
+      });
+    });
+  });
+</script>
 <body class="bg-[#0b1120] text-white font-sans">
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
