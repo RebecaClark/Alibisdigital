@@ -1,53 +1,14 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Política de privacidade da Álibis Digital. Saiba como protegemos seus dados de acordo com a LGPD.">
+  <meta name="description" content="Política de Privacidade da Álibis Digital, em conformidade com a LGPD.">
   <meta name="keywords" content="privacidade, LGPD, proteção de dados">
   <meta name="author" content="Álibis Digital">
-  <title>Política de Privacidade - Álibis Digital</title>
-  <script src="https://cdn.tailwindcss.com/3.4.3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('particles.js não carregado')"></script>
+  <title>Privacidade - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
   <style>
     html { scroll-behavior: smooth; }
     body { 
@@ -113,11 +74,28 @@
       padding: 16px;
       box-shadow: 0 0 8px #22d3ee;
     }
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(31, 41, 55, 0.95);
+      border-top: 2px solid #22d3ee;
+      padding: 16px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    .cookie-banner p { font-size: 14px; max-width: 70%; }
+    .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
       .max-w-6xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      .cookie-banner { flex-direction: column; text-align: center; }
+      .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
     }
   </style>
 </head>
@@ -126,10 +104,10 @@
   <header class="holo-nav fixed top-0 left-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <a href="/index.html" aria-label="Home">
-        <img src="https://via.placeholder.com/100x40?text=Logo" alt="Logo Álibis Digital" class="h-10">
+        <img src="/logotipo.png" alt="Logo Álibis Digital" class="h-10">
       </a>
       <div class="md:hidden">
-        <button id="menu-toggle" class="text-white focus:outline-none">
+        <button id="menu-toggle" onclick="toggleMobileMenu()" class="text-white focus:outline-none">
           <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -147,7 +125,7 @@
             <a href="/scanner.html">Scanner com IA</a>
             <a href="/apoio-emocional.html">Avaliação Emocional</a>
             <a href="/medical-ai.html">Diagnóstico Médico</a>
-            <a href="/criar-alibis-realistas-ia.html">Criar Álibi</a>
+            <a href="/alibis.html">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="hover:text-[#22d3ee]">Blog</a>
@@ -160,7 +138,7 @@
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 flex justify-between">
+          <button id="services-toggle" onclick="toggleServicesMenu()" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 flex justify-between">
             Serviços
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-6-6"/>
@@ -170,7 +148,7 @@
             <a href="/scanner.html" class="block py-2 px-4 text-white hover:bg-gray-700">Scanner com IA</a>
             <a href="/apoio-emocional.html" class="block py-2 px-4 text-white hover:bg-gray-700">Avaliação Emocional</a>
             <a href="/medical-ai.html" class="block py-2 px-4 text-white hover:bg-gray-700">Diagnóstico Médico</a>
-            <a href="/criar-alibis-realistas-ia.html" class="block py-2 px-4 text-white hover:bg-gray-700">Criar Álibi</a>
+            <a href="/alibis.html" class="block py-2 px-4 text-white hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Blog</a>
@@ -186,7 +164,7 @@
   <section id="hero" class="text-white text-center py-16 px-4">
     <div class="max-w-6xl mx-auto">
       <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 fade-in">Política de Privacidade</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">Saiba como protegemos seus dados.</p>
+      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">Compromisso com a proteção dos seus dados.</p>
       <div class="flex flex-col md:flex-row justify-center gap-4">
         <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
         <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Teste Grátis</a>
@@ -197,24 +175,16 @@
   <section id="privacy" class="py-12 px-4 md:px-8">
     <div class="max-w-4xl mx-auto">
       <div class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">1. Coleta de Dados</h3>
-        <p>Coletamos apenas dados necessários, como e-mail e contexto para álibis. Dados sensíveis são anonimizados.</p>
+        <h3 class="text-xl font-semibold mb-4">1. Dados Coletados</h3>
+        <p>Coletamos apenas informações necessárias, como nome, e-mail e dados de uso, com seu consentimento.</p>
       </div>
       <div class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">2. Uso de Dados</h3>
-        <p>Usamos dados para personalizar álibis, pré-diagnósticos e comunicações. Não compartilhamos com terceiros, exceto por lei.</p>
-      </div>
-      <div class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">3. Proteção de Dados</h3>
-        <p>Empregamos criptografia AES-256 e servidores seguros, em conformidade com a LGPD.</p>
-      </div>
-      <div class="neon-box mb-4">
-        <h3 class="text-xl font-semibold mb-4">4. Cookies</h3>
-        <p>Usamos cookies para melhorar a experiência. Desative-os nas configurações do navegador.</p>
+        <h3 class="text-xl font-semibold mb-4">2. Uso dos Dados</h3>
+        <p>Seus dados são usados para personalizar serviços e melhorar a experiência.</p>
       </div>
       <div class="neon-box">
-        <h3 class="text-xl font-semibold mb-4">5. Contato</h3>
-        <p>Para dúvidas, contate <a href="mailto:contato@alibisdigital.com" class="text-[#22d3ee] hover:underline">contato@alibisdigital.com</a>.</p>
+        <h3 class="text-xl font-semibold mb-4">3. Conformidade LGPD</h3>
+        <p>Seguimos a Lei Geral de Proteção de Dados. Contate-nos para exercer seus direitos.</p>
       </div>
     </div>
   </section>
@@ -226,12 +196,20 @@
       <div class="flex flex-col md:flex-row justify-center gap-4">
         <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
         <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Teste Grátis</a>
-        <a href="/criar-alibis-realistas-ia.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Álibi</a>
+        <a href="/alibis.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Álibi</a>
       </div>
     </div>
   </section>
 
   <a href="/suporte.html" class="futuristic-btn fixed bottom-4 right-4 text-white font-bold py-2 px-4 rounded-full text-sm">💬 Suporte</a>
+
+  <div id="cookie-banner" class="cookie-banner">
+    <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
+    <div>
+      <button onclick="acceptCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Aceitar</button>
+      <button onclick="declineCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Recusar</button>
+    </div>
+  </div>
 
   <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12">
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
@@ -243,7 +221,7 @@
         <h4 class="text-white font-semibold mb-4">Navegue</h4>
         <ul class="space-y-2">
           <li><a href="/index.html" class="hover:text-white">Início</a></li>
-          <li><a href="/criar-alibis-realistas-ia.html" class="hover:text-white">Criar Álibi</a></li>
+          <li><a href="/alibis.html" class="hover:text-white">Criar Álibi</a></li>
           <li><a href="/scanner.html" class="hover:text-white">Scanner com IA</a></li>
           <li><a href="/apoio-emocional.html" class="hover:text-white">Avaliação Emocional</a></li>
           <li><a href="/medical-ai.html" class="hover:text-white">Diagnóstico Médico</a></li>
@@ -254,6 +232,7 @@
           <li><a href="/privacidade.html" class="hover:text-white">Privacidade</a></li>
           <li><a href="/politicas.html" class="hover:text-white">Políticas</a></li>
           <li><a href="/termos.html" class="hover:text-white">Termos</a></li>
+          <li><a href="/cookies.html" class="hover:text-white">Cookies</a></li>
         </ul>
       </div>
       <div>
@@ -270,6 +249,52 @@
   </footer>
 
   <script>
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+      console.log('Menu mobile toggled');
+    }
+
+    function toggleServicesMenu() {
+      const servicesMenu = document.getElementById('services-menu');
+      servicesMenu.classList.toggle('hidden');
+      console.log('Menu de serviços toggled');
+    }
+
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+      console.log(`Cookie set: ${name}=${value}`);
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function acceptCookies() {
+      setCookie('cookies_accepted', 'true', 365);
+      document.getElementById('cookie-banner').style.display = 'none';
+      console.log('Cookies aceitos');
+    }
+
+    function declineCookies() {
+      setCookie('cookies_accepted', 'false', 365);
+      document.getElementById('cookie-banner').style.display = 'none';
+      console.log('Cookies recusados');
+    }
+
     try {
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
@@ -297,23 +322,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM carregado: privacidade.html');
       try {
-        const hamburger = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (hamburger && mobileMenu) {
-          hamburger.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            console.log('Menu mobile toggled');
-          });
-        }
-
-        const servicesToggle = document.getElementById('services-toggle');
-        const servicesMenu = document.getElementById('services-menu');
-        if (servicesToggle && servicesMenu) {
-          servicesToggle.addEventListener('click', () => {
-            servicesMenu.classList.toggle('hidden');
-            console.log('Menu de serviços toggled');
-          });
+        if (!getCookie('cookies_accepted')) {
+          document.getElementById('cookie-banner').style.display = 'flex';
+          console.log('Cookie banner exibido');
         }
       } catch (e) {
         console.error('Erro na inicialização:', e);
