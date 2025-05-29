@@ -219,7 +219,6 @@
       box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
       border: 0.125rem solid #22d3ee;
     }
-    /* Remover estilos relacionados às bandeiras, já que a troca de idiomas será removida */
     @media (max-width: 768px) {
       .holo-nav .header-right {
         flex-direction: column;
@@ -305,6 +304,62 @@
       </nav>
     </div>
   </header>
+  <div class="h-20"></div>
+
+  <!-- Hero -->
+  <section id="hero" class="text-white text-center py-20 px-6 relative">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
+        Transforme Seu Dia com IA Emocional
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
+        Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
+      </p>
+      <div class="mb-10 relative">
+        <video controls preload="auto" autoplay class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+          <source src="/assets/vsl-video.mp4" type="video/mp4">
+          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação">Tocar Vídeo</button>
+        </video>
+      </div>
+      <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis">
+        🔍 Teste o Scanner Grátis
+      </a>
+      <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas">
+          <button class="futuristic-btn text-white py-3 px-6 rounded-lg" aria-label="Inscrever-se para receber dicas exclusivas">Inscrever-se</button>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script para inicialização de partículas e menu -->
+  <script>
+    // Função para inicializar o site ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+      // Inicializa partículas
+      particlesJS.load('particles-js', 'particles.json', function() {
+        console.log('Partículas carregadas');
+      });
+
+      // Adiciona funcionalidade ao menu hamburguer
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const servicesToggle = document.getElementById('services-toggle');
+      const servicesMenu = document.getElementById('services-menu');
+
+      hamburgerMenu.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      servicesToggle.addEventListener('click', () => {
+        servicesMenu.classList.toggle('hidden');
+      });
+    });
+  </script>
+</body>
   <div class="h-20"></div>
 
   <!-- Hero -->
