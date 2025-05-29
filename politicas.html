@@ -1,0 +1,375 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Políticas gerais da Álibis Digital, incluindo cookies e conduta.">
+  <meta name="keywords" content="políticas, cookies, conduta">
+  <meta name="author" content="Álibis Digital">
+  <title>Políticas - Álibis Digital</title>
+  <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Tailwind CDN não carregado')"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('particles.js não carregado')"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { 
+      position: relative; 
+      overflow-x: hidden; 
+      min-height: 100vh; 
+      color: #e5e7eb; 
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+      font-family: Arial, sans-serif;
+    }
+    #particles-js { 
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .futuristic-btn { 
+      background: linear-gradient(45deg, #7C3AED, #22d3ee); 
+      box-shadow: 0 0 10px #22d3ee; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    }
+    .futuristic-btn:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 0 20px #22d3ee; 
+    }
+    .holo-nav {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
+    .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; }
+    .dropdown-menu {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3e;
+      border-radius: 8px;
+      padding: 8px 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      width: 200px;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+    }
+    .dropdown:hover .dropdown-menu { display: block; }
+    .neon-box {
+      background: rgba(31, 41, 55, 0.9);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 0 8px #22d3e;
+    }
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 100%;
+      width: 100%;
+      background: rgba(31, 41, 55, 0.95);
+      border-top: 2px solid #22d3ee;
+      padding: 16px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    .cookie-banner p { font-size: 14px; max-width: 70%; }
+    .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.8rem; }
+      .max-w-full-width-6xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; width: full-width: auto100%; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      .cookie-banner { flex-direction: column; text-align: center; }
+      .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <header class="holo-nav fixed top-0 left-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/index.html" aria-label="Home">
+        <img src="http://via.placeholder.com/100x40?text=Logo" alt="Logo Álibis Digital" class="h-10">
+      </a>
+      <div class="md-hidden">
+        <button id="toggleMobileMenu" onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="hidden md:flex space-x-6 items-center">
+        <div class="dropdown relative">
+          <button class="hover:text-[#22d3ee] flex items-center">
+            Serviços
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-6-6"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/scanner.html">Scanner com IA</a>
+            <a href="/apoio-emocional.html">Avaliação Emocional</a>
+            <a href="/medical-ai.html">Diagnóstico Médico</a>
+            <a href="/criar-alibis-realistas-ia.html">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="hover:text-[#22d3ee]">Blog</a>
+        <a href="/planos.html" class="hover:text-[#22d3ee]">Planos</a>
+        <a href="/suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
+        <a href="/dashboard.html" class="hover:text-[#22d3ee]">Meus Pedidos</a>
+        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full">Assinar Agora</a>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="md-hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+      <nav class="flex flex-col items-center space-y-4">
+        <div class="w-full">
+          <button id="services-toggle" onclick="toggleServicesMenu()" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 flex justify-between">
+            Serviços
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-6-6"/>
+            </svg>
+          </button>
+          <div id="services-menu" class="hidden">
+            <a href="/scanner.html" class="block py-2 px-4 text-white hover:bg-gray-700">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="block py-2 px-4 text-white hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="block py-2 px-4 text-white hover:bg-gray-700">Diagnóstico Médico</a>
+            <a href="/criar-alibis-realistas-ia.html" class="block py-2 px-4 text-white hover:bg-gray-700">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Blog</a>
+        <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Planos</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Suporte</a>
+        <a href="/dashboard.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Meus Pedidos</a>
+        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full w-full">Assinar Agora</a>
+      </nav>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <section id="hero" class="text-white text-center py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 fade-in">Nossas Políticas</h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">Regras para uma experiência segura.</p>
+      <div class="flex flex-col md:flex-row justify-center gap-4">
+        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
+        <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Teste Grátis</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="policies" class="py-12 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="neon-box mb-4">
+        <h3 class="text-xl font-semibold mb-4">1. Uso de Cookies</h3>
+        <p>Usamos cookies para personalizar sua experiência. Gerencie no navegador ou em <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Gerenciar Cookies</a>.</p>
+      </div>
+      <div class="neon-box mb-4">
+        <h3 class="text-xl font-semibold mb-4">2. Conduta do Usuário</h3>
+        <p>Respeite as leis e use nossos serviços eticamente.</p>
+      </div>
+      <div class="neon-box">
+        <h3 class="text-xl font-semibold mb-4">3. Conformidade LGPD</h3>
+        <p>Seguimos a LGPD. Veja <a href="/privacidade.html" class="text-[#22d3ee] hover:underline">Política de Privacidade</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6">Pronto para Começar?</h2>
+      <p class="text-lg mb-6 text-gray-300">Assine ou experimente gratuitamente.</p>
+      <div class="flex flex-col md:flex-row justify-center gap-4">
+        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Assinar Agora</a>
+        <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Teste Grátis</a>
+        <a href="/criar-alibis-realistas-ia.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Álibi</a>
+      </div>
+    </div>
+  </section>
+
+  <a href="/suporte.html" class="futuristic-btn fixed bottom-4 right-4 text-white font-bold py-2 px-4 rounded-full text-sm">💬 Suporte</a>
+
+  <div id="cookie-banner" class="cookie-banner">
+    <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
+    <div>
+      <button onclick="acceptCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Aceitar</button>
+      <button onclick="declineCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Recusar</button>
+    </div>
+  </div>
+
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4">Álibis Digital</h3>
+        <p>Soluções de privacidade e bem-estar com tecnologia avançada.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Navegue</h4>
+        <ul class="space-y-2">
+          <li><a href="/index.html" class="hover:text-white">Início</a></li>
+          <li><a href="/criar-alibis-realistas-ia.html" class="hover:text-white">Criar Álibi</a></li>
+          <li><a href="/scanner.html" class="hover:text-white">Scanner com IA</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white">Avaliação Emocional</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-white">Diagnóstico Médico</a></li>
+          <li><a href="/blog.html" class="hover:text-white">Blog</a></li>
+          <li><a href="/planos.html" class="hover:text-white">Planos</a></li>
+          <li><a href="/suporte.html" class="hover:text-white">Suporte</a></li>
+          <li><a href="/dashboard.html" class="hover:text-white">Meus Pedidos</a></li>
+          <li><a href="/privacidade.html" class="hover:text-white">Privacidade</a></li>
+          <li><a href="/politicas.html" class="hover:text-white">Políticas</a></li>
+          <li><a href="/termos.html" class="hover:text-white">Termos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4">Contato</h4>
+        <ul class="space-y-2">
+          <li>E-mail: contato@alibisdigital.com</li>
+          <li>WhatsApp: (11) 91234-5678</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+      console.log('Menu mobile toggled');
+    }
+
+    function toggleServicesMenu() {
+      const servicesMenu = document.getElementById('services-menu');
+      servicesMenu.classList.toggle('hidden');
+      console.log('Menu de serviços toggled');
+    }
+
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+      console.log(`Cookie set: ${name}=${value}`);
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function acceptCookies() {
+      setCookie('cookies_accepted', 'true', 365);
+      document.getElementById('cookie-banner').style.display = 'none';
+      console.log('Cookies aceitos');
+    }
+
+    function declineCookies() {
+      setCookie('cookies_accepted', 'false', 365);
+      document.getElementById('cookie-banner').style.display = 'none';
+      console.log('Cookies recusados');
+    }
+
+    try {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#22d3ee' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.5, random: true },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out' }
+          },
+          interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+            modes: { repulse: { distance: 100, duration: 0.4 } }
+          }
+        });
+        console.log('particles.js inicializado');
+      } else {
+        console.warn('particles.js não carregado');
+      }
+    } catch (e) {
+      console.error('Erro ao inicializar particles.js:', e);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM carregado: politicas.html');
+      try {
+        if (!getCookie('cookies_accepted')) {
+          document.getElementById('cookie-banner').style.display = 'flex';
+          console.log('Cookie banner exibido');
+        }
+      } catch (e) {
+        console.error('Erro na inicialização:', e);
+      }
+    });
+  </script>
+</body>
+</html>
