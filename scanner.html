@@ -1059,23 +1059,29 @@
           }
           return;
         }
-      } catch (error) {
-        console.error('Erro no reconhecimento de voz:', error);
-        micPrompt.style.display = 'none';
-        if (audioStream) {
-          audioStream.getAudioTracks().forEach(track => track.stop());
-          audioStream = null;
-          console.log('Microfone desativado devido a erro no reconhecimento de voz');
-        }
-        result.innerHTML = '<p class="fade-in">🚫 Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
-        speak('Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.');
-        if (videoStream) {
-          videoStream.getVideoTracks().forEach(track => track.stop());
-          video.classList.add('hidden');
-          placeholder.classList.remove('hidden');
-        }
-        return;
-      }
+} catch (error) {
+  console.error('Erro no reconhecimento de voz:', error);
+  micPrompt.style.display = 'none';
+  if (audioStream) {
+    audioStream.getAudioTracks().forEach(track => track.stop());
+    audioStream = null;
+    console.log('Microfone desativado devido a erro no reconhecimento de voz');
+  }
+  let errorMessage = '🚫 Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.';
+  if (error === 'not-allowed') {
+    errorMessage = '🚫 Permissão para o microfone negada. Por favor, permita o acesso e tente novamente.';
+  } else if (error === 'Timeout: No speech detected within 10 seconds') {
+    errorMessage = '🚫 Nenhuma fala detectada em 10 segundos. Fale mais alto ou verifique o microfone.';
+  }
+  result.innerHTML = `<p class="fade-in">${errorMessage}</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
+  speak(errorMessage.replace('🚫 ', ''));
+  if (videoStream) {
+    videoStream.getVideoTracks().forEach(track => track.stop());
+    video.classList.add('hidden');
+    placeholder.classList.remove('hidden');
+  }
+  return;
+}
     } else {
       result.innerHTML = '<p class="fade-in">🚫 Reconhecimento de voz não disponível neste navegador. Ative manualmente para continuar.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
       speak('Reconhecimento de voz não disponível. Ative manualmente para continuar.');
