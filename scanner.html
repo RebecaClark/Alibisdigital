@@ -1068,10 +1068,12 @@
     console.log('Microfone desativado devido a erro no reconhecimento de voz');
   }
   let errorMessage = '🚫 Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.';
-  if (error === 'not-allowed') {
+  if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
     errorMessage = '🚫 Permissão para o microfone negada. Por favor, permita o acesso e tente novamente.';
   } else if (error === 'Timeout: No speech detected within 10 seconds') {
     errorMessage = '🚫 Nenhuma fala detectada em 10 segundos. Fale mais alto ou verifique o microfone.';
+  } else if (error.name === 'NotFoundError') {
+    errorMessage = '🚫 Nenhum microfone detectado. Conecte um microfone e tente novamente.';
   }
   result.innerHTML = `<p class="fade-in">${errorMessage}</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
   speak(errorMessage.replace('🚫 ', ''));
