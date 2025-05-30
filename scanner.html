@@ -359,6 +359,55 @@
     }
   </style>
 <script>
+  // Funções Auxiliares
+  function fft(signal) {
+    const n = signal.length;
+    if (n <= 1) return signal;
+
+    const even = [];
+    const odd = [];
+    for (let i = 0; i < n; i++) {
+      if (i % 2 === 0) even.push(signal[i]);
+      else odd.push(signal[i]);
+    }
+
+    const evenFFT = fft(even);
+    const oddFFT = fft(odd);
+    const result = new Array(n).fill(0);
+
+    for (let i = 0; i < n / 2; i++) {
+      const theta = -2 * Math.PI * i / n;
+      const t = {
+        re: Math.cos(theta) * oddFFT[i],
+        im: Math.sin(theta) * oddFFT[i]
+      };
+      result[i] = evenFFT[i] + t.re;
+      result[i + n / 2] = evenFFT[i] - t.re;
+    }
+    return result;
+  }
+
+  function getDominantFrequency(signal, sampleRate) {
+    const n = signal.length;
+    const fftResult = fft(signal);
+    const magnitudes = fftResult.slice(0, n / 2).map((val, i) => {
+      return Math.sqrt(val * val);
+    });
+
+    let maxMag = 0;
+    let maxIndex = 0;
+    for (let i = 1; i < magnitudes.length; i++) {
+      if (magnitudes[i] > maxMag) {
+        maxMag = magnitudes[i];
+        maxIndex = i;
+      }
+    }
+
+    const freq = maxIndex * sampleRate / n;
+    return freq;
+  }
+
+  // Função Principal
   async function captureAndAnalyze() {
     console.log('Iniciando análise facial e biométrica...');
     const canvas = document.getElementById('canvas');
@@ -743,8 +792,8 @@
       }
     }
   }
-</script>
-  <script>
+
+  // Funções de Eventos
   async function initMedicalConsult() {
     const result = document.getElementById('scanner-result');
     if (result) {
@@ -763,52 +812,5 @@
       vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
       speak(vrContainer.style.display === 'block' ? 'Bem-vindo ao Relaxamento VR/AR!' : 'Relaxamento VR/AR desativado.');
     }
-  }
-
-  function fft(signal) {
-    const n = signal.length;
-    if (n <= 1) return signal;
-
-    const even = [];
-    const odd = [];
-    for (let i = 0; i < n; i++) {
-      if (i % 2 === 0) even.push(signal[i]);
-      else odd.push(signal[i]);
-    }
-
-    const evenFFT = fft(even);
-    const oddFFT = fft(odd);
-    const result = new Array(n).fill(0);
-
-    for (let i = 0; i < n / 2; i++) {
-      const theta = -2 * Math.PI * i / n;
-      const t = {
-        re: Math.cos(theta) * oddFFT[i],
-        im: Math.sin(theta) * oddFFT[i]
-      };
-      result[i] = evenFFT[i] + t.re;
-      result[i + n / 2] = evenFFT[i] - t.re;
-    }
-    return result;
-  }
-
-  function getDominantFrequency(signal, sampleRate) {
-    const n = signal.length;
-    const fftResult = fft(signal);
-    const magnitudes = fftResult.slice(0, n / 2).map((val, i) => {
-      return Math.sqrt(val * val);
-    });
-
-    let maxMag = 0;
-    let maxIndex = 0;
-    for (let i = 1; i < magnitudes.length; i++) {
-      if (magnitudes[i] > maxMag) {
-        maxMag = magnitudes[i];
-        maxIndex = i;
-      }
-    }
-
-    const freq = maxIndex * sampleRate / n;
-    return freq;
   }
 </script>
