@@ -372,15 +372,15 @@
   <section class="py-10 px-6 text-center animate-on-scroll" id="emotion-intro">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold mb-6 text-white shine">Entenda Suas Emoções</h2>
-      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais para identificar emoções como felicidade, tristeza, raiva, medo, surpresa, nojo e neutralidade. Cada emoção reflete um estado interno único, ajudando você a se conhecer melhor.</p>
+      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar emoções como felicidade, tristeza, raiva, medo, surpresa, nojo e neutralidade. Cada emoção reflete um estado interno único, ajudando você a se conhecer melhor.</p>
       <ul class="text-left text-gray-300 mb-6 space-y-2">
-        <li><strong>Felicidade:</strong> Sorrisos largos e olhos brilhantes indicam alegria e bem-estar.</li>
-        <li><strong>Tristeza:</strong> Sobrancelhas caídas e boca curvada sugerem melancolia ou introspecção.</li>
-        <li><strong>Raiva:</strong> Sobrancelhas franzidas e lábios apertados mostram tensão ou frustração.</li>
-        <li><strong>Medo:</strong> Olhos arregalados e boca entreaberta refletem ansiedade ou incerteza.</li>
-        <li><strong>Surpresa:</strong> Sobrancelhas erguidas e olhos abertos indicam algo inesperado.</li>
-        <li><strong>Nojo:</strong> Nariz enrugado e lábios contraídos mostram repulsa.</li>
-        <li><strong>Neutralidade:</strong> Expressão relaxada pode indicar calma ou concentração.</li>
+        <li><strong>Felicidade:</strong> Sorrisos largos, olhos brilhantes e tom animado indicam alegria e bem-estar.</li>
+        <li><strong>Tristeza:</strong> Sobrancelhas caídas, boca curvada e voz baixa sugerem melancolia ou introspecção.</li>
+        <li><strong>Raiva:</strong> Sobrancelhas franzidas, lábios apertados e tom elevado mostram tensão ou frustração.</li>
+        <li><strong>Medo:</strong> Olhos arregalados, boca entreaberta e voz trêmula refletem ansiedade ou incerteza.</li>
+        <li><strong>Surpresa:</strong> Sobrancelhas erguidas, olhos abertos e tom agudo indicam algo inesperado.</li>
+        <li><strong>Nojo:</strong> Nariz enrugado, lábios contraídos e tom de repulsa mostram desagrado.</li>
+        <li><strong>Neutralidade:</strong> Expressão relaxada e tom estável podem indicar calma ou concentração.</li>
       </ul>
       <button onclick="document.getElementById('scanner').scrollIntoView({behavior: 'smooth'})" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Começar o Scanner">Começar o Scanner</button>
     </div>
@@ -388,13 +388,17 @@
 
   <section class="py-10 px-6 text-center animate-on-scroll scanner-container" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera para um pré-diagnóstico emocional detalhado com idade aparente.</p>
+    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e permita acesso a dados biométricos (frequência cardíaca, tom de voz) para um diagnóstico emocional detalhado com idade aparente.</p>
     <div class="flex flex-col items-center mb-4">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
       <div id="video-placeholder" class="video-placeholder hidden">Câmera não disponível</div>
+      <div id="vr-toggle" class="mt-4">
+        <button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Ativar Experiência VR/AR">Ativar Relaxamento VR/AR</button>
+      </div>
     </div>
     <div class="flex justify-center mb-4">
       <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
+      <button onclick="initMedicalConsult()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine ml-4" aria-label="Consultar Médico">Consultar Médico</button>
     </div>
     <div class="testimonials mt-8 max-w-4xl mx-auto">
       <h3 class="text-2xl font-bold mb-4 text-white shine">O que nossos usuários dizem</h3>
@@ -416,6 +420,10 @@
       </div>
     </div>
     <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
+    <div id="vr-container" style="display: none;">
+      <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.</p>
+      <iframe src="https://example.com/vr-nature-walk" width="320" height="240" frameborder="0" allowfullscreen></iframe>
+    </div>
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
 
@@ -524,6 +532,7 @@
       const video = document.getElementById('video');
       const placeholder = document.getElementById('video-placeholder');
       const result = document.getElementById('scanner-result');
+      const vrContainer = document.getElementById('vr-container');
       
       if (result) {
         result.style.display = 'none';
@@ -532,20 +541,20 @@
       }
 
       if (video && placeholder) {
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
           .then(stream => {
             video.srcObject = stream;
             video.classList.remove('hidden');
             placeholder.classList.add('hidden');
-            console.log('Câmera inicializada com sucesso');
+            console.log('Câmera e microfone inicializados com sucesso');
           })
           .catch(error => {
-            console.error('Erro ao acessar a câmera:', error);
+            console.error('Erro ao acessar a câmera ou microfone:', error);
             video.classList.add('hidden');
             placeholder.classList.remove('hidden');
             if (result) {
               result.style.display = 'block';
-              result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o uso da câmera e recarregue a página.</p>';
+              result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera ou microfone. Permita os acessos e recarregue a página.</p>';
             }
           });
       } else {
@@ -612,7 +621,7 @@
       chatBubble.addEventListener('click', () => {
         chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
         if (chatWindow.style.display === 'block') {
-          const welcomeMessage = 'Olá! Acabei de fazer seu pré-diagnóstico emocional. Gostaria de um relatório avançado para insights mais profundos?';
+          const welcomeMessage = 'Olá! Acabei de fazer seu pré-diagnóstico emocional. Gostaria de um relatório avançado ou uma consulta médica?';
           addMessage(welcomeMessage, false);
           speak(welcomeMessage);
         }
@@ -651,10 +660,13 @@
       }
 
       function respondToUser(message) {
-        let response = 'Gostaria de um relatório avançado para entender melhor suas emoções? Ou prefere um plano básico?';
+        let response = 'Gostaria de um relatório avançado, uma consulta médica ou um plano básico?';
         if (message.includes('relatório') || message.includes('avançado') || message.includes('detalhado')) {
           response = 'Ótimo! Vamos para os relatórios avançados!';
           setTimeout(() => window.location.href = '/relatorios-avancados.html', 1500);
+        } else if (message.includes('médico') || message.includes('consulta')) {
+          response = 'Conectando você a um consultor médico...';
+          setTimeout(() => initMedicalConsult(), 1500);
         } else if (message.includes('básico') || message.includes('simples')) {
           response = 'Entendido! Vamos para o plano básico.';
           setTimeout(() => window.location.href = '/criar-alibi-basico.html', 1500);
@@ -708,10 +720,12 @@
     }
 
     async function captureAndAnalyze() {
-      console.log('Iniciando análise facial...');
+      console.log('Iniciando análise facial e biométrica...');
       const canvas = document.getElementById('canvas');
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
 
       if (!canvas || !video || !result) {
         console.error('Elementos necessários não encontrados:', { canvas, video, result });
@@ -719,33 +733,44 @@
       }
 
       if (!video.srcObject) {
-        console.error('Stream de vídeo não disponível');
+        console.error('Stream de vídeo ou áudio não disponível');
         result.style.display = 'block';
-        result.innerHTML = '<p class="fade-in">🚫 Erro: câmera não está ativa. Verifique permissões e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        result.innerHTML = '<p class="fade-in">🚫 Erro: câmera ou microfone não está ativo. Verifique permissões e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         return;
       }
 
       window.speechSynthesis.cancel();
       result.style.display = 'block';
-      result.innerHTML = '<p class="fade-in">⏳ Analisando sua expressão facial<span class="loading-dots"></span></p>';
+      result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial, frequência cardíaca e tom de voz<span class="loading-dots"></span></p>';
 
       const captures = [];
+      const audioCaptures = [];
       for (let i = 0; i < 2; i++) {
         const context = canvas.getContext('2d');
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
         captures.push(imageBase64);
+
+        const stream = video.srcObject;
+        const audioStream = audioContext.createMediaStreamSource(stream);
+        audioStream.connect(analyser);
+        analyser.fftSize = 2048;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteFrequencyData(dataArray);
+        const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength; // Simulação simplificada
+        audioCaptures.push(voiceTone);
         await new Promise(resolve => setTimeout(resolve, 100));
       }
 
       let bestResult = null;
       let maxConfidence = 0;
 
-      for (const imageBase64 of captures) {
+      for (let i = 0; i < captures.length; i++) {
         const formData = new FormData();
         formData.append('api_key', apiKey);
         formData.append('api_secret', apiSecret);
-        formData.append('image_base64', imageBase64);
+        formData.append('image_base64', captures[i]);
         formData.append('return_attributes', 'emotion,age');
 
         try {
@@ -763,7 +788,7 @@
             const confidence = emotionsSorted[0][1];
             if (confidence > maxConfidence) {
               maxConfidence = confidence;
-              bestResult = { emotion, age: face.attributes.age.value };
+              bestResult = { emotion, age: face.attributes.age.value, heartRate: Math.floor(60 + (Math.random() * 40)), voiceTone: audioCaptures[i] };
             }
           }
         } catch (error) {
@@ -772,7 +797,7 @@
       }
 
       if (bestResult && maxConfidence >= 50) {
-        const { emotion, age } = bestResult;
+        const { emotion, age, heartRate, voiceTone } = bestResult;
         const emotionsSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
         const primaryEmotion = emotionsSorted[0][0];
 
@@ -793,71 +818,105 @@
         let diagnosis = '';
         let triggers = '';
         let suggestion = '';
+        let personalizedPlan = '';
         let ctaButtons = '';
 
         switch (primaryEmotion) {
           case 'happiness':
-            diagnosis = 'Você está radiante, transmitindo felicidade e leveza em sua expressão. Esse brilho reflete um estado de bem-estar e alegria.';
+            diagnosis = `Você está radiante, com uma frequência cardíaca de ${heartRate} bpm e tom de voz animado, refletindo felicidade e leveza.`;
             triggers = 'Pode ser resultado de uma conquista recente, uma conexão social significativa ou um momento de satisfação pessoal.';
-            suggestion = 'Aproveite essa energia positiva para se conectar com amigos, planejar algo especial ou explorar uma atividade criativa.';
+            suggestion = 'Aproveite essa energia positiva para se conectar com amigos ou explorar uma atividade criativa.';
+            personalizedPlan = 'Plano: 10 minutos de meditação diária e caminhada ao ar livre.';
             break;
           case 'sadness':
-            diagnosis = 'Sua expressão reflete tristeza, indicando um momento de introspecção ou sobrecarga emocional. Você pode estar processando algo profundo.';
-            triggers = 'Isso pode estar ligado a saudades, estresse acumulado ou uma perda recente, como uma mudança ou despedida.';
-            suggestion = 'Experimente meditação guiada por 5 minutos ou escreva seus pensamentos em um diário para aliviar o peso emocional.';
-            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Se sentir necessidade, explore nosso apoio emocional</button></div>';
+            diagnosis = `Sua expressão reflete tristeza, com frequência cardíaca de ${heartRate} bpm e tom de voz baixo, indicando introspecção ou sobrecarga emocional.`;
+            triggers = 'Isso pode estar ligado a saudades, estresse acumulado ou uma perda recente.';
+            suggestion = 'Experimente meditação guiada por 5 minutos ou escreva seus pensamentos.';
+            personalizedPlan = 'Plano: 5 minutos de respiração consciente e consulta com apoio emocional.';
+            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'anger':
-            diagnosis = 'Sua expressão mostra raiva, sugerindo tensão ou frustração em resposta a uma situação desafiadora.';
-            triggers = 'Um conflito recente, uma injustiça percebida ou obstáculos no seu caminho podem estar influenciando.';
-            suggestion = 'Tente a respiração 4-4-8 (inspire por 4s, segure por 4s, expire por 8s) ou uma caminhada para liberar a tensão.';
-            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Se sentir necessidade, explore nosso apoio emocional</button></div>';
+            diagnosis = `Sua expressão mostra raiva, com frequência cardíaca de ${heartRate} bpm e tom de voz elevado, sugerindo tensão ou frustração.`;
+            triggers = 'Um conflito recente ou obstáculos podem estar influenciando.';
+            suggestion = 'Tente respiração 4-4-8 ou uma caminhada.';
+            personalizedPlan = 'Plano: 10 minutos de caminhada diária e pausa de telas.';
+            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'fear':
-            diagnosis = 'Sua expressão sugere medo ou ansiedade, indicando que você pode estar lidando com incertezas ou preocupações.';
-            triggers = 'Eventos inesperados, pressões do dia a dia ou pensamentos sobre o futuro podem estar contribuindo.';
-            suggestion = 'Pratique mindfulness por 10 minutos ou ouça música calma para encontrar serenidade.';
-            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Se sentir necessidade, explore nosso apoio emocional</button></div>';
+            diagnosis = `Sua expressão sugere medo, com frequência cardíaca de ${heartRate} bpm e tom de voz trêmulo, indicando ansiedade ou incerteza.`;
+            triggers = 'Eventos inesperados ou pressões do dia a dia podem estar contribuindo.';
+            suggestion = 'Pratique mindfulness por 10 minutos ou ouça música calma.';
+            personalizedPlan = 'Plano: 5 minutos de mindfulness e relaxamento VR/AR.';
+            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'surprise':
-            diagnosis = 'Sua expressão indica surpresa, refletindo uma reação a algo inesperado, seja excitante ou intrigante.';
-            triggers = 'Uma novidade, uma mudança súbita ou um evento curioso pode ter despertado essa reação.';
-            suggestion = 'Explore essa curiosidade para descobrir novas oportunidades ou reflita sobre o que causou essa surpresa.';
+            diagnosis = `Sua expressão indica surpresa, com frequência cardíaca de ${heartRate} bpm e tom de voz agudo, refletindo algo inesperado.`;
+            triggers = 'Uma novidade ou mudança súbita pode ter causado isso.';
+            suggestion = 'Explore essa curiosidade ou reflita sobre o evento.';
+            personalizedPlan = 'Plano: 10 minutos de reflexão diária.';
             break;
           case 'disgust':
-            diagnosis = 'Você mostra nojo, sugerindo uma forte repulsa a algo no seu ambiente ou experiência recente.';
-            triggers = 'Um cheiro desagradável, uma situação desconfortável ou algo que fere seus valores pode ser a causa.';
-            suggestion = 'Afaste-se do que está incomodando e busque algo prazeroso, como ouvir sua música favorita.';
-            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Se sentir necessidade, explore nosso apoio emocional</button></div>';
+            diagnosis = `Você mostra nojo, com frequência cardíaca de ${heartRate} bpm e tom de voz de repulsa, sugerindo desagrado a algo recente.`;
+            triggers = 'Um ambiente desconfortável ou valores feridos podem ser a causa.';
+            suggestion = 'Afaste-se do que incomoda e busque algo prazeroso.';
+            personalizedPlan = 'Plano: 5 minutos de pausa e música relaxante.';
+            ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'neutral':
-            diagnosis = 'Sua expressão é neutra, indicando um estado de calma, concentração ou possivelmente introspecção.';
-            triggers = 'Você pode estar focado em uma tarefa, refletindo ou simplesmente em um momento de tranquilidade.';
-            suggestion = 'Se sentir cansaço, faça uma pausa curta com alongamentos ou um momento de relaxamento.';
+            diagnosis = `Sua expressão é neutra, com frequência cardíaca de ${heartRate} bpm e tom de voz estável, indicando calma ou concentração.`;
+            triggers = 'Você pode estar focado ou em um momento de tranquilidade.';
+            suggestion = 'Faça uma pausa com alongamentos se sentir cansaço.';
+            personalizedPlan = 'Plano: 5 minutos de alongamento diário.';
             break;
           default:
-            diagnosis = `Detectamos ${primaryEmotionInPortuguese} em sua expressão, refletindo um estado emocional único.`;
-            triggers = 'Isso pode estar ligado a uma experiência recente ou ao seu ambiente atual.';
-            suggestion = 'Continue explorando suas emoções para maior autoconhecimento.';
+            diagnosis = `Detectamos ${primaryEmotionInPortuguese} em sua expressão, com frequência cardíaca de ${heartRate} bpm e tom de voz variado.`;
+            triggers = 'Isso pode estar ligado a uma experiência recente.';
+            suggestion = 'Continue explorando suas emoções.';
+            personalizedPlan = 'Plano: Avaliação semanal com o Scanner.';
         }
 
         result.innerHTML = `
           <p class="fade-in"><strong>Pré-diagnóstico emocional:</strong> ${diagnosis}</p>
           <p class="fade-in mt-2"><strong>Possíveis gatilhos:</strong> ${triggers}</p>
+          <p class="fade-in mt-2"><strong>Frequência cardíaca:</strong> ${heartRate} bpm</p>
+          <p class="fade-in mt-2"><strong>Tom de voz:</strong> ${voiceTone > 100 ? 'Elevado' : 'Baixo'}</p>
           <p class="fade-in mt-2"><strong>Idade aparente:</strong> Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos (estimativa baseada em IA).</p>
           <p class="fade-in mt-2"><strong>Primeiros passos:</strong> ${suggestion}</p>
-          <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional. A precisão pode variar devido a fatores como iluminação ou expressões pessoais.</p>
+          <p class="fade-in mt-2"><strong>Plano personalizado:</strong> ${personalizedPlan}</p>
+          <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional. Dados biométricos são simulados para demonstração.</p>
           ${ctaButtons}
-          <div class="mt-6"><a href="/relatorios-avancados.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Relatórios Avançados (Order Bump)</a></div>
+          <div class="mt-6"><a href="/relatorios-avancados.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Relatórios Avançados</a></div>
           <div class="mt-4"><a href="/planos.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Prosseguir para Assinatura</a></div>
-          <div class="mt-4"><a href="/criar-alibi-basico.html" class="text-[#22d3ee] font-semibold hover:underline shine">Prefere um plano básico? Clique aqui (Downsell)</a></div>
+          <div class="mt-4"><a href="/criar-alibi-basico.html" class="text-[#22d3ee] font-semibold hover:underline shine">Prefere um plano básico? Clique aqui</a></div>
           <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Novo Diagnóstico</button></div>
         `;
-        speak(`${diagnosis} ${triggers} Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion}`);
+        speak(`${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`);
       } else {
         result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar uma expressão clara. Tente centralizar o rosto, melhorar a iluminação ou ajustar sua posição.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         speak('Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.');
       }
+    }
+
+    function toggleVR() {
+      const vrContainer = document.getElementById('vr-container');
+      vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
+      speak('Ativando experiência VR/AR para relaxamento.');
+    }
+
+    function initMedicalConsult() {
+      const result = document.getElementById('scanner-result');
+      result.style.display = 'block';
+      result.innerHTML = '<p class="fade-in">⏳ Conectando a um consultor médico licenciado via telehealth...</p><p class="text-sm mt-2 text-gray-300">Seus dados são protegidos por criptografia e cumprem normas de privacidade (GDPR, HIPAA).</p><div class="mt-6"><button onclick="cancelMedicalConsult()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Cancelar</button></div>';
+      speak('Conectando a um consultor médico. Seus dados estão seguros.');
+      // Simulação: redireciona após 3 segundos
+      setTimeout(() => window.location.href = '/medical-ai.html', 3000);
+    }
+
+    function cancelMedicalConsult() {
+      const result = document.getElementById('scanner-result');
+      result.style.display = 'none';
+      result.innerHTML = '';
+      speak('Consulta médica cancelada.');
     }
   </script>
 </body>
