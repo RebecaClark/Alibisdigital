@@ -18,6 +18,7 @@
       min-height: 100vh; 
       color: #e5e7eb; 
       text-shadow: 0 0.5px rgba(0, 0, 0, 0.5); 
+      font-family: Arial, sans-serif;
     }
     #particles-js { 
       position: fixed;
@@ -168,8 +169,9 @@
       100% { content: '.'; }
     }
     video {
-      width: 100%;
-      max-width: 240px;
+      width: 320px;
+      height: 240px;
+      max-width: 100%;
       margin-left: auto;
       margin-right: auto;
       border-radius: 0.75rem;
@@ -177,8 +179,9 @@
       border: 1px solid #22d3ee;
     }
     .video-placeholder {
-      width: 240px;
-      height: 180px;
+      width: 320px;
+      height: 240px;
+      max-width: 100%;
       background: #1f2937;
       border-radius: 0.75rem;
       display: flex;
@@ -186,6 +189,21 @@
       justify-content: center;
       color: #e5e7eb;
       border: 1px solid #22d3ee;
+    }
+    .testimonial-card {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 10px;
+      box-shadow: 0 0 10px #22d3ee;
+    }
+    .testimonial-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #22d3ee;
+      margin-right: 15px;
     }
     #chat-container {
       position: fixed;
@@ -246,16 +264,29 @@
     }
     .listening-indicator.active { display: block; }
     @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      h2 { font-size: 1.8rem; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      p { font-size: 0.9rem; }
       .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+      .max-w-6xl { max-width: 100%; padding: 0 1rem; }
       .grid { grid-template-columns: 1fr; }
       .flex { flex-direction: column; }
-      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-      video, .video-placeholder { max-width: 90vw; }
+      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; }
+      video, .video-placeholder { width: 280px; height: 210px; max-width: 90vw; }
       .scanner-container { padding: 1rem; max-height: 80vh; }
-      section#scanner, section#emotion-intro { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-      #chat-window { width: 90%; right: 5%; }
+      section#scanner, section#emotion-intro { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+      #chat-window { width: 90%; right: 5%; height: 350px; }
+      #chat-messages { height: 250px; }
+      .testimonial-card { padding: 15px; margin: 5px; }
+      .testimonial-img { width: 50px; height: 50px; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.3rem; }
+      p { font-size: 0.85rem; }
+      video, .video-placeholder { width: 240px; height: 180px; }
+      .futuristic-btn { font-size: 0.8rem; }
+      .neon-box { padding: 15px; }
     }
   </style>
 </head>
@@ -359,14 +390,33 @@
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera para um pré-diagnóstico emocional detalhado com idade aparente.</p>
     <div class="flex flex-col items-center mb-4">
-      <video id="video" width="240" height="180" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
+      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
       <div id="video-placeholder" class="video-placeholder hidden">Câmera não disponível</div>
     </div>
     <div class="flex justify-center mb-4">
       <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
     </div>
+    <div class="testimonials mt-8 max-w-4xl mx-auto">
+      <h3 class="text-2xl font-bold mb-4 text-white shine">O que nossos usuários dizem</h3>
+      <div class="flex flex-wrap justify-center">
+        <div class="testimonial-card flex items-center">
+          <img src="https://via.placeholder.com/60" alt="Foto de Ana" class="testimonial-img">
+          <div>
+            <p class="text-gray-300">"O Scanner mudou minha vida! Descobri o que me estressava e agora vivo mais leve."</p>
+            <p class="text-sm text-gray-400 mt-2">- Ana, 34 anos</p>
+          </div>
+        </div>
+        <div class="testimonial-card flex items-center">
+          <img src="https://via.placeholder.com/60" alt="Foto de João" class="testimonial-img">
+          <div>
+            <p class="text-gray-300">"Incrível como a IA me ajudou a entender minhas emoções. Recomendo!"</p>
+            <p class="text-sm text-gray-400 mt-2">- João, 29 anos</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
-    <canvas id="canvas" width="240" height="180" style="display: none;"></canvas>
+    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
 
   <!-- Chat Interativo com Voz -->
