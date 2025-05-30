@@ -422,7 +422,7 @@
     <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
     <div id="vr-container" style="display: none;">
       <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.</p>
-      <iframe src="https://example.com/vr-nature-walk" width="320" height="240" frameborder="0" allowfullscreen></iframe>
+      <!-- Placeholder for future VR/AR integration -->
     </div>
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
@@ -541,20 +541,20 @@
       }
 
       if (video && placeholder) {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        navigator.mediaDevices.getUserMedia({ video: true })
           .then(stream => {
             video.srcObject = stream;
             video.classList.remove('hidden');
             placeholder.classList.add('hidden');
-            console.log('Câmera e microfone inicializados com sucesso');
+            console.log('Câmera inicializada com sucesso');
           })
           .catch(error => {
-            console.error('Erro ao acessar a câmera ou microfone:', error);
+            console.error('Erro ao acessar a câmera:', error);
             video.classList.add('hidden');
             placeholder.classList.remove('hidden');
             if (result) {
               result.style.display = 'block';
-              result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera ou microfone. Permita os acessos e recarregue a página.</p>';
+              result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita os acessos e recarregue a página.</p>';
             }
           });
       } else {
@@ -607,6 +607,10 @@
         if (!synth) return;
         const utter = new SpeechSynthesisUtterance(text);
         utter.lang = 'pt-BR';
+        utter.volume = 1.0; // Ensure maximum volume
+        utter.rate = 1.0;   // Normal speed
+        utter.pitch = 1.0;  // Natural pitch
+        synth.cancel();     // Clear any previous speech
         synth.speak(utter);
       };
 
@@ -704,28 +708,14 @@
       window.addEventListener('resize', checkIfInView);
     }
 
-    function speak(text) {
-      if (!window.speechSynthesis) {
-        console.warn('API de síntese de voz não suportada.');
-        return;
-      }
-      window.speechSynthesis.cancel();
-      const synth = window.speechSynthesis;
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = text;
-      const plainText = tempDiv.textContent || tempDiv.innerText || '';
-      const utter = new SpeechSynthesisUtterance(plainText);
-      utter.lang = 'pt-BR';
-      synth.speak(utter);
-    }
-
     async function captureAndAnalyze() {
       console.log('Iniciando análise facial e biométrica...');
       const canvas = document.getElementById('canvas');
       const video = document.getElementById('video');
       const result = document.getElementById('scanner-result');
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
+      let audioContext = null;
+      let analyser = null;
+      let stream = null;
 
       if (!canvas || !video || !result) {
         console.error('Elementos necessários não encontrados:', { canvas, video, result });
@@ -733,9 +723,9 @@
       }
 
       if (!video.srcObject) {
-        console.error('Stream de vídeo ou áudio não disponível');
+        console.error('Stream de vídeo não disponível');
         result.style.display = 'block';
-        result.innerHTML = '<p class="fade-in">🚫 Erro: câmera ou microfone não está ativo. Verifique permissões e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        result.innerHTML = '<p class="fade-in">🚫 Erro: câmera não está ativo. Verifique permissões e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         return;
       }
 
@@ -745,22 +735,37 @@
 
       const captures = [];
       const audioCaptures = [];
-      for (let i = 0; i < 2; i++) {
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
-        captures.push(imageBase64);
-
-        const stream = video.srcObject;
+      try {
+        // Request audio stream only during analysis
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
         const audioStream = audioContext.createMediaStreamSource(stream);
         audioStream.connect(analyser);
         analyser.fftSize = 2048;
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
-        analyser.getByteFrequencyData(dataArray);
-        const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength; // Simulação simplificada
-        audioCaptures.push(voiceTone);
-        await new Promise(resolve => setTimeout(resolve, 100));
+
+        for (let i = 0; i < 2; i++) {
+          const context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+          captures.push(imageBase64);
+
+          analyser.getByteFrequencyData(dataArray);
+          const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength; // Simulação simplificada
+          audioCaptures.push(voiceTone);
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      } catch (error) {
+        console.error('Erro ao acessar o microfone:', error);
+        result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar o microfone. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        return;
+      } finally {
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+          if (audioContext) audioContext.close();
+        }
       }
 
       let bestResult = null;
@@ -900,7 +905,9 @@
     function toggleVR() {
       const vrContainer = document.getElementById('vr-container');
       vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
-      speak('Ativando experiência VR/AR para relaxamento.');
+      if (vrContainer.style.display === 'block') {
+        speak('Bem-vindo ao Relaxamento VR/AR! A integração VR/AR ainda está em desenvolvimento.');
+      }
     }
 
     function initMedicalConsult() {
