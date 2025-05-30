@@ -170,8 +170,8 @@
       100% { content: '.'; }
     }
     video {
-      width: 320px;
-      height: 240px;
+      width: 400px;
+      height: 300px;
       max-width: 100%;
       margin-left: auto;
       margin-right: auto;
@@ -180,8 +180,8 @@
       border: 1px solid #22d3ee;
     }
     .video-placeholder {
-      width: 320px;
-      height: 240px;
+      width: 400px;
+      height: 300px;
       max-width: 100%;
       background: #1f2937;
       border-radius: 0.75rem;
@@ -193,32 +193,47 @@
     }
     .ppg-overlay {
       position: absolute;
-      width: 320px;
-      height: 240px;
+      width: 400px;
+      height: 300px;
       max-width: 100%;
       border-radius: 0.75rem;
       border: 2px dashed #22d3ee;
       pointer-events: none;
       display: none;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 10px;
     }
     .ppg-overlay.active {
-      display: block;
+      display: flex;
     }
     .ppg-progress-container {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
+      width: 80%;
       height: 20px;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
       overflow: hidden;
+      margin-top: 10px;
     }
     .ppg-progress-bar {
       height: 100%;
-      background: #22d3ee;
+      background: linear-gradient(90deg, #22d3ee, #7C3AED);
       width: 0%;
       transition: width 0.1s linear;
+      box-shadow: 0 0 10px #22d3ee;
+    }
+    .ppg-stay-still {
+      color: #22d3ee;
+      font-size: 1rem;
+      text-shadow: 0 0 5px #22d3ee;
+      animation: pulseText 1.5s infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes pulseText {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
     }
     .mic-icon {
       display: inline-block;
@@ -324,8 +339,8 @@
       .grid { grid-template-columns: 1fr; }
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; }
-      video, .video-placeholder { width: 280px; height: 210px; max-width: 90vw; }
-      .ppg-overlay { width: 280px; height: 210px; max-width: 90vw; }
+      video, .video-placeholder { width: 360px; height: 270px; max-width: 90vw; }
+      .ppg-overlay { width: 360px; height: 270px; max-width: 90vw; }
       .scanner-container { padding: 1rem; max-height: 80vh; }
       section#scanner, section#emotion-intro { padding-top: 1.5rem; padding-bottom: 1.5rem; }
       #chat-window { width: 90%; right: 5%; height: 350px; }
@@ -337,8 +352,8 @@
       h1 { font-size: 1.8rem; }
       h2 { font-size: 1.3rem; }
       p { font-size: 0.85rem; }
-      video, .video-placeholder { width: 240px; height: 180px; }
-      .ppg-overlay { width: 240px; height: 180px; }
+      video, .video-placeholder { width: 320px; height: 240px; }
+      .ppg-overlay { width: 320px; height: 240px; }
       .futuristic-btn { font-size: 0.8rem; }
       .neon-box { padding: 15px; }
     }
@@ -436,26 +451,18 @@
   <section class="py-10 px-6 text-center animate-on-scroll" id="emotion-intro">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold mb-6 text-white shine">Entenda Suas Emoções</h2>
-      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar emoções como felicidade, tristeza, raiva, medo, surpresa, nojo e neutralidade. Cada emoção reflete um estado interno único, ajudando você a se conhecer melhor.</p>
-      <ul class="text-left text-gray-300 mb-6 space-y-2">
-        <li><strong>Felicidade:</strong> Sorrisos largos, olhos brilhantes e tom animado indicam alegria e bem-estar.</li>
-        <li><strong>Tristeza:</strong> Sobrancelhas caídas, boca curvada e voz baixa sugerem melancolia ou introspecção.</li>
-        <li><strong>Raiva:</strong> Sobrancelhas franzidas, lábios apertados e tom elevado mostram tensão ou frustração.</li>
-        <li><strong>Medo:</strong> Olhos arregalados, boca entreaberta e voz trêmula refletem ansiedade ou incerteza.</li>
-        <li><strong>Surpresa:</strong> Sobrancelhas erguidas, olhos abertos e tom agudo indicam algo inesperado.</li>
-        <li><strong>Nojo:</strong> Nariz enrugado, lábios contraídos e tom de repulsa mostram desagrado.</li>
-        <li><strong>Neutralidade:</strong> Expressão relaxada e tom estável podem indicar calma ou concentração.</li>
-      </ul>
+      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar seu estado emocional com precisão.</p>
       <button onclick="document.getElementById('scanner').scrollIntoView({behavior: 'smooth'})" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Começar o Scanner">Começar o Scanner</button>
     </div>
   </section>
 
   <section class="py-10 px-6 text-center animate-on-scroll scanner-container" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e permita acesso a dados biométricos (frequência cardíaca, tom de voz) para um diagnóstico emocional detalhado com idade aparente.</p>
+    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e microfone para um diagnóstico emocional detalhado com idade aparente.</p>
     <div class="flex flex-col items-center mb-4 relative">
-      <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
+      <video id="video" width="400" height="300" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
       <div id="ppg-overlay" class="ppg-overlay">
+        <span class="ppg-stay-still">Fique parado</span>
         <div class="ppg-progress-container">
           <div id="ppg-progress-bar" class="ppg-progress-bar"></div>
         </div>
@@ -495,12 +502,11 @@
     </div>
     <div id="vr-container" style="display: none;">
       <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.</p>
-      <iframe src="https://example.com/vr-nature-walk" width="320" height="240" frameborder="0" allowfullscreen></iframe>
+      <iframe src="https://example.com/vr-nature-walk" width="400" height="300" frameborder="0" allowfullscreen></iframe>
     </div>
-    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+    <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
   </section>
 
-  <!-- Chat Interativo com Voz -->
   <div id="chat-container">
     <div id="chat-bubble">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -551,7 +557,6 @@
 
   <script>
     console.log('Loading scanner.html at', new Date().toISOString());
-    // Inicializar Partículas com Efeito Hexagonal
     function initializeParticles() {
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
@@ -767,25 +772,25 @@
             hero: 'Transforme Sua Vida com o Scanner Emocional',
             subhero: 'Descubra seu estado emocional com IA avançada. Teste grátis agora!',
             emotionTitle: 'Entenda Suas Emoções',
-            emotionDesc: 'Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar emoções como felicidade, tristeza, raiva, medo, surpresa, nojo e neutralidade. Cada emoção reflete um estado interno único, ajudando você a se conhecer melhor.',
+            emotionDesc: 'Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar seu estado emocional com precisão.',
             scanTitle: 'Seu rosto carrega sinais. Vamos descobrir o que ele diz?',
-            scanDesc: 'Ative sua câmera e permita acesso a dados biométricos (frequência cardíaca, tom de voz) para um diagnóstico emocional detalhado com idade aparente.'
+            scanDesc: 'Ative sua câmera e microfone para um diagnóstico emocional detalhado com idade aparente.'
           },
           'en-US': {
             hero: 'Transform Your Life with the Emotional Scanner',
             subhero: 'Discover your emotional state with advanced AI. Try it free now!',
             emotionTitle: 'Understand Your Emotions',
-            emotionDesc: 'Our scanner analyzes facial expressions, heart rate, and voice tone to identify emotions like happiness, sadness, anger, fear, surprise, disgust, and neutrality. Each emotion reflects a unique internal state, helping you know yourself better.',
+            emotionDesc: 'Our scanner analyzes facial expressions, heart rate, and voice tone to accurately identify your emotional state.',
             scanTitle: 'Your face holds clues. Let’s uncover what it says?',
-            scanDesc: 'Activate your camera and allow access to biometric data (heart rate, voice tone) for a detailed emotional diagnosis with apparent age.'
+            scanDesc: 'Activate your camera and microphone for a detailed emotional diagnosis with apparent age.'
           },
           'es-ES': {
             hero: 'Transforma tu Vida con el Escáner Emocional',
             subhero: 'Descubre tu estado emocional con IA avanzada. ¡Pruébalo gratis ahora!',
             emotionTitle: 'Entiende tus Emociones',
-            emotionDesc: 'Nuestro escáner analiza expresiones faciales, frecuencia cardíaca y tono de voz para identificar emociones como felicidad, tristeza, ira, miedo, sorpresa, asco y neutralidad. Cada emoción refleja un estado interno único, ayudándote a conocerte mejor.',
+            emotionDesc: 'Nuestro escáner analiza expresiones faciales, frecuencia cardíaca y tono de voz para identificar tu estado emocional con precisión.',
             scanTitle: 'Tu rostro guarda señales. ¿Descubrimos qué dice?',
-            scanDesc: 'Activa tu cámara y permite el acceso a datos biométricos (frecuencia cardíaca, tono de voz) para un diagnóstico emocional detallado con edad aparente.'
+            scanDesc: 'Activa tu cámara y micrófono para un diagnóstico emocional detallado con edad aparente.'
           }
         };
         const langData = translations[lang] || translations['pt-BR'];
@@ -818,7 +823,6 @@
       window.addEventListener('resize', checkIfInView);
     }
 
-    // Simple FFT implementation for peak detection
     function fft(signal) {
       const n = signal.length;
       if (n <= 1) return signal;
@@ -895,7 +899,19 @@
         video.classList.add('hidden');
         placeholder.classList.remove('hidden');
         result.style.display = 'block';
-        result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera ou microfone. Permita os acessos e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        let errorMessage = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera ou microfone. Permita os acessos e tente novamente.</p>';
+        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+          const videoTracks = stream ? stream.getVideoTracks().length : 0;
+          const audioTracks = stream ? stream.getAudioTracks().length : 0;
+          if (videoTracks === 0 && audioTracks === 0) {
+            errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso à câmera e ao microfone para continuar.</p>';
+          } else if (videoTracks === 0) {
+            errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso à câmera para continuar.</p>';
+          } else if (audioTracks === 0) {
+            errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso ao microfone para continuar.</p>';
+          }
+        }
+        result.innerHTML = `${errorMessage}<div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
         return;
       }
 
@@ -903,7 +919,6 @@
       result.style.display = 'block';
       result.innerHTML = '<p class="fade-in">⏳ Preparando análise<span class="loading-dots"></span></p>';
 
-      // Voice prompt
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       let recognition = SpeechRecognition ? new SpeechRecognition() : null;
       let spokenText = '';
@@ -949,7 +964,6 @@
         return;
       }
 
-      // Check lighting conditions
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -967,7 +981,6 @@
         return;
       }
 
-      // Initialize face tracking
       let faceRect = null;
       const tracker = new tracking.ObjectTracker('face');
       tracker.setInitialScale(4);
@@ -980,7 +993,6 @@
         }
       });
 
-      // Wait for face detection
       let faceDetected = false;
       for (let i = 0; i < 50; i++) {
         if (faceRect) {
@@ -997,9 +1009,8 @@
         return;
       }
 
-      // PPG Heart Rate Measurement
-      const PPG_DURATION = 15; // 15 seconds
-      const FRAME_RATE = 30; // Assume 30 fps
+      const PPG_DURATION = 15;
+      const FRAME_RATE = 30;
       const TOTAL_FRAMES = PPG_DURATION * FRAME_RATE;
       const greenValues = [];
       let startTime = Date.now();
@@ -1039,19 +1050,15 @@
       ppgOverlay.classList.remove('active');
       tracker.stop();
 
-      // Process PPG signal using FFT to estimate heart rate
       let heartRate = 0;
       let isSimulated = false;
       try {
-        // Detrend and normalize the signal
         const mean = greenValues.reduce((a, b) => a + b, 0) / greenValues.length;
         const detrended = greenValues.map(val => val - mean);
         const maxVal = Math.max(...detrended.map(Math.abs));
         const normalized = detrended.map(val => val / maxVal);
-
-        // Use FFT to find dominant frequency (heart rate)
         const freq = getDominantFrequency(normalized, FRAME_RATE);
-        heartRate = Math.round(freq * 60); // Convert Hz to bpm
+        heartRate = Math.round(freq * 60);
         if (heartRate < 40 || heartRate > 180) {
           throw new Error('Heart rate out of realistic range');
         }
@@ -1061,7 +1068,6 @@
         isSimulated = true;
       }
 
-      // Proceed with emotional and voice analysis
       result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial e tom de voz<span class="loading-dots"></span></p>';
       const captures = [];
       const audioCaptures = [];
@@ -1093,12 +1099,15 @@
           const videoTracks = stream.getVideoTracks();
           audioTracks.forEach(track => track.stop());
           videoTracks.forEach(track => track.stop());
-          console.log('Câmera e microfone fechados');
+          video.classList.add('hidden');
+          placeholder.classList.remove('hidden');
+          console.log('Câmera e microfone fechados após análise');
         }
         if (audioContext) {
           audioContext.close();
           console.log('Contexto de áudio fechado');
         }
+        stream = null;
       }
 
       let bestResult = null;
@@ -1175,114 +1184,80 @@
             break;
           case 'anger':
             diagnosis = `Sua expressão mostra raiva, com frequência cardíaca de ${heartRate} bpm e tom de voz elevado, sugerindo tensão ou frustração.`;
-            triggers = 'Um conflito recente ou obstáculos podem estar influenciando.';
-            suggestion = 'Tente respiração 4-4-8 ou uma caminhada.';
-            personalizedPlan = 'Plano: 10 minutos de caminhada diária e pausa de telas.';
+            triggers = 'Pode ser devido a um conflito recente, pressão no trabalho ou uma situação irritante.';
+            suggestion = 'Tente uma caminhada rápida para liberar a tensão ou pratique exercícios de respiração profunda.';
+            personalizedPlan = 'Plano: 10 minutos de alongamento e prática de mindfulness para aliviar a tensão.';
             ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'fear':
-            diagnosis = `Sua expressão sugere medo, com frequência cardíaca de ${heartRate} bpm e tom de voz trêmulo, indicando ansiedade ou incerteza.`;
-            triggers = 'Eventos inesperados ou pressões do dia a dia podem estar contribuindo.';
-            suggestion = 'Pratique mindfulness por 10 minutos ou ouça música calma.';
-            personalizedPlan = 'Plano: 5 minutos de mindfulness e relaxamento VR/AR.';
+            diagnosis = `Sua expressão indica medo, com frequência cardíaca de ${heartRate} bpm e tom de voz trêmulo, refletindo ansiedade ou incerteza.`;
+            triggers = 'Pode estar relacionado a uma situação de incerteza, preocupação com o futuro ou um evento estressante.';
+            suggestion = 'Pratique a técnica de respiração 4-7-8 para acalmar o sistema nervoso.';
+            personalizedPlan = 'Plano: 5 minutos de respiração 4-7-8 e uma sessão de relaxamento guiado.';
             ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'surprise':
-            diagnosis = `Sua expressão indica surpresa, com frequência cardíaca de ${heartRate} bpm e tom de voz agudo, refletindo algo inesperado.`;
-            triggers = 'Uma novidade ou mudança súbita pode ter causado isso.';
-            suggestion = 'Explore essa curiosidade ou reflita sobre o evento.';
-            personalizedPlan = 'Plano: 10 minutos de reflexão diária.';
+            diagnosis = `Você parece surpreso, com frequência cardíaca de ${heartRate} bpm e tom de voz agudo, indicando um momento inesperado.`;
+            triggers = 'Pode ser resultado de uma novidade, uma notícia inesperada ou uma mudança repentina.';
+            suggestion = 'Aproveite a energia da surpresa para explorar algo novo ou refletir sobre o que causou essa reação.';
+            personalizedPlan = 'Plano: 10 minutos de escrita reflexiva sobre o evento que causou surpresa.';
             break;
           case 'disgust':
-            diagnosis = `Você mostra nojo, com frequência cardíaca de ${heartRate} bpm e tom de voz de repulsa, sugerindo desagrado a algo recente.`;
-            triggers = 'Um ambiente desconfortável ou valores feridos podem ser a causa.';
-            suggestion = 'Afaste-se do que incomoda e busque algo prazeroso.';
-            personalizedPlan = 'Plano: 5 minutos de pausa e música relaxante.';
+            diagnosis = `Sua expressão reflete nojo, com frequência cardíaca de ${heartRate} bpm e tom de voz de repulsa, indicando desagrado.`;
+            triggers = 'Pode estar ligado a uma situação desconfortável, algo que você considera inaceitável ou um ambiente desagradável.';
+            suggestion = 'Tente se afastar da fonte do desagrado e pratique uma atividade que traga conforto.';
+            personalizedPlan = 'Plano: 10 minutos de relaxamento com música calma e um chá quente.';
             ctaButtons = '<div class="mt-6"><button onclick="window.location.href=\'/apoio-emocional.html\'" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Explorar Apoio Emocional</button></div>';
             break;
           case 'neutral':
-            diagnosis = `Sua expressão é neutra, com frequência cardíaca de ${heartRate} bpm e tom de voz estável, indicando calma ou concentração.`;
-            triggers = 'Você pode estar focado ou em um momento de tranquilidade.';
-            suggestion = 'Faça uma pausa com alongamentos se sentir cansaço.';
-            personalizedPlan = 'Plano: 5 minutos de alongamento diário.';
+            diagnosis = `Sua expressão é neutra, com frequência cardíaca de ${heartRate} bpm e tom de voz estável, sugerindo calma ou concentração.`;
+            triggers = 'Pode indicar que você está em um estado de equilíbrio ou focado em uma tarefa.';
+            suggestion = 'Continue mantendo esse equilíbrio com práticas de mindfulness ou pausas regulares.';
+            personalizedPlan = 'Plano: 5 minutos de alongamento leve e hidratação regular.';
             break;
           default:
-            diagnosis = `Detectamos ${primaryEmotionInPortuguese} em sua expressão, com frequência cardíaca de ${heartRate} bpm e tom de voz variado.`;
-            triggers = 'Isso pode estar ligado a uma experiência recente.';
-            suggestion = 'Continue explorando suas emoções.';
-            personalizedPlan = 'Plano: Avaliação semanal com o Scanner.';
+            diagnosis = `Emoção predominante: ${primaryEmotionInPortuguese}, com frequência cardíaca de ${heartRate} bpm.`;
+            triggers = 'Estamos analisando possíveis gatilhos para essa emoção.';
+            suggestion = 'Tente refletir sobre o que pode estar influenciando esse estado.';
+            personalizedPlan = 'Plano: 5 minutos de pausa para reflexão.';
         }
 
-        diagnosisText = `${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`;
-        let audioStatusMessage = '';
-        let heartRateNote = isSimulated ? '<p class="text-sm mt-2 text-gray-300">Nota: Frequência cardíaca simulada devido a falha na detecção.</p>' : '<p class="text-sm mt-2 text-gray-300">Nota: Frequência cardíaca estimada via câmera (não substitui equipamentos médicos).</p>';
-        const audioPlayed = speak(diagnosisText);
-        if (!audioPlayed) {
-          audioStatusMessage = '<p class="text-sm mt-2 text-gray-300">🔊 A leitura automática do diagnóstico falhou. Clique no botão abaixo para ouvir.</p>';
-        }
-
-        result.innerHTML = `
-          <p class="fade-in"><strong>Pré-diagnóstico emocional:</strong> ${diagnosis}</p>
-          <p class="fade-in mt-2"><strong>Possíveis gatilhos:</strong> ${triggers}</p>
-          <p class="fade-in mt-2"><strong>Frequência cardíaca:</strong> ${heartRate} bpm</p>
-          <p class="fade-in mt-2"><strong>Tom de voz:</strong> ${voiceTone > 100 ? 'Elevado' : 'Baixo'}</p>
-          <p class="fade-in mt-2"><strong>Idade aparente:</strong> Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos (estimativa baseada em IA).</p>
-          <p class="fade-in mt-2"><strong>Primeiros passos:</strong> ${suggestion}</p>
-          <p class="fade-in mt-2"><strong>Plano personalizado:</strong> ${personalizedPlan}</p>
-          <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional.</p>
-          ${heartRateNote}
-          ${audioStatusMessage}
-          <div class="mt-4"><button onclick="speakDiagnosis()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">🔊 Ouvir Diagnóstico</button></div>
+        diagnosisText = `
+          <h3 class="text-2xl font-bold mb-4 fade-in">Resultado do Diagnóstico</h3>
+          <p class="fade-in"><strong>Emoção Predominante:</strong> ${primaryEmotionInPortuguese.charAt(0).toUpperCase() + primaryEmotionInPortuguese.slice(1)}</p>
+          <p class="fade-in"><strong>Idade Aparente:</strong> Entre ${ageRangeMin} e ${ageRangeMax} anos</p>
+          <p class="fade-in mt-2">${diagnosis}</p>
+          <p class="fade-in mt-2"><strong>Possíveis Gatilhos:</strong> ${triggers}</p>
+          <p class="fade-in mt-2"><strong>Sugestão:</strong> ${suggestion}</p>
+          <p class="fade-in mt-2"><strong>Plano Personalizado:</strong> ${personalizedPlan}</p>
+          ${isSimulated ? '<p class="text-sm text-gray-400 mt-2 fade-in">* Frequência cardíaca estimada devido a limitações de captura.</p>' : ''}
           ${ctaButtons}
-          <div class="mt-6"><a href="/relatorios-avancados.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Relatórios Avançados</a></div>
-          <div class="mt-4"><a href="/planos.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Prosseguir para Assinatura</a></div>
-          <div class="mt-4"><a href="/criar-alibi-basico.html" class="text-[#22d3ee] font-semibold hover:underline shine">Prefere um plano básico? Clique aqui</a></div>
-          <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Novo Diagnóstico</button></div>
-        `;
-      } else {
-        diagnosisText = 'Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.';
-        let audioStatusMessage = '';
-        const audioPlayed = speak(diagnosisText);
-        if (!audioPlayed) {
-          audioStatusMessage = '<p class="text-sm mt-2 text-gray-300">🔊 A leitura automática do diagnóstico falhou. Clique no botão abaixo para ouvir.</p>';
-        }
-
-        result.innerHTML = `
-          <p class="fade-in">🤔 Não conseguimos detectar uma expressão clara. Tente centralizar o rosto, melhorar a iluminação ou ajustar sua posição.</p>
-          ${audioStatusMessage}
-          <div class="mt-4"><button onclick="speakDiagnosis()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">🔊 Ouvir Diagnóstico</button></div>
           <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>
         `;
+        result.innerHTML = diagnosisText;
+        speak(diagnosisText);
+      } else {
+        result.innerHTML = '<p class="fade-in">🤔 Não foi possível identificar uma emoção predominante com confiança. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        speak('Não foi possível identificar uma emoção predominante com confiança. Tente novamente.');
       }
     }
 
-    function speakDiagnosis() {
-      const audioPlayed = speak(diagnosisText);
-      if (!audioPlayed) {
-        alert('A leitura de voz não está disponível. Verifique as permissões de áudio do navegador ou use um dispositivo compatível.');
+    function toggleVR() {
+      const vrContainer = document.getElementById('vr-container');
+      const vrToggle = document.getElementById('vr-toggle');
+      if (vrContainer.style.display === 'none') {
+        vrContainer.style.display = 'block';
+        vrToggle.innerHTML = '<button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Desativar Experiência VR/AR">Desativar Relaxamento VR/AR</button>';
+        speak('Experiência VR ativada. Explore uma caminhada virtual na natureza.');
+      } else {
+        vrContainer.style.display = 'none';
+        vrToggle.innerHTML = '<button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Ativar Experiência VR/AR">Ativar Relaxamento VR/AR</button>';
+        speak('Experiência VR desativada.');
       }
     }
 
     function initMedicalConsult() {
       window.location.href = '/medical-ai.html';
-    }
-
-    function toggleVR() {
-      const vrContainer = document.getElementById('vr-container');
-      const vrButton = document.querySelector('#vr-toggle button');
-      if (vrContainer && vrButton) {
-        if (vrContainer.style.display === 'block') {
-          vrContainer.style.display = 'none';
-          vrButton.textContent = 'Ativar Relaxamento VR/AR';
-          console.log('VR/AR experience deactivated');
-        } else {
-          vrContainer.style.display = 'block';
-          vrButton.textContent = 'Desativar Relaxamento VR/AR';
-          console.log('VR/AR experience activated');
-        }
-      } else {
-        console.error('VR container or button not found');
-      }
     }
   </script>
 </body>
