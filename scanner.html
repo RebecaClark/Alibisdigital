@@ -528,6 +528,7 @@
 
     const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
     const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
+    let diagnosisText = ''; // Store diagnosis text for manual playback
 
     document.addEventListener('DOMContentLoaded', () => {
       console.log('DOM carregado, inicializando scanner...');
@@ -606,15 +607,24 @@
       let lastUserMessage = '';
 
       const speak = (text) => {
-        if (!synth) return;
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'pt-BR';
-        utter.volume = 1.0; // Ensure maximum volume
-        utter.rate = 1.0;   // Normal speed
-        utter.pitch = 1.0;  // Natural pitch
-        synth.cancel();     // Clear any previous speech
-        synth.speak(utter);
-        console.log('Speaking:', text);
+        if (!synth) {
+          console.error('SpeechSynthesis not supported in this browser');
+          return false;
+        }
+        try {
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'pt-BR';
+          utter.volume = 1.0;
+          utter.rate = 1.0;
+          utter.pitch = 1.0;
+          synth.cancel();
+          synth.speak(utter);
+          console.log('Speaking:', text);
+          return true;
+        } catch (error) {
+          console.error('Error in speak function:', error);
+          return false;
+        }
       };
 
       const addMessage = (message, isUser = false) => {
@@ -739,7 +749,6 @@
       const captures = [];
       const audioCaptures = [];
       try {
-        // Request audio stream only during analysis
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioContext.createAnalyser();
@@ -756,7 +765,7 @@
           captures.push(imageBase64);
 
           analyser.getByteFrequencyData(dataArray);
-          const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength; // Simulação simplificada
+          const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength;
           audioCaptures.push(voiceTone);
           await new Promise(resolve => setTimeout(resolve, 100));
         }
@@ -883,6 +892,13 @@
             personalizedPlan = 'Plano: Avaliação semanal com o Scanner.';
         }
 
+        diagnosisText = `${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`;
+        let audioStatusMessage = '';
+        const audioPlayed = speak(diagnosisText);
+        if (!audioPlayed) {
+          audioStatusMessage = '<p class="text-sm mt-2 text-gray-300">🔊 A leitura automática do diagnóstico falhou. Clique no botão abaixo para ouvir.</p>';
+        }
+
         result.innerHTML = `
           <p class="fade-in"><strong>Pré-diagnóstico emocional:</strong> ${diagnosis}</p>
           <p class="fade-in mt-2"><strong>Possíveis gatilhos:</strong> ${triggers}</p>
@@ -892,21 +908,45 @@
           <p class="fade-in mt-2"><strong>Primeiros passos:</strong> ${suggestion}</p>
           <p class="fade-in mt-2"><strong>Plano personalizado:</strong> ${personalizedPlan}</p>
           <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional. Dados biométricos são simulados para demonstração.</p>
+          ${audioStatusMessage}
+          <div class="mt-4"><button onclick="speakDiagnosis()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">🔊 Ouvir Diagnóstico</button></div>
           ${ctaButtons}
           <div class="mt-6"><a href="/relatorios-avancados.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Obter Relatórios Avançados</a></div>
           <div class="mt-4"><a href="/planos.html" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Prosseguir para Assinatura</a></div>
           <div class="mt-4"><a href="/criar-alibi-basico.html" class="text-[#22d3ee] font-semibold hover:underline shine">Prefere um plano básico? Clique aqui</a></div>
           <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Novo Diagnóstico</button></div>
         `;
-        // Ensure speech triggers after DOM update
         setTimeout(() => {
-          speak(`${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`);
-        }, 100);
+          if (audioPlayed) {
+            console.log('Automatic speech attempted after DOM update');
+          }
+        }, 500);
       } else {
-        result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar uma expressão clara. Tente centralizar o rosto, melhorar a iluminação ou ajustar sua posição.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        diagnosisText = 'Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.';
+        let audioStatusMessage = '';
+        const audioPlayed = speak(diagnosisText);
+        if (!audioPlayed) {
+          audioStatusMessage = '<p class="text-sm mt-2 text-gray-300">🔊 A leitura automática do diagnóstico falhou. Clique no botão abaixo para ouvir.</p>';
+        }
+
+        result.innerHTML = `
+          <p class="fade-in">🤔 Não conseguimos detectar uma expressão clara. Tente centralizar o rosto, melhorar a iluminação ou ajustar sua posição.</p>
+          ${audioStatusMessage}
+          <div class="mt-4"><button onclick="speakDiagnosis()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">🔊 Ouvir Diagnóstico</button></div>
+          <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>
+        `;
         setTimeout(() => {
-          speak('Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.');
-        }, 100);
+          if (audioPlayed) {
+            console.log('Automatic speech attempted after DOM update for failure case');
+          }
+        }, 500);
+      }
+    }
+
+    function speakDiagnosis() {
+      const audioPlayed = speak(diagnosisText);
+      if (!audioPlayed) {
+        alert('A leitura de voz não está disponível. Verifique as permissões de áudio do navegador ou use um dispositivo compatível.');
       }
     }
 
@@ -923,7 +963,6 @@
       result.style.display = 'block';
       result.innerHTML = '<p class="fade-in">⏳ Conectando a um consultor médico licenciado via telehealth...</p><p class="text-sm mt-2 text-gray-300">Seus dados são protegidos por criptografia e cumprem normas de privacidade (GDPR, HIPAA).</p><div class="mt-6"><button onclick="cancelMedicalConsult()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Cancelar</button></div>';
       speak('Conectando a um consultor médico. Seus dados estão seguros.');
-      // Simulação: redireciona após 3 segundos
       setTimeout(() => window.location.href = '/medical-ai.html', 3000);
     }
 
