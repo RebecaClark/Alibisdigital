@@ -204,15 +204,21 @@
     .ppg-overlay.active {
       display: block;
     }
-    .ppg-timer {
+    .ppg-progress-container {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #22d3ee;
-      font-size: 1.2rem;
-      font-weight: bold;
-      text-shadow: 0 0 5px #22d3ee;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .ppg-progress-bar {
+      height: 100%;
+      background: #22d3ee;
+      width: 0%;
+      transition: width 0.1s linear;
     }
     .mic-icon {
       display: inline-block;
@@ -226,6 +232,15 @@
       0% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.2); opacity: 0.7; }
       100% { transform: scale(1); opacity: 1; }
+    }
+    .mic-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      color: #22d3ee;
+      font-size: 1.1rem;
+      text-shadow: 0 0 5px #22d3ee;
     }
     .testimonial-card {
       background: rgba(31, 41, 55, 0.9);
@@ -441,9 +456,15 @@
     <div class="flex flex-col items-center mb-4 relative">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
       <div id="ppg-overlay" class="ppg-overlay">
-        <div id="ppg-timer" class="ppg-timer"></div>
+        <div class="ppg-progress-container">
+          <div id="ppg-progress-bar" class="ppg-progress-bar"></div>
+        </div>
       </div>
       <div id="video-placeholder" class="video-placeholder">Câmera não disponível</div>
+      <div id="mic-prompt" class="mic-prompt" style="display: none;">
+        <span class="mic-icon"></span>
+        <span>Leia esta frase: "Estou me sentindo bem hoje"</span>
+      </div>
       <div id="vr-toggle" class="mt-4">
         <button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Ativar Experiência VR/AR">Ativar Relaxamento VR/AR</button>
       </div>
@@ -452,6 +473,7 @@
       <button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
       <button onclick="initMedicalConsult()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine ml-4" aria-label="Consultar Médico">Consultar Médico</button>
     </div>
+    <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
     <div class="testimonials mt-8 max-w-4xl mx-auto">
       <h3 class="text-2xl font-bold mb-4 text-white shine">O que nossos usuários dizem</h3>
       <div class="flex flex-wrap justify-center">
@@ -471,7 +493,6 @@
         </div>
       </div>
     </div>
-    <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
     <div id="vr-container" style="display: none;">
       <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.</p>
       <iframe src="https://example.com/vr-nature-walk" width="320" height="240" frameborder="0" allowfullscreen></iframe>
@@ -797,6 +818,54 @@
       window.addEventListener('resize', checkIfInView);
     }
 
+    // Simple FFT implementation for peak detection
+    function fft(signal) {
+      const n = signal.length;
+      if (n <= 1) return signal;
+
+      const even = [];
+      const odd = [];
+      for (let i = 0; i < n; i++) {
+        if (i % 2 === 0) even.push(signal[i]);
+        else odd.push(signal[i]);
+      }
+
+      const evenFFT = fft(even);
+      const oddFFT = fft(odd);
+      const result = new Array(n).fill(0);
+
+      for (let k = 0; k < n / 2; k++) {
+        const theta = -2 * Math.PI * k / n;
+        const t = {
+          re: Math.cos(theta) * oddFFT[k],
+          im: Math.sin(theta) * oddFFT[k]
+        };
+        result[k] = evenFFT[k] + t.re;
+        result[k + n / 2] = evenFFT[k] - t.re;
+      }
+      return result;
+    }
+
+    function getDominantFrequency(signal, sampleRate) {
+      const n = signal.length;
+      const fftResult = fft(signal);
+      const magnitudes = fftResult.slice(0, n / 2).map((val, i) => {
+        return Math.sqrt(val * val);
+      });
+
+      let maxMag = 0;
+      let maxIndex = 0;
+      for (let i = 1; i < magnitudes.length; i++) {
+        if (magnitudes[i] > maxMag) {
+          maxMag = magnitudes[i];
+          maxIndex = i;
+        }
+      }
+
+      const freq = maxIndex * sampleRate / n;
+      return freq;
+    }
+
     async function captureAndAnalyze() {
       console.log('Iniciando análise facial e biométrica...');
       const canvas = document.getElementById('canvas');
@@ -804,13 +873,14 @@
       const placeholder = document.getElementById('video-placeholder');
       const result = document.getElementById('scanner-result');
       const ppgOverlay = document.getElementById('ppg-overlay');
-      const ppgTimer = document.getElementById('ppg-timer');
+      const ppgProgressBar = document.getElementById('ppg-progress-bar');
+      const micPrompt = document.getElementById('mic-prompt');
       let audioContext = null;
       let analyser = null;
       let stream = null;
 
-      if (!canvas || !video || !result || !placeholder || !ppgOverlay || !ppgTimer) {
-        console.error('Elementos necessários não encontrados:', { canvas, video, result, placeholder, ppgOverlay, ppgTimer });
+      if (!canvas || !video || !result || !placeholder || !ppgOverlay || !ppgProgressBar || !micPrompt) {
+        console.error('Elementos necessários não encontrados:', { canvas, video, result, placeholder, ppgOverlay, ppgProgressBar, micPrompt });
         return;
       }
 
@@ -832,6 +902,52 @@
       window.speechSynthesis.cancel();
       result.style.display = 'block';
       result.innerHTML = '<p class="fade-in">⏳ Preparando análise<span class="loading-dots"></span></p>';
+
+      // Voice prompt
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognition = SpeechRecognition ? new SpeechRecognition() : null;
+      let spokenText = '';
+      if (recognition) {
+        recognition.lang = 'pt-BR';
+        micPrompt.style.display = 'flex';
+        result.innerHTML = '<p class="fade-in">🎙️ Leia a frase exibida para iniciar a análise.</p>';
+        speak('Leia a frase exibida para iniciar a análise.');
+
+        spokenText = await new Promise((resolve, reject) => {
+          recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            resolve(text);
+          };
+          recognition.onerror = (event) => {
+            reject(event.error);
+          };
+          recognition.onend = () => {
+            if (!spokenText) reject('No speech detected');
+          };
+          recognition.start();
+          setTimeout(() => {
+            if (!spokenText) reject('Timeout');
+          }, 10000);
+        }).catch(error => {
+          console.error('Erro no reconhecimento de voz:', error);
+          micPrompt.style.display = 'none';
+          result.innerHTML = '<p class="fade-in">🚫 Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+          speak('Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.');
+          throw new Error('Speech recognition failed');
+        });
+
+        micPrompt.style.display = 'none';
+        const expectedPhrase = 'Estou me sentindo bem hoje';
+        if (!spokenText.toLowerCase().includes(expectedPhrase.toLowerCase())) {
+          result.innerHTML = '<p class="fade-in">🤔 Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+          speak('Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.');
+          return;
+        }
+      } else {
+        result.innerHTML = '<p class="fade-in">🚫 Reconhecimento de voz não disponível neste navegador. Ative manualmente para continuar.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        speak('Reconhecimento de voz não disponível. Ative manualmente para continuar.');
+        return;
+      }
 
       // Check lighting conditions
       const context = canvas.getContext('2d');
@@ -891,8 +1007,10 @@
       ppgOverlay.classList.add('active');
 
       while ((Date.now() - startTime) / 1000 < PPG_DURATION) {
-        const remainingTime = Math.ceil(PPG_DURATION - (Date.now() - startTime) / 1000);
-        ppgTimer.textContent = `${remainingTime}s`;
+        const elapsed = (Date.now() - startTime) / 1000;
+        const progress = (elapsed / PPG_DURATION) * 100;
+        ppgProgressBar.style.width = `${progress}%`;
+
         if (!faceRect) {
           result.innerHTML = '<p class="fade-in">🛑 Movimentação detectada. Fique parado e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
           speak('Movimentação detectada. Fique parado e tente novamente.');
@@ -921,30 +1039,21 @@
       ppgOverlay.classList.remove('active');
       tracker.stop();
 
-      // Process PPG signal to estimate heart rate
+      // Process PPG signal using FFT to estimate heart rate
       let heartRate = 0;
       let isSimulated = false;
       try {
-        // Simple peak detection (this is a basic approximation)
-        const smoothedValues = [];
-        for (let i = 2; i < greenValues.length - 2; i++) {
-          smoothedValues.push((greenValues[i-2] + greenValues[i-1] + greenValues[i] + greenValues[i+1] + greenValues[i+2]) / 5);
-        }
-        const peaks = [];
-        for (let i = 1; i < smoothedValues.length - 1; i++) {
-          if (smoothedValues[i] > smoothedValues[i-1] && smoothedValues[i] > smoothedValues[i+1] && smoothedValues[i] > 1.1 * smoothedValues.reduce((a, b) => a + b) / smoothedValues.length) {
-            peaks.push(i);
-          }
-        }
-        if (peaks.length > 1) {
-          const averageInterval = peaks.reduce((sum, val, idx, arr) => idx === 0 ? 0 : sum + (val - arr[idx-1]), 0) / (peaks.length - 1);
-          const beatsPerSecond = FRAME_RATE / averageInterval;
-          heartRate = Math.round(beatsPerSecond * 60);
-          if (heartRate < 40 || heartRate > 180) {
-            throw new Error('Heart rate out of realistic range');
-          }
-        } else {
-          throw new Error('Not enough peaks detected');
+        // Detrend and normalize the signal
+        const mean = greenValues.reduce((a, b) => a + b, 0) / greenValues.length;
+        const detrended = greenValues.map(val => val - mean);
+        const maxVal = Math.max(...detrended.map(Math.abs));
+        const normalized = detrended.map(val => val / maxVal);
+
+        // Use FFT to find dominant frequency (heart rate)
+        const freq = getDominantFrequency(normalized, FRAME_RATE);
+        heartRate = Math.round(freq * 60); // Convert Hz to bpm
+        if (heartRate < 40 || heartRate > 180) {
+          throw new Error('Heart rate out of realistic range');
         }
       } catch (error) {
         console.error('PPG analysis failed:', error);
@@ -981,8 +1090,10 @@
       } finally {
         if (stream) {
           const audioTracks = stream.getAudioTracks();
+          const videoTracks = stream.getVideoTracks();
           audioTracks.forEach(track => track.stop());
-          console.log('Microfone fechado para evitar eco');
+          videoTracks.forEach(track => track.stop());
+          console.log('Câmera e microfone fechados');
         }
         if (audioContext) {
           audioContext.close();
@@ -1152,27 +1263,26 @@
       }
     }
 
+    function initMedicalConsult() {
+      window.location.href = '/medical-ai.html';
+    }
+
     function toggleVR() {
       const vrContainer = document.getElementById('vr-container');
-      vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
-      if (vrContainer.style.display === 'block') {
-        speak('Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.');
+      const vrButton = document.querySelector('#vr-toggle button');
+      if (vrContainer && vrButton) {
+        if (vrContainer.style.display === 'block') {
+          vrContainer.style.display = 'none';
+          vrButton.textContent = 'Ativar Relaxamento VR/AR';
+          console.log('VR/AR experience deactivated');
+        } else {
+          vrContainer.style.display = 'block';
+          vrButton.textContent = 'Desativar Relaxamento VR/AR';
+          console.log('VR/AR experience activated');
+        }
+      } else {
+        console.error('VR container or button not found');
       }
-    }
-
-    function initMedicalConsult() {
-      const result = document.getElementById('scanner-result');
-      result.style.display = 'block';
-      result.innerHTML = '<p class="fade-in">⏳ Conectando a um consultor médico licenciado via telehealth...</p><p class="text-sm mt-2 text-gray-300">Seus dados são protegidos por criptografia e cumprem normas de privacidade (GDPR, HIPAA).</p><div class="mt-6"><button onclick="cancelMedicalConsult()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Cancelar</button></div>';
-      speak('Conectando a um consultor médico. Seus dados estão seguros.');
-      setTimeout(() => window.location.href = '/medical-ai.html', 3000);
-    }
-
-    function cancelMedicalConsult() {
-      const result = document.getElementById('scanner-result');
-      result.style.display = 'none';
-      result.innerHTML = '';
-      speak('Consulta médica cancelada.');
     }
   </script>
 </body>
