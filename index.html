@@ -8,18 +8,32 @@
   <meta name="author" content="Álibis Digital">
   <title>Álibis Digital - Blog de Privacidade e Bem-Estar com IA</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
   <style>
     html { scroll-behavior: smooth; }
-    body { position: relative; overflow-x: hidden; }
+    body { position: relative; overflow-x: hidden; min-height: 100vh; }
     #particles-js {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       z-index: -1;
-      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+      background: #0b1120;
+    }
+    #particles-fallback {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: #0b1120;
+      display: none;
+      color: #e5e7eb;
+      text-align: center;
+      padding-top: 20%;
+      font-size: 1.2rem;
     }
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
@@ -194,6 +208,7 @@
 <body class="bg-[#0b1120] text-white font-sans">
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
+  <div id="particles-fallback">Particle effect failed to load. Please check your internet connection.</div>
 
   <!-- Cabeçalho com Efeito Holográfico -->
   <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
@@ -282,6 +297,14 @@
           <source src="/assets/vsl-video.mp4" type="video/mp4">
           Seu navegador não suporta o elemento de vídeo.
         </video>
+      </div>
+      <!-- Lead Capture Form -->
+      <div class="mt-8 max-w-md mx-auto">
+        <p class="text-gray-300 mb-4 fade-in">Receba um Guia Anti-Estresse grátis ao se inscrever!</p>
+        <form action="/api/leads" method="POST" class="space-y-4">
+          <input type="email" name="email" required class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white fade-in" placeholder="Seu e-mail">
+          <button type="submit" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full w-full pulse">Baixar Guia Grátis</button>
+        </form>
       </div>
       <div class="mt-10 pulse">
         <a href="scanner.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Teste o Scanner com IA grátis">
@@ -397,177 +420,203 @@
 
   <!-- Scripts -->
   <script>
-    // Inicializar Partículas
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: '#22d3ee' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
-      },
-      interactivity: {
-        detect_on: 'canvas',
-        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
-      },
-      retina_detect: true
-    });
+    console.log('Loading index.html at', new Date().toISOString());
+    // Inicializar Partículas com Efeito Hexagonal
+    function initializeParticles() {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 100, density: { enable: true, value_area: 800 } },
+            color: { value: '#22d3ee' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.7, random: true },
+            size: { value: 3, random: true },
+            line_linked: {
+              enable: true,
+              distance: 120,
+              color: '#22d3ee',
+              opacity: 0.4,
+              width: 1
+            },
+            move: { speed: 1, direction: 'none', random: true }
+          },
+          interactivity: {
+            detect_on: 'canvas',
+            events: {
+              onhover: { enable: true, mode: 'repulse' },
+              onclick: { enable: true, mode: 'push' }
+            }
+          },
+          retina_detect: true
+        });
+        console.log('Particles.js loaded successfully with hexagonal effect');
+      } else {
+        console.error('particlesJS not loaded - showing fallback');
+        document.getElementById('particles-fallback').style.display = 'block';
+      }
+    }
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initializeParticles();
+    } else {
+      window.addEventListener('DOMContentLoaded', initializeParticles);
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      particlesJS('particles-js', { particles: { number: { value: 0 } } });
+      console.log('Reduced motion detected - particles disabled');
+    }
 
     // Animação de Scroll
-    document.addEventListener('DOMContentLoaded', () => {
-      const animItems = document.querySelectorAll('.animate-on-scroll');
-      const windowHeight = window.innerHeight;
-      function animOnScroll() {
-        animItems.forEach(item => {
-          const itemTop = item.getBoundingClientRect().top;
-          const animStart = 150;
-          if (itemTop < windowHeight - animStart) {
-            item.classList.add('visible');
-          }
-        });
-      }
-      animOnScroll();
-      window.addEventListener('scroll', animOnScroll);
-
-      // Menu Hamburguer
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const blogToggle = document.getElementById('blog-toggle');
-      const blogMenu = document.getElementById('blog-menu');
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-      blogToggle.addEventListener('click', () => {
-        blogMenu.classList.toggle('hidden');
-      });
-
-      // Efeito de Sombra no Header
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          document.querySelector('header').classList.add('shadow-lg');
-        } else {
-          document.querySelector('header').classList.remove('shadow-lg');
+    const animItems = document.querySelectorAll('.animate-on-scroll');
+    const windowHeight = window.innerHeight;
+    function animOnScroll() {
+      animItems.forEach(item => {
+        const itemTop = item.getBoundingClientRect().top;
+        const animStart = 150;
+        if (itemTop < windowHeight - animStart) {
+          item.classList.add('visible');
         }
       });
+    }
+    animOnScroll();
+    window.addEventListener('scroll', animOnScroll);
 
-      // Chat Interativo com Voz
-      const chatBubble = document.getElementById('chat-bubble');
-      const chatWindow = document.getElementById('chat-window');
-      const chatMessages = document.getElementById('chat-messages');
-      const chatInput = document.getElementById('chat-input');
-      const listeningIndicator = document.getElementById('listening-indicator');
-      const synth = window.speechSynthesis;
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      let recognition = SpeechRecognition ? new SpeechRecognition() : null;
-      let lastUserMessage = '';
+    // Menu Hamburguer
+    const hamburger = document.getElementById('hamburger-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const blogToggle = document.getElementById('blog-toggle');
+    const blogMenu = document.getElementById('blog-menu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    blogToggle.addEventListener('click', () => {
+      blogMenu.classList.toggle('hidden');
+    });
 
-      const speak = (text) => {
-        if (!synth) return;
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'pt-BR';
-        synth.speak(utter);
-      };
-
-      const addMessage = (message, isUser = false) => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%]`;
-        messageDiv.textContent = message;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      };
-
-      chatBubble.addEventListener('click', () => {
-        chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
-        if (chatWindow.style.display === 'block') {
-          const welcomeMessage = 'Bem-vindo à Álibis Digital! Quer criar um álibi ou melhorar seu bem-estar com IA?';
-          addMessage(welcomeMessage, false);
-          speak(welcomeMessage);
-        }
-      });
-
-      chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && chatInput.value.trim()) {
-          const userMessage = chatInput.value.trim();
-          addMessage(userMessage, true);
-          lastUserMessage = userMessage.toLowerCase();
-          chatInput.value = '';
-          respondToUser(lastUserMessage);
-        }
-      });
-
-      if (recognition) {
-        recognition.lang = 'pt-BR';
-        recognition.onstart = () => listeningIndicator.classList.add('active');
-        recognition.onend = () => listeningIndicator.classList.remove('active');
-        recognition.onresult = (event) => {
-          const spokenText = event.results[0][0].transcript;
-          chatInput.value = spokenText;
-          const eventEnter = new Event('keypress');
-          eventEnter.key = 'Enter';
-          chatInput.dispatchEvent(eventEnter);
-        };
-        recognition.onerror = () => {
-          listeningIndicator.classList.remove('active');
-          addMessage('Desculpe, o reconhecimento de voz não está disponível.', false);
-        };
-        chatInput.addEventListener('focus', () => recognition.start());
+    // Efeito de Sombra no Header
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        document.querySelector('header').classList.add('shadow-lg');
       } else {
-        chatInput.addEventListener('focus', () => {
-          addMessage('Reconhecimento de voz não disponível neste navegador.', false);
-        });
-      }
-
-      function respondToUser(message) {
-        let response = 'Explore nossos artigos sobre álibis e bem-estar! Como posso ajudar?';
-        if (message.includes('álibi') || message.includes('privacidade')) {
-          response = 'Quer criar álibis realistas? Confira nosso artigo!';
-          setTimeout(() => window.location.href = '/criar-alibis-realistas-ia.html', 1500);
-        } else if (message.includes('estresse') || message.includes('finanças')) {
-          response = 'Gerencie finanças e reduza estresse com IA. Leia mais!';
-          setTimeout(() => window.location.href = '/gerenciar-financas-estresse.html', 1500);
-        } else if (message.includes('sono') || message.includes('dormir')) {
-          response = 'Melhore seu sono com nosso Scanner e Abili. Veja como!';
-          setTimeout(() => window.location.href = '/melhorar-sono-com-ia.html', 1500);
-        } else if (message.includes('burnout') || message.includes('esgotamento')) {
-          response = 'Previna o burnout com IA. Descubra nossas dicas!';
-          setTimeout(() => window.location.href = '/prevenir-burnout-ia.html', 1500);
-        } else if (message.includes('produtividade') || message.includes('trabalho')) {
-          response = 'Aumente sua produtividade com IA. Leia nosso artigo!';
-          setTimeout(() => window.location.href = '/produtividade-trabalho-ia.html', 1500);
-        } else if (message.includes('equilíbrio') || message.includes('vida pessoal')) {
-          response = 'Equilibre sua vida com IA. Confira nossas sugestões!';
-          setTimeout(() => window.location.href = '/equilibre-vida-pessoal-ia.html', 1500);
-        } else if (message.includes('relacionamentos') || message.includes('amigos')) {
-          response = 'Fortaleça seus relacionamentos com IA. Veja como!';
-          setTimeout(() => window.location.href = '/fortalecer-relacionamentos-ia.html', 1500);
-        } else if (message.includes('autocuidado') || message.includes('bem-estar')) {
-          response = 'Crie rotinas de autocuidado com IA. Leia mais!';
-          setTimeout(() => window.location.href = '/rotinas-autocuidado-ia.html', 1500);
-        } else if (message.includes('saúde emocional') || message.includes('emoções')) {
-          response = 'Cuide da sua saúde emocional com IA. Explore nosso artigo!';
-          setTimeout(() => window.location.href = '/saude-emocional-triagem-ia.html', 1500);
-        } else if (message.includes('teste') || message.includes('scanner')) {
-          response = 'Teste o Scanner com IA grátis agora!';
-          setTimeout(() => window.location.href = '/index.html', 1500);
-        } else if (message.includes('apoio') || message.includes('abili')) {
-          response = 'O Apoio Emocional com Abili está aqui para você!';
-          setTimeout(() => window.location.href = '/apoio-emocional.html', 1500);
-        } else if (message.includes('médico') || message.includes('diagnóstico')) {
-          response = 'O Diagnóstico Médico por IA protege sua saúde. Saiba mais!';
-          setTimeout(() => window.location.href = '/medical-ia.html', 1500);
-        } else if (message.includes('suporte') || message.includes('ajuda')) {
-          response = 'Nosso suporte está pronto para ajudar!';
-          setTimeout(() => window.location.href = '/suporte.html', 1500);
-        }
-        setTimeout(() => {
-          addMessage(response, false);
-          speak(response);
-        }, 500);
+        document.querySelector('header').classList.remove('shadow-lg');
       }
     });
+
+    // Chat Interativo com Voz
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const listeningIndicator = document.getElementById('listening-indicator');
+    const synth = window.speechSynthesis;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = SpeechRecognition ? new SpeechRecognition() : null;
+    let lastUserMessage = '';
+
+    const speak = (text) => {
+      if (!synth) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'pt-BR';
+      synth.speak(utter);
+    };
+
+    const addMessage = (message, isUser = false) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%]`;
+      messageDiv.textContent = message;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    chatBubble.addEventListener('click', () => {
+      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+      if (chatWindow.style.display === 'block') {
+        const welcomeMessage = 'Bem-vindo à Álibis Digital! Quer criar um álibi ou melhorar seu bem-estar com IA? Teste o Scanner grátis!';
+        addMessage(welcomeMessage, false);
+        speak(welcomeMessage);
+      }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        const userMessage = chatInput.value.trim();
+        addMessage(userMessage, true);
+        lastUserMessage = userMessage.toLowerCase();
+        chatInput.value = '';
+        respondToUser(lastUserMessage);
+      }
+    });
+
+    if (recognition) {
+      recognition.lang = 'pt-BR';
+      recognition.onstart = () => listeningIndicator.classList.add('active');
+      recognition.onend = () => listeningIndicator.classList.remove('active');
+      recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript;
+        chatInput.value = spokenText;
+        const eventEnter = new Event('keypress');
+        eventEnter.key = 'Enter';
+        chatInput.dispatchEvent(eventEnter);
+      };
+      recognition.onerror = () => {
+        listeningIndicator.classList.remove('active');
+        addMessage('Desculpe, o reconhecimento de voz não está disponível.', false);
+      };
+      chatInput.addEventListener('focus', () => recognition.start());
+    } else {
+      chatInput.addEventListener('focus', () => {
+        addMessage('Reconhecimento de voz não disponível neste navegador.', false);
+      });
+    }
+
+    function respondToUser(message) {
+      let response = 'Explore nossos artigos sobre álibis e bem-estar! Ou teste o Scanner com IA grátis para começar sua jornada!';
+      if (message.includes('álibi') || message.includes('privacidade')) {
+        response = 'Quer criar álibis realistas? Confira nosso artigo ou teste o Scanner para começar!';
+        setTimeout(() => window.location.href = '/criar-alibis-realistas-ia.html', 1500);
+      } else if (message.includes('estresse') || message.includes('finanças')) {
+        response = 'Gerencie finanças e reduza estresse com IA. Leia mais ou experimente o Scanner!';
+        setTimeout(() => window.location.href = '/gerenciar-financas-estresse.html', 1500);
+      } else if (message.includes('sono') || message.includes('dormir')) {
+        response = 'Melhore seu sono com nosso Scanner e Abili. Veja como ou teste agora!';
+        setTimeout(() => window.location.href = '/melhorar-sono-com-ia.html', 1500);
+      } else if (message.includes('burnout') || message.includes('esgotamento')) {
+        response = 'Previna o burnout com IA. Descubra nossas dicas ou experimente o Scanner grátis!';
+        setTimeout(() => window.location.href = '/prevenir-burnout-ia.html', 1500);
+      } else if (message.includes('produtividade') || message.includes('trabalho')) {
+        response = 'Aumente sua produtividade com IA. Leia nosso artigo ou teste o Scanner agora!';
+        setTimeout(() => window.location.href = '/produtividade-trabalho-ia.html', 1500);
+      } else if (message.includes('equilíbrio') || message.includes('vida pessoal')) {
+        response = 'Equilibre sua vida com IA. Confira nossas sugestões ou comece com o Scanner!';
+        setTimeout(() => window.location.href = '/equilibre-vida-pessoal-ia.html', 1500);
+      } else if (message.includes('relacionamentos') || message.includes('amigos')) {
+        response = 'Fortaleça seus relacionamentos com IA. Veja como ou experimente o Scanner!';
+        setTimeout(() => window.location.href = '/fortalecer-relacionamentos-ia.html', 1500);
+      } else if (message.includes('autocuidado') || message.includes('bem-estar')) {
+        response = 'Crie rotinas de autocuidado com IA. Leia mais ou teste o Scanner grátis!';
+        setTimeout(() => window.location.href = '/rotinas-autocuidado-ia.html', 1500);
+      } else if (message.includes('saúde emocional') || message.includes('emoções')) {
+        response = 'Cuide da sua saúde emocional com IA. Explore nosso artigo ou comece com o Scanner!';
+        setTimeout(() => window.location.href = '/saude-emocional-triagem-ia.html', 1500);
+      } else if (message.includes('teste') || message.includes('scanner')) {
+        response = 'Ótimo! Teste o Scanner com IA grátis agora mesmo!';
+        setTimeout(() => window.location.href = '/scanner.html', 1500);
+      } else if (message.includes('apoio') || message.includes('abili')) {
+        response = 'O Apoio Emocional com Abili está aqui para você! Teste o Scanner para começar.';
+        setTimeout(() => window.location.href = '/apoio-emocional.html', 1500);
+      } else if (message.includes('médico') || message.includes('diagnóstico')) {
+        response = 'O Diagnóstico Médico por IA protege sua saúde. Saiba mais ou experimente o Scanner!';
+        setTimeout(() => window.location.href = '/medical-ia.html', 1500);
+      } else if (message.includes('suporte') || message.includes('ajuda')) {
+        response = 'Nosso suporte está pronto para ajudar! Acesse agora ou teste o Scanner.';
+        setTimeout(() => window.location.href = '/suporte.html', 1500);
+      }
+      setTimeout(() => {
+        addMessage(response, false);
+        speak(response);
+      }, 500);
+    }
   </script>
 </body>
 </html>
