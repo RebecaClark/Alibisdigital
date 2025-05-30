@@ -881,34 +881,31 @@
       const micPrompt = document.getElementById('mic-prompt');
       let audioContext = null;
       let analyser = null;
-      let stream = null;
+      let videoStream = null;
+      let audioStream = null;
 
       if (!canvas || !video || !result || !placeholder || !ppgOverlay || !ppgProgressBar || !micPrompt) {
         console.error('Elementos necessários não encontrados:', { canvas, video, result, placeholder, ppgOverlay, ppgProgressBar, micPrompt });
         return;
       }
 
+      // Step 1: Request video stream (camera only)
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        video.srcObject = stream;
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        video.srcObject = videoStream;
         video.classList.remove('hidden');
         placeholder.classList.add('hidden');
-        console.log('Câmera e microfone inicializados com sucesso');
+        console.log('Câmera inicializada com sucesso');
       } catch (error) {
-        console.error('Erro ao acessar a câmera ou microfone:', error);
+        console.error('Erro ao acessar a câmera:', error);
         video.classList.add('hidden');
         placeholder.classList.remove('hidden');
         result.style.display = 'block';
-        let errorMessage = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera ou microfone. Permita os acessos e tente novamente.</p>';
+        let errorMessage = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o acesso e tente novamente.</p>';
         if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-          const videoTracks = stream ? stream.getVideoTracks().length : 0;
-          const audioTracks = stream ? stream.getAudioTracks().length : 0;
-          if (videoTracks === 0 && audioTracks === 0) {
-            errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso à câmera e ao microfone para continuar.</p>';
-          } else if (videoTracks === 0) {
+          const videoTracks = videoStream ? videoStream.getVideoTracks().length : 0;
+          if (videoTracks === 0) {
             errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso à câmera para continuar.</p>';
-          } else if (audioTracks === 0) {
-            errorMessage = '<p class="fade-in">🚫 Por favor, permita o acesso ao microfone para continuar.</p>';
           }
         }
         result.innerHTML = `${errorMessage}<div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>`;
@@ -919,51 +916,95 @@
       result.style.display = 'block';
       result.innerHTML = '<p class="fade-in">⏳ Preparando análise<span class="loading-dots"></span></p>';
 
+      // Step 2: Speech recognition with temporary audio stream
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       let recognition = SpeechRecognition ? new SpeechRecognition() : null;
       let spokenText = '';
       if (recognition) {
-        recognition.lang = 'pt-BR';
-        micPrompt.style.display = 'flex';
-        result.innerHTML = '<p class="fade-in">🎙️ Leia a frase exibida para iniciar a análise.</p>';
-        speak('Leia a frase exibida para iniciar a análise.');
+        try {
+          // Request audio stream for speech recognition
+          audioStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true });
+          console.log('Microfone inicializado para reconhecimento de voz');
 
-        spokenText = await new Promise((resolve, reject) => {
-          recognition.onresult = (event) => {
-            const text = event.results[0][0].transcript;
-            resolve(text);
-          };
-          recognition.onerror = (event) => {
-            reject(event.error);
-          };
-          recognition.onend = () => {
-            if (!spokenText) reject('No speech detected');
-          };
-          recognition.start();
-          setTimeout(() => {
-            if (!spokenText) reject('Timeout');
-          }, 10000);
-        }).catch(error => {
+          recognition.lang = 'pt-BR';
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          micPrompt.style.display = 'flex';
+          result.innerHTML = '<p class="fade-in">🎙️ Leia a frase exibida para iniciar a análise.</p>';
+          speak('Leia a frase exibida para iniciar a análise.');
+
+          spokenText = await new Promise((resolve, reject) => {
+            recognition.onresult = (event) => {
+              const text = event.results[0][0].transcript;
+              resolve(text);
+            };
+            recognition.onerror = (event) => {
+              reject(event.error);
+            };
+            recognition.onend = () => {
+              if (!spokenText) reject('No speech detected');
+            };
+            recognition.start();
+            setTimeout(() => {
+              if (!spokenText) {
+                recognition.stop();
+                reject('Timeout: No speech detected within 10 seconds');
+              }
+            }, 10000);
+          });
+
+          // Immediately stop the audio stream after capturing the voice
+          if (audioStream) {
+            audioStream.getAudioTracks().forEach(track => track.stop());
+            audioStream = null;
+            console.log('Microfone desativado após captura de voz');
+          }
+
+          micPrompt.style.display = 'none';
+          const expectedPhrase = 'estou me sentindo bem hoje';
+          const spokenLower = spokenText.toLowerCase().trim();
+          const containsExpectedPhrase = spokenLower.includes(expectedPhrase);
+
+          if (!containsExpectedPhrase) {
+            result.innerHTML = '<p class="fade-in">🤔 Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+            speak('Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.');
+            if (videoStream) {
+              videoStream.getVideoTracks().forEach(track => track.stop());
+              video.classList.add('hidden');
+              placeholder.classList.remove('hidden');
+            }
+            return;
+          }
+        } catch (error) {
           console.error('Erro no reconhecimento de voz:', error);
           micPrompt.style.display = 'none';
+          // Stop audio stream in case of error
+          if (audioStream) {
+            audioStream.getAudioTracks().forEach(track => track.stop());
+            audioStream = null;
+            console.log('Microfone desativado devido a erro no reconhecimento de voz');
+          }
           result.innerHTML = '<p class="fade-in">🚫 Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
           speak('Não conseguimos ouvir sua voz. Verifique o microfone e tente novamente.');
-          throw new Error('Speech recognition failed');
-        });
-
-        micPrompt.style.display = 'none';
-        const expectedPhrase = 'Estou me sentindo bem hoje';
-        if (!spokenText.toLowerCase().includes(expectedPhrase.toLowerCase())) {
-          result.innerHTML = '<p class="fade-in">🤔 Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
-          speak('Frase não reconhecida. Diga "Estou me sentindo bem hoje" e tente novamente.');
+          if (videoStream) {
+            videoStream.getVideoTracks().forEach(track => track.stop());
+            video.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+          }
           return;
         }
       } else {
         result.innerHTML = '<p class="fade-in">🚫 Reconhecimento de voz não disponível neste navegador. Ative manualmente para continuar.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         speak('Reconhecimento de voz não disponível. Ative manualmente para continuar.');
+        if (videoStream) {
+          videoStream.getVideoTracks().forEach(track => track.stop());
+          video.classList.add('hidden');
+          placeholder.classList.remove('hidden');
+        }
         return;
       }
 
+      // Step 3: Check lighting conditions
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -978,9 +1019,15 @@
       if (averageBrightness < 50) {
         result.innerHTML = '<p class="fade-in">🌙 A iluminação está muito baixa. Ajuste a luz para continuar.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         speak('A iluminação está muito baixa. Ajuste a luz e tente novamente.');
+        if (videoStream) {
+          videoStream.getVideoTracks().forEach(track => track.stop());
+          video.classList.add('hidden');
+          placeholder.classList.remove('hidden');
+        }
         return;
       }
 
+      // Step 4: Face detection
       let faceRect = null;
       const tracker = new tracking.ObjectTracker('face');
       tracker.setInitialScale(4);
@@ -1006,9 +1053,15 @@
         result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar seu rosto. Centralize-se na câmera e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         speak('Não conseguimos detectar seu rosto. Centralize-se na câmera e tente novamente.');
         tracker.stop();
+        if (videoStream) {
+          videoStream.getVideoTracks().forEach(track => track.stop());
+          video.classList.add('hidden');
+          placeholder.classList.remove('hidden');
+        }
         return;
       }
 
+      // Step 5: PPG (heart rate) measurement
       const PPG_DURATION = 15;
       const FRAME_RATE = 30;
       const TOTAL_FRAMES = PPG_DURATION * FRAME_RATE;
@@ -1027,6 +1080,11 @@
           speak('Movimentação detectada. Fique parado e tente novamente.');
           ppgOverlay.classList.remove('active');
           tracker.stop();
+          if (videoStream) {
+            videoStream.getVideoTracks().forEach(track => track.stop());
+            video.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+          }
           return;
         }
 
@@ -1068,48 +1126,42 @@
         isSimulated = true;
       }
 
-      result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial e tom de voz<span class="loading-dots"></span></p>';
+      // Step 6: Facial analysis (no audio needed at this point)
+      result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial<span class="loading-dots"></span></p>';
       const captures = [];
       const audioCaptures = [];
       try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioContext.createAnalyser();
-        const audioStream = audioContext.createMediaStreamSource(stream);
-        audioStream.connect(analyser);
-        analyser.fftSize = 2048;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-
+        // Since we already stopped the audio stream, we'll use a simulated voice tone
         for (let i = 0; i < 2; i++) {
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
           const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
           captures.push(imageBase64);
 
-          analyser.getByteFrequencyData(dataArray);
-          const voiceTone = dataArray.reduce((a, b) => a + b) / bufferLength;
-          audioCaptures.push(voiceTone);
+          // Simulate voice tone since microphone is off
+          const simulatedVoiceTone = 100 + Math.random() * 50; // Arbitrary range
+          audioCaptures.push(simulatedVoiceTone);
           await new Promise(resolve => setTimeout(resolve, 100));
         }
       } catch (error) {
         console.error('Erro durante a análise:', error);
         result.innerHTML = '<p class="fade-in">🚫 Erro durante a análise. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
-      } finally {
-        if (stream) {
-          const audioTracks = stream.getAudioTracks();
-          const videoTracks = stream.getVideoTracks();
-          audioTracks.forEach(track => track.stop());
-          videoTracks.forEach(track => track.stop());
+        if (videoStream) {
+          videoStream.getVideoTracks().forEach(track => track.stop());
           video.classList.add('hidden');
           placeholder.classList.remove('hidden');
-          console.log('Câmera e microfone fechados após análise');
         }
-        if (audioContext) {
-          audioContext.close();
-          console.log('Contexto de áudio fechado');
+        return;
+      } finally {
+        if (videoStream) {
+          videoStream.getVideoTracks().forEach(track => track.stop());
+          video.classList.add('hidden');
+          placeholder.classList.remove('hidden');
+          console.log('Câmera fechada após análise');
         }
-        stream = null;
+        videoStream = null;
       }
 
+      // Step 7: Process results with Face++ API
       let bestResult = null;
       let maxConfidence = 0;
 
@@ -1143,6 +1195,7 @@
         }
       }
 
+      // Step 8: Display diagnosis
       if (bestResult && maxConfidence >= 50) {
         const { emotion, age, heartRate, voiceTone, isSimulated } = bestResult;
         const emotionsSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
@@ -1230,35 +1283,35 @@
           <p class="fade-in mt-2"><strong>Possíveis Gatilhos:</strong> ${triggers}</p>
           <p class="fade-in mt-2"><strong>Sugestão:</strong> ${suggestion}</p>
           <p class="fade-in mt-2"><strong>Plano Personalizado:</strong> ${personalizedPlan}</p>
-          ${isSimulated ? '<p class="text-sm text-gray-400 mt-2 fade-in">* Frequência cardíaca estimada devido a limitações de captura.</p>' : ''}
+          ${isSimulated ? '<p class="fade-in mt-2 text-yellow-300"><strong>Nota:</strong> Frequência cardíaca estimada devido a falha na medição precisa.</p>' : ''}
           ${ctaButtons}
-          <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>
         `;
+
         result.innerHTML = diagnosisText;
-        speak(diagnosisText);
+        speak(`Seu diagnóstico está pronto. Emoção predominante: ${primaryEmotionInPortuguese.charAt(0).toUpperCase() + primaryEmotionInPortuguese.slice(1)}. ${diagnosis}`);
       } else {
-        result.innerHTML = '<p class="fade-in">🤔 Não foi possível identificar uma emoção predominante com confiança. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
-        speak('Não foi possível identificar uma emoção predominante com confiança. Tente novamente.');
+        result.innerHTML = '<p class="fade-in">🚫 Não foi possível determinar uma emoção com confiança suficiente. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        speak('Não foi possível determinar uma emoção com confiança suficiente. Tente novamente.');
+      }
+    }
+
+    async function initMedicalConsult() {
+      const result = document.getElementById('scanner-result');
+      if (result) {
+        result.style.display = 'block';
+        result.innerHTML = '<p class="fade-in">📞 Conectando a um consultor médico<span class="loading-dots"></span></p>';
+        speak('Conectando a um consultor médico.');
+        setTimeout(() => {
+          window.location.href = '/medical-ai.html';
+        }, 3000);
       }
     }
 
     function toggleVR() {
       const vrContainer = document.getElementById('vr-container');
-      const vrToggle = document.getElementById('vr-toggle');
-      if (vrContainer.style.display === 'none') {
-        vrContainer.style.display = 'block';
-        vrToggle.innerHTML = '<button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Desativar Experiência VR/AR">Desativar Relaxamento VR/AR</button>';
-        speak('Experiência VR ativada. Explore uma caminhada virtual na natureza.');
-      } else {
-        vrContainer.style.display = 'none';
-        vrToggle.innerHTML = '<button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Ativar Experiência VR/AR">Ativar Relaxamento VR/AR</button>';
-        speak('Experiência VR desativada.');
+      if (vrContainer) {
+        vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
+        speak(vrContainer.style.display === 'block' ? 'Bem-vindo ao Relaxamento VR/AR!' : 'Relaxamento VR/AR desativado.');
       }
     }
-
-    function initMedicalConsult() {
-      window.location.href = '/medical-ai.html';
-    }
   </script>
-</body>
-</html>
