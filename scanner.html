@@ -421,8 +421,10 @@
     </div>
     <div id="scanner-result" class="neon-box mt-6" style="display: none;"></div>
     <div id="vr-container" style="display: none;">
-      <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! Explore uma caminhada virtual na natureza.</p>
-      <!-- Placeholder for future VR/AR integration -->
+      <p class="text-lg text-gray-300 fade-in">Bem-vindo ao Relaxamento VR/AR! A experiência está em desenvolvimento. Por enquanto, imagine uma caminhada virtual na natureza.</p>
+      <div class="vr-placeholder bg-[#1f2937] w-[320px] h-[240px] flex items-center justify-center text-center p-4 rounded-lg border border-[#22d3ee]">
+        <p>VR/AR em breve! <span class="shine">✨</span></p>
+      </div>
     </div>
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
   </section>
@@ -612,6 +614,7 @@
         utter.pitch = 1.0;  // Natural pitch
         synth.cancel();     // Clear any previous speech
         synth.speak(utter);
+        console.log('Speaking:', text);
       };
 
       const addMessage = (message, isUser = false) => {
@@ -895,10 +898,15 @@
           <div class="mt-4"><a href="/criar-alibi-basico.html" class="text-[#22d3ee] font-semibold hover:underline shine">Prefere um plano básico? Clique aqui</a></div>
           <div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Novo Diagnóstico</button></div>
         `;
-        speak(`${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`);
+        // Ensure speech triggers after DOM update
+        setTimeout(() => {
+          speak(`${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`);
+        }, 100);
       } else {
         result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar uma expressão clara. Tente centralizar o rosto, melhorar a iluminação ou ajustar sua posição.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
-        speak('Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.');
+        setTimeout(() => {
+          speak('Não conseguimos capturar uma expressão clara. Tente ajustar a iluminação ou a posição do rosto.');
+        }, 100);
       }
     }
 
@@ -906,7 +914,7 @@
       const vrContainer = document.getElementById('vr-container');
       vrContainer.style.display = vrContainer.style.display === 'block' ? 'none' : 'block';
       if (vrContainer.style.display === 'block') {
-        speak('Bem-vindo ao Relaxamento VR/AR! A integração VR/AR ainda está em desenvolvimento.');
+        speak('Bem-vindo ao Relaxamento VR/AR! A experiência está em desenvolvimento. Por enquanto, imagine uma caminhada virtual na natureza.');
       }
     }
 
