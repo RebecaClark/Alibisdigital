@@ -10,6 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js" defer></script>
   <style>
     html { scroll-behavior: smooth; }
     body { 
@@ -190,6 +191,42 @@
       color: #e5e7eb;
       border: 1px solid #22d3ee;
     }
+    .ppg-overlay {
+      position: absolute;
+      width: 320px;
+      height: 240px;
+      max-width: 100%;
+      border-radius: 0.75rem;
+      border: 2px dashed #22d3ee;
+      pointer-events: none;
+      display: none;
+    }
+    .ppg-overlay.active {
+      display: block;
+    }
+    .ppg-timer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #22d3ee;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .mic-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: url('https://via.placeholder.com/24?text=🎙️') no-repeat center;
+      animation: pulseMic 1.5s infinite;
+      margin-right: 8px;
+    }
+    @keyframes pulseMic {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
     .testimonial-card {
       background: rgba(31, 41, 55, 0.9);
       border: 1px solid #22d3ee;
@@ -273,6 +310,7 @@
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; }
       video, .video-placeholder { width: 280px; height: 210px; max-width: 90vw; }
+      .ppg-overlay { width: 280px; height: 210px; max-width: 90vw; }
       .scanner-container { padding: 1rem; max-height: 80vh; }
       section#scanner, section#emotion-intro { padding-top: 1.5rem; padding-bottom: 1.5rem; }
       #chat-window { width: 90%; right: 5%; height: 350px; }
@@ -285,6 +323,7 @@
       h2 { font-size: 1.3rem; }
       p { font-size: 0.85rem; }
       video, .video-placeholder { width: 240px; height: 180px; }
+      .ppg-overlay { width: 240px; height: 180px; }
       .futuristic-btn { font-size: 0.8rem; }
       .neon-box { padding: 15px; }
     }
@@ -399,8 +438,11 @@
   <section class="py-10 px-6 text-center animate-on-scroll scanner-container" id="scanner">
     <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
     <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e permita acesso a dados biométricos (frequência cardíaca, tom de voz) para um diagnóstico emocional detalhado com idade aparente.</p>
-    <div class="flex flex-col items-center mb-4">
+    <div class="flex flex-col items-center mb-4 relative">
       <video id="video" width="320" height="240" autoplay class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera para análise emocional"></video>
+      <div id="ppg-overlay" class="ppg-overlay">
+        <div id="ppg-timer" class="ppg-timer"></div>
+      </div>
       <div id="video-placeholder" class="video-placeholder">Câmera não disponível</div>
       <div id="vr-toggle" class="mt-4">
         <button onclick="toggleVR()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Ativar Experiência VR/AR">Ativar Relaxamento VR/AR</button>
@@ -536,7 +578,7 @@
 
     const apiKey = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
     const apiSecret = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
-    let diagnosisText = ''; // Store diagnosis text for manual playback
+    let diagnosisText = '';
 
     document.addEventListener('DOMContentLoaded', () => {
       console.log('DOM carregado, inicializando scanner...');
@@ -551,7 +593,6 @@
         console.log('Resultado inicializado como oculto');
       }
 
-      // Do not initialize camera and microphone on page load; wait for user action in captureAndAnalyze()
       if (video && placeholder) {
         video.classList.add('hidden');
         placeholder.classList.remove('hidden');
@@ -591,7 +632,6 @@
         }
       });
 
-      // Inicializar Chatbot
       const chatBubble = document.getElementById('chat-bubble');
       const chatWindow = document.getElementById('chat-window');
       const chatMessages = document.getElementById('chat-messages');
@@ -763,16 +803,17 @@
       const video = document.getElementById('video');
       const placeholder = document.getElementById('video-placeholder');
       const result = document.getElementById('scanner-result');
+      const ppgOverlay = document.getElementById('ppg-overlay');
+      const ppgTimer = document.getElementById('ppg-timer');
       let audioContext = null;
       let analyser = null;
       let stream = null;
 
-      if (!canvas || !video || !result || !placeholder) {
-        console.error('Elementos necessários não encontrados:', { canvas, video, result, placeholder });
+      if (!canvas || !video || !result || !placeholder || !ppgOverlay || !ppgTimer) {
+        console.error('Elementos necessários não encontrados:', { canvas, video, result, placeholder, ppgOverlay, ppgTimer });
         return;
       }
 
-      // Open camera and microphone for analysis
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         video.srcObject = stream;
@@ -790,8 +831,129 @@
 
       window.speechSynthesis.cancel();
       result.style.display = 'block';
-      result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial, frequência cardíaca e tom de voz<span class="loading-dots"></span></p>';
+      result.innerHTML = '<p class="fade-in">⏳ Preparando análise<span class="loading-dots"></span></p>';
 
+      // Check lighting conditions
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      let brightnessSum = 0;
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
+        brightnessSum += (0.299 * r + 0.587 * g + 0.114 * b);
+      }
+      const averageBrightness = brightnessSum / (imageData.data.length / 4);
+      if (averageBrightness < 50) {
+        result.innerHTML = '<p class="fade-in">🌙 A iluminação está muito baixa. Ajuste a luz para continuar.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        speak('A iluminação está muito baixa. Ajuste a luz e tente novamente.');
+        return;
+      }
+
+      // Initialize face tracking
+      let faceRect = null;
+      const tracker = new tracking.ObjectTracker('face');
+      tracker.setInitialScale(4);
+      tracker.setStepSize(2);
+      tracker.setEdgesDensity(0.1);
+      tracking.track('#video', tracker);
+      tracker.on('track', event => {
+        if (event.data.length > 0) {
+          faceRect = event.data[0];
+        }
+      });
+
+      // Wait for face detection
+      let faceDetected = false;
+      for (let i = 0; i < 50; i++) {
+        if (faceRect) {
+          faceDetected = true;
+          break;
+        }
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      if (!faceDetected) {
+        result.innerHTML = '<p class="fade-in">🤔 Não conseguimos detectar seu rosto. Centralize-se na câmera e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        speak('Não conseguimos detectar seu rosto. Centralize-se na câmera e tente novamente.');
+        tracker.stop();
+        return;
+      }
+
+      // PPG Heart Rate Measurement
+      const PPG_DURATION = 15; // 15 seconds
+      const FRAME_RATE = 30; // Assume 30 fps
+      const TOTAL_FRAMES = PPG_DURATION * FRAME_RATE;
+      const greenValues = [];
+      let startTime = Date.now();
+      result.innerHTML = '<p class="fade-in">❤️ Fique parado por 15 segundos para medir sua frequência cardíaca.</p>';
+      ppgOverlay.classList.add('active');
+
+      while ((Date.now() - startTime) / 1000 < PPG_DURATION) {
+        const remainingTime = Math.ceil(PPG_DURATION - (Date.now() - startTime) / 1000);
+        ppgTimer.textContent = `${remainingTime}s`;
+        if (!faceRect) {
+          result.innerHTML = '<p class="fade-in">🛑 Movimentação detectada. Fique parado e tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
+          speak('Movimentação detectada. Fique parado e tente novamente.');
+          ppgOverlay.classList.remove('active');
+          tracker.stop();
+          return;
+        }
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const foreheadX = faceRect.x + faceRect.width * 0.3;
+        const foreheadY = faceRect.y + faceRect.height * 0.2;
+        const foreheadWidth = faceRect.width * 0.4;
+        const foreheadHeight = faceRect.height * 0.2;
+        const foreheadData = context.getImageData(foreheadX, foreheadY, foreheadWidth, foreheadHeight);
+        let greenSum = 0;
+        let pixelCount = 0;
+        for (let i = 0; i < foreheadData.data.length; i += 4) {
+          greenSum += foreheadData.data[i + 1];
+          pixelCount++;
+        }
+        const averageGreen = greenSum / pixelCount;
+        greenValues.push(averageGreen);
+        await new Promise(resolve => setTimeout(resolve, 1000 / FRAME_RATE));
+      }
+
+      ppgOverlay.classList.remove('active');
+      tracker.stop();
+
+      // Process PPG signal to estimate heart rate
+      let heartRate = 0;
+      let isSimulated = false;
+      try {
+        // Simple peak detection (this is a basic approximation)
+        const smoothedValues = [];
+        for (let i = 2; i < greenValues.length - 2; i++) {
+          smoothedValues.push((greenValues[i-2] + greenValues[i-1] + greenValues[i] + greenValues[i+1] + greenValues[i+2]) / 5);
+        }
+        const peaks = [];
+        for (let i = 1; i < smoothedValues.length - 1; i++) {
+          if (smoothedValues[i] > smoothedValues[i-1] && smoothedValues[i] > smoothedValues[i+1] && smoothedValues[i] > 1.1 * smoothedValues.reduce((a, b) => a + b) / smoothedValues.length) {
+            peaks.push(i);
+          }
+        }
+        if (peaks.length > 1) {
+          const averageInterval = peaks.reduce((sum, val, idx, arr) => idx === 0 ? 0 : sum + (val - arr[idx-1]), 0) / (peaks.length - 1);
+          const beatsPerSecond = FRAME_RATE / averageInterval;
+          heartRate = Math.round(beatsPerSecond * 60);
+          if (heartRate < 40 || heartRate > 180) {
+            throw new Error('Heart rate out of realistic range');
+          }
+        } else {
+          throw new Error('Not enough peaks detected');
+        }
+      } catch (error) {
+        console.error('PPG analysis failed:', error);
+        heartRate = Math.floor(60 + (Math.random() * 40));
+        isSimulated = true;
+      }
+
+      // Proceed with emotional and voice analysis
+      result.innerHTML = '<p class="fade-in">⏳ Analisando expressão facial e tom de voz<span class="loading-dots"></span></p>';
       const captures = [];
       const audioCaptures = [];
       try {
@@ -804,7 +966,6 @@
         const dataArray = new Uint8Array(bufferLength);
 
         for (let i = 0; i < 2; i++) {
-          const context = canvas.getContext('2d');
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
           const imageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
           captures.push(imageBase64);
@@ -818,7 +979,6 @@
         console.error('Erro durante a análise:', error);
         result.innerHTML = '<p class="fade-in">🚫 Erro durante a análise. Tente novamente.</p><div class="mt-6"><button onclick="captureAndAnalyze()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
       } finally {
-        // Close the microphone (audio tracks) to prevent echo, but keep video stream for new diagnosis
         if (stream) {
           const audioTracks = stream.getAudioTracks();
           audioTracks.forEach(track => track.stop());
@@ -855,7 +1015,7 @@
             const confidence = emotionsSorted[0][1];
             if (confidence > maxConfidence) {
               maxConfidence = confidence;
-              bestResult = { emotion, age: face.attributes.age.value, heartRate: Math.floor(60 + (Math.random() * 40)), voiceTone: audioCaptures[i] };
+              bestResult = { emotion, age: face.attributes.age.value, heartRate, voiceTone: audioCaptures[i], isSimulated };
             }
           }
         } catch (error) {
@@ -864,7 +1024,7 @@
       }
 
       if (bestResult && maxConfidence >= 50) {
-        const { emotion, age, heartRate, voiceTone } = bestResult;
+        const { emotion, age, heartRate, voiceTone, isSimulated } = bestResult;
         const emotionsSorted = Object.entries(emotion).sort((a, b) => b[1] - a[1]);
         const primaryEmotion = emotionsSorted[0][0];
 
@@ -944,6 +1104,7 @@
 
         diagnosisText = `${diagnosis} ${triggers} Frequência cardíaca: ${heartRate} bpm. Tom de voz: ${voiceTone > 100 ? 'elevado' : 'baixo'}. Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos. ${suggestion} Seu plano: ${personalizedPlan}`;
         let audioStatusMessage = '';
+        let heartRateNote = isSimulated ? '<p class="text-sm mt-2 text-gray-300">Nota: Frequência cardíaca simulada devido a falha na detecção.</p>' : '<p class="text-sm mt-2 text-gray-300">Nota: Frequência cardíaca estimada via câmera (não substitui equipamentos médicos).</p>';
         const audioPlayed = speak(diagnosisText);
         if (!audioPlayed) {
           audioStatusMessage = '<p class="text-sm mt-2 text-gray-300">🔊 A leitura automática do diagnóstico falhou. Clique no botão abaixo para ouvir.</p>';
@@ -957,7 +1118,8 @@
           <p class="fade-in mt-2"><strong>Idade aparente:</strong> Você aparenta ter entre ${ageRangeMin} e ${ageRangeMax} anos (estimativa baseada em IA).</p>
           <p class="fade-in mt-2"><strong>Primeiros passos:</strong> ${suggestion}</p>
           <p class="fade-in mt-2"><strong>Plano personalizado:</strong> ${personalizedPlan}</p>
-          <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional. Dados biométricos são simulados para demonstração.</p>
+          <p class="text-sm mt-2 text-gray-300">Nota: Este é um diagnóstico preliminar para autoconhecimento e não substitui avaliação profissional.</p>
+          ${heartRateNote}
           ${audioStatusMessage}
           <div class="mt-4"><button onclick="speakDiagnosis()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">🔊 Ouvir Diagnóstico</button></div>
           ${ctaButtons}
