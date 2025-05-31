@@ -17,6 +17,8 @@
     .futuristic-btn {
       background: linear-gradient(45deg, #22d3ee, #3b82f6);
       transition: background 0.3s ease;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
     }
     .futuristic-btn:hover {
       background: linear-gradient(45deg, #3b82f6, #22d3ee);
@@ -27,21 +29,117 @@
       50% { text-shadow: 0 0 20px #22d3ee, 0 0 30px #3b82f6; }
       100% { text-shadow: 0 0 5px #22d3ee; }
     }
-    .neon-box { border: 1px solid #22d3ee; padding: 20px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); }
+    .neon-box { 
+      border: 1px solid #22d3ee; 
+      padding: 1rem; 
+      border-radius: 10px; 
+      background: rgba(255, 255, 255, 0.05); 
+      overflow-wrap: break-word;
+    }
     .animate-on-scroll.active { animation: slideIn 0.5s ease-out; }
     @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .face-guide { position: absolute; width: 320px; height: 240px; border: 2px dashed #22d3ee; box-sizing: border-box; pointer-events: none; }
-    .scanner-container { display: flex; flex-direction: column; align-items: center; }
-    .video-container { position: relative; width: 320px; height: 240px; }
-    .ppg-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); }
-    .ppg-overlay.active { display: flex; flex-direction: column; justify-content: center; align-items: center; }
-    .ppg-stay-still { color: #22d3ee; font-size: 1.2rem; margin-bottom: 10px; }
-    .ppg-progress-container { width: 80%; height: 10px; background: #333; border-radius: 5px; }
-    .ppg-progress-bar { height: 100%; background: #22d3ee; width: 0%; transition: width 0.1s linear; border-radius: 5px; }
-    .voice-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); }
-    .voice-overlay.active { display: flex; flex-direction: column; justify-content: center; align-items: center; }
-    .voice-instruction { color: #22d3ee; font-size: 1.2rem; margin-bottom: 10px; }
-    .voice-waveform { width: 80%; height: 50px; background: #111; border-radius: 5px; }
+    .face-guide { 
+      position: absolute; 
+      width: 100%; 
+      height: 100%; 
+      border: 2px dashed #22d3ee; 
+      box-sizing: border-box; 
+      pointer-events: none; 
+    }
+    .scanner-container { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      max-width: 100%;
+      padding: 1rem;
+    }
+    .video-container { 
+      position: relative; 
+      width: min(90vw, 320px); 
+      height: min(67.5vw, 240px); 
+    }
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .ppg-overlay { 
+      display: none; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0, 0, 0, 0.5); 
+    }
+    .ppg-overlay.active { 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+    }
+    .ppg-stay-still { 
+      color: #22d3ee; 
+      font-size: 1rem; 
+      margin-bottom: 0.5rem; 
+    }
+    .ppg-progress-container { 
+      width: 80%; 
+      height: 8px; 
+      .ppg-progress-background-background 
+      border-radius: 3px; 
+    }
+    .ppg-progress-bar { 
+      height: 100%; 
+      background: #22d3ee; 
+      width: 0%; 
+      transition: width 0.3s linear; 
+      border-radius: 3px; 
+    }
+    .voice-overlay { 
+      display: none; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      background: inherit; 
+    }
+    .voice-overlay.active { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+    }
+    .voice-instruction { 
+      color: #22d3ee; 
+      font-size: 1rem; 
+      margin-bottom: 0.5rem; 
+    }
+    .voice-waveform { 
+      width: 80%; 
+      height: 2rem; 
+      background: #111; 
+      border-radius: 3px; 
+    }
+
+    @media screen and (max-width: 640px) {
+      h2 { 
+        font-size: 1.5rem; 
+      }
+      p { 
+        font-size: 1rem; 
+      }
+      .futuristic-btn { 
+        padding: 0.5rem 1rem; 
+        font-size: 0.875rem; 
+      }
+      .neon-box { 
+        padding: 0.75rem; 
+        font-size: 0.9rem; 
+      }
+      .scanner-container { 
+        padding: 0.5rem; 
+      }
+    }
   </style>
 </head>
 <body class="text-white font-sans">
@@ -55,18 +153,12 @@
         <a href="#" aria-label="Página inicial da Álibis Digital">
           <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo'; console.error('Erro ao carregar logo.png')">
         </a>
-        <div class="ml-4">
-          <select class="bg-transparent text-white p-2 rounded">
-            <option value="pt" selected>Português</option>
-            <option value="en">English</option>
-          </select>
-        </div>
       </div>
       <div class="flex items-center">
         <div class="md:hidden">
           <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              <svg path stroke-linecap="round" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
@@ -75,10 +167,10 @@
         <div class="dropdown relative">
           <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
             <svg class="http://www.w3.org/2000/svg" class="w-4 h-4 mr-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="none">
-              <path stroke-linecap="round" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 12h14M12 5l-7 7m7 14l7-7"></path stroke-linecap="round">
+              <svg path stroke-linecap="round" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 12h14M12 5l-7 7m7 14l7-7"></path stroke-linecap="round">
             </svg>
             <span>Serviços</span>
-            <svg class="http://w.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+            <svg class="http://w.w3.org/2000/svg" fill="none" stroke="currentColor" class="stroke">            <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M14 9l-7 7-7-7"></path stroke-linecap="round">
             </svg>
           </button>
@@ -118,45 +210,45 @@
       </nav>
     </div>
   </header>
-  <div class="h-20"></div>
+  <!-- Espaço para header fixo -->
+  <div class="h-16"></div>
 
   <!-- Main Content -->
-  <section class="py-10 px-6 mx-auto text-center animate-on-scroll scanner-container" id="scanner">
-    <h2 class="text-4xl font-bold mb-6 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
-    <p class="text-lg mb-8 text-gray-300 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
-    <div class="flex flex-col items-center mb-4">
+  <section class="py-6 px-4 mx-auto text-center animate-on-scroll scanner-container" id="scanner">
+    <h2 class="text-3xl font-bold mb-4 text-white shine">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h2>
+    <p class="text-base mb-6 text-gray-300 fade-in">Ative a câmera e receba um diagnóstico detalhada como se estivesse diante de um clínico experiente."></p>
+    <div class="flex flex-col items-center">
       <div class="video-container">
-        <video id="video" width="320" height="240" autoplay muted class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera"></video>
+        <video id="video" autoplay playsinline muted class="rounded-xl shadow-md border border-[#22d3ee]" aria-label="Vídeo da câmera"></video>
         <div id="face-guide" class="face-guide hidden"></div>
         <div id="ppg-overlay" class="ppg-overlay">
-          <span class="ppg-stay-still">Fique parado</span>
+          <span class="ppg-stay-still"></span>Fique parado
           <div class="ppg-progress-container">
             <div id="ppg-progress-bar" class="ppg-progress-bar"></div>
           </div>
         </div>
         <div id="voice-overlay" class="voice-overlay">
-          <span class="voice-instruction">Diga: Estou me sentindo bem hoje</span>
+          <span class="voice-instruction"></span>Diga: Estou tranquilo hoje
           <canvas id="voice-waveform" class="voice-waveform"></canvas>
-        </div>
+          </div>
       </div>
       <div class="mt-4">
-        <button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
+        <button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-center shine" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
       </div>
-      <div id="scanner-result" class="neon-box mt-6 text-left" style="display: none;"></div>
-      <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+      <div id="scanner-result" class="neon-box mt-4 text-left" style="display: none;"></div>
+      <canvas id="canvas" style="display: none;"></canvas>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 bg-opacity-90 text-gray-400 py-12">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+  <footer class="bg-gray-900 bg-opacity-90 text-gray-400 py-8">
+    <div class="max-w-full mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-xs sm:text-sm">
       <div class="fade-in">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <h3 class="text-white text-xl font-bold mb-3 shine">Álibis Digital</h3>
         <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegue</h4>
-        <ul class="space-y-2">
+        <h4 class="text-white font-semibold mb-3">Navegue</h4>
+        <ul class="space-y-1">
           <li><a href="#" class="hover:text-white transition">Início</a></li>
           <li><a href="#" class="hover:text-white transition">Scanner</a></li>
           <li><a href="#" class="hover:text-white transition">Blog</a></li>
@@ -169,15 +261,15 @@
         </ul>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Contato</h4>
-        <ul class="space-y-2">
+        <h4 class="text-white font-semibold mb-3">Contato</h4>
+        <ul class="space-y-1">
           <li class="fade-in">E-mail: contato@alibisdigital.com</li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
         </ul>
       </div>
     </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    <div class="text-center mt-6">
+      <p class="text-xs sm:text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
 
@@ -190,13 +282,13 @@
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
           particles: {
-            number: { value: 80, density: { enable: true, value_area: 800 } },
+            number: { value: 60, density: { enable: true, value_area: 800 } },
             color: { value: '#22d3ee' },
             shape: { type: 'circle' },
-            opacity: { value: 0.5, random: true },
+            opacity: { value: 0.4, random: true },
             size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 2, direction: 'none', random: true }
+            line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.3, width: 1 },
+            move: { enable: true, speed: 1.5, direction: 'none', random: true }
           },
           interactivity: {
             detect_on: 'canvas',
@@ -232,18 +324,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
-      const servicesToggle = document.getElementById('services-toggle');
-      const servicesMenu = document.getElementById('services-menu');
 
       if (hamburger && mobileMenu) {
         hamburger.addEventListener('click', () => {
           mobileMenu.classList.toggle('hidden');
-        });
-      }
-
-      if (servicesToggle && servicesMenu) {
-        servicesToggle.addEventListener('click', () => {
-          servicesMenu.classList.toggle('hidden');
         });
       }
 
@@ -266,17 +350,14 @@
     const apiKey = 'SUA_CHAVE_API_AQUI';
     const apiSecret = 'SUA_CHAVE_SECRETA_AQUI';
 
-    // Equalização de histograma (inspirada pelo artigo)
+    // Equalização de histograma
     function equalizeHistogram(imageData) {
       const data = imageData.data;
-      const width = imageData.width;
-      const height = imageData.height;
       const histogram = new Array(256).fill(0);
       const cdf = new Array(256).fill(0);
 
       for (let i = 0; i < data.length; i += 4) {
-        const r = data[i], g = data[i + 1], b = data[i + 2];
-        const luminance = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+        const luminance = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
         histogram[luminance]++;
       }
 
@@ -286,14 +367,13 @@
       }
 
       const cdfMin = cdf.find(val => val > 0);
-      const totalPixels = width * height;
+      const totalPixels = data.length / 4;
       for (let i = 0; i < 256; i++) {
         cdf[i] = Math.round(((cdf[i] - cdfMin) / (totalPixels - cdfMin)) * 255);
       }
 
       for (let i = 0; i < data.length; i += 4) {
-        const r = data[i], g = data[i + 1], b = data[i + 2];
-        const luminance = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+        const luminance = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
         const newValue = cdf[luminance];
         data[i] = data[i + 1] = data[i + 2] = newValue;
       }
@@ -301,7 +381,22 @@
       return imageData;
     }
 
-    // FFT simples para PPG
+    // Filtro passa-banda simples para PPG
+    function bandpassFilter(signal, sampleRate) {
+      const lowFreq = 0.8; // 48 bpm
+      const highFreq = 2.5; // 150 bpm
+      const n = signal.length;
+      const filtered = new Array(n).fill(0);
+
+      for (let i = 1; i < n - 1; i++) {
+        if (i > 0 && i < n - 1) {
+          filtered[i] = signal[i] - (signal[i - 1] + signal[i + 1]) / 2;
+        }
+      }
+      return filtered;
+    }
+
+    // FFT simples
     function fft(signal) {
       const n = signal.length;
       if (n <= 1) return signal;
@@ -314,9 +409,9 @@
       const result = new Array(n).fill(0);
       for (let i = 0; i < n / 2; i++) {
         const theta = -2 * Math.PI * i / n;
-        const t = { re: Math.cos(theta) * oddFFT[i], im: Math.sin(theta) * oddFFT[i] };
-        result[i] = evenFFT[i] + t.re;
-        result[i + n / 2] = evenFFT[i] - t.re;
+        const t = Math.cos(theta) * oddFFT[i];
+        result[i] = evenFFT[i] + t;
+        result[i + n / 2] = evenFFT[i] - t;
       }
       return result;
     }
@@ -324,10 +419,11 @@
     function getDominantFrequency(signal, sampleRate) {
       const n = signal.length;
       const fftResult = fft(signal);
-      const magnitudes = fftResult.slice(0, n / 2).map(val => Math.sqrt(val * val));
+      const magnitudes = fftResult.slice(0, n / 2).map(val => Math.abs(val));
       let maxMag = 0, maxIndex = 0;
       for (let i = 1; i < magnitudes.length; i++) {
-        if (magnitudes[i] > maxMag) {
+        const freq = i * sampleRate / n;
+        if (freq >= 0.8 && freq <= 2.5 && magnitudes[i] > maxMag) {
           maxMag = magnitudes[i];
           maxIndex = i;
         }
@@ -340,9 +436,8 @@
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#22d3ee';
+      ctx.strokeStyle = '#22d3ee';
       ctx.lineWidth = 2;
-      ctx.beginPath();
 
       const draw = () => {
         analyser.getByteTimeDomainData(dataArray);
@@ -357,10 +452,8 @@
           else ctx.lineTo(x, y);
           x += sliceWidth;
         }
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        ctx.strokeStyle = '#22d3ee';
         ctx.stroke();
-        if (canvas.isConnected) requestAnimationFrame(draw);
+        if (canvas.getContext) requestAnimationFrame(draw);
       };
       draw();
     }
@@ -374,45 +467,169 @@
       const voiceEmotionPortuguese = {
         anxious: 'ansiedade', calm: 'calma', sad: 'tristeza'
       };
-      const primaryEmotionInPortuguese = emotionPortuguese[primaryEmotion] || primaryEmotion;
+      const primaryEmotionInPortuguese = emotionPortuguese[primaryEmotion)] || primaryEmotion;
       const voiceEmotionInPortuguese = voiceEmotionPortuguese[voiceEmotion] || voiceEmotion;
       const ageRangeMin = Math.max(18, age - 5);
       const ageRangeMax = age + 5;
-      let diagnosis = '', suggestion = '', heartRateStatus = '', combinedAnalysis = '';
 
-      if (heartRate < 60) {
-        heartRateStatus = 'abaixo do normal, sugerindo relaxamento ou possível bradicardia.';
-      } else if (heartRate > 100) {
-        heartRateStatus = 'elevada, indicando possível estresse ou atividade física.';
-      } else {
-        heartRateStatus = 'normal, refletindo um estado estável.';
-      }
+      const randomChoice = (array) => array[Math.floor(Math.random() * array.length)];
 
-      if (heartRate > 100 && voiceEmotion === 'anxious' && ['anger', 'fear', 'surprise'].includes(primaryEmotion)) {
-        combinedAnalysis = `Alta frequência cardíaca (${heartRate} bpm), tom de voz ansioso e expressão facial (${primaryEmotionInPortuguese}) sugerem estresse ou agitação.`;
-        suggestion = 'Tente exercícios de respiração profunda ou uma pausa relaxante.';
-      } else if (primaryEmotion === 'sadness' && voiceEmotion === 'sad' && heartRate < 80) {
-        combinedAnalysis = `Expressão facial de tristeza, tom de voz triste e frequência cardíaca baixa (${heartRate} bpm) indicam um estado de introspecção ou melancolia.`;
-        suggestion = 'Escreva seus pensamentos ou experimente uma atividade que traga conforto.';
-      } else if (primaryEmotion === 'happiness' && voiceEmotion === 'calm' && heartRate >= 60 && heartRate <= 100) {
-        combinedAnalysis = `Expressão facial de felicidade, tom de voz calmo e frequência cardíaca normal (${heartRate} bpm) refletem bem-estar.`;
-        suggestion = 'Aproveite essa energia positiva para se conectar com amigos ou realizar algo criativo.';
-      } else {
-        combinedAnalysis = `Emoção facial: ${primaryEmotionInPortuguese}, tom de voz: ${voiceEmotionInPortuguese}, frequência cardíaca: ${heartRate} bpm (${heartRateStatus}). Os sinais não convergem completamente, indicando um estado emocional misto.`;
-        suggestion = 'Reflita sobre o que pode estar influenciando seu estado atual.';
-      }
+      const scenarios = [
+        {
+          condition: heartRate > 100 && voiceEmotion === 'anxious' && ['anger', 'fear', 'surprise'].includes(primaryEmotion),
+          diagnosis: randomChoice([
+            `Sua frequência cardíaca elevada (${heartRate} bpm), tom de voz ansioso e expressão de ${primaryEmotionInPortuguese} sugerem estresse ou agitação.`
+            `Você parece sob pressão, com batimentos acelerados (${heartRate} bpm), voz inquieta e emoção de ${primaryEmotionInPortuguese}.`,
+            `Os sinais apontam para tensão: frequência cardíaca alta (${heartRate} bpm), tom ansioso e expressão de ${primaryEmotionInPortuguese}.`
+          ]),
+          suggestion: randomChoice([
+            'Tente respirar fundo por 1 minuto, inspirando por 4 segundos e expirando por 6.',
+            'Faça uma pausa e ouça uma música relaxante para acalmar a mente.',
+            'Escreva o que está sentindo para organizar seus pensamentos.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'sadness' && voiceEmotion === 'sad' && heartRate < 80,
+          diagnosis: randomChoice([
+            `Sua expressão de tristeza, tom de voz triste e frequência cardíaca baixa (${heartRate} bpm) indicam um momento de melancolia.`,
+            `Você parece introspectivo, com emoção de tristeza, voz calma e batimentos reduzidos (${heartRate} bpm).`,
+            `Os sinais sugerem tristeza: expressão de ${primaryEmotionInPortuguese}, voz triste e frequência cardíaca baixa (${heartRate} bpm).`
+          ]),
+          suggestion: randomChoice([
+            'Tente uma sessão de leve ou escreva sobre seus sentimentos.',
+            'Converse com alguém próximo para compartilhar seus pensamentos.',
+            'Dedique um momento a algo que te traga conforto.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'happyiness' && voiceEmotion === 'calm' && heartRate >= 60 && heartRate <= 100,
+          diagnosis: randomChoice([
+            `Sua expressão de felicidade, tom de voz calmo e frequência cardíaca normal (${heartRate} bpm) refletem um estado de bem-estar.`,
+            `Você está em harmonia, com um sorriso, voz serena e batimentos estáveis (${heartRate} bpm).`,
+            `Os sinais apontam para um momento positivo: emoção de ${primaryEmotionInPortuguese}, voz tranquila e frequência cardíaca de ${heartRate} bpm.`
+          ]),
+          suggestion: randomChoice([
+            'Aproveite essa energia para se conectar com amigos.',
+            'Tente uma atividade criativa, como desenhar.',
+            'Compartilhe sua positividade com alguém especial.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'happyiness' && heartRate > 100 && voiceEmotion === 'anxious',
+          diagnosis: randomChoice([
+            `Sua expressão de felicidade com frequência cardíaca alta (${heartRate} bpm) e tom ansioso sugere entusiasmo.`,
+            `Você parece vibrante, com um sorriso, batimentos acelerados (${heartRate} bpm) e voz cheia de energia.`,
+            `Os sinais indicam entusiasmo: emoção de ${primaryEmotionInPortuguese}, frequência alta (${heartRate} bpm) e tom inquieto.`
+          ]),
+          suggestion: randomChoice([
+            'Canalize essa energia para uma atividade que ama.',
+            'Tente focar em uma tarefa criativa.',
+            'Respire fundo para equilibrar sua energia.'
+          ])
+        },
+        {
+          condition: ['surprise', 'fear'].includes(primaryEmotion) && voiceEmotion === 'anxious' && heartRate >= 80 && heartRate <= 100,
+          diagnosis: randomChoice([
+            `Sua expressão de ${primaryEmotionInPortuguese}, tom ansioso e frequência moderada (${heartRate} bpm) sugerem ansiedade leve.`,
+            `Você parece em atenção, com emoção de ${primaryEmotionInPortuguese}, voz inquieta e batimentos normais (${heartRate} bpm).`,
+            `Os sinais apontam para ansiedade leve: expressão de ${primaryEmotionInPortuguese}, tom ansioso e frequência de ${heartRate} bpm.`
+          ]),
+          suggestion: randomChoice([
+            'Tente uma técnica de relaxamento, como respirar fundo.',
+            'Escreva o que está te preocupando.',
+            'Faça uma pausa e observe o ambiente.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'neutral' && voiceEmotion === 'calm' && heartRate >= 60 && heartRate <= 100,
+          diagnosis: randomChoice([
+            `Sua expressão neutra, tom calmo e frequência normal (${heartRate} bpm) indicam equilíbrio.`,
+            `Você está sereno, com expressão neutra, voz tranquila e batimentos estáveis (${heartRate} bpm).`,
+            `Os sinais sugerem calma: emoção ${primaryEmotionInPortuguese}, tom sereno e frequência de ${heartRate} bpm.`
+          ]),
+          suggestion: randomChoice([
+            'Aproveite esse equilíbrio para planejar seu dia.',
+            'Tente uma atividade relaxante, como ler.',
+            'Mantenha essa serenidade com uma rotina calma.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'anger' && heartRate > 100 && voiceEmotion !== 'calm',
+          diagnosis: randomChoice([
+            `Sua expressão de raiva, frequência alta (${heartRate} bpm) e tom ${voiceEmotionInPortuguese} sugerem frustração.`,
+            `Você parece agitado, com emoção de ${primaryEmotionInPortuguese}, batimentos acelerados (${heartRate} bpm) e voz inquieta.`,
+            `Os sinais apontam para frustração: expressão de ${primaryEmotionInPortuguese}, frequência alta (${heartRate} bpm) e tom ${voiceEmotionInPortuguese}.`
+          ]),
+          suggestion: randomChoice([
+            'Tente contar até 10 lentamente.',
+            'Faça uma caminhada rápida.',
+            'Escreva o que está te irritando.'
+          ])
+        },
+        {
+          condition: primaryEmotion === 'disgust' && voiceEmotion === 'sad' && heartRate < 80,
+          diagnosis: randomChoice([
+            `Sua expressão de nojo, tom triste e frequência baixa (${heartRate} bpm) sugerem desconforto.`,
+            `Você parece incomodado, com emoção de ${primaryEmotionInPortuguese}, voz triste e batimentos reduzidos (${heartRate} bpm).`,
+            `Os sinais indicam desânimo: expressão de ${primaryEmotionInPortuguese}, tom triste e frequência de ${heartRate} bpm.`
+          ]),
+          suggestion: randomChoice([
+            'Tente se afastar do que te incomoda.',
+            'Ouça uma música animada.',
+            'Reflita sobre o que está te afetando.'
+          ])
+        },
+        {
+          condition: heartRate < 60 && voiceEmotion === 'calm' && ['neutral', 'sadness'].includes(primaryEmotion),
+          diagnosis: randomChoice([
+            `Sua frequência baixa (${heartRate} bpm), tom calmo e expressão ${primaryEmotionInPortuguese} sugerem relaxamento profundo.`,
+            `Você parece em repouso, com batimentos reduzidos (${heartRate} bpm), voz serena e emoção ${primaryEmotionInPortuguese}.`,
+            `Os sinais apontam para calma: frequência baixa (${heartRate} bpm), tom tranquilo e expressão ${primaryEmotionInPortuguese}.`
+          ]),
+          suggestion: randomChoice([
+            'Aproveite para meditar.',
+            'Reflita sobre o que te traz serenidade.',
+            'Tente uma atividade suave, como yoga.'
+          ])
+        },
+        {
+          condition: true,
+          diagnosis: randomChoice([
+            `Sinais mistos: emoção de ${primaryEmotionInPortuguese}, tom ${voiceEmotionInPortuguese} e frequência de ${heartRate} bpm. Estado emocional complexo.`,
+            `Emoção não clara: expressão ${primaryEmotionInPortuguese}, voz ${voiceEmotionInPortuguese} e batimentos em ${heartRate} bpm.`,
+            `Sinais não convergem: emoção ${primaryEmotionInPortuguese}, tom ${voiceEmotionInPortuguese} e frequência de ${heartRate} bpm.`
+          ]),
+          suggestion: randomChoice([
+            'Reflita sobre o que está sentindo.',
+            'Tente uma atividade neutra, como organizar.',
+            'Anote seus pensamentos.'
+          ])
+        }
+      ];
 
-      diagnosis = combinedAnalysis;
+      const selectedScenario = scenarios.find(scenario => scenario.condition) || scenarios[scenarios.length - 1];
+      const heartRateStatus = heartRate < 60 ? 'abaixo do normal, sugerindo relaxamento.' :
+                             heartRate > 100 ? 'elevada, indicando estresse ou excitação.' :
+                             'normal, refletindo estabilidade.';
 
-      return { diagnosis, suggestion, heartRate, voiceEmotionInPortuguese, primaryEmotionInPortuguese, ageRangeMin, ageRangeMax };
+      return {
+        diagnosis: selectedScenario.diagnosis,
+        suggestion: selectedScenario.suggestion,
+        heartRate,
+        heartRateStatus,
+        voiceEmotionInPortuguese,
+        primaryEmotionInPortuguese,
+        ageRangeMin,
+        ageRangeMax
+      };
     }
 
     // Iniciar análise
-    async function startAnalysisWithDelay() {
+    async function startAnalysis() {
       const result = document.getElementById('scanner-result');
       result.style.display = 'block';
-      result.innerHTML = '<p class="fade-in">📖 A análise começará em 5 segundos...</p>';
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      result.innerHTML = '<p class="fade-in">📖 Iniciando análise...</p>';
+      await new Promise(resolve => setTimeout(resolve, 2000));
       captureAndAnalyze();
     }
 
@@ -430,20 +647,26 @@
       let videoStream = null, audioStream = null;
 
       if (!canvas || !video || !result || !faceGuide || !ppgOverlay || !ppgProgressBar || !voiceOverlay || !voiceWaveform) {
-        console.error('Elementos necessários não encontrados');
-        result.innerHTML = '<p class="fade-in">🚫 Erro interno: elementos da página não encontrados.</p>';
+        console.error('Elementos não encontrados');
+        result.innerHTML = '<p class="fade-in">🚫 Erro interno: elementos não encontrados.</p>';
         return;
       }
 
+      // Ajustar canvas e vídeo
+      const videoWidth = min(90 * window.innerWidth / 100, 320);
+      const videoHeight = videoWidth * 3 / 4;
+      video.width = canvas.width = videoWidth;
+      video.height = canvas.height = videoHeight;
+
       // Inicializar câmera
       try {
-        videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        videoStream = await navigator.mediaDevices.getUserMedia({ video: { width: videoWidth, height: videoHeight }, audio: false });
         video.srcObject = videoStream;
         video.classList.remove('hidden');
-        console.log('Câmera inicializada com sucesso');
+        console.log('Câmera inicializada');
       } catch (error) {
-        console.error('Erro ao acessar a câmera:', error);
-        result.innerHTML = '<p class="fade-in">🚫 Erro: não foi possível acessar a câmera. Permita o acesso e tente novamente.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        console.error('Erro na câmera:', error);
+        result.innerHTML = '<p class="fade-in">🚫 Erro: câmera não acessível. Permita o acesso e tente novamente.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
         return;
       }
 
@@ -456,12 +679,11 @@
 
       let brightnessSum = 0;
       for (let i = 0; i < imageData.data.length; i += 4) {
-        const r = imageData.data[i], g = imageData.data[i + 1], b = imageData.data[i + 2];
-        brightnessSum += (0.299 * r + 0.587 * g + 0.114 * b);
+        brightnessSum += (0.299 * imageData.data[i] + 0.587 * imageData.data[i + 1] + 0.114 * imageData.data[i + 2]);
       }
       const averageBrightness = brightnessSum / (imageData.data.length / 4);
-      if (averageBrightness < 30) {
-        result.innerHTML = '<p class="fade-in">🌙 A iluminação está muito baixa. Ajuste a luz e tente novamente.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+      if (averageBrightness < 50) {
+        result.innerHTML = '<p class="fade-in">🌙 Iluminação baixa. Ajuste a luz e tente novamente.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
         if (videoStream) videoStream.getTracks().forEach(track => track.stop());
         video.classList.add('hidden');
         return;
@@ -479,15 +701,14 @@
       tracker.on('track', event => {
         if (event.data.length > 0) {
           faceRect = event.data[0];
-          const guide = document.getElementById('face-guide');
           if (faceRect) {
             const centerX = faceRect.x + faceRect.width / 2;
             const centerY = faceRect.y + faceRect.height / 2;
             const offsetX = (canvas.width / 2 - centerX) / canvas.width * 100;
             const offsetY = (canvas.height / 2 - centerY) / canvas.height * 100;
-            guide.style.transform = `translate(${offsetX}%, ${offsetY}%)`;
+            faceGuide.style.transform = `translate(${offsetX}%, ${offsetY}%)`;
             if (Math.abs(offsetX) > 20 || Math.abs(offsetY) > 20) {
-              result.innerHTML = '<p class="fade-in">🤔 Ajuste seu rosto para o centro do quadro.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
+              result.innerHTML = '<p class="fade-in">🤔 Ajuste seu rosto ao centro.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
               tracker.stop();
               faceGuide.classList.add('hidden');
               if (videoStream) videoStream.getTracks().forEach(track => track.stop());
@@ -501,14 +722,14 @@
       for (let i = 0; i < 50; i++) {
         if (faceRect) {
           faceDetected = true;
-          console.log('Rosto detectado com sucesso');
+          console.log('Rosto detectado');
           break;
         }
         await new Promise(resolve => setTimeout(resolve, 100));
       }
 
       if (!faceDetected) {
-        result.innerHTML = '<p class="fade-in">🤔 Não foi possível detectar seu rosto. Centralize-se na câmera.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
+        result.innerHTML = '<p class="fade-in">🤔 Rosto não detectado. Centralize-se na câmera.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
         tracker.stop();
         faceGuide.classList.add('hidden');
         if (videoStream) videoStream.getTracks().forEach(track => track.stop());
@@ -517,11 +738,11 @@
       }
 
       // Medição PPG
-      const PPG_DURATION = 15;
+      const PPG_DURATION = 10;
       const FRAME_RATE = 30;
       const greenValues = [];
       let startTime = Date.now();
-      result.innerHTML = '<p class="fade-in">❤️ Fique parado por 15 segundos para medir a frequência cardíaca.</p>';
+      result.innerHTML = '<p class="fade-in">❤️ Fique parado por 10 segundos para medir a frequência cardíaca.</p>';
       ppgOverlay.classList.add('active');
 
       while ((Date.now() - startTime) / 1000 < PPG_DURATION) {
@@ -530,7 +751,7 @@
         ppgProgressBar.style.width = `${progress}%`;
 
         if (!faceRect || Math.abs((canvas.width / 2 - (faceRect.x + faceRect.width / 2)) / canvas.width * 100) > 20 || Math.abs((canvas.height / 2 - (faceRect.y + faceRect.height / 2)) / canvas.height * 100) > 20) {
-          result.innerHTML = '<p class="fade-in">🖋️ Movimentação detectada. Fique parado.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
+          result.innerHTML = '<p class="fade-in">🖋️ Movimentação detectada. Fique parado.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar novamente</button></div>';
           ppgOverlay.classList.remove('active');
           tracker.stop();
           faceGuide.classList.add('hidden');
@@ -540,21 +761,26 @@
         }
 
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const foreheadX = Math.floor(faceRect.x + faceRect.width * 0.3);
-        const foreheadY = Math.floor(faceRect.y + faceRect.height * 0.2);
-        const foreheadWidth = Math.floor(faceRect.width * 0.4);
-        const foreheadHeight = Math.floor(faceRect.height * 0.2);
+        const foreheadX = Math.floor(faceRect.x + faceRect.width * 0.25);
+        const foreheadY = Math.floor(faceRect.y + faceRect.height * 0.15);
+        const foreheadWidth = Math.floor(faceRect.width * 0.5);
+        const foreheadHeight = Math.floor(faceRect.height * 0.25);
         let foreheadData = context.getImageData(foreheadX, foreheadY, foreheadWidth, foreheadHeight);
         foreheadData = equalizeHistogram(foreheadData);
-        context.putImageData(foreheadData, foreheadX, foreheadY);
 
         let greenSum = 0, pixelCount = 0;
         for (let i = 0; i < foreheadData.data.length; i += 4) {
-          greenSum += foreheadData.data[i + 1];
-          pixelCount++;
+          const green = foreheadData.data[i + 1];
+          if (green > 50) {
+            greenSum += green;
+            pixelCount++;
+          }
         }
-        const averageGreen = greenSum / pixelCount;
-        greenValues.push(averageGreen);
+        if (pixelCount > 0) {
+          const averageGreen = greenSum / pixelCount;
+          greenValues.push(averageGreen);
+          console.log(`PPG frame: green=${averageGreen.toFixed(2)}, pixels=${pixelCount}`);
+        }
         await new Promise(resolve => setTimeout(resolve, 1000 / FRAME_RATE));
       }
 
@@ -563,30 +789,37 @@
       // Calcular frequência cardíaca
       let heartRate = 0;
       try {
+        if (greenValues.length < FRAME_RATE * PPG_DURATION / 2) {
+          throw new Error('Dados PPG insuficientes');
+        }
         const mean = greenValues.reduce((a, b) => a + b, 0) / greenValues.length;
-        const detrended = greenValues.map(val => val - mean);
-        const maxVal = Math.max(...detrended.map(Math.abs));
-        const normalized = detrended.map(val => val / maxVal);
-        const freq = getDominantFrequency(normalized, FRAME_RATE);
+        const detrended = greenValues.map(val => val - mean));
+        const filtered = bandpassFilter.apply(detrended, FRAME_RATE);
+        const freq = getDominantFrequency(filtered, FRAME_RATE);
         heartRate = Math.round(freq * 60);
         if (heartRate < 40 || heartRate > 180) {
-          throw new Error('Frequência cardíaca fora do alcance realista');
+          throw new Error('Frequência cardíaca fora do alcance');
         }
+        console.log('PPG calculada: heartRate = ${heartRate} bpm');
       } catch (error) {
-        console.error('Erro na PPG:', error);
-        heartRate = Math.floor(60 + Math.random() * 40); // Fallback
+        console.error('Erro no PPG:', error);
+        heartRate = Math.floor(60 + Math.random() * 20); // Fallback: 60-80
+        result.innerHTML += '<p class="fade-in">⚠️ Frequência cardíaca estimada devido a dados insuficientes.</p>';
       }
 
       // Análise de voz
-      result.innerHTML = '<p class="fade-in">🎙️ Diga: "Estou me sentindo bem hoje" por 5 segundos...</p>';
+      result.innerHTML = '<p class="fade-in">🎶 Diga: "Estou tranquilo hoje" por 5 segundos...</p>';
       voiceOverlay.classList.add('active');
       let voiceEmotion = 'calm';
       try {
+        if (!window.AudioContext && !window.webkitAudioContext) {
+          throw new Error('AudioContext não suportado');
+        }
         audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const source = audioContext.createMediaStreamSource(audioStream);
         const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 256;
+        analyser.fftSize = 128;
         source.connect(analyser);
 
         const waveformCtx = voiceWaveform.getContext('2d');
@@ -599,13 +832,13 @@
         startTime = Date.now();
 
         while ((Date.now() - startTime) / 1000 < VOICE_DURATION) {
-          analyser.getByteTimeDomainData(dataArray);
+          analyser.getByteFrequencyData(dataArray);
           let sum = 0;
           for (let i = 0; i < bufferLength; i++) {
-            const amplitude = (dataArray[i] - 128) / 128;
-            sum += amplitude * amplitude;
+            sum += dataArray[i] * dataArray[i];
           }
-          energySum += sum / bufferLength;
+          const energy = sum / bufferLength;
+          energySum += energy;
           frameCount++;
           await new Promise(resolve => setTimeout(resolve, 1000 / 60));
         }
@@ -615,24 +848,23 @@
         voiceOverlay.classList.remove('active');
 
         const averageEnergy = energySum / frameCount;
-        if (averageEnergy > 0.5) voiceEmotion = 'anxious';
-        else if (averageEnergy < 0.2) voiceEmotion = 'sad';
-
-        console.log('Energia vocal média:', averageEnergy, 'Emoção:', voiceEmotion);
+        if (averageEnergy > 1000) voiceEmotion = 'anxious';
+        else if (averageEnergy < 50) voiceEmotion = 'sad';
+        console.log('Vozância: averageEnergy=${averageEnergy.toFixed(2)}, emotion=$voiceEmotion');
       } catch (error) {
-        console.error('Erro ao acessar o microfone:', error);
-        result.innerHTML = '<p class="fade-in">🚖 Erro: não foi possível acessar o microfone. Permita o acesso e tente novamente.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        console.error('Erro na voz:', error);
+        result.innerHTML = '<p class="fade-in">🚖️ Microfone falhou. Permite o acesso e continue.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
         voiceOverlay.classList.remove('active');
+        if (audioStream) audioStream.getTracks().forEach(track => track.stop());
         if (videoStream) {
           videoStream.getTracks().forEach(track => track.stop());
           video.classList.add('hidden');
         }
-        tracker.stop();
         return;
       }
 
       // Capturar imagem para Face++ API
-      result.innerHTML = '<p class="fade-in">🔍 Analisando expressão facial...</p>';
+      result.innerHTML = '<p class="fade-in">🔍 Analisando...</p>';
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       imageData = equalizeHistogram(imageData);
@@ -652,7 +884,7 @@
           body: formData
         });
         const data = await response.json();
-        console.log('Resposta da API Face++:', data);
+        console.log('Face++ API response:', data);
 
         if (data.faces && data.faces.length > 0) {
           const face = data.faces[0];
@@ -665,24 +897,24 @@
           if (confidence >= 50) {
             const diag = generateDiagnosis(primaryEmotion, heartRate, voiceEmotion, age);
             result.innerHTML = `
-              <h3 class="text-2xl font-bold mb-4 fade-in">Resultado do Diagnóstico</h3>
+              <h3 class="text-xl font-bold mb-3 fade-in">Resultado do Diagnóstico</h3>
               <p class="fade-in"><strong>Emoção Facial:</strong> ${diag.primaryEmotionInPortuguese.charAt(0).toUpperCase() + diag.primaryEmotionInPortuguese.slice(1)}</p>
-              <p class="fade-in"><strong>Frequência Cardíaca:</strong> ${diag.heartRate} bpm</p>
+              <p class="fade-in"><strong>Frequência Cardíaca:</strong> ${diag.heartRate} bpm (${diag.heartRateStatus})</p>
               <p class="fade-in"><strong>Emoção Vocal:</strong> ${diag.voiceEmotionInPortuguese.charAt(0).toUpperCase() + diag.voiceEmotionInPortuguese.slice(1)}</p>
               <p class="fade-in"><strong>Idade Estimada:</strong> Entre ${diag.ageRangeMin} e ${diag.ageRangeMax} anos</p>
               <p class="fade-in mt-2">${diag.diagnosis}</p>
               <p class="fade-in mt-2"><strong>Sugestão:</strong> ${diag.suggestion}</p>
-              <div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Analisar Novamente</button></div>
+              <div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Analisar Novamente</button></div>
             `;
           } else {
-            result.innerHTML = '<p class="fade-in">🚫 Emoção facial não detectada com confiança suficiente.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+            result.innerHTML = '<p class="fade-in">🚫 Emoção facial não detectada com confiança.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
           }
         } else {
-          result.innerHTML = '<p class="fade-in">🚫 Nenhum rosto detectado na imagem.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+          result.innerHTML = '<p class="fade-in">🚫 Rosto não detectado na imagem.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
         }
       } catch (error) {
-        console.error('Erro ao conectar com a API:', error);
-        result.innerHTML = '<p class="fade-in">🚫 Erro ao conectar com a API. Verifique sua conexão.</p><div class="mt-4"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
+        console.error('Erro na API:', error);
+        result.innerHTML = '<p class="fade-in">🚫 Erro ao conectar com a API.</p><div class="mt-4"><button onclick="startAnalysis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Tentar Novamente</button></div>';
       } finally {
         if (videoStream) {
           videoStream.getTracks().forEach(track => track.stop());
