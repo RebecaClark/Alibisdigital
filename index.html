@@ -58,35 +58,22 @@
       cursor: pointer;
       z-index: 1000;
     }
-    #vsl-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-    #vsl-modal.active { display: flex; }
-    .vsl-content {
-      background: #0b1120;
+    .vsl-video {
       border: 2px solid #22d3ee;
       border-radius: 10px;
-      padding: 1rem;
-      max-width: 90%;
-      max-height: 90%;
-      position: relative;
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
     }
-    #close-vsl {
+    .vsl-captions {
       position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
       color: #22d3ee;
-      font-size: 1.5rem;
-      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      text-align: center;
     }
     @media (max-width: 640px) {
       h2 { font-size: 1.5rem; }
@@ -94,7 +81,8 @@
       .futuristic-btn { padding: 0.5rem 1rem; font-size: 0.875rem; }
       .neon-box { padding: 0.75rem; font-size: 0.85rem; }
       #chat-bubble { transform: scale(0.8); }
-      .vsl-content { max-width: 95%; }
+      .vsl-video { max-width: 100%; }
+      .vsl-captions { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
     }
   </style>
 </head>
@@ -141,14 +129,14 @@
   <section class="py-16 px-4 mx-auto text-center animate-on-scroll">
     <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white shine">Descubra Suas Emoções com IA em 30 Segundos</h1>
     <p class="text-lg mb-6 text-gray-300 fade-in">Teste o scanner emocional mais avançado e receba insights personalizados para seu bem-estar.</p>
-    <div class="mb-6">
-      <video class="w-full max-w-md mx-auto rounded-xl shadow-md border border-[#22d3ee]" autoplay muted loop>
-        <source src="/assets/scanner-demo.mp4" type="video/mp4">
+    <div class="mb-6 relative">
+      <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video" autoplay muted loop>
+        <source src="/assets/vsl.mp4" type="video/mp4">
         <p>Seu navegador não suporta vídeo.</p>
       </video>
+      <div id="vsl-captions" class="vsl-captions hidden">Bem-vindo ao futuro do bem-estar!</div>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <button id="play-vsl" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_vsl', { 'event_category': 'CTA', 'event_label': 'Hero VSL' })">Tocar Vídeo</button>
       <a href="scanner.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_test_scanner', { 'event_category': 'CTA', 'event_label': 'Hero Section' })">Teste o Scanner Grátis</a>
       <a href="#ebook" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_ebook', { 'event_category': 'CTA', 'event_label': 'Hero Section' })">Baixe o Guia Anti-Estresse</a>
     </div>
@@ -162,20 +150,6 @@
       <p class="text-xs mt-2 text-gray-400">🔒 Seus dados são protegidos.</p>
     </div>
   </section>
-
-  <!-- VSL Modal -->
-  <div id="vsl-modal" class="fade-in">
-    <div class="vsl-content">
-      <span id="close-vsl">&times;</span>
-      <video id="vsl-video" class="w-full max-w-2xl" controls>
-        <source src="/assets/vsl.mp4" type="video/mp4">
-        <p>Seu navegador não suporta vídeo.</p>
-      </video>
-      <div class="mt-4 text-center">
-        <a href="scanner.html" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full shine" onclick="gtag('event', 'click_vsl_test', { 'event_category': 'CTA', 'event_label': 'VSL Modal' })">Teste o Scanner Agora</a>
-      </div>
-    </div>
-  </div>
 
   <!-- Benefits Section -->
   <section class="py-16 px-4 mx-auto animate-on-scroll">
@@ -278,7 +252,7 @@
 
   <!-- Footer -->
   <footer class="bg-gray-900 bg-opacity-90 text-gray-400 py-8">
-    <div class="max-w-full mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-xs sm:text-sm">
+    <div class="max-w-full mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-xs sm:text-sm">
       <div class="fade-in">
         <h3 class="text-white text-xl font-bold mb-3 shine">Álibis Digital</h3>
         <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
@@ -353,7 +327,7 @@
       console.log('Reduced motion detected - particles disabled');
     }
 
-    // Configurar menu mobile e VSL modal
+    // Configurar menu mobile e VSL
     document.addEventListener('DOMContentLoaded', () => {
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -373,29 +347,20 @@
       }, { threshold: 0.1 });
       elements.forEach(element => observer.observe(element));
 
-      // VSL Modal
-      const playVsl = document.getElementById('play-vsl');
-      const vslModal = document.getElementById('vsl-modal');
-      const closeVsl = document.getElementById('close-vsl');
+      // VSL Autoplay Tracking
       const vslVideo = document.getElementById('vsl-video');
-      if (playVsl && vslModal && closeVsl && vslVideo) {
-        playVsl.addEventListener('click', () => {
-          vslModal.classList.add('active');
-          vslVideo.play();
-        });
-        closeVsl.addEventListener('click', () => {
-          vslModal.classList.remove('active');
-          vslVideo.pause();
-          vslVideo.currentTime = 0;
+      if (vslVideo) {
+        vslVideo.addEventListener('play', () => {
+          gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
         });
       }
 
-      // Chatbot simples
+      // Chatbot
       const chatBubble = document.getElementById('chat-bubble');
       if (chatBubble) {
         chatBubble.classList.remove('hidden');
         chatBubble.addEventListener('click', () => {
-          alert('Assistiu ao vídeo? Teste o scanner grátis por 7 dias!');
+          alert('Viu o vídeo? Teste o scanner grátis por 7 dias!');
           gtag('event', 'click_chatbot', { 'event_category': 'Interaction', 'event_label': 'Chatbot' });
         });
       }
