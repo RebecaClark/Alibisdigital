@@ -208,7 +208,7 @@
 
   <section class="py-10 px-6 text-center animate-on-scroll" id="emotion-intro">
     <div class="max-w-4xl mx-auto">
-      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais, frequência cardíaca e tom de voz para identificar seu estado emocional com precisão.</p>
+      <p class="text-lg mb-6 text-gray-300 fade-in">Nosso scanner analisa expressões faciais e frequência cardíaca para identificar seu estado emocional com precisão.</p>
       <button onclick="document.getElementById('scanner').scrollIntoView({behavior: 'smooth'})" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Começar o Scanner">Começar o Scanner</button>
     </div>
   </section>
@@ -349,9 +349,9 @@
   </script>
 
   <script>
-    // Carregar chaves de variáveis de ambiente ou usar fallback hardcoded
-    const apiKey = window.apiKey || 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX'; // Substitua pelo fallback se necessário
-    const apiSecret = window.apiSecret || 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY'; // Substitua pelo fallback se necessário
+    // Substitua pelas suas chaves reais da Face++ API
+    const apiKey = 'SUA_CHAVE_API_AQUI';
+    const apiSecret = 'SUA_CHAVE_SECRETA_AQUI';
     let lastDetectedEmotion = null;
 
     function generateDiagnosis(primaryEmotion, heartRate, age, isSimulated) {
@@ -618,7 +618,7 @@
         brightnessSum += (0.299 * r + 0.587 * g + 0.114 * b);
       }
       const averageBrightness = brightnessSum / (imageData.data.length / 4);
-      if (averageBrightness < 50) {
+      if (averageBrightness < 30) {
         result.innerHTML = '<p class="fade-in">🌙 A iluminação está muito baixa. Ajuste a luz para continuar.</p><div class="mt-6"><button onclick="startAnalysisWithDelay()" class="futuristic-btn text-white font-bold px-6 py-2 rounded-full text-sm shine">Tentar Novamente</button></div>';
         speak('A iluminação está muito baixa. Ajuste a luz e tente novamente.');
         if (videoStream) {
@@ -663,10 +663,12 @@
         }
       });
 
+      console.log('Iniciando detecção de rosto...');
       let faceDetected = false;
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 100; i++) {
         if (faceRect) {
           faceDetected = true;
+          console.log('Rosto detectado com sucesso');
           break;
         }
         await new Promise(resolve => setTimeout(resolve, 100));
