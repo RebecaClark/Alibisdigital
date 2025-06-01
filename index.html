@@ -14,7 +14,11 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+    try {
+      gtag('config', 'G-XXXXXXXXXX');
+    } catch (e) {
+      console.error('Google Analytics config failed:', e.message);
+    }
   </script>
   <style>
     body {
@@ -95,7 +99,7 @@
   <header class="fixed top-0 left-0 w-full z-50 bg-gray-900 bg-opacity-90">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <a href="index.html" aria-label="Página inicial da Álibis Digital">
-        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo';">
+        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo'; console.error('Logo load failed');">
       </a>
       <div class="md:hidden">
         <button id="hamburger-menu" class="text-white p-2" aria-label="Abrir menu">
@@ -127,7 +131,7 @@
     <h1 class="text-4xl md:text-5xl font-bold mb-4 shine">Descubra Suas Emoções com IA em 30 Segundos</h1>
     <p class="text-lg mb-6 text-gray-300 fade-in">Teste o scanner emocional mais avançado e receba insights personalizados.</p>
     <div class="mb-6">
-      <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video" autoplay muted loop playsinline preload="auto" poster="/assets/vsl-poster.jpg">
+      <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video" autoplay muted loop playsinline preload="metadata" poster="/assets/vsl-poster.jpg">
         <source src="/assets/vsl.mp4" type="video/mp4">
         <p>Seu navegador não suporta vídeo.</p>
       </video>
@@ -274,23 +278,23 @@
   </footer>
 
   <!-- Scripts -->
-  <script>
+  <script defer>
     // Partículas
     function initParticles() {
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
           particles: {
-            number: { value: 60, density: { enable: true, value_area: 800 } },
+            number: { value: 30, density: { enable: true, value_area: 800 } }, // Reduzido para melhor desempenho
             color: { value: '#22d3ee' },
             shape: { type: 'circle' },
             opacity: { value: 0.4, random: true },
             size: { value: 3, random: true },
             line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.3, width: 1 },
-            move: { enable: true, speed: 1.5, direction: 'none', random: true }
+            move: { enable: true, speed: 1, direction: 'none', random: true }
           },
           interactivity: {
             detect_on: 'canvas',
-            events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } }
+            events: { onhover: { enable: false }, onclick: { enable: false } } // Desativado para desempenho
           },
           retina_detect: true
         });
@@ -300,14 +304,16 @@
       }
     }
 
-    // Menu mobile e animações
+    // Menu mobile, animações, e vídeo
     document.addEventListener('DOMContentLoaded', () => {
+      // Partículas
       initParticles();
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         particlesJS('particles-js', { particles: { number: { value: 0 } } });
         console.log('Reduced motion detected');
       }
 
+      // Menu mobile
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
       if (hamburger && mobileMenu) {
@@ -316,6 +322,7 @@
         });
       }
 
+      // Animações de scroll
       const elements = document.querySelectorAll('.animate-on-scroll');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -330,17 +337,30 @@
       // VSL Autoplay
       const vslVideo = document.getElementById('vsl-video');
       if (vslVideo) {
-        vslVideo.play().then(() => {
-          console.log('VSL autoplay started');
-          gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
-        }).catch(error => {
-          console.error('VSL autoplay failed:', error.message);
-        });
+        const playVideo = () => {
+          vslVideo.play().then(() => {
+            console.log('VSL autoplay started');
+            try {
+              gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
+            } catch (e) {
+              console.error('Analytics event failed:', e.message);
+            }
+          }).catch(error => {
+            console.error('VSL autoplay failed:', error.message);
+            // Retry após 1s
+            setTimeout(playVideo, 1000);
+          });
+        };
         vslVideo.addEventListener('error', (e) => {
           console.error('VSL load error:', e.target.error.message);
         });
         vslVideo.addEventListener('loadeddata', () => {
           console.log('VSL loaded successfully');
+          playVideo();
+        });
+        vslVideo.addEventListener('stalled', () => {
+          console.warn('VSL stalled, retrying...');
+          playVideo();
         });
       }
     });
