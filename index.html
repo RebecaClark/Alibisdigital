@@ -36,29 +36,33 @@
       z-index: -1;
     }
     .fade-in {
-      animation: fadeIn 0.5s ease-in;
+      animation: fadeIn 0.5s ease-in forwards;
     }
     @keyframes fadeIn {
       from { opacity: 0; } to { opacity: 1; }
     }
     .futuristic-btn {
-      background: linear-gradient(45deg, #22d3ee, #3b82f6);
+      background: linear-gradient(45deg, #22d3ee, #3b82f6) !important;
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
       border-radius: 9999px;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
       font-weight: bold;
+      color: #fff !important;
+      text-decoration: none;
+      display: inline-block;
     }
     .futuristic-btn:hover {
-      background: linear-gradient(45deg, #3b82f6, #22d3ee);
+      background: linear-gradient(45deg, #3b82f6, #22d3ee) !important;
+      transform: scale(1.05);
     }
     .shine {
-      animation: shine 2s infinite;
+      animation: shine 2s infinite !important;
     }
     @keyframes shine {
-      0% { text-shadow: 0 0 5px #22d3ee; }
-      50% { text-shadow: 0 0 20px #22d3ee, 0 0 30px #3b82f6; }
-      100% { text-shadow: 0 0 5px #22d3ee; }
+      0% { text-shadow: 0 0 5px #22d3ee, 0 0 10px rgba(34, 211, 238, 0.5); }
+      50% { text-shadow: 0 0 15px #22d3ee, 0 0 25px #3b82f6; }
+      100% { text-shadow: 0 0 5px #22d3ee, 0 0 10px rgba(34, 211, 238, 0.5); }
     }
     .neon-box {
       border: 1px solid #22d3ee;
@@ -67,7 +71,7 @@
       background: rgba(255, 255, 255, 0.05);
     }
     .animate-on-scroll.active {
-      animation: slideIn 0.5s ease-out;
+      animation: slideIn 0.5s ease-out forwards;
     }
     @keyframes slideIn {
       from { transform: translateY(20px); opacity: 0; }
@@ -79,9 +83,58 @@
       box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
       max-width: 100%;
     }
+    .footer-link {
+      color: #d1d5db;
+      text-decoration: none;
+    }
     .footer-link:hover {
       color: #22d3ee;
       text-shadow: 0 0 10px #22d3ee;
+    }
+    .lang-select {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+    }
+    .listening {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #22d3ee;
+      color: #0b1120;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      z-index: 50;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #fff;
+      color: #000;
+      min-width: 160px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      top: 100%;
+      left: 0;
+    }
+    .dropdown-content a {
+      color: #000;
+      padding: 0.5rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+    .dropdown-content a:hover {
+      background: #f3f4f6;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
     @media (max-width: 640px) {
       h2 { font-size: 1.5rem; }
@@ -89,6 +142,17 @@
       .futuristic-btn { padding: 0.5rem 1rem; font-size: 0.875rem; }
       .neon-box { padding: 0.75rem; font-size: 0.85rem; }
       .vsl-video { max-width: 100%; }
+      .dropdown-content {
+        position: static;
+        background: #374151;
+        color: #fff;
+      }
+      .dropdown-content a {
+        color: #fff;
+      }
+      .dropdown-content a:hover {
+        background: #4b5563;
+      }
     }
   </style>
 </head>
@@ -98,54 +162,80 @@
   <!-- Header -->
   <header class="fixed top-0 left-0 w-full z-50 bg-gray-900 bg-opacity-90">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="index.html" aria-label="Página inicial da Álibis Digital">
+      <a href="/index.html" aria-label="Página inicial da Álibis Digital">
         <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo'; console.error('Logo load failed');">
       </a>
-      <div class="md:hidden">
-        <button id="hamburger-menu" class="text-white p-2" aria-label="Abrir menu">
+      <div class="flex items-center space-x-4">
+        <select class="lang-select" aria-label="Selecionar idioma">
+          <option value="pt">Português</option>
+          <option value="en">English</option>
+        </select>
+        <button id="hamburger-menu" class="text-white p-2 md:hidden" aria-label="Abrir menu">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <a href="scanner.html" class="text-white hover:text-[#22d3ee] transition">Scanner</a>
-        <a href="planos.html" class="text-white hover:text-[#22d3ee] transition">Planos</a>
-        <a href="suporte.html" class="text-white hover:text-[#22d3ee] transition">Suporte</a>
-        <a href="scanner.html" class="futuristic-btn text-white shine" aria-label="Teste o Scanner Grátis">🔍 Teste o Scanner Grátis</a>
+      <nav class="hidden md:flex space-x-4 items-center">
+        <div class="dropdown">
+          <button class="text-white hover:text-[#22d3ee] transition">Serviços</button>
+          <div class="dropdown-content">
+            <a href="/scanner.html">Scanner com IA</a>
+            <a href="/avaliacao-emocional.html">Avaliação Emocional</a>
+            <a href="/diagnostico-medico.html">Diagnóstico Médico</a>
+            <a href="/criar-alibi.html">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white hover:text-[#22d3ee] transition">Blog</a>
+        <a href="/planos.html" class="text-white hover:text-[#22d3ee] transition">Planos</a>
+        <a href="/suporte.html" class="text-white hover:text-[#22d3ee] transition">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn shine" aria-label="Teste o Scanner Grátis">🔍 Teste Grátis</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 hidden py-4">
       <nav class="flex flex-col items-center space-y-2">
-        <a href="scanner.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Scanner</a>
-        <a href="planos.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Planos</a>
-        <a href="suporte.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="scanner.html" class="futuristic-btn text-white py-2 px-4 w-full text-center shine">🔍 Teste o Scanner Grátis</a>
+        <div class="dropdown w-full">
+          <button class="text-white py-2 px-4 w-full text-center">Serviços</button>
+          <div class="dropdown-content">
+            <a href="/scanner.html" class="block py-2 px-4 w-full text-center">Scanner com IA</a>
+            <a href="/avaliacao-emocional.html" class="block py-2 px-4 w-full text-center">Avaliação Emocional</a>
+            <a href="/diagnostico-medico.html" class="block py-2 px-4 w-full text-center">Diagnóstico Médico</a>
+            <a href="/criar-alibi.html" class="block py-2 px-4 w-full text-center">Criar Álibi</a>
+          </div>
+        </div>
+        <a href="/blog.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Blog</a>
+        <a href="/planos.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Planos</a>
+        <a href="/suporte.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+        <a href="/scanner.html" class="futuristic-btn shine w-full text-center">🔍 Teste Grátis</a>
       </nav>
     </div>
   </header>
   <div class="h-16"></div>
 
+  <!-- Listening Indicator -->
+  <div id="listening-indicator" class="listening hidden">🎙️ Ouvindo...</div>
+
   <!-- Hero Section -->
   <section class="py-16 px-4 mx-auto text-center animate-on-scroll">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4 shine">Descubra Suas Emoções com IA em 30 Segundos</h1>
-    <p class="text-lg mb-6 text-gray-300 fade-in">Teste o scanner emocional mais avançado e receba insights personalizados.</p>
-    <div class="mb-6">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 shine">Transforme Seu Dia com IA Emocional</h1>
+    <p class="text-lg mb-6 text-gray-300 fade-in">Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.</p>
+    <div class="vsl-container mb-6">
       <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video" autoplay muted loop playsinline preload="metadata" poster="/assets/vsl-poster.jpg">
         <source src="/assets/vsl.mp4" type="video/mp4">
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         <p>Seu navegador não suporta vídeo.</p>
       </video>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="scanner.html" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_test_scanner', { 'event_category': 'CTA', 'event_label': 'Hero' })">Teste o Scanner Grátis</a>
-      <a href="#ebook" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_ebook', { 'event_category': 'CTA', 'event_label': 'Hero' })">Baixe o Guia Anti-Estresse</a>
+      <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_test_scanner', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">🔍 Teste o Scanner Grátis</a>
+      <a href="#ebook" class="futuristic-btn shine" onclick="try{gtag('event', 'click_ebook', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">Baixe o Guia Anti-Estresse</a>
     </div>
     <p class="text-sm mt-4 text-gray-400">🚨 Oferta válida até 31/05/2025! <strong>Restam 12 vagas!</strong></p>
     <div id="ebook" class="mt-8 max-w-md mx-auto neon-box fade-in">
       <h3 class="text-xl font-bold mb-2">Receba Dicas Exclusivas</h3>
       <form action="/api/leads" method="POST">
         <input type="email" name="email" placeholder="Seu e-mail" class="w-full p-2 mb-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-        <button type="submit" class="futuristic-btn w-full text-white shine" onclick="gtag('event', 'submit_ebook', { 'event_category': 'Form', 'event_label': 'Ebook' })">Inscrever-se</button>
+        <button type="submit" class="futuristic-btn w-full shine" onclick="try{gtag('event', 'submit_ebook', {'event_category': 'Form', 'event_label': 'Ebook'});}catch(e){console.error('Analytics error:', e.message);}">Inscrever-se</button>
       </form>
       <p class="text-xs mt-2 text-gray-400">🔒 Seus dados são protegidos.</p>
     </div>
@@ -156,46 +246,63 @@
     <h2 class="text-3xl font-bold mb-8 text-center shine">O Que Você Ganha com o Álibis Digital?</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
       <div class="neon-box p-6 fade-in text-center">
-        <img src="/assets/scanner-icon.png" alt="Scanner Emocional" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Scanner';">
+        <img src="/assets/scanner-icon.png" alt="Scanner Emocional" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Scanner'; console.error('Scanner icon load failed');">
         <h3 class="text-xl font-bold mb-2">Scanner Emocional</h3>
         <p class="text-gray-300">Identifique estresse ou cansaço em segundos com IA.</p>
-        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white shine" onclick="gtag('event', 'click_scanner_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Teste Grátis</a>
+        <a href="/scanner.html" class="mt-4 inline-block futuristic-btn shine">Experimente agora</a>
       </div>
       <div class="neon-box p-6 fade-in text-center">
-        <img src="/assets/report-icon.png" alt="Avaliação Detalhada" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Report';">
+        <img src="/assets/report-icon.png" alt="Avaliação Detalhada" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Report'; console.error('Report icon load failed');">
         <h3 class="text-xl font-bold mb-2">Avaliação Detalhada</h3>
         <p class="text-gray-300">Relatórios personalizados para seu bem-estar.</p>
-        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white shine" onclick="gtag('event', 'click_report_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Faça Agora</a>
+        <a href="/scanner.html" class="mt-4 inline-block futuristic-btn shine">Faça agora</a>
       </div>
       <div class="neon-box p-6 fade-in text-center">
-        <img src="/assets/alibi-icon.png" alt="Álibis Personalizados" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Alibi';">
+        <img src="/assets/alibi-icon.png" alt="Álibis Personalizados" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Alibi'; console.error('Alibi icon load failed');">
         <h3 class="text-xl font-bold mb-2">Álibis Personalizados</h3>
         <p class="text-gray-300">Desculpas realistas com textos e provas digitais.</p>
-        <a href="criar-alibi-basico.html" class="mt-4 inline-block futuristic-btn text-white shine" onclick="gtag('event', 'click_alibi_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Desbloqueie</a>
+        <a href="/criar-alibi.html" class="mt-4 inline-block futuristic-btn shine">Desbloqueie agora</a>
       </div>
     </div>
+    <p class="text-center mt-6 text-lg text-gray-300">Assine o Plano Premium com SuperGrok para insights avançados!</p>
   </section>
 
   <!-- Tips Section -->
   <section class="py-16 px-4 mx-auto bg-gray-900 bg-opacity-50 animate-on-scroll">
     <h2 class="text-3xl font-bold mb-8 text-center shine">Dicas de Bem-Estar</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
       <div class="neon-box p-6 fade-in">
-        <h3 class="text-xl font-bold mb-2">Como Reduzir o Estresse no Trabalho com IA</h3>
-        <p class="text-gray-300">Descubra como o scanner facial de estresse pode ajudar.</p>
-        <a href="dicas/reduzir-estresse.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_stress', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia</a>
+        <h3 class="text-lg font-bold mb-2">Como Reduzir o Estresse no Trabalho com IA</h3>
+        <p class="text-gray-400">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho.</p>
+        <a href="/dicas/reduzir-estresse.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
       </div>
       <div class="neon-box p-6 fade-in">
-        <h3 class="text-xl font-bold mb-2">Gerencie Suas Finanças e Reduza o Estresse</h3>
-        <p class="text-gray-300">Organize suas contas com apoio emocional por IA.</p>
-        <a href="dicas/gerenciar-financas.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_finance', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia</a>
+        <h3 class="text-lg font-bold mb-2">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
+        <p class="text-gray-400">Organize suas contas e reduza a ansiedade financeira com apoio emocional por IA.</p>
+        <a href="/dicas/gerenciar-financas.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
       </div>
       <div class="neon-box p-6 fade-in">
-        <h3 class="text-xl font-bold mb-2">Como Prevenir o Burnout com IA</h3>
-        <p class="text-gray-300">Evite o esgotamento com o scanner emocional.</p>
-        <a href="dicas/prevenir-burnout.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_burnout', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia</a>
+        <h3 class="text-lg font-bold mb-2">Como Prevenir o Burnout com Tecnologia de IA</h3>
+        <p class="text-gray-400">Evite o esgotamento com o scanner facial e triagem médica por IA.</p>
+        <a href="/dicas/prevenir-burnout.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
+      </div>
+      <div class="neon-box p-6 fade-in">
+        <h3 class="text-lg font-bold mb-2">Melhore Seu Sono com Inteligência Artificial</h3>
+        <p class="text-gray-400">Durma melhor com o Abili e scanner, identificando problemas de estresse.</p>
+        <a href="/dicas/melhorar-sono.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
+      </div>
+      <div class="neon-box p-6 fade-in">
+        <h3 class="text-lg font-bold mb-2">Como a IA Pode Melhorar a Produtividade no Trabalho</h3>
+        <p class="text-gray-400">Aumente a eficiência com o Abili e scanner facial, otimizando sua rotina.</p>
+        <a href="/dicas/produtividade.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
+      </div>
+      <div class="neon-box p-6 fade-in">
+        <h3 class="text-lg font-bold mb-2">Equilibre Sua Vida Pessoal com IA</h3>
+        <p class="text-gray-400">Encontre harmonia com o Abili e apoio emocional por IA.</p>
+        <a href="/dicas/equilibrio.html" class="mt-4 inline-block text-[#22d3ee] hover:underline">Leia agora</a>
       </div>
     </div>
+    <p class="text-center mt-6 text-lg text-gray-300">Experimente o SuperGrok para mais funcionalidades!</p>
   </section>
 
   <!-- Testimonials Section -->
@@ -204,11 +311,11 @@
     <p class="text-center text-gray-300 mb-6">532 pessoas já testaram o scanner hoje!</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       <div class="neon-box p-6 fade-in">
-        <p class="text-gray-300">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi em minutos."</p>
+        <p class="text-gray-300">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
         <p class="mt-4 font-bold">- Ana S., 34 anos</p>
       </div>
       <div class="neon-box p-6 fade-in">
-        <p class="text-gray-300">"Álibis realistas e suporte incrível. Recomendo!"</p>
+        <p class="text-gray-300">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
         <p class="mt-4 font-bold">- João P., 28 anos</p>
       </div>
     </div>
@@ -217,20 +324,22 @@
   <!-- CTA Section -->
   <section class="py-16 px-4 mx-auto text-center bg-gray-900 bg-opacity-50 animate-on-scroll">
     <h2 class="text-3xl font-bold mb-4 shine">🚨 Transforme Suas Emoções Agora!</h2>
-    <p class="text-lg mb-6 text-gray-300">Teste o Scanner e receba insights personalizados.</p>
-    <a href="scanner.html" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_transform_cta', { 'event_category': 'CTA', 'event_label': 'Transform' })">Garanta Seu Plano</a>
+    <p class="text-lg mb-6 text-gray-300">Teste o Scanner e receba insights personalizados para o seu dia.</p>
+    <p class="text-sm mb-4 text-gray-400">Oferta válida até 31/05/2025! <strong>Restam 12 vagas!</strong></strong>
+    <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_transform_cta', {'event_category': 'CTA', 'event_label': 'Transform'});}catch(e){console.error('Analytics error:', e.message);}">Garanta Seu Plano</a>
     <p class="text-sm mt-4 text-gray-400">🔒 Pagamento seguro via PIX ou cartão.</p>
   </section>
 
   <!-- Plans Section -->
   <section class="py-16 px-4 mx-auto text-center animate-on-scroll">
     <h2 class="text-3xl font-bold mb-8 shine">Escolha Seu Plano</h2>
-    <p class="text-lg mb-6 text-gray-300">7 dias grátis e álibis ilimitados por R$ 9,90/mês.</p>
+    <p class="text-lg mb-6 text-gray-300">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="/api/subscribe?method=pix" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_plan_pix', { 'event_category': 'CTA', 'event_label': 'Plans' })">Pagar com PIX</a>
-      <a href="/api/subscribe?method=card" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_plan_card', { 'event_category': 'CTA', 'event_label': 'Plans' })">Pagar com Cartão</a>
+      <a href="/api/subscribe?method=pix" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_pix', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Pagar com PIX</a>
+      <a href="/api/subscribe?method=card" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_card', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Pagar com Cartão</a>
     </div>
-    <p class="text-sm mt-4 text-gray-400">💰 Garantia de 7 dias ou reembolso total.</p>
+    <p class="text-sm mt-4 text-gray-400">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
+    <img src="/assets/stripe-dark.png" alt="Stripe" class="h-8 mx-auto mt-4" onerror="this.src='https://via.placeholder.com/100x40?text=Stripe'; console.error('Stripe load error:');">
   </section>
 
   <!-- Support Section -->
@@ -238,8 +347,8 @@
     <h2 class="text-3xl font-bold mb-8 shine">Estamos Aqui para Ajudar</h2>
     <p class="text-lg mb-6 text-gray-300">Suporte imediato com discrição total.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="https://wa.me/5511912345678" class="futuristic-btn text-white shine" target="_blank" onclick="gtag('event', 'click_whatsapp', { 'event_category': 'CTA', 'event_label': 'Support' })">💬 WhatsApp</a>
-      <a href="mailto:contato@alibisdigital.com" class="futuristic-btn text-white shine" onclick="gtag('event', 'click_email', { 'event_category': 'CTA', 'event_label': 'Support' })">Enviar E-mail</a>
+      <a href="https://wa.me/5511912345678" target="_blank" class="futuristic-btn shine" onclick="try{gtag('event', 'click_whatsapp', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">💬 WhatsApp</a>
+      <a href="mailto:[email protected]" class="futuristic-btn shine" onclick="try{gtag('event', 'click_email', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">Enviar E-mail</a>
     </div>
   </section>
 
@@ -247,32 +356,32 @@
   <footer class="bg-gray-900 bg-opacity-90 text-gray-400 py-8">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm">
       <div class="fade-in">
-        <h3 class="text-white text-xl font-bold mb-3 shine">Álibis Digital</h3>
+        <h3 class="text-xl font-bold mb-3 text-white text-white shine">Álibis Digital</h3>
         <p>Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-3">Navegue</h4>
-        <ul class="space-y-1">
-          <li><a href="index.html" class="footer-link transition" onclick="gtag('event', 'click_footer_inicio', { 'event_category': 'Footer', 'event_label': 'Inicio' })">Início</a></li>
-          <li><a href="scanner.html" class="footer-link transition" onclick="gtag('event', 'click_footer_scanner', { 'event_category': 'Footer', 'event_label': 'Scanner' })">Scanner</a></li>
-          <li><a href="blog.html" class="footer-link transition" onclick="gtag('event', 'click_footer_blog', { 'event_category': 'Footer', 'event_label': 'Blog' })">Blog</a></li>
-          <li><a href="diagnostico-medico.html" class="footer-link transition" onclick="gtag('event', 'click_footer_diagnostico', { 'event_category': 'Footer', 'event_label': 'Diagnóstico Médico' })">Diagnóstico Médico</a></li> <!-- Placeholder: criar página -->
-          <li><a href="avaliacao-emocional.html" class="footer-link transition" onclick="gtag('event', 'click_footer_avaliacao', { 'event_category': 'Footer', 'event_label': 'Avaliação Emocional' })">Avaliação Emocional</a></li> <!-- Placeholder: criar página -->
-          <li><a href="criar-alibi-basico.html" class="footer-link transition" onclick="gtag('event', 'click_footer_alibi', { 'event_category': 'Footer', 'event_label': 'Criar Álibi' })">Criar Álibi</a></li>
-          <li><a href="planos.html" class="footer-link transition" onclick="gtag('event', 'click_footer_planos', { 'event_category': 'Footer', 'event_label': 'Planos' })">Planos</a></li>
-          <li><a href="suporte.html" class="footer-link transition" onclick="gtag('event', 'click_footer_suporte', { 'event_category': 'Footer', 'event_label': 'Suporte' })">Suporte</a></li>
-          <li><a href="privacidade.html" class="footer-link transition" onclick="gtag('event', 'click_footer_privacidade', { 'event_category': 'Footer', 'event_label': 'Privacidade' })">Privacidade</a></li> <!-- Placeholder: criar página -->
+        <h4 class="text-lg font-semibold mb-3 text-white">Navegue</h4>
+        <ul class="space-y-2">
+          <li><a href="/index.html" class="footer-link">Início</a></li>
+          <li><a href="/scanner.html" class="footer-link">Scanner</a></li>
+          <li><a href="/blog.html" class="footer-link">Blog</a></li>
+          <li><a href="/diagnostico-medico.html" class="footer-link">Diagnóstico Médico</a></li>
+          <li><a href="/avaliacao-emocional.html" class="footer-link">Avaliação Emocional</a></li>
+          <li><a href="/criar-alibi.html" class="footer-link">Criar Álibi</a></li>
+          <li><a href="/planos.html" class="footer-link">Planos</a></li>
+          <li><a href="/suporte.html" class="footer-link">Suporte</a></li>
+          <li><a href="/privacidade.html" class="footer-link">Privacidade</a></li>
         </ul>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-3">Contato</h4>
-        <ul class="space-y-1">
-          <li>E-mail: contato@alibisdigital.com</li>
-          <li>WhatsApp: (11) 91234-5678</li>
+        <h4 class="text-lg font-semibold mb-3 text-white">Contato</h4>
+        <ul class="space-y-2">
+          <li>E-mail: <a href="mailto:[email protected]" class="footer-link">[email protected]</a></li>
+          <li>WhatsApp: <a href="https://wa.me/5511912345678" class="footer-link">(11) 91234-5678</a></li>
         </ul>
       </div>
     </div>
-    <div class="text-center mt-6 text-sm">
+    <div class="text-center mt-6 text-sm text-gray-500">
       <p>© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
@@ -281,87 +390,120 @@
   <script defer>
     // Partículas
     function initParticles() {
-      if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-          particles: {
-            number: { value: 30, density: { enable: true, value_area: 800 } }, // Reduzido para melhor desempenho
-            color: { value: '#22d3ee' },
-            shape: { type: 'circle' },
-            opacity: { value: 0.4, random: true },
-            size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.3, width: 1 },
-            move: { enable: true, speed: 1, direction: 'none', random: true }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: { onhover: { enable: false }, onclick: { enable: false } } // Desativado para desempenho
-          },
-          retina_detect: true
-        });
-        console.log('Particles.js loaded');
-      } else {
-        console.error('Particles.js failed to load');
+      try {
+        if (typeof particlesJS !== 'undefined') {
+          particlesJS('particles-js', {
+            particles: {
+              number: { value: 10, density: { enable: true, value_area: 800 } },
+              color: { value: '#ffffff' },
+              shape: { type: 'circle' },
+              opacity: { value: 0.2, random: true },
+              size: { value: 2, random: true },
+              line_linked: { enable: false },
+              move: { enable: true, speed: 0.2, direction: 'none', random: true }
+            },
+            interactivity: [],
+            retina_detect: true
+          });
+          console.log('Particles.js initialized');
+        }
+      } catch (err) {
+        console.error('Particles.js error:', err.message);
       }
     }
 
-    // Menu mobile, animações, e vídeo
+    // Dropdown Menu
+    function handleDropdowns() {
+      const dropdowns = document.querySelectorAll('.dropdown');
+      dropdowns.forEach(d => {
+        const btn = d.querySelector('button');
+        const content = d.querySelector('.dropdown-content');
+        if (btn && content) {
+          btn.addEventListener('click', () => {
+            content.classList.toggle('block');
+            content.classList.toggle('hidden');
+          });
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Partículas
-      initParticles();
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        particlesJS('particles-js', { particles: { number: { value: 0 } } });
-        console.log('Reduced motion detected');
-      }
+      try {
+        // Partículas
+        initParticles();
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          particlesJS('particles-js', { particles: { number: { value: 0 } } });
+          console.log('Reduced motion activated');
+        }
 
-      // Menu mobile
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-          mobileMenu.classList.toggle('hidden');
-        });
-      }
+        handleDropdowns();
 
-      // Animações de scroll
-      const elements = document.querySelectorAll('.animate-on-scroll');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      elements.forEach(element => observer.observe(element));
+        // Menu Mobile
+        const hamburger = document.getElementById('hamburger-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (hamburger && mobileMenu) {
+          hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
 
-      // VSL Autoplay
-      const vslVideo = document.getElementById('vsl-video');
-      if (vslVideo) {
-        const playVideo = () => {
-          vslVideo.play().then(() => {
-            console.log('VSL autoplay started');
-            try {
-              gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
-            } catch (e) {
-              console.error('Analytics event failed:', e.message);
+        // Animações de Scroll
+        const elements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+              observer.unobserve(entry.target);
             }
-          }).catch(error => {
-            console.error('VSL autoplay failed:', error.message);
-            // Retry após 1s
+          });
+        }, { threshold: 0.05 });
+        elements.forEach(el => observer.observe(el));
+
+        // VSL Autoplay
+        const video = document.getElementById('vsl-video');
+        if (video) {
+          const playVideo = () => {
+            video.play().then(() => {
+              console.log('VSL started at %s', new Date().toLocaleTimeString());
+              try {
+                gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
+              } catch (err) {
+                console.error('Analytics event error:', err.message);
+              }
+            }).catch(err => {
+              console.error('VSL autoplay failed:', err.message);
+              setTimeout(playVideo, 1000);
+            });
+          };
+          video.addEventListener('error', (e) => {
+            console.error('VSL load error:', e.target.error?.message || 'Unknown');
+            // Tenta fallback
+            if (video.currentSrc.includes('vsl.mp4')) {
+              video.src = 'https://www.w3schools.com/html/mov_bbb.mp4';
+              playVideo();
+            }
+          });
+          video.addEventListener('loadeddata', () => {
+            console.log('VSL loaded');
+            playVideo();
+          });
+          video.addEventListener('stalled', () => {
+            console.warn('VSL stalled, retrying...');
             setTimeout(playVideo, 1000);
           });
-        };
-        vslVideo.addEventListener('error', (e) => {
-          console.error('VSL load error:', e.target.error.message);
-        });
-        vslVideo.addEventListener('loadeddata', () => {
-          console.log('VSL loaded successfully');
           playVideo();
-        });
-        vslVideo.addEventListener('stalled', () => {
-          console.warn('VSL stalled, retrying...');
-          playVideo();
-        });
+        }
+
+        // Indicador "Ouvindo"
+        const listening = document.getElementById('listening-indicator');
+        if (listening) {
+          setTimeout(() => {
+            listening.classList.remove('hidden');
+            setTimeout(() => listening.classList.add('hidden'), 3000);
+          }, 2000);
+        }
+      } catch (err) {
+        console.error('DOM load error:', err.message);
       }
     });
   </script>
