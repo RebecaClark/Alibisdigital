@@ -76,13 +76,32 @@
       text-align: center;
     }
     .footer-link:hover { color: #22d3ee; text-shadow: 0 0 10px #22d3ee; }
+    .vsl-fallback {
+      background: url('/assets/vsl-poster.jpg') center/cover no-repeat;
+      width: 100%;
+      max-width: 640px;
+      height: 360px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #22d3ee;
+      border-radius: 10px;
+    }
+    .vsl-fallback button {
+      background: #22d3ee;
+      color: #0b1120;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+    }
     @media (max-width: 640px) {
       h2 { font-size: 1.5rem; }
       p { font-size: 0.9rem; }
       .futuristic-btn { padding: 0.5rem 1rem; font-size: 0.875rem; }
       .neon-box { padding: 0.75rem; font-size: 0.85rem; }
       #chat-bubble { transform: scale(0.8); }
-      .vsl-video { max-width: 100%; }
+      .vsl-video, .vsl-fallback { max-width: 100%; height: auto; }
       .vsl-captions { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
     }
   </style>
@@ -131,10 +150,13 @@
     <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white shine">Descubra Suas Emoções com IA em 30 Segundos</h1>
     <p class="text-lg mb-6 text-gray-300 fade-in">Teste o scanner emocional mais avançado e receba insights personalizados para seu bem-estar.</p>
     <div class="mb-6 relative">
-      <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video" autoplay muted loop>
+      <video id="vsl-video" class="w-full max-w-md mx-auto vsl-video hidden" autoplay muted loop playsinline poster="/assets/vsl-poster.jpg">
         <source src="/assets/vsl.mp4" type="video/mp4">
         <p>Seu navegador não suporta vídeo.</p>
       </video>
+      <div id="vsl-fallback" class="vsl-fallback">
+        <button onclick="document.getElementById('vsl-video').play(); document.getElementById('vsl-fallback').classList.add('hidden'); document.getElementById('vsl-video').classList.remove('hidden'); gtag('event', 'play_vsl_manual', { 'event_category': 'Video', 'event_label': 'VSL Fallback' })">▶ Reproduzir Vídeo</button>
+      </div>
       <div id="vsl-captions" class="vsl-captions hidden">Bem-vindo ao futuro do bem-estar!</div>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -158,21 +180,21 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
       <div class="neon-box p-6 fade-in text-center">
         <img src="/assets/scanner-icon.png" alt="Scanner Emocional" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Scanner';">
-        <h3 class="text-xl font-bold mb-2">Scanner Emocional</h3>
+        <h3 class="text-xl font-bold mb-2">Boca Emocional</h3>
         <p class="text-gray-300">Identifique estresse ou cansaço em segundos com IA.</p>
-        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_scanner_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Teste o Scanner Grátis</a>
+        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white font-bold py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_scanner_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Teste o Scanner Grátis</a>
       </div>
       <div class="neon-box p-6 fade-in text-center">
-        <img src="/assets/report-icon.png" alt="Avaliação Detalhada" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Report';">
-        <h3 class="text-xl font-bold mb-2">Avaliação Detalhada</h3>
+        <img src="/assets/report-icon.png" alt="Avaliação Detalhada" class="h-16" mx-auto mb-4 mb-4" onerror="this.src='https://via.placeholder.com/64?text=Report';">
+        <h3 class="text-xl font-bold mb-2 mb-2">Avaliação Detalhada</h3>
         <p class="text-gray-300">Relatórios personalizados para seu bem-estar.</p>
-        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_report_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Faça Agora</a>
+        <a href="scanner.html" class="mt-4 inline-block futuristic-btn text-white font-bold py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_report_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Faça Agora</a>
       </div>
       <div class="neon-box p-6 fade-in text-center">
         <img src="/assets/alibi-icon.png" alt="Álibis Personalizados" class="h-16 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/64?text=Alibi';">
         <h3 class="text-xl font-bold mb-2">Álibis Personalizados</h3>
         <p class="text-gray-300">Desculpas realistas com textos e provas digitais.</p>
-        <a href="criar-alibi-basico.html" class="mt-4 inline-block futuristic-btn text-white py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_alibi_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Desbloqueie Agora</a>
+        <a href="criar-alibi-basico.html" class="mt-4 inline-block futuristic-btn text-white font-bold py-2 px-4 rounded-full shine" onclick="gtag('event', 'click_alibi_benefit', { 'event_category': 'CTA', 'event_label': 'Benefits' })">Desbloqueie Agora</a>
       </div>
     </div>
     <div class="text-center mt-8">
@@ -186,16 +208,16 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
       <div class="neon-box p-6 fade-in">
         <h3 class="text-xl font-bold mb-2">Como Reduzir o Estresse no Trabalho com IA</h3>
-        <p class="text-gray-300">Descubra como o scanner facial de estresse e o Álibis podem aliviar a tensão no trabalho.</p>
+        <p class="text-gray-300">Descubra como um scanner facial de estresse e o Álibis podem aliviar a tensão no trabalho.</p>
         <a href="dicas/reduzir-estresse.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_stress', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
       <div class="neon-box p-6 fade-in">
-        <h3 class="text-xl font-bold mb-2">Gerencie Suas Finanças e Reduza o Estresse</h3>
+        <h3 class="text-xl font-bold mb-2 mb-2">Gerencie Suas Finanças e Reduza o Estresse</h3>
         <p class="text-gray-300">Organize suas contas e reduza a ansiedade financeira com apoio emocional por IA.</p>
         <a href="dicas/gerenciar-financas.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_finance', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
       <div class="neon-box p-6 fade-in">
-        <h3 class="text-xl font-bold mb-2">Como Prevenir o Burnout com IA</h3>
+        <h3 class="text-lg font-bold mb-2">Como Prevenir o Burnout com IA</h3>
         <p class="text-gray-300">Evite o esgotamento com o scanner facial e triagem médica por IA.</p>
         <a href="dicas/prevenir-burnout.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_burnout', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
@@ -206,48 +228,49 @@
   </section>
 
   <!-- Testimonials Section -->
-  <section class="py-16 px-4 mx-auto animate-on-scroll">
+  <section class="py-16 px-16 px-4 mx-auto animate-on-scroll">
     <h2 class="text-3xl font-bold mb-8 text-center text-white shine">O Que Nossos Usuários Dizem</h2>
     <p class="text-center text-gray-300 mb-6">532 pessoas já testaram o scanner hoje!</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       <div class="neon-box p-6 fade-in">
-        <p class="text-gray-300">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
-        <p class="mt-4 font-bold">- Ana S., 34 anos</p>
+        <p class="text-gray-300">"O Scanner Emocional salvou meu dia-a-dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
+        <p class="mt-4 font-bold">- - Ana S., 34 anos</p>
       </div>
       <div class="neon-box p-6 fade-in">
         <p class="text-gray-300">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
-        <p class="mt-4 font-bold">- João P., 28 anos</p>
+        <p class="mt-4 font-bold">- João P., 28 anos.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- CTA Section -->
   <section class="py-16 px-4 mx-auto text-center bg-gray-900 bg-opacity-50 animate-on-scroll">
-    <h2 class="text-3xl font-bold mb-4 text-white shine">🚨 Transforme Suas Emoções Agora!</h2>
+    <h2 class="text-3xl font-bold mb-4 text-white shine">🚗 Transforme Suas Emoções Agora!</h2>
     <p class="text-lg mb-6 text-gray-300">Teste o Scanner e receba insights personalizados para o seu dia.</p>
-    <p class="text-sm mb-6 text-gray-400">Oferta válida até 31/05/2025 ou até acabarem as vagas! <strong>Restam 12 vagas!</strong></p>
+    <p class="text-sm mb-6 text-gray-400">Oferta válida até 24h ou até acabarem as vagas!</p>
     <a href="scanner.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_transform_cta', { 'event_category': 'CTA', 'event_label': 'Transform' })">Garanta Seu Plano Agora</a>
-    <p class="text-sm mt-4 text-gray-400">🔒 Pagamento seguro via PIX ou cartão.</p>
+    <p class="text-sm mt-4 mt-4 text-gray-400">🔒 Pagamento seguro via Pix ou cartão.</p>
   </section>
 
   <!-- Plans Section -->
-  <section class="py-16 px-4 mx-auto text-center animate-on-scroll">
-    <h2 class="text-3xl font-bold mb-8 text-white shine">Escolha Seu Plano</h2>
-    <p class="text-lg mb-6 text-gray-300">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
+  <section class="py-16 px-4 mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-8 text-white shine">Escolha seu plano</h2>
+    <p class="text-lg mb-6 text-gray-300">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas grátis.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="/api/subscribe?method=pix" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_plan_pix', { 'event_category': 'CTA', 'event_label': 'Plans' })">Pagar com PIX</a>
+      <a href="/api/subscribe?method=pix" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_plan_pix', { 'event_category': 'CTA', 'event_label': 'Plans' })">Pagar com Pix</a>
       <a href="/api/subscribe?method=card" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_plan_card', { 'event_category': 'CTA', 'event_label': 'Plans' })">Pagar com Cartão</a>
-    </div>
-    <p class="text-sm mt-4 text-gray-400">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
+      </div>
+    <p class="text-sm mt-4 text-gray-400">💰 Garantia de 7 dias grátis ou reembolso total.</p>
   </section>
 
   <!-- Support Section -->
-  <section class="py-16 px-4 mx-auto text-center animate-on-scroll">
-    <h2 class="text-3xl font-bold mb-8 text-white shine">Estamos Aqui para Ajudar</h2>
+  <section class="py-16 px-4 mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-8 text-center text-white shine">Estamos aqui para ajudar!</h2>
     <p class="text-lg mb-6 text-gray-300">Suporte imediato com discrição total.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" target="_blank" onclick="gtag('event', 'click_whatsapp', { 'event_category': 'CTA', 'event_label': 'Support' })">💬 WhatsApp</a>
-      <a href="mailto:contato@eio" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_email', { 'event_category': 'CTA', 'event_label': 'Support' })">Enviar E-mail</a>
+      <a href="https://wa.me/+5511912345678" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" target="_blank" onclick="gtag('event', 'click_whatsapp', { 'event_category': 'CTA', 'event_label': 'Support' })">💬 WhatsApp</a>
+      <a href="mailto:contato@alibisdigital.com" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_email', { 'event_category': 'CTA', 'event_label': 'Support' })">Enviar E-mail</a>
     </div>
   </section>
 
@@ -261,15 +284,15 @@
       <div class="fade-in">
         <h4 class="text-white font-semibold mb-3">Navegue</h4>
         <ul class="space-y-1">
-          <li><a href="index.html" class="footer-link hover:text-white transition" aria-label="Página inicial" onclick="gtag('event', 'click_footer_inicio', { 'event_category': 'Footer', 'event_label': 'Início' })">Início</a></li>
-          <li><a href="scanner.html" class="footer-link hover:text-white transition" aria-label="Scanner emocional" onclick="gtag('event', 'click_footer_scanner', { 'event_category': 'Footer', 'event_label': 'Scanner' })">Scanner</a></li>
-          <li><a href="blog/index.html" class="footer-link hover:text-white transition" aria-label="Blog da Álibis Digital" onclick="gtag('event', 'click_footer_blog', { 'event_category': 'Footer', 'event_label': 'Blog' })">Blog</a></li>
-          <li><a href="diagnostico-medico.html" class="footer-link hover:text-white transition" aria-label="Diagnóstico médico com IA" onclick="gtag('event', 'click_footer_diagnostico', { 'event_category': 'Footer', 'event_label': 'Diagnóstico Médico' })">Diagnóstico Médico</a></li> <!-- Placeholder: criar página -->
-          <li><a href="avaliacao-emocional.html" class="footer-link hover:text-white transition" aria-label="Avaliação emocional com IA" onclick="gtag('event', 'click_footer_avaliacao', { 'event_category': 'Footer', 'event_label': 'Avaliação Emocional' })">Avaliação Emocional</a></li> <!-- Placeholder: criar página -->
-          <li><a href="criar-alibi-basico.html" class="footer-link hover:text-white transition" aria-label="Criar álibi personalizado" onclick="gtag('event', 'click_footer_alibi', { 'event_category': 'Footer', 'event_label': 'Criar Álibi' })">Criar Álibi</a></li>
-          <li><a href="planos.html" class="footer-link hover:text-white transition" aria-label="Planos de assinatura" onclick="gtag('event', 'click_footer_planos', { 'event_category': 'Footer', 'event_label': 'Planos' })">Planos</a></li>
-          <li><a href="suporte.html" class="footer-link hover:text-white transition" aria-label="Suporte ao cliente" onclick="gtag('event', 'click_footer_suporte', { 'event_category': 'Footer', 'event_label': 'Suporte' })">Suporte</a></li>
-          <li><a href="privacidade.html" class="footer-link hover:text-white transition" aria-label="Política de privacidade" onclick="gtag('event', 'click_footer_privacidade', { 'event_category': 'Footer', 'event_label': 'Privacidade' })">Privacidade</a></li> <!-- Placeholder: criar página -->
+          <li><a href="index.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Página inicial" onclick="gtag('event', 'click_footer_inicio', { 'event_category': 'Footer', 'event_label': 'Inicio' })">Início</a></li>
+          <li><a href="scanner.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Scanner emocional" onclick="gtag('event', 'click_footer_scanner', { 'event_category': 'Footer', 'event_label': 'Scanner' })">Scanner</a></li>
+          <li><a href="blog.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Blog da Álibis Digital" onclick="gtag('event', 'click_footer_blog', { 'event_category': 'Footer', 'event_label': 'Blog' })">Blog</a></li>
+          <li><a href="diagnostico-medico.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Diagnóstico médico com IA" onclick="gtag('event', 'click_footer_diagnostico', { 'event_category': 'Footer', 'event_label': 'Diagnóstico Médico' })">Diagnóstico Médico</a></li> <!-- Placeholder: criar página -->
+          <li><a href="avaliacao-emocional.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Avaliação emocional com IA" onclick="gtag('event', 'click_footer_avaliacao', { 'event_category': 'Footer', 'event_label': 'Avaliação Emocional' })">Avaliação Emocional</a></li> <!-- Placeholder: criar página -->
+          <li><a href="criar-alibi-basico.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Criar álibi personalizado" onclick="gtag('event', 'click_footer_alibi', { 'event_category': 'Footer', 'event_label': 'Criar Álibi' })">Criar Álibi</a></li>
+          <li><a href="planos.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Planos de assinatura" onclick="gtag('event', 'click_footer_planos', { 'event_category': 'Footer', 'event_label': 'Planos' })">Planos</a></li>
+          <li><a href="suporte.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Suporte ao cliente" onclick="gtag('event', 'click_footer_suporte', { 'event_category': 'Footer', 'event_label': 'Suporte' })">Suporte</a></li>
+          <li><a href="privacidade.html" class="footer-link hover:text-[#22d3ee] transition" aria-label="Política de privacidade" onclick="gtag('event', 'click_footer_privacidade', { 'event_category': 'Footer', 'event_label': 'Privacidade' })">Privacidade</a></li> <!-- Placeholder: criar página -->
         </ul>
       </div>
       <div class="fade-in">
@@ -348,11 +371,25 @@
       }, { threshold: 0.1 });
       elements.forEach(element => observer.observe(element));
 
-      // VSL Autoplay Tracking
+      // VSL Autoplay
       const vslVideo = document.getElementById('vsl-video');
-      if (vslVideo) {
-        vslVideo.addEventListener('play', () => {
-          gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
+      const vslFallback = document.getElementById('vsl-fallback');
+      if (vslVideo && vslFallback) {
+        vslVideo.addEventListener('loadeddata', () => {
+          vslVideo.classList.remove('hidden');
+          vslFallback.classList.add('hidden');
+          vslVideo.play().then(() => {
+            gtag('event', 'view_vsl', { 'event_category': 'Video', 'event_label': 'VSL Autoplay' });
+          }).catch(err => {
+            console.error('VSL autoplay failed:', err);
+            vslVideo.classList.add('hidden');
+            vslFallback.classList.remove('hidden');
+          });
+        });
+        vslVideo.addEventListener('error', (err) => {
+          console.error('VSL load error:', err);
+          vslVideo.classList.add('hidden');
+          vslFallback.classList.remove('hidden');
         });
       }
 
