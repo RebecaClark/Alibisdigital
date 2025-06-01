@@ -75,6 +75,7 @@
       font-size: 0.9rem;
       text-align: center;
     }
+    .footer-link:hover { color: #22d3ee; text-shadow: 0 0 10px #22d3ee; }
     @media (max-width: 640px) {
       h2 { font-size: 1.5rem; }
       p { font-size: 0.9rem; }
@@ -186,17 +187,17 @@
       <div class="neon-box p-6 fade-in">
         <h3 class="text-xl font-bold mb-2">Como Reduzir o Estresse no Trabalho com IA</h3>
         <p class="text-gray-300">Descubra como o scanner facial de estresse e o Álibis podem aliviar a tensão no trabalho.</p>
-        <a href="#ebook" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_stress', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
+        <a href="dicas/reduzir-estresse.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_stress', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
       <div class="neon-box p-6 fade-in">
         <h3 class="text-xl font-bold mb-2">Gerencie Suas Finanças e Reduza o Estresse</h3>
         <p class="text-gray-300">Organize suas contas e reduza a ansiedade financeira com apoio emocional por IA.</p>
-        <a href="#ebook" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_finance', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
+        <a href="dicas/gerenciar-financas.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_finance', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
       <div class="neon-box p-6 fade-in">
         <h3 class="text-xl font-bold mb-2">Como Prevenir o Burnout com IA</h3>
         <p class="text-gray-300">Evite o esgotamento com o scanner facial e triagem médica por IA.</p>
-        <a href="#ebook" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_burnout', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
+        <a href="dicas/prevenir-burnout.html" class="mt-4 inline-block text-[#22d3ee] hover:underline" onclick="gtag('event', 'click_tip_burnout', { 'event_category': 'CTA', 'event_label': 'Tips' })">Baixe o Guia Grátis</a>
       </div>
     </div>
     <div class="text-center mt-8">
@@ -246,7 +247,7 @@
     <p class="text-lg mb-6 text-gray-300">Suporte imediato com discrição total.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
       <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" target="_blank" onclick="gtag('event', 'click_whatsapp', { 'event_category': 'CTA', 'event_label': 'Support' })">💬 WhatsApp</a>
-      <a href="mailto:contato@alibisdigital.com" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_email', { 'event_category': 'CTA', 'event_label': 'Support' })">Enviar E-mail</a>
+      <a href="mailto:contato@eio" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full shine" onclick="gtag('event', 'click_email', { 'event_category': 'CTA', 'event_label': 'Support' })">Enviar E-mail</a>
     </div>
   </section>
 
@@ -260,15 +261,15 @@
       <div class="fade-in">
         <h4 class="text-white font-semibold mb-3">Navegue</h4>
         <ul class="space-y-1">
-          <li><a href="#" class="hover:text-white transition">Início</a></li>
-          <li><a href="#" class="hover:text-white transition">Scanner</a></li>
-          <li><a href="#" class="hover:text-white transition">Blog</a></li>
-          <li><a href="#" class="hover:text-white transition">Diagnóstico Médico</a></li>
-          <li><a href="#" class="hover:text-white transition">Avaliação Emocional</a></li>
-          <li><a href="#" class="hover:text-white transition">Criar Álibi</a></li>
-          <li><a href="#planos" class="hover:text-white transition">Planos</a></li>
-          <li><a href="#" class="hover:text-white transition">Suporte</a></li>
-          <li><a href="#" class="hover:text-white transition">Privacidade</a></li>
+          <li><a href="index.html" class="footer-link hover:text-white transition" aria-label="Página inicial" onclick="gtag('event', 'click_footer_inicio', { 'event_category': 'Footer', 'event_label': 'Início' })">Início</a></li>
+          <li><a href="scanner.html" class="footer-link hover:text-white transition" aria-label="Scanner emocional" onclick="gtag('event', 'click_footer_scanner', { 'event_category': 'Footer', 'event_label': 'Scanner' })">Scanner</a></li>
+          <li><a href="blog/index.html" class="footer-link hover:text-white transition" aria-label="Blog da Álibis Digital" onclick="gtag('event', 'click_footer_blog', { 'event_category': 'Footer', 'event_label': 'Blog' })">Blog</a></li>
+          <li><a href="diagnostico-medico.html" class="footer-link hover:text-white transition" aria-label="Diagnóstico médico com IA" onclick="gtag('event', 'click_footer_diagnostico', { 'event_category': 'Footer', 'event_label': 'Diagnóstico Médico' })">Diagnóstico Médico</a></li> <!-- Placeholder: criar página -->
+          <li><a href="avaliacao-emocional.html" class="footer-link hover:text-white transition" aria-label="Avaliação emocional com IA" onclick="gtag('event', 'click_footer_avaliacao', { 'event_category': 'Footer', 'event_label': 'Avaliação Emocional' })">Avaliação Emocional</a></li> <!-- Placeholder: criar página -->
+          <li><a href="criar-alibi-basico.html" class="footer-link hover:text-white transition" aria-label="Criar álibi personalizado" onclick="gtag('event', 'click_footer_alibi', { 'event_category': 'Footer', 'event_label': 'Criar Álibi' })">Criar Álibi</a></li>
+          <li><a href="planos.html" class="footer-link hover:text-white transition" aria-label="Planos de assinatura" onclick="gtag('event', 'click_footer_planos', { 'event_category': 'Footer', 'event_label': 'Planos' })">Planos</a></li>
+          <li><a href="suporte.html" class="footer-link hover:text-white transition" aria-label="Suporte ao cliente" onclick="gtag('event', 'click_footer_suporte', { 'event_category': 'Footer', 'event_label': 'Suporte' })">Suporte</a></li>
+          <li><a href="privacidade.html" class="footer-link hover:text-white transition" aria-label="Política de privacidade" onclick="gtag('event', 'click_footer_privacidade', { 'event_category': 'Footer', 'event_label': 'Privacidade' })">Privacidade</a></li> <!-- Placeholder: criar página -->
         </ul>
       </div>
       <div class="fade-in">
@@ -360,7 +361,7 @@
       if (chatBubble) {
         chatBubble.classList.remove('hidden');
         chatBubble.addEventListener('click', () => {
-          alert('Viu o vídeo? Teste o scanner grátis por 7 dias!');
+          alert('Viu o vídeo? Baixe nossos guias e teste o scanner grátis por 7 dias!');
           gtag('event', 'click_chatbot', { 'event_category': 'Interaction', 'event_label': 'Chatbot' });
         });
       }
