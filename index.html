@@ -1,3 +1,13 @@
+Perfeito! Segue o arquivo **index.html** pronto com todas as correções aplicadas, incluindo CSS e JS internos, pronto para download e uso no seu projeto.
+
+### Como obter o arquivo:
+1. Copie o conteúdo abaixo.
+2. Cole em um novo arquivo chamado `index.html` na raiz do seu projeto.
+3. Está pronto para usar!
+
+---
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -189,7 +199,7 @@
         <a href="/blog.html" class="text-white hover:text-[#22d3ee] transition">Blog</a>
         <a href="/planos.html" class="text-white hover:text-[#22d3ee] transition">Planos</a>
         <a href="/suporte.html" class="text-white hover:text-[#22d3ee] transition">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn shine" aria-label="Teste o Scanner Grátis">🔍 Teste Grátis</a>
+        <a href="/scanner.html" class="futuristic-btn shine" aria-label="Teste o Scanner Grátis" onclick="try{gtag('event', 'click_test_scanner', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">🔍 Teste Grátis</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 hidden py-4">
@@ -206,7 +216,7 @@
         <a href="/blog.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Blog</a>
         <a href="/planos.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Planos</a>
         <a href="/suporte.html" class="text-white py-2 px-4 w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn shine w-full text-center">🔍 Teste Grátis</a>
+        <a href="/scanner.html" class="futuristic-btn shine w-full text-center" onclick="try{gtag('event', 'click_test_scanner', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">🔍 Teste Grátis</a>
       </nav>
     </div>
   </header>
@@ -227,15 +237,15 @@
       </video>
     </div>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_test_scanner', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">🔍 Teste o Scanner Grátis</a>
-      <a href="#ebook" class="futuristic-btn shine" onclick="try{gtag('event', 'click_ebook', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">Baixe o Guia Anti-Estresse</a>
+      <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_test_scanner', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">🔍 Teste Grátis</a>
+      <a href="#ebook" class="futuristic-btn shine" onclick="try{gtag('event', 'click_ebook', {'event_category': 'CTA', 'event_label': 'Hero'});}catch(e){console.error('Analytics error:', e.message);}">📘 Ebook Exclusivo</a>
     </div>
     <p class="text-sm mt-4 text-gray-400">🚨 Oferta válida até 31/05/2025! <strong>Restam 12 vagas!</strong></p>
     <div id="ebook" class="mt-8 max-w-md mx-auto neon-box fade-in">
       <h3 class="text-xl font-bold mb-2">Receba Dicas Exclusivas</h3>
       <form action="/api/leads" method="POST">
         <input type="email" name="email" placeholder="Seu e-mail" class="w-full p-2 mb-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-        <button type="submit" class="futuristic-btn w-full shine" onclick="try{gtag('event', 'submit_ebook', {'event_category': 'Form', 'event_label': 'Ebook'});}catch(e){console.error('Analytics error:', e.message);}">Inscrever-se</button>
+        <button type="submit" class="futuristic-btn w-full shine" onclick="try{gtag('event', 'submit_ebook', {'event_category': 'Form', 'event_label': 'Ebook'});}catch(e){console.error('Analytics error:', e.message);}">Receber Ebook</button>
       </form>
       <p class="text-xs mt-2 text-gray-400">🔒 Seus dados são protegidos.</p>
     </div>
@@ -325,8 +335,8 @@
   <section class="py-16 px-4 mx-auto text-center bg-gray-900 bg-opacity-50 animate-on-scroll">
     <h2 class="text-3xl font-bold mb-4 shine">🚨 Transforme Suas Emoções Agora!</h2>
     <p class="text-lg mb-6 text-gray-300">Teste o Scanner e receba insights personalizados para o seu dia.</p>
-    <p class="text-sm mb-4 text-gray-400">Oferta válida até 31/05/2025! <strong>Restam 12 vagas!</strong></strong>
-    <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_transform_cta', {'event_category': 'CTA', 'event_label': 'Transform'});}catch(e){console.error('Analytics error:', e.message);}">Garanta Seu Plano</a>
+    <p class="text-sm mb-4 text-gray-400">Oferta válida até 31/05/2025! <strong>Restam 12 vagas!</strong></p>
+    <a href="/scanner.html" class="futuristic-btn shine" onclick="try{gtag('event', 'click_transform_cta', {'event_category': 'CTA', 'event_label': 'Transform'});}catch(e){console.error('Analytics error:', e.message);}">Transforme agora</a>
     <p class="text-sm mt-4 text-gray-400">🔒 Pagamento seguro via PIX ou cartão.</p>
   </section>
 
@@ -335,8 +345,8 @@
     <h2 class="text-3xl font-bold mb-8 shine">Escolha Seu Plano</h2>
     <p class="text-lg mb-6 text-gray-300">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="/api/subscribe?method=pix" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_pix', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Pagar com PIX</a>
-      <a href="/api/subscribe?method=card" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_card', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Pagar com Cartão</a>
+      <a href="/api/subscribe?method=pix" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_pix', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Assinar com PIX</a>
+      <a href="/api/subscribe?method=card" class="futuristic-btn shine" onclick="try{gtag('event', 'click_plan_card', {'event_category': 'CTA', 'event_label': 'Plans'});}catch(e){console.error('Analytics error:', e.message);}">Assinar com Cartão</a>
     </div>
     <p class="text-sm mt-4 text-gray-400">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
     <img src="/assets/stripe-dark.png" alt="Stripe" class="h-8 mx-auto mt-4" onerror="this.src='https://via.placeholder.com/100x40?text=Stripe'; console.error('Stripe load error:');">
@@ -347,8 +357,8 @@
     <h2 class="text-3xl font-bold mb-8 shine">Estamos Aqui para Ajudar</h2>
     <p class="text-lg mb-6 text-gray-300">Suporte imediato com discrição total.</p>
     <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-      <a href="https://wa.me/5511912345678" target="_blank" class="futuristic-btn shine" onclick="try{gtag('event', 'click_whatsapp', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">💬 WhatsApp</a>
-      <a href="mailto:[email protected]" class="futuristic-btn shine" onclick="try{gtag('event', 'click_email', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">Enviar E-mail</a>
+      <a href="https://wa.me/5511912345678" target="_blank" class="futuristic-btn shine" onclick="try{gtag('event', 'click_whatsapp', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">WhatsApp</a>
+      <a href="mailto:contato@alibisdigital.com" class="futuristic-btn shine" onclick="try{gtag('event', 'click_email', {'event_category': 'CTA', 'event_label': 'Support'});}catch(e){console.error('Analytics error:', e.message);}">E-mail</a>
     </div>
   </section>
 
@@ -356,7 +366,7 @@
   <footer class="bg-gray-900 bg-opacity-90 text-gray-400 py-8">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm">
       <div class="fade-in">
-        <h3 class="text-xl font-bold mb-3 text-white text-white shine">Álibis Digital</h3>
+        <h3 class="text-xl font-bold mb-3 text-white shine">Álibis Digital</h3>
         <p>Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
@@ -376,7 +386,7 @@
       <div class="fade-in">
         <h4 class="text-lg font-semibold mb-3 text-white">Contato</h4>
         <ul class="space-y-2">
-          <li>E-mail: <a href="mailto:[email protected]" class="footer-link">[email protected]</a></li>
+          <li>E-mail: <a href="mailto:contato@alibisdigital.com" class="footer-link">contato@alibisdigital.com</a></li>
           <li>WhatsApp: <a href="https://wa.me/5511912345678" class="footer-link">(11) 91234-5678</a></li>
         </ul>
       </div>
