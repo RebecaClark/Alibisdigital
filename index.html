@@ -242,58 +242,53 @@
           </button>
         </div>
       </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+      <!-- ... -->
+<nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+  <div class="dropdown relative">
+    <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+      <!-- ... -->
+      <span data-i18n="services">Serviços</span>
+      <!-- ... -->
+    </button>
+    <div class="dropdown-menu">
+      <a href="scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
+      <a href="avaliacao-emocional.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+      <a href="medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
+      <a href="alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
     </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="#checkout" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="#suporte" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+  </div>
+  <a href="blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
+  <a href="planos.html" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
+  <a href="suporte.html" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
+  <a href="scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+    🔍 Teste Grátis
+  </a>
+</nav>
+<!-- ... -->
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+  <nav class="flex flex-col items-center space-y-4">
+    <div class="w-full">
+      <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
+        <span data-i18n="services">Serviços</span>
+        <!-- ... -->
+      </button>
+      <div id="services-menu" class="dropdown-menu-mobile hidden">
+        <a href="scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
+        <a href="avaliacao-emocional.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
+        <a href="medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
+        <a href="alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
+      </div>
     </div>
-  </header>
-  <div class="h-20"></div>
+    <a href="blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
+    <a href="planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
+    <a href="suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
+    <a href="scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
+      🔍 Teste Grátis
+    </a>
+  </nav>
+</div>
 
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
@@ -487,38 +482,38 @@
   </section>
 
   <!-- Rodapé -->
-  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-      <div class="slide-in-left">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
-      </div>
-      <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition" data-i18n="home">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
-          <li><a href="/blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
-          <li><a href="#checkout" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
-          <li><a href="#suporte" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
-          <li><a href="/politica-privacidade" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
-        </ul>
-      </div>
-      <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
-        <ul class="space-y-2">
-          <li class="fade-in">E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d2e2223392c39220d2c21242f243e29242a24392c21632e2220">[email&#160;protected]</a></li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
-        </ul>
-      </div>
+<footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+    <div class="slide-in-left">
+      <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+      <p class="fade-in" data-i18n="footer-about">Soluções de bem-estar com tecnologia avançada.</p>
     </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">Todos os direitos reservados.</span></p>
+    <div class="fade-in">
+      <h4 class="text-white font-semibold mb-4" data-i18n="footer-navigate">Navegue</h4>
+      <ul class="space-y-2">
+        <li><a href="index.html" class="hover:text-white transition" data-i18n="home">Início</a></li>
+        <li><a href="scanner.html" class="hover:text-white transition" data-i18n="scanner">Scanner</a></li>
+        <li><a href="blog.html" class="hover:text-white transition" data-i18n="blog">Blog</a></li>
+        <li><a href="medical-ai.html" class="hover:text-white transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
+        <li><a href="avaliacao-emocional.html" class="hover:text-white transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
+        <li><a href="alibi.html" class="hover:text-white transition" data-i18n="alibi">Criar Álibi</a></li>
+        <li><a href="planos.html" class="hover:text-white transition" data-i18n="plans">Planos</a></li>
+        <li><a href="suporte.html" class="hover:text-white transition" data-i18n="support">Suporte</a></li>
+        <li><a href="privacidade.html" class="hover:text-white transition" data-i18n="privacy">Privacidade</a></li>
+      </ul>
     </div>
-  </footer>
+    <div class="slide-in-right">
+      <h4 class="text-white font-semibold mb-4" data-i18n="footer-contact">Contato</h4>
+      <ul class="space-y-2">
+        <li class="fade-in">E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="...">[email&#160;protected]</a></li>
+        <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+      </ul>
+    </div>
+  </div>
+  <div class="text-center mt-8">
+    <p class="text-sm">© 2025 Álibis Digital. <span data-i18n="footer-rights">Todos os direitos reservados.</span></p>
+  </div>
+</footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Inicializar Partículas
