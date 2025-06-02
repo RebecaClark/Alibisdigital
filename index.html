@@ -84,7 +84,7 @@
       box-shadow: 0 0 10px #22d3ee;
       border-radius: 8px;
       padding: 8px 0;
-      position: absolute ↑ 0;
+      position: absolute;
       top: 100%;
       left: 0;
       display: none;
@@ -328,10 +328,11 @@
         Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
       </p>
       <div class="mb-10 relative">
-        <video controls preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+        <video id="hero-video" controls preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
-          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação" data-i18n="play-video">Tocar Vídeo</button>
+          Seu navegador não suporta o elemento de vídeo.
         </video>
+        <button id="play-video" class="futuristic-btn text-white py-3 px-6 rounded-full hidden" aria-label="Tocar vídeo de apresentação" data-i18n="play-video">Tocar Vídeo</button>
       </div>
       <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis" data-i18n="test-scanner">
         🔍 Teste o Scanner Grátis
@@ -370,7 +371,7 @@
             <path d="M12 6a1 1 0 0 0-1 1v6a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 12.586V7a1 1 0 0 0-1-1z"/>
           </svg>
         </div>
-        <h3 class="text-2xl font-semibold mb-4" data-i18n="detailed-evaluation">Avaliação Detalhada</h3>
+        <h3 class="text-2xl font-semibold mb-3" data-i18n="detailed-evaluation">Avaliação Detalhada</h3>
         <p class="mb-3" data-i18n="evaluation-desc">Relatórios personalizados para seu bem-estar.</p>
         <a href="/avaliacao-emocional.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="do-now">Faça agora →</a>
       </div>
@@ -386,60 +387,60 @@
       </div>
     </div>
     <div class="mt-12 pulse">
-      <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Assine o plano premium" data-i18n="subscribe-premium">Assine o Plano Premium</a>
+      <a href="/planos.html" class="futuristic-btn text-white py-3 px-8 rounded-xl" aria-label="Assine o plano premium" data-i18n="subscribe-premium">Assine o Plano Premium</a>
     </div>
   </section>
 
   <!-- Dicas de Bem-Estar -->
-  <section id="wellness-tips" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shimmer" data-i18n="wellness-tips">Dicas de Bem-Estar</h2>
+  <section id="wellness-tips" class="py-16 px-6 bg-[#0b111f] text-gray-200 text-center">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="wellness-tips">Dicas de Bem-Estar</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="stress-work-title">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400" data-i18n="stress-work-desc">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho com dicas personalizadas.</p>
-        <a href="/reduzir-estresse-trabalho-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/reduzir-estresse-trabalho-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="finance-stress-title">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
         <p class="mb-4 text-gray-400" data-i18n="finance-stress-desc">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
-        <a href="/rotinas-autocuidado-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/rotinas-autocuidado-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="burnout-title">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400" data-i18n="burnout-desc">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
-        <a href="/saude-emocional-triagem-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/saude-emocional-triagem-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="sleep-title">Melhore Seu Sono com Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400" data-i18n="sleep-desc">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
-        <a href="/equilibre-vida-pessoal-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/equilibre-vida-pessoal-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="productivity-title">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
         <p class="mb-4 text-gray-400" data-i18n="productivity-desc">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
-        <a href="/fortalecer-relacionamentos-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/fortalecer-relacionamentos-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4" data-i18n="balance-title">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400" data-i18n="balance-desc">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
-        <a href="/criar-alibis-realistas-ia.html" class="text-[#22d3ee] font-semibold hover:underline shimmer" data-i18n="read-now">Leia agora →</a>
+        <a href="/criar-alibis-realistas-ia.html" class="text-[#22d3ee] font-semibold hover:underline shine" data-i18n="read-now">Leia agora →</a>
       </div>
     </div>
     <div class="mt-12 pulse">
-      <a href="/scanner.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" aria-label="Experimente o Scanner Grátis" data-i18n="try-supergrok">Experimente o Scanner Grátis!</a>
+      <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-xl" aria-label="Experimente o Scanner Grátis" data-i18n="try-super">Experimente o Scanner Grátis!</a>
     </div>
   </section>
 
   <!-- Prova Social -->
-  <section id="testimonials" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shimmer" data-i18n="testimonials-title">O Que Nossos Usuários Dizem</h2>
+  <section id="testimonials" class="py-16 px-6 bg-[#0b111f] text-gray-200 text-center">
+    <h2 class="text-4xl font-bold mb-10 shine" data-i18n="testimonials-title">O Que Nossos Usuários Dizem</h2>
     <p class="text-lg mb-8 fade-in" data-i18n="users-today"><span id="user-count">532</span> pessoas já testaram o scanner hoje!</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <p class="italic text-gray-400 mb-4" data-i18n="testimonial-1">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
         <p class="font-semibold text-[#22d3ee]">- Ana S., 34 anos</p>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+      <div class="bg-[rgba(45,45,72,0.8)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <p class="italic text-gray-400 mb-4" data-i18n="testimonial-2">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
         <p class="font-semibold text-[#22d3ee]">- João P., 28 anos</p>
       </div>
@@ -447,87 +448,121 @@
   </section>
 
   <!-- Chamada Final -->
-  <section id="final-cta" class="py-20 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
+  <section id="final-cta" class="py-20 bg-[#0b111f] text-white text-center">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse" data-i18n="final-cta">🚨 Transforme Suas Emoções Agora!</h2>
-      <p class="text-xl md:text-2xl mb-8 text-gray-300 font-semibold fade-in" data-i18n="final-cta-desc">Teste o Scanner e receba insights personalizados para o seu dia.</p>
-      <div class="mb-10">
-        <span class="text-lg text-gray-400 italic" data-i18n="offer-valid">Oferta válida até 31/05/2025 ou até acabarem as vagas! Restam <span id="vagas-final" class="text-white font-semibold underline shimmer">12</span> vagas!</span>
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 pulse" data-i18n-cta-final">🚗 Transforme suas Emoções!</h2>
+      <p class="text-xl md:text-2xl mb-8 text-gray-400" data-i18n="final-desc">Teste o Scanner e receba uma análise personalizada para o seu dia.</p>
+      <div class="mb-8">
+        <span class="text-lg text-gray-400 italic" data-i18n-offer-valid">Oferta especial até 30/06/2025 ou até esgotarem as vagas! Apenas <span id="vagas-final" class="text-white font-semibold">12 vagas disponíveis!</span>
+</span>
       </div>
-      <a href="/planos.html" class="inline-block futuristic-btn text-white font-semibold py-3 px-6 rounded-full shadow-md" data-i18n="get-plan">Garanta Seu Plano Agora</a>
-      <p class="mt-6 text-sm text-gray-500 fade-in" data-i18n="secure-payment">🔒 Pagamento seguro via PIX ou cartão.</p>
+      <a href="/planos.html" class="futuristic-btn inline-block text-white py-3 px-6 rounded-xl" data-i18n="get-plan">Obtenha seu plano agora</a>
+      <p class="mt-4 text-sm text-gray-600" data-i18n-secure-payment">🔒 Pagamento seguro com Pix ou cartão.</p>
     </div>
   </section>
 
   <!-- Checkout -->
-  <section id="checkout" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+  <section id="checkout" class="text-white text-center py-8">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 shimmer" data-i18n="choose-plan">Escolha Seu Plano</h2>
-      <p class="text-lg mb-8 fade-in" data-i18n="plan-offer">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="/pagamento/pix" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX" data-i18n="pay-pix">Pagar com PIX</a>
-        <a href="/pagamento/cartao" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão" data-i18n="pay-card">Pagar com Cartão</a>
+      <h2 class="text-3xl font-semibold mb-6" data-i18n="choose-plan">Escolha seu Plano</h2>
+      <p class="text-lg mb-8" data-i18n="plan-offer">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 12,90/mês.</p>
+      <div class="flex flex-col sm:flex-row justify-between gap-4">
+        <a href="/pagamento.html" class="futuristic-btn text-white py-3 px-6 rounded-xl" data-i18n="pay-pix">Pague com Pix</a>
+        <a href="/pagamento.html" class="futuristic-btn text-white py-3 px-6 rounded-xl" data-i18n="pay-card">Pague com cartão</a>
       </div>
-      <p class="mt-4 text-sm text-gray-400 fade-in" data-i18n="guarantee">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
+      <p class="mt-4 text-sm text-gray-400" data-i18n="guarantee">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
       <div class="flex justify-center gap-4 mt-4">
-        <img src="/assets/images/ssl.png" alt="Selo de Segurança SSL" class="h-10">
-        <img src="/assets/images/privacidade.png" alt="Selo de Privacidade Garantida" class="h-10">
+        <img src="/assets/images/ssl.png" alt="Selo de segurança SSL" class="h-10 w-auto">
+        <img src="/assets/images/privacidade.png" alt="Selo de privacidade" class="h-10 w-auto">
       </div>
     </div>
   </section>
 
   <!-- Suporte -->
-  <section id="suporte" class="bg-[rgba(15,23,42,0.8)] py-16 px-6 text-white animate-on-scroll">
-    <div class="max-w-3xl mx-auto text-center">
-      <h3 class="text-3xl font-bold mb-4 float" data-i18n="support-title">Estamos Aqui para Ajudar</h3>
-      <p class="text-gray-400 mb-8 fade-in" data-i18n="support-desc">Suporte imediato com discrição total.</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full flex items-center" aria-label="Fale conosco pelo WhatsApp" data-i18n="whatsapp">
-          <svg class="w-5 h-5 mr-2 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.83.49 3.54 1.34 5.02L2 22l5.25-1.34A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.66 0-3.22-.55-4.47-1.49l-.31-.15-3.11.79.8-3.02-.14-.33A8.01 8.01 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm3.18-6.71c-.17-.09-.33-.22-.67-.22-.28 0-.48.12-.61.19-.13.07-.78.38-1.91-.09-1.13-.47-2.08-.63-2.41-.71-.33-.08-.44-.29-.44-.45 0-.16.09-.34.25-.43.16-.09.37-.19.59-.19.22 0 .41.06.56.14.15.08.51.29.51.62 0 .33-.12.61-.36.84-.24.23-.58.51-1.03.83-.44.32-.94.68-1.94.06-.12.25-.29.53-.48.27-.19.59-.4.96-.58.37-.18.78-.38.94-.58.16-.2.24-.43.24-.67z"/></svg>
-          WhatsApp
-        </a>
-        <a href="mailto:ssupport@alibiis.co.uk" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full" aria-label="ar e-mail para o suporte" data-i18n="email-support">Enviar E-mail</a>
+  <section id="suporte" class="text-white py-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-semibold mb-6" data-i18n="support-title">Estamos Aqui para Ajudar</h2>
+      <p class="text-gray-400 mb-6" data-i18n="support-desc">Suporte imediato com discrição total.</p>
+      <div class="flex justify-center gap-4">
+        <a href="https://wa.me/5511912345678" class="futuristic-btn inline-block text-white py-3 px-6 rounded-xl" data-i18n="whatsapp">WhatsApp</a>
+        <a href="mailto:support@alibis.co" class="futuristic-btn inline-block text-white py-3 px-6 rounded-xl" data-i18n="email-support">Enviar E-mail</a>
       </div>
     </div>
-  <!-- Footer -->
-  <footer class="bg-[rgba(17,24,39,0.95)] text-gray-400 py-12 px-6">
-    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h3 class="text-white font-bold mb-2" data-i18n="alibis-digital">Álibis Digital</h3>
-        <p data-i18n="footer-desc">Solução de bem-estar com tecnologia avançada digital.</p>
-      </div>
+  </section>
 
+  <!-- Rodapé -->
+  <footer class="bg-[#0b111f] text-gray-400 py-12 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-        <h4 class="text-gray font-semibold mb-4" data-i18n="navigate">Navegue</h4>
+        <h3 class="text-white font-bold mb-4" data-i18n="alibis-digital">Álibis Digital</h3>
+        <p data-i18n="footer-desc">Soluções de bem-estar com tecnologia avançada.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-4" data-i18n="navigate">Navegue</h4>
         <ul class="space-y-2">
-          <li><a href="/index.html" class="hover:text-blue-600">Início</a></li>
-          <li><a href="/scanner.html" class="hover:text-blue-400">Scanner</a></li>
-          <li><a href="/blog.html" class="hover:text-blue-600">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-blue-600">Diagnóstico Médico</a></li>
-          <li><a href="/avaliacao-emocional.html" class="hover:text-blue-400">Avaliação Emocional</a></a>
-          <li><a href="/alibi.html" class="hover:text-blue-600">Criar Álibi</a></li>
-          <li><a href="/planos.html" class="hover:text-blue-400">Planos</a></a>
-          <li><a href="/suporte.html" class="hover:text-blue-600">Suporte</a></li>
-          <li><a href="/privacidade.html" class="hover:text-blue-400">Privacidade</a></a>
-          <li><a href="/termos.html" class="hover:text-blue-600">Termos</a>
-          <li><a href="/politicas.html" class="hover:text-blue-600">Políticas</a></li>
+          <li><a href="/index.html" class="hover:text-[#22d3ee] transition" data-i18n="home">Início</a></li>
+          <li><a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner</a></li>
+          <li><a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a></li>
+          <li><a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a></li>
+          <li><a href="/avaliacao-emocional.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a></li>
+          <li><a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a></li>
+          <li><a href="/planos.html" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a></li>
+          <li><a href="/suporte.html" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a></li>
+          <li><a href="/privacidade.html" class="hover:text-[#22d3ee] transition" data-i18n="privacy">Privacidade</a></li>
+          <li><a href="/termos.html" class="hover:text-[#22d3ee] transition" data-i18n="terms">Termos</a></li>
+          <li><a href="/politicas.html" class="hover:text-[#22d3ee] transition" data-i18n="policies">Políticas</a></li>
         </ul>
       </div>
-
       <div>
         <h4 class="text-white font-semibold mb-4" data-i18n="contact">Contato</h4>
         <ul class="space-y-2">
-          <li>E-mail: <a href="mailto:support@alibis.co">support@alibis.co</a></li>
-          <li>WhatsApp: <a href="https://wa.me/5511912345678">(11) 91234-5678</a></li>
+          <li>E-mail: <a href="mailto:support@alibis.co" class="hover:text-[#22d3ee] transition">support@alibis.co</a></li>
+          <li>WhatsApp: <a href="https://wa.me/5511912345678" class="hover:text-[#22d3ee] transition">(11) 91234-5678</a></li>
         </ul>
       </div>
-
-      
     </div>
-    <div class="mt-8 text-center border-t border-gray-600 pt-4">
+    <div class="mt-8 text-center border-t border-gray-800 pt-4">
       <p data-i18n="copyright">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
 
+  <script>
+    // Configuração básica do particles.js
+    try {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: '#22d3ee' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5, random: false },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+          modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+      });
+    } catch (e) {
+      console.error('Erro ao carregar particles.js:', e);
+    }
+
+    // Controle do vídeo
+    document.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById('hero-video');
+      const playButton = document.getElementById('play-video');
+      if (video && playButton) {
+        playButton.addEventListener('click', () => {
+          video.play();
+          playButton.classList.add('hidden');
+        });
+        video.addEventListener('play', () => playButton.classList.add('hidden'));
+        video.addEventListener('pause', () => playButton.classList.remove('hidden'));
+      }
+    });
+  </script>
 </body>
 </html>
