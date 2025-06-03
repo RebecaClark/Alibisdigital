@@ -84,19 +84,6 @@
             video { width: 100%; height: auto; }
             .neon-box { padding: 10px; }
         }
-        .language-selector {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 50;
-        }
-        .language-selector select {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e5e7eb;
-            border: 1px solid #00f0ff;
-            border-radius: 4px;
-            padding: 4px 8px;
-        }
         nav {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(8px);
@@ -145,13 +132,6 @@
 </head>
 <body>
     <div id="particles-js"></div>
-
-    <div class="language-selector">
-        <select id="language" onchange="changeLanguage()">
-            <option value="pt">Português</option>
-            <option value="en">English</option>
-        </select>
-    </div>
 
     <nav class="fixed top-0 w-full z-40">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -306,10 +286,10 @@
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(stream => {
                         video.srcObject = stream;
-                        console.log('Camera initialized successfully');
+                        console.log('Camera initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                     })
                     .catch(err => {
-                        console.error('Camera error:', err.message);
+                        console.error('Camera error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                         resultDiv.classList.remove('hidden');
                         resultDiv.innerHTML = '<p class="fade-scale text-red-500">❌ Não foi possível acessar a câmera. Permita o acesso ou use HTTPS.</p>';
                     });
@@ -323,7 +303,7 @@
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
                     const email = document.getElementById('email').value;
-                    console.log('Form submitted:', email);
+                    console.log('Form submitted at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', email);
                     alert('Relatório enviado para: ' + email);
                     form.reset();
                 });
@@ -353,44 +333,44 @@
             const form = document.getElementById('lead-form');
 
             if (!canvas || !video || !resultDiv) {
-                console.error('Missing required elements:', { canvas, video, resultDiv });
+                console.error('Missing required elements at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', { canvas, video, resultDiv });
                 return;
             }
 
-            console.log('Starting analysis process');
+            console.log('Starting analysis process at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
             resultDiv.classList.remove('hidden');
             resultDiv.innerHTML = '<p class="fade-scale text-white">Analisando...<span class="loading-dots"></span></p>';
 
             let facialData, voiceData, bpm;
             try {
-                console.log('Attempting facial analysis');
+                console.log('Attempting facial analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 facialData = await analyzeFace(canvas, video);
-                console.log('Facial analysis completed:', facialData);
+                console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', facialData);
             } catch (err) {
-                console.error('Facial analysis failed, using mock:', err.message);
+                console.error('Facial analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                 facialData = mockFaceResponse.faces[0].attributes.emotion;
             }
 
             try {
-                console.log('Attempting voice analysis');
+                console.log('Attempting voice analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 voiceData = await analyzeVoice();
-                console.log('Voice analysis completed:', voiceData);
+                console.log('Voice analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', voiceData);
             } catch (err) {
-                console.error('Voice analysis failed, using fallback:', err.message);
+                console.error('Voice analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                 voiceData = { neutral: 1 };
             }
 
             try {
-                console.log('Attempting heart rate calculation');
+                console.log('Attempting heart rate calculation at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 bpm = await calculateHeartRate(video, canvas);
-                console.log('Heart rate calculation completed:', bpm);
+                console.log('Heart rate calculation completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', bpm);
             } catch (err) {
-                console.error('Heart rate calculation failed, using default:', err.message);
+                console.error('Heart rate calculation failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                 bpm = 70; // Default BPM
             }
 
             const finalEmotion = unifyDiagnosis(facialData, voiceData, bpm);
-            console.log('Final emotion determined:', finalEmotion);
+            console.log('Final emotion determined at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', finalEmotion);
             displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form);
         }
 
@@ -410,13 +390,15 @@
                     method: 'POST',
                     body: formData
                 });
-                if (!response.ok) throw new Error('Face++ API request failed');
+                if (!response.ok) throw new Error('Face++ API request failed with status: ' + response.status);
                 const data = await response.json();
                 if (data.faces && data.faces.length > 0) {
                     return data.faces[0].attributes.emotion;
                 }
+                console.warn('No faces detected, using mock at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 return mockFaceResponse.faces[0].attributes.emotion;
             } catch (error) {
+                console.error('Face++ error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                 return mockFaceResponse.faces[0].attributes.emotion;
             }
         }
@@ -424,12 +406,14 @@
         async function analyzeVoice() {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'pt-BR';
+            recognition.maxAlternatives = 1;
+            recognition.interimResults = false;
 
             return new Promise((resolve) => {
-                recognition.onstart = () => console.log('Voice recording started');
+                recognition.onstart = () => console.log('Voice recording started at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 recognition.onresult = async (event) => {
                     const transcript = event.results[0][0].transcript;
-                    console.log('Voice transcript:', transcript);
+                    console.log('Voice transcript at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', transcript);
 
                     try {
                         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -446,36 +430,37 @@
                                 ]
                             })
                         });
-                        if (!response.ok) throw new Error('OpenAI API request failed');
+                        if (!response.ok) throw new Error('OpenAI API request failed with status: ' + response.status);
                         const data = await response.json();
-                        const sentiment = data.choices[0].message.content;
+                        const sentiment = data.choices[0].message.content.toLowerCase();
                         const sentimentMap = {
-                            negative: { sadness: 0.6, anger: 0.3, fear: 0.1 },
                             positive: { happiness: 0.8, neutral: 0.2 },
+                            negative: { sadness: 0.6, anger: 0.3, fear: 0.1 },
                             neutral: { neutral: 0.7, happiness: 0.3 }
                         };
                         resolve(sentimentMap[sentiment] || { neutral: 1 });
                     } catch (error) {
-                        console.error('OpenAI error, using keyword fallback:', error.message);
+                        console.error('OpenAI error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                         const keywords = { triste: 'sadness', deprimido: 'sadness', nervoso: 'anger', estressado: 'anger', feliz: 'happiness', alegre: 'happiness' };
                         const emotion = Object.keys(keywords).find(k => transcript.toLowerCase().includes(k));
                         resolve(emotion ? { [keywords[emotion]]: 1 } : { neutral: 1 });
                     }
                 };
                 recognition.onerror = (event) => {
-                    console.error('Speech recognition error:', event.error);
+                    console.error('Speech recognition error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', event.error);
                     resolve({ neutral: 1 });
                 };
                 recognition.start();
+                setTimeout(() => recognition.stop(), 10000); // Stop after 10 seconds
             });
         }
 
         async function calculateHeartRate(video, canvas) {
             try {
                 const context = canvas.getContext('2d');
-                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions());
+                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).catch(() => null);
                 if (!detections) {
-                    console.warn('No face detected for heart rate');
+                    console.warn('No face detected for heart rate at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                     return 70;
                 }
 
@@ -512,7 +497,7 @@
                 const bpm = maxIndex * 30 / greenValues.length * 60;
                 return Math.round(bpm);
             } catch (error) {
-                console.error('Heart rate calculation error:', error.message);
+                console.error('Heart rate calculation error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                 return 70;
             }
         }
@@ -563,12 +548,6 @@
                 <div class="mt-4"><button onclick="window.location.href='emotional-assessment.html'" class="tesla-btn text-sm glow-pulse">Obter Apoio</button></div>
             `;
             form.classList.remove('hidden');
-        }
-
-        function changeLanguage() {
-            const lang = document.getElementById('language').value;
-            console.log('Language changed to:', lang);
-            // Implement language switching logic here
         }
     </script>
 </body>
