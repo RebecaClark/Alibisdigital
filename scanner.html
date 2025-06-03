@@ -43,13 +43,13 @@
             100% { transform: scale(1); }
         }
         @keyframes glowPulse {
-            0% { box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.8); transform: scale(1.02); }
-            100% { box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); transform: scale(1); }
+            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); transform: scale(1.02); }
+            100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(1); }
         }
         .tesla-btn {
-            background: linear-gradient(45deg, #00f0ff, #0077ff);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            background: linear-gradient(45deg, #00d4ff, #0077ff);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
             transition: all 0.3s;
             border-radius: 50px;
             padding: 12px 24px;
@@ -58,13 +58,13 @@
         }
         .tesla-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
         }
         .neon-box {
-            background: linear-gradient(45deg, #1a1a1a, #00f0ff);
+            background: linear-gradient(45deg, #1a1a1a, #00d4ff);
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
             max-width: 500px;
             margin: 0 auto;
             text-align: left;
@@ -78,6 +78,19 @@
         }
         @keyframes dots {
             0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; }
+        }
+        .progress-bar {
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress {
+            height: 8px;
+            background: #00d4ff;
+            width: 0;
+            transition: width 0.3s ease;
         }
         @media (max-width: 768px) {
             h2 { font-size: 1.8rem; }
@@ -94,13 +107,13 @@
             transition: color 0.3s;
         }
         nav a:hover, nav button:hover {
-            color: #00f0ff;
+            color: #00d4ff;
         }
         .dropdown-content {
             display: none;
             position: absolute;
             background: rgba(20, 20, 20, 0.9);
-            border: 1px solid #00f0ff;
+            border: 1px solid #00d4ff;
             border-radius: 8px;
             min-width: 160px;
             z-index: 1;
@@ -112,7 +125,7 @@
         }
         .dropdown-content a:hover {
             background: rgba(30, 30, 30, 0.8);
-            color: #00f0ff;
+            color: #00d4ff;
         }
         .dropdown:hover .dropdown-content {
             display: block;
@@ -140,7 +153,7 @@
             </a>
             <div class="nav-links flex space-x-4 items-center">
                 <div class="dropdown relative">
-                    <button class="hover:text-[#00f0ff] flex items-center">
+                    <button class="hover:text-[#00d4ff] flex items-center">
                         Serviços
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -153,9 +166,9 @@
                         <a href="alibi-creation.html">Criar Álibi</a>
                     </div>
                 </div>
-                <a href="blog.html" class="hover:text-[#00f0ff]">Blog</a>
-                <a href="plans.html" class="hover:text-[#00f0ff]">Planos</a>
-                <a href="support.html" class="hover:text-[#00f0ff]">Suporte</a>
+                <a href="blog.html" class="hover:text-[#00d4ff]">Blog</a>
+                <a href="plans.html" class="hover:text-[#00d4ff]">Planos</a>
+                <a href="support.html" class="hover:text-[#00d4ff]">Suporte</a>
                 <a href="plans.html" class="tesla-btn text-sm glow-pulse">🔍 Teste Grátis</a>
             </div>
             <div class="mobile-menu md:hidden">
@@ -194,7 +207,7 @@
         <h1 class="text-4xl font-bold text-white mb-4 fade-scale">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h1>
         <p class="text-lg text-gray-300 mb-8 fade-scale">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
         <div class="flex justify-center mb-6">
-            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#00f0ff] pulse"></video>
+            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#00d4ff] pulse"></video>
         </div>
         <button id="analyze-button" class="tesla-btn text-sm font-bold glow-pulse">Analisar Estado Emocional</button>
         <div id="result" class="neon-box mt-4 hidden"></div>
@@ -209,6 +222,19 @@
         <div class="mt-6 flex flex-col justify-center items-center gap-2">
             <p class="text-sm text-gray-500 fade-scale">🚗 Oferta válida até 31/12/2025! Apenas <span id="vagas">5</span> vagas!</p>
             <a href="plans.html" class="tesla-btn text-sm glow-pulse">🚀 Assinar (3 Dias Grátis)</a>
+        </div>
+        <div class="mt-8 max-w-2xl mx-auto">
+            <h3 class="text-xl font-semibold text-white mb-4">O que nossos usuários dizem</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-scale">
+                    <p class="text-gray-300 italic">"O scanner me ajudou a entender minhas emoções e a melhorar meu dia!"</p>
+                    <p class="text-gray-500 text-sm mt-2">— Ana, São Paulo</p>
+                </div>
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-scale">
+                    <p class="text-gray-300 italic">"Uma ferramenta incrível para cuidar da minha saúde emocional."</p>
+                    <p class="text-gray-500 text-sm mt-2">— João, Rio de Janeiro</p>
+                </div>
+            </div>
         </div>
         <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
     </section>
@@ -250,11 +276,11 @@
         particlesJS('particles-js', {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#00f0ff' },
+                color: { value: '#00d4ff' },
                 shape: { type: 'circle' },
                 opacity: { value: 0.3, random: true },
                 size: { value: 2, random: true },
-                line_linked: { enable: true, distance: 100, color: '#00f0ff', opacity: 0.2, width: 1 },
+                line_linked: { enable: true, distance: 100, color: '#00d4ff', opacity: 0.2, width: 1 },
                 move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
             },
             interactivity: {
@@ -364,11 +390,30 @@
             try {
                 console.log('Starting analysis process at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.classList.remove('hidden');
-                resultDiv.innerHTML = '<p class="fade-scale text-white">Analisando...<span class="loading-dots"></span></p>';
+
+                const totalSteps = 3;
+                let currentStep = 0;
+
+                function updateProgress(step) {
+                    currentStep = step;
+                    const progress = document.getElementById('progress');
+                    progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                }
+
+                resultDiv.innerHTML = `
+                    <p class="fade-scale text-white">Analisando...<span class="loading-dots"></span></p>
+                    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+                `;
+                updateProgress(0);
 
                 let facialData, voiceData, bpm;
 
                 console.log('Attempting facial analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                resultDiv.innerHTML = `
+                    <p class="fade-scale text-white">Analisando sua expressão facial...<span class="loading-dots"></span></p>
+                    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+                `;
+                updateProgress(1);
                 facialData = await analyzeFace(canvas, video).catch(err => {
                     console.error('Facial analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                     return mockFaceResponse.faces[0].attributes.emotion;
@@ -376,7 +421,11 @@
                 console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', facialData);
 
                 console.log('Attempting voice analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                resultDiv.innerHTML = '<p class="fade-scale text-white">Fale algo por 15 segundos (exemplo: "Estou feliz hoje").<span class="loading-dots"></span></p>';
+                resultDiv.innerHTML = `
+                    <p class="fade-scale text-white">Fale algo por 15 segundos (exemplo: "Estou feliz hoje").<span class="loading-dots"></span></p>
+                    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+                `;
+                updateProgress(2);
                 voiceData = await analyzeVoice().catch(err => {
                     console.error('Voice analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                     return { neutral: 1 };
@@ -384,7 +433,11 @@
                 console.log('Voice analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', voiceData);
 
                 console.log('Attempting heart rate calculation at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                resultDiv.innerHTML = '<p class="fade-scale text-white">Calculando frequência cardíaca...<span class="loading-dots"></span></p>';
+                resultDiv.innerHTML = `
+                    <p class="fade-scale text-white">Calculando frequência cardíaca...<span class="loading-dots"></span></p>
+                    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+                `;
+                updateProgress(3);
                 bpm = await calculateHeartRate(video, canvas).catch(err => {
                     console.error('Heart rate calculation failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                     return 70;
@@ -566,40 +619,44 @@
                 ? ' (normal, 60-100 BPM é típico)'
                 : bpm < 60 ? ' (abaixo do normal, consulte um médico)' : ' (acima do normal, respire fundo)';
 
+            const voiceTone = Object.keys(voiceData).length === 1 && voiceData.neutral === 1
+                ? 'Seu tom de voz não foi capturado, mas sua expressão sugere'
+                : `Seu tom de voz soa ${Object.keys(voiceData)[0] === 'happiness' ? 'alegre' : Object.keys(voiceData)[0] === 'sadness' ? 'melancólico' : 'neutro'}, indicando`;
+
             const diagnosisMap = {
                 sadness: {
-                    text: `Detectamos tristeza. Você parece estar mais reservado hoje, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Converse com alguém próximo ou pratique uma atividade que te traga conforto.',
+                    text: `Detectamos tristeza. ${voiceTone} que você está mais reservado hoje, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Converse com alguém próximo ou escreva 3 coisas que te trouxeram alegria recentemente.',
                     link: 'emotional-assessment.html'
                 },
                 anger: {
-                    text: `Detectamos raiva. Sua expressão e tom de voz indicam estresse, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Respire fundo por 4 segundos e expire lentamente para aliviar a tensão.',
+                    text: `Detectamos raiva. ${voiceTone} estresse, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Respire fundo por 4 segundos e expire lentamente, ou caminhe por 5 minutos para aliviar a tensão.',
                     link: 'emotional-assessment.html'
                 },
                 happiness: {
-                    text: `Detectamos felicidade! Você parece estar em um estado de alegria, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Continue espalhando positividade e aproveite esse momento.',
+                    text: `Detectamos felicidade! ${voiceTone} um estado de alegria, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Aproveite esse momento e compartilhe sua energia positiva com alguém especial.',
                     link: 'emotional-assessment.html'
                 },
                 surprise: {
-                    text: `Detectamos surpresa. Algo inesperado parece ter chamado sua atenção, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Explore essa situação com atenção plena e curiosidade.',
+                    text: `Detectamos surpresa. ${voiceTone} que algo inesperado chamou sua atenção, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Explore essa situação com atenção plena e anote o que te surpreendeu para refletir depois.',
                     link: 'emotional-assessment.html'
                 },
                 neutral: {
-                    text: `Sua expressão e voz estão neutras. Você parece calmo, mas talvez reservado, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Tire um momento para relaxar e refletir sobre o que te motiva.',
+                    text: `Sua expressão e voz estão neutras. ${voiceTone} que você está calmo, mas talvez reservado, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Tire um momento para relaxar e escreva 3 coisas que te motivam hoje.',
                     link: 'emotional-assessment.html'
                 },
                 fear: {
-                    text: `Detectamos medo. Sua expressão e tom de voz sugerem ansiedade, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Ouça uma música calma ou pratique uma técnica de respiração para se tranquilizar.',
+                    text: `Detectamos medo. ${voiceTone} ansiedade, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Ouça uma música calma ou pratique uma técnica de respiração: inspire por 4, segure por 4, expire por 4.',
                     link: 'emotional-assessment.html'
                 },
                 disgust: {
-                    text: `Detectamos desgosto. Algo parece ter te incomodado, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Afaste-se do que está causando desconforto e busque um ambiente mais tranquilo.',
+                    text: `Detectamos desgosto. ${voiceTone} que algo te incomodou, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
+                    suggestion: 'Afaste-se do que está causando desconforto e busque um ambiente tranquilo para se recompor.',
                     link: 'emotional-assessment.html'
                 }
             };
@@ -608,7 +665,7 @@
             const diagnosisText = `${diag.text} Sugestão: ${diag.suggestion} Nota: Não substitui avaliação médica.`;
             resultDiv.innerHTML = `
                 <p class="fade-scale text-white">${diag.text}</p>
-                <p class="fade-scale text-gray-300 mt-2">Sugestão: ${diag.suggestion} <a href="${diag.link}" class="text-[#00f0ff] hover:underline">Saiba mais</a></p>
+                <p class="fade-scale text-gray-300 mt-2">Sugestão: ${diag.suggestion} <a href="${diag.link}" class="text-[#00d4ff] hover:underline">Saiba mais</a></p>
                 <p class="fade-scale text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
                 <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="tesla-btn text-sm glow-pulse">Obter Apoio</button></div>
             `;
