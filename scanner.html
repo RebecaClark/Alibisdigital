@@ -408,12 +408,27 @@
         async function loadFaceApiModels() {
             try {
                 const baseUrl = 'https://unpkg.com/face-api.js@latest/weights';
-                await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(`${baseUrl}/tiny_face_detector_model`), faceapi.nets.ageGenderNet.loadFromUri(`${baseUrl}/age_gender_model`)]);
-                console.log('face-api.js models (including ageGenderNet) loaded successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                let attempts = 0;
+                const maxAttempts = 3;
+                while (attempts < maxAttempts) {
+                    attempts++;
+                    try {
+                        await Promise.all([
+                            faceapi.nets.tinyFaceDetector.loadFromUri(`${baseUrl}/tiny_face_detector_model`),
+                            faceapi.nets.ageGenderNet.loadFromUri(`${baseUrl}/age_gender_model`)
+                        ]);
+                        console.log('face-api.js models loaded successfully at attempt', attempts, 'at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                        return;
+                    } catch (err) {
+                        console.warn('Failed to load face-api.js models at attempt', attempts, 'at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                        if (attempts === maxAttempts) throw err;
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                    }
+                }
             } catch (err) {
-                console.error('Failed to load face-api.js models at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                console.error('Failed to load face-api.js models after all attempts at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                 const resultDiv = document.getElementById('result');
-                if (resultDiv) resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro ao carregar modelos de IA facial. Tente novamente ou verifique sua conexão.</p>';
+                if (resultDiv) resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro ao carregar modelos de IA facial. Verifique sua conexão e tente novamente.</p>';
             }
         }
 
@@ -439,17 +454,19 @@
             await loadFaceApiModels();
 
             let cameraInitialized = false;
+            let microphoneInitialized = false;
 
             if (video) {
                 try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                     video.srcObject = stream;
                     cameraInitialized = true;
-                    console.log('Camera initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    microphoneInitialized = true;
+                    console.log('Camera and microphone initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 } catch (err) {
-                    console.error('Camera error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    console.error('Media error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                     resultDiv.classList.remove('hidden');
-                    resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera. Certifique-se de que você permitiu o acesso no navegador e está usando HTTPS ou localhost.</p>';
+                    resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera ou o microfone. Certifique-se de que você permitiu o acesso no navegador e está usando HTTPS ou localhost. Recarregue a página e tente novamente.</p>';
                     if (analyzeButton) analyzeButton.disabled = true;
                 }
             }
@@ -457,9 +474,9 @@
             if (analyzeButton) {
                 analyzeButton.addEventListener('click', (e) => {
                     console.log('Analyze button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                    if (!cameraInitialized) {
+                    if (!cameraInitialized || !microphoneInitialized) {
                         resultDiv.classList.remove('hidden');
-                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não inicializada. Verifique as permissões e recarregue a página.</p>';
+                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Câmera ou microfone não inicializados. Verifique as permissões e recarregue a página.</p>';
                         return;
                     }
                     createRipple(e);
@@ -480,7 +497,12 @@
 
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenuContent = document.getElementById('mobile-menu-content');
-            if (mobileMenuButton && mobileMenuContent) mobileMenuButton.addEventListener('click', () => mobileMenuContent.classList.toggle('hidden'));
+            if (mobileMenuButton && mobileMenuContent) {
+                mobileMenuButton.addEventListener('click', () => {
+                    console.log('Mobile menu button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    mobileMenuContent.classList.toggle('hidden');
+                });
+            }
 
             const ctaButtons = document.querySelectorAll('.futuristic-btn');
             ctaButtons.forEach(button => button.addEventListener('click', createRipple));
