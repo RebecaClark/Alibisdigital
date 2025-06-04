@@ -201,25 +201,6 @@
         .mobile-menu {
             display: none;
         }
-        .mobile-menu-content {
-            display: none;
-            position: absolute;
-            top: 64px;
-            left: 0;
-            right: 0;
-            background: rgba(20, 20, 20, 0.9);
-            border-top: 1px solid #22d3ee;
-            border-bottom: 1px solid #22d3ee;
-            padding: 1rem;
-            animation: slideDown 0.3s ease-out;
-        }
-        .mobile-menu-content.active {
-            display: block;
-        }
-        @keyframes slideDown {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
         @media (max-width: 768px) {
             h2 { font-size: 1.8rem; }
             video { width: 100%; height: auto; }
@@ -229,11 +210,11 @@
             .futuristic-btn {
                 padding: 0.75rem 1.5rem;
                 font-size: 1rem;
-                width: auto;
+                width: 100%;
                 box-sizing: border-box;
             }
             .holo-nav .flex.items-center.space-x-3:last-child { width: 100%; }
-            #mobile-menu-content .futuristic-btn { margin: 0.5rem 0; width: auto; }
+            #mobile-menu-content .futuristic-btn { margin: 0.5rem 0; }
             .holo-nav .flex.items-center.space-x-3:first-child {
                 justify-content: center;
                 margin-bottom: 1rem;
@@ -271,15 +252,14 @@
                     <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
                     <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
                     <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                    <a href="bridge.html" class="futuristic-btn cta-button" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                 </div>
                 <div class="mobile-menu md:hidden">
-                    <button id="mobile-menu-button" class="text-white" aria-expanded="false" aria-label="Abrir menu">
+                    <button id="mobile-menu-button" class="text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
-                    <div id="mobile-menu-content" class="mobile-menu-content">
+                    <div id="mobile-menu-content" class="hidden absolute top-16 left-0 w-full bg-[rgba(0,0,0,0.9)]">
                         <div class="dropdown relative">
                             <button class="text-white py-2 px-4 w-full text-center hover:bg-gray-900 flex justify-between items-center">
                                 Serviços
@@ -298,7 +278,6 @@
                         <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
                         <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
                         <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                        <a href="bridge.html" class="futuristic-btn cta-button w-full text-center" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                     </div>
                 </div>
             </div>
@@ -547,12 +526,8 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenuContent = document.getElementById('mobile-menu-content');
             if (mobileMenuButton && mobileMenuContent) {
-                let isOpen = false;
                 mobileMenuButton.addEventListener('click', () => {
-                    isOpen = !isOpen;
-                    mobileMenuContent.classList.toggle('active', isOpen);
-                    mobileMenuButton.setAttribute('aria-expanded', isOpen);
-                    mobileMenuButton.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+                    mobileMenuContent.classList.toggle('hidden');
                 });
             }
 
