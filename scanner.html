@@ -80,18 +80,70 @@
             text-shadow: 0 0 5px #22d3ee;
         }
         .futuristic-btn {
+            position: relative;
+            display: inline-block;
             background: linear-gradient(45deg, #7C3AED, #22d3ee);
-            box-shadow: 0 0 8px #22d3ee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
             animation: neonPulse 1.5s infinite alternate;
+            overflow: hidden;
+        }
+        .futuristic-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: lightSweep 3s infinite linear;
         }
         .futuristic-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+            transform: translateY(-3px) rotate(2deg);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+            background: linear-gradient(45deg, #6D28D9, #06B6D4);
+        }
+        .futuristic-btn:active {
+            transform: scale(0.95);
+        }
+        .futuristic-btn:disabled {
+            background: linear-gradient(45deg, #4B5563, #6B7280);
+            box-shadow: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+            animation: none;
+        }
+        .futuristic-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+            background: linear-gradient(45deg, #4B5563, #6B7280);
+        }
+        .futuristic-btn .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
         }
         @keyframes neonPulse {
-            0% { box-shadow: 0 0 5px #22d3ee; }
-            100% { box-shadow: 0 0 15px #22d3ee; }
+            0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; }
+            100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; }
+        }
+        @keyframes lightSweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
         .neon-box {
             background: linear-gradient(45deg, #1a1a1a, #22d3ee);
@@ -192,7 +244,7 @@
                     <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
                     <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
                     <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                    <a href="bridge.html" class="futuristic-btn text-sm">🔍 Teste Grátis</a>
+                    <a href="bridge.html" class="futuristic-btn" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                 </div>
                 <div class="mobile-menu md:hidden">
                     <button id="mobile-menu-button" class="text-white">
@@ -219,7 +271,7 @@
                         <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
                         <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
                         <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                        <a href="bridge.html" class="futuristic-btn w-full text-center">🔍 Teste Grátis</a>
+                        <a href="bridge.html" class="futuristic-btn w-full text-center" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                     </div>
                 </div>
             </div>
@@ -234,19 +286,19 @@
         <div class="flex justify-center mb-6">
             <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
         </div>
-        <button id="analyze-button" class="futuristic-btn text-sm font-bold">Analisar Estado Emocional</button>
+        <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
         <div id="result" class="neon-box mt-4 hidden"></div>
         <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
             <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório</h3>
             <div class="flex flex-col sm:flex-row gap-2">
                 <input type="email" id="email" placeholder="Seu E-mail" class="w-full p-2 rounded bg-white text-gray-800 text-sm" required>
-                <button type="submit" class="futuristic-btn text-sm">Enviar</button>
+                <button type="submit" class="futuristic-btn" aria-label="Enviar Relatório">Enviar</button>
             </div>
             <p class="text-xs mt-2 text-gray-500">🔒 Seus dados estão seguros. Após envio, acesse <a href="obrigado.html" class="text-[#22d3ee] hover:underline">obrigado.html</a> para mais detalhes.</p>
         </form>
         <div class="mt-6 flex flex-col justify-center items-center gap-2">
             <p class="text-sm text-gray-500 fade-in">🚗 Oferta válida até 31/12/2025! Apenas <span id="vagas">5</span> vagas!</p>
-            <a href="bridge.html" class="futuristic-btn text-sm">🚀 Assinar (3 Dias Grátis)</a>
+            <a href="bridge.html" class="futuristic-btn" aria-label="Assinar com 3 Dias Grátis">🚀 Assinar (3 Dias Grátis)</a>
         </div>
         <div class="mt-8 max-w-2xl mx-auto">
             <h3 class="text-xl font-semibold text-white mb-4 fade-in">O que nossos usuários dizem</h3>
@@ -363,21 +415,35 @@
 
             await loadFaceApiModels();
 
+            let cameraInitialized = false;
+
             if (video) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(stream => {
-                        video.srcObject = stream;
-                        console.log('Camera initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                    })
-                    .catch(err => {
-                        console.error('Camera error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
-                        resultDiv.classList.remove('hidden');
-                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera. Permita o acesso ou use HTTPS.</p>';
-                    });
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    video.srcObject = stream;
+                    cameraInitialized = true;
+                    console.log('Camera initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                } catch (err) {
+                    console.error('Camera error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera. Certifique-se de que você permitiu o acesso à câmera no navegador e está usando HTTPS ou localhost.</p>';
+                    if (analyzeButton) {
+                        analyzeButton.disabled = true;
+                    }
+                }
             }
 
             if (analyzeButton) {
-                analyzeButton.addEventListener('click', startAnalysis);
+                analyzeButton.addEventListener('click', (e) => {
+                    console.log('Analyze button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    if (!cameraInitialized) {
+                        resultDiv.classList.remove('hidden');
+                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não inicializada. Verifique as permissões e recarregue a página.</p>';
+                        return;
+                    }
+                    createRipple(e);
+                    startAnalysis();
+                });
             }
 
             if (form) {
@@ -386,6 +452,7 @@
                     const email = document.getElementById('email').value;
                     console.log('Form submitted at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', email);
                     alert('Relatório enviado para: ' + email);
+                    createRipple(e);
                     form.reset();
                 });
             }
@@ -398,6 +465,11 @@
                 });
             }
 
+            const ctaButtons = document.querySelectorAll('.futuristic-btn');
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', createRipple);
+            });
+
             let vagas = 5;
             setInterval(() => {
                 if (vagas > 0) {
@@ -407,6 +479,20 @@
             }, 3600000);
         });
 
+        function createRipple(event) {
+            const button = event.currentTarget;
+            if (button.disabled) return;
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+            button.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        }
+
         async function startAnalysis() {
             const canvas = document.getElementById('canvas');
             const video = document.getElementById('video');
@@ -415,6 +501,8 @@
 
             if (!canvas || !video || !resultDiv) {
                 console.error('Missing required elements at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', { canvas, video, resultDiv });
+                resultDiv.classList.remove('hidden');
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Elementos necessários não encontrados.</p>';
                 return;
             }
 
@@ -428,7 +516,9 @@
                 function updateProgress(step) {
                     currentStep = step;
                     const progress = document.getElementById('progress');
-                    progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                    if (progress) {
+                        progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                    }
                 }
 
                 resultDiv.innerHTML = `
@@ -698,7 +788,7 @@
                 <p class="fade-in text-white">${diag.text}</p>
                 <p class="fade-in text-gray-300 mt-2">Sugestão: ${diag.suggestion}</p>
                 <p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
-                <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn text-sm">Obter Apoio</button></div>
+                <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn" aria-label="Obter Apoio">Obter Apoio</button></div>
             `;
             form.classList.remove('hidden');
             speakDiagnosis(diagnosisText);
