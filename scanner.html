@@ -152,6 +152,23 @@
         .dropdown-content a:hover { background: rgba(30, 30, 30, 0.8); color: #22d3ee; }
         .dropdown:hover .dropdown-content { display: block; }
         .mobile-menu { display: none; }
+        #mobile-menu-content {
+            display: none;
+            position: absolute;
+            top: 12px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 50;
+            padding: 0.75rem;
+            box-sizing: border-box;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        #mobile-menu-content.active {
+            display: block;
+            opacity: 1;
+        }
         @media (max-width: 768px) {
             h2 { font-size: 1.8rem; }
             video { width: 100%; height: auto; }
@@ -174,7 +191,7 @@
             }
             #mobile-menu-content { 
                 max-width: 100%; 
-                padding: 0.5rem; 
+                padding: 0.75rem; 
                 overflow: visible; 
                 box-sizing: border-box;
             }
@@ -228,15 +245,14 @@
                     <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
                     <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
                     <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                    <a href="bridge.html" class="futuristic-btn cta-button" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                 </div>
                 <div class="mobile-menu md:hidden">
-                    <button id="mobile-menu-button" class="text-white">
+                    <button id="mobile-menu-button" class="text-white" aria-expanded="false" aria-controls="mobile-menu-content">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
-                    <div id="mobile-menu-content" class="hidden absolute top-16 left-0 w-full bg-[rgba(0,0,0,0.9)]">
+                    <div id="mobile-menu-content" class="absolute top-12 left-0 w-full bg-[rgba(0,0,0,0.9)]">
                         <div class="dropdown relative">
                             <button class="text-white py-2 px-4 w-full text-center hover:bg-gray-900 flex justify-between items-center">
                                 Serviços
@@ -255,7 +271,6 @@
                         <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
                         <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
                         <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                        <a href="bridge.html" class="futuristic-btn cta-button w-full text-center" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                     </div>
                 </div>
             </div>
@@ -364,7 +379,7 @@
         const mockFaceResponse = {
             faces: [{
                 attributes: {
-                    emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 }
+                    emotion: { sadness: 10, anger: 5, happiness: 30, surprise: 2, neutral: 50, fear: 1, disgust: 1 }
                 }
             }]
         };
@@ -500,8 +515,13 @@
             if (mobileMenuButton && mobileMenuContent) {
                 mobileMenuButton.addEventListener('click', () => {
                     console.log('Mobile menu button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                    mobileMenuContent.classList.toggle('hidden');
+                    const isActive = mobileMenuContent.classList.contains('active');
+                    mobileMenuContent.classList.toggle('active');
+                    mobileMenuButton.setAttribute('aria-expanded', !isActive);
+                    console.log('Menu toggled to:', !isActive ? 'active' : 'inactive');
                 });
+            } else {
+                console.error('Mobile menu elements not found at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
             }
 
             const ctaButtons = document.querySelectorAll('.futuristic-btn');
@@ -597,7 +617,7 @@
                 const finalEmotion = unifyDiagnosis(facialData, voiceData, bpm, estimatedAge);
                 const emotionScore = Math.max(...Object.values(facialData || {})) || 0;
                 updateEmotionHistory(finalEmotion, emotionScore, bpm, estimatedAge);
-                displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form, estimatedAge);
+                await displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form, estimatedAge);
             } catch (error) {
                 console.error('Unexpected error in analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                 resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro na análise. Tente novamente.</p>';
@@ -608,9 +628,12 @@
         async function analyzeFace(canvas, video) {
             try {
                 console.log('Starting face analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                if (!canvas || !video) throw new Error('Canvas or video element not found');
                 const startTime = performance.now();
 
-                if (!faceapi.nets.tinyFaceDetector.params || !faceapi.nets.ageGenderNet.params) throw new Error('Modelos do face-api.js não carregados corretamente.');
+                if (!faceapi.nets.tinyFaceDetector.params || !faceapi.nets.ageGenderNet.params) {
+                    throw new Error('Modelos do face-api.js não carregados corretamente.');
+                }
 
                 let attempts = 0;
                 const maxAttempts = 3;
@@ -623,10 +646,7 @@
                         faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions().withAgeAndGender(),
                         new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout: Detecção de rosto excedeu 5 segundos')), 5000))
                     ]).catch(err => { console.error(`Face detection attempt ${attempts} failed:`, err.message); return null; });
-                    if (!detections) {
-                        console.warn(`No faces detected on attempt ${attempts}/${maxAttempts} at`, new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                    }
+                    if (!detections) await new Promise(resolve => setTimeout(resolve, 1000));
                 }
 
                 if (detections) {
@@ -676,14 +696,22 @@
                             console.error('OpenAI error during voice analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                             const keywords = { triste: 'sadness', deprimido: 'sadness', nervoso: 'anger', estressado: 'anger', feliz: 'happiness', alegre: 'happiness' };
                             const emotion = Object.keys(keywords).find(k => transcript.toLowerCase().includes(k));
-                            console.log('Fallback keyword analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', emotion ? keywords[emotion] : 'neutral');
+                            console.log('Fallback keyword analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', emotion);
                             resolve(emotion ? { [keywords[emotion]]: 1 } : { neutral: 1 });
                         }
                     };
-                    recognition.onerror = (event) => { console.error('Speech recognition error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', event.error); reject(new Error(`Speech recognition failed: ${event.error}`)); };
-                    recognition.onend = () => console.log('Voice recording ended at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    recognition.onerror = (event) => {
+                        console.error('Speech recognition error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', event.error);
+                        reject(new Error('Speech recognition failed: ' + event.error));
+                    };
+                    recognition.onend = () => {
+                        console.log('Voice recording ended at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    };
                     recognition.start();
-                    setTimeout(() => { recognition.stop(); console.log('Voice recording timeout after 15 seconds at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' })); }, 15000);
+                    setTimeout(() => {
+                        recognition.stop();
+                        console.log('Voice recording timeout after 15 seconds at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    }, 15000);
                 });
             } catch (error) {
                 console.error('Voice analysis error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
@@ -694,10 +722,18 @@
         async function calculateHeartRate(video, canvas) {
             try {
                 const context = canvas.getContext('2d');
-                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).catch(() => null);
-                if (!detections) { console.warn('No face detected for heart rate at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }); return 70; }
+                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions());
+                if (!detections) {
+                    console.warn('No face detected for heart rate at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    return 70;
+                }
 
-                const forehead = { x: detections.box.x + detections.box.width * 0.3, y: detections.box.y, width: detections.box.width * 0.4, height: detections.box.height * 0.2 };
+                const forehead = {
+                    x: detections.box.x + detections.box.width * 0.3,
+                    y: detections.box.y,
+                    width: detections.box.width * 0.4,
+                    height: detections.box.height * 0.2
+                };
 
                 const greenValues = [];
                 for (let i = 0; i < 30; i++) {
@@ -712,9 +748,15 @@
                 const fft = new FFT(greenValues.length, 30);
                 fft.forward(greenValues);
                 const magnitudes = fft.spectrum;
-                let maxMag = 0, maxIndex = 0;
-                for (let i = 1; i < magnitudes.length / 2; i++) if (magnitudes[i] > magnitudes[maxMag]) { maxMag = i; maxIndex = i; }
-                const bpm = maxIndex * 30 / greenValues.length * 60;
+                let maxMag = -Infinity;
+                let maxIndex = 0;
+                for (let i = 1; i < magnitudes.length / 2; i++) {
+                    if (magnitudes[i] > maxMag) {
+                        maxMag = magnitudes[i];
+                        maxIndex = i;
+                    }
+                }
+                const bpm = (maxIndex * 30 / greenValues.length) * 60;
                 return Math.round(bpm);
             } catch (error) {
                 console.error('Heart rate calculation error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
@@ -722,61 +764,71 @@
             }
         }
 
-        function unifyDiagnosis(facialData, voiceData, bpm, estimatedAge = 30) {
+        function unifyDiagnosis(facialData, voiceData, bpm, estimatedAge) {
             const defaultScores = { sadness: 0, anger: 0, happiness: 0, surprise: 0, neutral: 0, fear: 0, disgust: 0 };
-            const facialScores = facialData || defaultScores;
-            const totalFacial = Object.values(facialScores).reduce((sum, val) => sum + val, 0);
-            const normFacial = {};
-            for (let emo in facialScores) normFacial[emo] = totalFacial ? facialScores[emo] / totalFacial : 0;
+            facialData = facialData || defaultScores;
+            voiceData = voiceData || defaultScores;
 
-            const voiceScores = voiceData || defaultScores;
-            const totalVoice = Object.values(voiceScores).reduce((sum, val) => sum + val, 0);
+            const totalFacial = Object.values(facialData).reduce((sum, val) => sum + val, 0);
+            const normFacial = {};
+            for (let emo in facialData) {
+                normFacial[emo] = totalFacial ? facialData[emo] / totalFacial : 0;
+            }
+
+            const totalVoice = Object.values(voiceData).reduce((sum, val) => sum + val, 0);
             const normVoice = {};
-            for (let emo in voiceScores) normVoice[emo] = totalVoice ? voiceScores[emo] / totalVoice : 0;
+            for (let emo in voiceData) {
+                normVoice[emo] = totalVoice ? voiceData[emo] / totalVoice : 0;
+            }
 
             const bpmThreshold = estimatedAge < 18 ? 110 : 90;
             const hrWeight = bpm > bpmThreshold ? 0.2 : 0;
-            const hrScores = bpm > bpmThreshold ? { anger: 0.5, fear: 0.3, sadness: 0.2 } : defaultScores;
+            const hrScores = bpm > bpmThreshold ? { anger: 0.5, fear: 0.3, sadness: 0.2 } : { neutral: 1 };
 
             const finalScores = {};
-            for (let emo in defaultScores) finalScores[emo] = 0.4 * (normFacial[emo] || 0) + 0.4 * (normVoice[emo] || 0) + hrWeight * (hrScores[emo] || 0);
+            for (let emo in defaultScores) {
+                finalScores[emo] = 0.4 * (normFacial[emo] || 0) + 0.4 * (normVoice[emo] || 0) + hrWeight * (hrScores[emo] || 0);
+            }
 
             return Object.keys(finalScores).reduce((a, b) => finalScores[a] > finalScores[b] ? a : b);
         }
 
-        async function displayDiagnosis(emotion, bpm, facialData, voiceData, resultDiv, form, estimatedAge = 30) {
+        async function displayDiagnosis(emotion, bpm, facialData, voiceData, resultDiv, form, estimatedAge) {
             let bpmRange, bpmContext;
             if (estimatedAge < 18) {
                 bpmRange = '70 a 120';
                 bpmContext = bpm >= 70 && bpm <= 120
                     ? `o que está dentro da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto)`
-                    : bpm < 70 ? `o que está abaixo da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Considere consultar um médico se isso persistir`
-                    : `o que está acima da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Tente respirar fundo para relaxar`;
+                    : bpm < 70 
+                        ? `o que está abaixo da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Considere consultar um médico se isso persistir`
+                        : `o que está acima da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Tente respirar fundo para relaxar`;
             } else {
                 bpmRange = '60 a 100';
                 bpmContext = bpm >= 60 && bpm <= 100
                     ? `o que está dentro da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto)`
-                    : bpm < 60 ? `o que está abaixo da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Considere consultar um médico se isso persistir`
-                    : `o que está acima da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Tente respirar fundo para relaxar`;
+                    : bpm < 60 
+                        ? `o que está abaixo da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Considere consultar um médico se isso persistir`
+                        : `o que está acima da faixa esperada para uma pessoa de cerca de ${estimatedAge} anos (${bpmRange} batimentos por minuto). Tente respirar fundo para relaxar`;
             }
 
             let voiceToneDescription = '';
-            let voiceEmotion = Object.keys(voiceData).length === 1 && voiceData.neutral === 1 ? 'neutral' : Object.keys(voiceData)[0];
-            if (Object.keys(voiceData).length === 1 && voiceData.neutral === 1) voiceToneDescription = 'Seu tom de voz não foi capturado, mas sua expressão sugere';
-            else {
-                const toneMap = { happiness: 'alegre', sadness: 'melancólico', neutral: 'neutro' };
+            const voiceEmotion = Object.keys(voiceData).reduce((a, b) => voiceData[a] > voiceData[b] ? a : b, 'neutral');
+            if (Object.keys(voiceData).length === 1 && voiceData.neutral === 1) {
+                voiceToneDescription = 'Seu tom de voz não foi capturado, mas sua expressão sugere que';
+            } else {
+                const toneMap = { happiness: 'alegre', sadness: 'melancólico', neutral: 'neutro', anger: 'tenso', fear: 'ansioso', disgust: 'desconfortável', surprise: 'surpreso' };
                 const tone = toneMap[voiceEmotion] || 'neutro';
                 const isContradictory = (emotion === 'sadness' || emotion === 'fear' || emotion === 'anger') && voiceEmotion === 'happiness';
                 voiceToneDescription = `Seu tom de voz soa ${tone}${isContradictory ? ', o que pode indicar que você está lidando com emoções mistas' : ', indicando'}`;
             }
 
             const diagnosisMap = {
-                sadness: { text: `Detectamos tristeza. ${voiceToneDescription} um estado mais introspectivo. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('sadness') || 'Converse com alguém próximo ou escreva 3 coisas que te trouxeram alegria recentemente.', link: 'apoio-emocional.html' },
+                sadness: { text: `Detectamos tristeza. ${voiceToneDescription} um estado mais introspectivo. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('sadness') || 'Converse com um amigo próximo ou escreva 3 coisas que te trouxeram alegria recentemente.', link: 'apoio-emocional.html' },
                 anger: { text: `Detectamos raiva. ${voiceToneDescription} estresse. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('anger') || 'Respire fundo por 4 segundos e expire lentamente, ou caminhe por 5 minutos para aliviar a tensão.', link: 'apoio-emocional.html' },
-                happiness: { text: `Detectamos felicidade! ${voiceToneDescription} um estado de alegria. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('happiness') || 'Aproveite esse momento e compartilhe sua energia positiva com alguém especial.', link: 'apoio-emocional.html' },
-                surprise: { text: `Detectamos surpresa. ${voiceToneDescription} que algo inesperado chamou sua atenção. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('surprise') || 'Explore essa situação com atenção plena e anote o que te surpreendeu para refletir depois.', link: 'apoio-emocional.html' },
-                neutral: { text: `Sua expressão e voz estão neutras. ${voiceToneDescription} que você está calmo, mas talvez introspectivo. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('neutral') || 'Tire um momento para relaxar e escreva 3 coisas que te motivam hoje.', link: 'apoio-emocional.html' },
-                fear: { text: `Detectamos medo. ${voiceToneDescription} ansiedade. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('fear') || 'Ouça uma música calma ou pratique uma técnica de respiração: inspire por 4, segure por 4, expire por 4.', link: 'apoio-emocional.html' },
+                happiness: { text: `Detectamos felicidade! ${voiceToneDescription} um estado de alegria. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('happiness') || 'Aproveite esse momento e compartilhe sua energia positiva com alguém especial.', link: '' },
+                surprise: { text: `Detectamos surpresa. ${voiceToneDescription} que algo inesperado chamou sua atenção. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('surprise') || 'Explore essa situação com atenção plena e anote o que te surpreendeu para refletir depois.', link: '' },
+                neutral: { text: `Sua expressão e voz estão neutras. ${voiceToneDescription} que você está calmo. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('neutral') || 'Tire um momento para relaxar e escreva 3 coisas que te motivam hoje.', link: '' },
+                fear: { text: `Detectamos medo. ${voiceToneDescription} que algo está te preocupando. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('fear') || 'Ouça uma música calma ou pratique uma técnica de respiração: inspire por 4, segure por 4, expire por 4.', link: 'apoio-emocional.html' },
                 disgust: { text: `Detectamos desgosto. ${voiceToneDescription} que algo te incomodou. Sua frequência cardíaca é de ${bpm} batimentos por minuto, ${bpmContext}.`, suggestion: await generateDynamicSuggestion('disgust') || 'Afaste-se do que está causando desconforto e busque um ambiente tranquilo para se recompor.', link: 'apoio-emocional.html' }
             };
 
@@ -785,7 +837,7 @@
             let medicalAlert = '';
 
             const sadOrFearful = ['sadness', 'fear'].includes(emotion);
-            const highScore = Object.values(facialData || {}).some(score => score > 0.7);
+            const highScore = Object.values(facialData || {}).some(score => score > 70);
             const abnormalBpm = estimatedAge < 18 ? (bpm < 70 || bpm > 120) : (bpm < 60 || bpm > 100);
             const sadFearCount = emotionHistory.filter(e => ['sadness', 'fear'].includes(e.emotion) && e.score > 0.7).length;
             const bpmHistory = emotionHistory.map(e => e.bpm || 70);
@@ -808,7 +860,7 @@
                 <p class="fade-in text-white">${diag.text}</p>
                 <p class="fade-in text-gray-300 mt-2">Sugestão: ${diag.suggestion}</p>
                 <p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
-                <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn" aria-label="Obter Apoio">Obter Apoio</button></div>
+                ${diag.link ? `<div class="mt-4"><a href="${diag.link}" class="futuristic-btn" aria-label="Obter Apoio">Obter Apoio</a></div>` : ''}
                 ${medicalAlert}
             `;
             form.classList.remove('hidden');
