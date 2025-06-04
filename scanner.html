@@ -423,8 +423,7 @@
 
     async function loadFaceApiModels() {
         try {
-            // Tente carregar localmente primeiro (ajuste o caminho conforme seu servidor)
-            const localBaseUrl = '/weights'; // Hospede os arquivos em /weights no servidor
+            const localBaseUrl = '/weights'; // Ajuste o caminho se necessário
             let attempts = 0;
             const maxAttempts = 3;
             while (attempts < maxAttempts) {
@@ -437,10 +436,9 @@
                     console.log('face-api.js models loaded successfully from local at attempt', attempts, 'at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                     return;
                 } catch (localErr) {
-                    console.warn('Local load failed at attempt', attempts, ':', localErr.message);
-                    // Fallback para o CDN com tentativa de proxy ou mensagem de erro
+                    console.warn('Local load failed at attempt', attempts, ':', localErr.message, 'from url:', localBaseUrl);
                     try {
-                        const cdnBaseUrl = 'https://unpkg.com/face-api.js@0.22.2/weights'; // Versão específica para evitar redirects
+                        const cdnBaseUrl = 'https://unpkg.com/face-api.js@0.22.2/weights';
                         await Promise.all([
                             faceapi.nets.tinyFaceDetector.loadFromUri(cdnBaseUrl + '/tiny_face_detector_model'),
                             faceapi.nets.ageGenderNet.loadFromUri(cdnBaseUrl + '/age_gender_model')
@@ -449,7 +447,7 @@
                         return;
                     } catch (cdnErr) {
                         console.warn('CDN load failed at attempt', attempts, ':', cdnErr.message);
-                        if (attempts === maxAttempts) throw new Error('Failed to load models from both local and CDN. Verifique o CORS ou hospede os arquivos localmente.');
+                        if (attempts === maxAttempts) throw new Error('Failed to load models from both local and CDN. Hospede os arquivos em /weights ou contate o suporte.');
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
                 }
@@ -457,7 +455,7 @@
         } catch (err) {
             console.error('Failed to load face-api.js models after all attempts at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
             const resultDiv = document.getElementById('result');
-            if (resultDiv) resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro ao carregar modelos de IA facial. Hospede os arquivos em /weights no servidor ou contate o suporte.</p>';
+            if (resultDiv) resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro ao carregar modelos de IA facial. Hospede os arquivos em /weights no servidor ou verifique a conexão.</p>';
         }
     }
 
@@ -495,7 +493,7 @@
             } catch (err) {
                 console.error('Media error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                 resultDiv.classList.remove('hidden');
-                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera ou o microfone. Permita o acesso e recarregue.</p>';
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera ou microfone. Permita o acesso e recarregue.</p>';
                 if (analyzeButton) analyzeButton.disabled = true;
             }
         }
