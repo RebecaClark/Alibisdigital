@@ -443,7 +443,7 @@
 
         async function loadFaceApiModels() {
             try {
-                const baseUrl = 'https://unpkg.com/face-api.js@latest/weights';
+                const baseUrl = '/weights'; // Caminho local no servidor
                 await Promise.all([
                     faceapi.nets.tinyFaceDetector.loadFromUri(`${baseUrl}/tiny_face_detector_model`),
                     faceapi.nets.ageGenderNet.loadFromUri(`${baseUrl}/age_gender_model`)
