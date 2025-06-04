@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -127,6 +88,15 @@
       transform: translateY(-5px);
       box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
     }
+    .social-btn {
+      background: #ffffff;
+      color: #000000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .social-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px #ffffff, 0 0 25px #ffffff;
+    }
     @keyframes neonPulse {
       0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
       100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
@@ -163,13 +133,13 @@
       .max-w-md { max-width: 90%; }
       .text-3xl { font-size: 1.75rem; }
       .py-20 { padding-top: 3rem; padding-bottom: 3rem; }
-      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      .futuristic-btn, .social-btn { width: 100%; margin-bottom: 0.5rem; }
       .text-lg { font-size: 1rem; }
       .text-sm { font-size: 0.75rem; }
     }
     @media (max-width: 480px) {
       .text-3xl { font-size: 1.5rem; }
-      .futuristic-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+      .futuristic-btn, .social-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
       .text-lg { font-size: 0.9rem; }
       .text-sm { font-size: 0.65rem; }
     }
@@ -188,24 +158,57 @@
     <div class="max-w-md mx-auto">
       <h1 class="text-3xl font-bold mb-6 fade-in">Crie Sua Conta</h1>
       <p class="text-lg mb-10 text-gray-300 fade-in">Junte-se à Álibis Digital e comece a gerenciar suas emoções hoje mesmo.</p>
-      <form id="signup-form" class="space-y-4">
-        <div class="slide-in-left">
-          <input type="text" id="name" placeholder="Nome" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu nome">
+      <div id="signup-step-1">
+        <form id="signup-form" class="space-y-4">
+          <div class="slide-in-left">
+            <input type="text" id="name" placeholder="Nome" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu nome">
+          </div>
+          <div class="slide-in-right">
+            <input type="email" id="email" placeholder="E-mail" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu e-mail">
+          </div>
+          <div class="slide-in-left">
+            <input type="password" id="password" placeholder="Senha" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite sua senha">
+          </div>
+          <div class="text-sm text-gray-400 slide-in-right">
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" required class="text-[#22d3ee] focus:ring-[#22d3ee] fade-in">
+              <span>Li e aceito os <a href="/termos.html" class="text-[#22d3ee] hover:underline shine">Termos de Uso</a>.</span>
+            </label>
+          </div>
+          <button type="submit" class="futuristic-btn text-white py-3 px-6 rounded-full w-full bounce-in" aria-label="Continuar">Continuar</button>
+        </form>
+        <div class="my-6 flex items-center">
+          <hr class="flex-1 border-gray-600">
+          <span class="mx-4 text-gray-400 text-sm">Ou cadastre-se com</span>
+          <hr class="flex-1 border-gray-600">
         </div>
-        <div class="slide-in-right">
-          <input type="email" id="email" placeholder="E-mail" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu e-mail">
+        <div class="space-y-2">
+          <button id="google-signup" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Cadastrar com Google">
+            <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5">
+            <span>Google</span>
+          </button>
+          <button id="x-signup" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Cadastrar com X">
+            <img src="https://www.x.com/favicon.ico" alt="X Icon" class="w-5 h-5">
+            <span>X</span>
+          </button>
+          <button id="apple-signup" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Cadastrar com Apple">
+            <img src="https://www.apple.com/favicon.ico" alt="Apple Icon" class="w-5 h-5">
+            <span>Apple</span>
+          </button>
         </div>
-        <div class="slide-in-left">
-          <input type="password" id="password" placeholder="Senha" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite sua senha">
-        </div>
-        <div class="text-sm text-gray-400 slide-in-right">
-          <label class="flex items-center space-x-2">
-            <input type="checkbox" required class="text-[#22d3ee] focus:ring-[#22d3ee] fade-in">
-            <span>Li e aceito os <a href="/termos.html" class="text-[#22d3ee] hover:underline shine">Termos de Uso</a>.</span>
-          </label>
-        </div>
-        <button type="submit" class="futuristic-btn text-white py-3 px-6 rounded-full w-full bounce-in" aria-label="Criar Conta">Criar Conta</button>
-      </form>
+      </div>
+      <div id="signup-step-2" class="hidden">
+        <h2 class="text-2xl font-bold mb-6 fade-in">Verifique seu E-mail</h2>
+        <p class="text-lg mb-6 text-gray-300 fade-in">Enviamos um código de verificação para o seu e-mail. Insira-o abaixo para continuar.</p>
+        <p id="verification-code-display" class="text-sm text-[#22d3ee] mb-4 pulse">[Código de verificação simulado será exibido aqui]</p>
+        <form id="verify-form" class="space-y-4">
+          <div class="slide-in-left">
+            <input type="text" id="verification-code" placeholder="Digite o código" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite o código de verificação">
+          </div>
+          <button type="submit" class="futuristic-btn text-white py-3 px-6 rounded-full w-full bounce-in" aria-label="Verificar Código">Verificar Código</button>
+        </form>
+        <p class="text-sm text-gray-400 mt-4 fade-in">Não recebeu o código? <a href="#" id="resend-code" class="text-[#22d3ee] hover:underline shine">Reenviar</a>.</p>
+      </div>
       <p class="text-sm text-gray-400 mt-6 fade-in">Já tem uma conta? <a href="/login.html" class="text-[#22d3ee] hover:underline shine">Faça login</a>.</p>
     </div>
   </section>
@@ -221,7 +224,17 @@
       "retina_detect": true
     });
 
-    // Validação do Formulário de Criar Conta
+    let verificationCode = '';
+    const signupStep1 = document.getElementById('signup-step-1');
+    const signupStep2 = document.getElementById('signup-step-2');
+    const verificationCodeDisplay = document.getElementById('verification-code-display');
+
+    // Função para gerar código de verificação (simulado)
+    function generateVerificationCode() {
+      return Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+    }
+
+    // Formulário de Criar Conta (Passo 1)
     const signupForm = document.getElementById('signup-form');
     signupForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -229,7 +242,7 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      // Simulação de validação
+      // Validação
       if (name === '' || email === '' || password === '') {
         alert('Por favor, preencha todos os campos.');
         return;
@@ -243,10 +256,51 @@
         return;
       }
 
-      // Simulação de criação de conta
+      // Gerar código de verificação e exibir (simulação)
+      verificationCode = generateVerificationCode();
+      verificationCodeDisplay.textContent = `Código de verificação (simulado): ${verificationCode}`;
+      signupStep1.classList.add('hidden');
+      signupStep2.classList.remove('hidden');
+    });
+
+    // Formulário de Verificação (Passo 2)
+    const verifyForm = document.getElementById('verify-form');
+    verifyForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const enteredCode = document.getElementById('verification-code').value.trim();
+
+      if (enteredCode === verificationCode) {
+        localStorage.setItem('isLoggedIn', 'true');
+        alert('E-mail verificado com sucesso! Conta criada.');
+        window.location.href = '/scanner.html'; // Redireciona para o scanner
+      } else {
+        alert('Código incorreto. Tente novamente.');
+      }
+    });
+
+    // Reenviar Código
+    document.getElementById('resend-code').addEventListener('click', (e) => {
+      e.preventDefault();
+      verificationCode = generateVerificationCode();
+      verificationCodeDisplay.textContent = `Código de verificação (simulado): ${verificationCode}`;
+      alert('Código reenviado (simulado).');
+    });
+
+    // Simulação de Cadastro com Google, X, Apple
+    document.getElementById('google-signup').addEventListener('click', () => {
       localStorage.setItem('isLoggedIn', 'true');
-      alert('Conta criada com sucesso! Você será redirecionado para o scanner.');
-      window.location.href = '/scanner.html'; // Redireciona para o scanner após criar conta
+      alert('Cadastro com Google realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
+    });
+    document.getElementById('x-signup').addEventListener('click', () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      alert('Cadastro com X realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
+    });
+    document.getElementById('apple-signup').addEventListener('click', () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      alert('Cadastro com Apple realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
     });
 
     // Animação ao Scroll
