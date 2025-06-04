@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -127,6 +88,15 @@
       transform: translateY(-5px);
       box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
     }
+    .social-btn {
+      background: #ffffff;
+      color: #000000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .social-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px #ffffff, 0 0 25px #ffffff;
+    }
     @keyframes neonPulse {
       0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
       100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
@@ -163,13 +133,13 @@
       .max-w-md { max-width: 90%; }
       .text-3xl { font-size: 1.75rem; }
       .py-20 { padding-top: 3rem; padding-bottom: 3rem; }
-      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
+      .futuristic-btn, .social-btn { width: 100%; margin-bottom: 0.5rem; }
       .text-lg { font-size: 1rem; }
       .text-sm { font-size: 0.75rem; }
     }
     @media (max-width: 480px) {
       .text-3xl { font-size: 1.5rem; }
-      .futuristic-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+      .futuristic-btn, .social-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
       .text-lg { font-size: 0.9rem; }
       .text-sm { font-size: 0.65rem; }
     }
@@ -190,7 +160,7 @@
       <p class="text-lg mb-10 text-gray-300 fade-in">Acesse sua conta para usar o scanner emocional e outras funcionalidades.</p>
       <form id="login-form" class="space-y-4">
         <div class="slide-in-left">
-          <input type="email" id="email" placeholder="E-mail" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu e-mail">
+          <input type="text" id="email-or-name" placeholder="E-mail ou Nome" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite seu e-mail ou nome">
         </div>
         <div class="slide-in-right">
           <input type="password" id="password" placeholder="Senha" class="w-full p-3 rounded-lg bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] text-white fade-in" required aria-label="Digite sua senha">
@@ -200,6 +170,25 @@
         </div>
         <button type="submit" class="futuristic-btn text-white py-3 px-6 rounded-full w-full bounce-in" aria-label="Entrar">Entrar</button>
       </form>
+      <div class="my-6 flex items-center">
+        <hr class="flex-1 border-gray-600">
+        <span class="mx-4 text-gray-400 text-sm">Ou entre com</span>
+        <hr class="flex-1 border-gray-600">
+      </div>
+      <div class="space-y-2">
+        <button id="google-login" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Entrar com Google">
+          <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5">
+          <span>Google</span>
+        </button>
+        <button id="x-login" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Entrar com X">
+          <img src="https://www.x.com/favicon.ico" alt="X Icon" class="w-5 h-5">
+          <span>X</span>
+        </button>
+        <button id="apple-login" class="social-btn py-3 px-6 rounded-full w-full flex items-center justify-center space-x-2 bounce-in" aria-label="Entrar com Apple">
+          <img src="https://www.apple.com/favicon.ico" alt="Apple Icon" class="w-5 h-5">
+          <span>Apple</span>
+        </button>
+      </div>
       <p class="text-sm text-gray-400 mt-6 fade-in">Não tem uma conta? <a href="/criar-conta.html" class="text-[#22d3ee] hover:underline shine">Crie uma agora</a>.</p>
     </div>
   </section>
@@ -219,15 +208,15 @@
     const loginForm = document.getElementById('login-form');
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById('email').value.trim();
+      const emailOrName = document.getElementById('email-or-name').value.trim();
       const password = document.getElementById('password').value.trim();
 
       // Simulação de validação
-      if (email === '' || password === '') {
+      if (emailOrName === '' || password === '') {
         alert('Por favor, preencha todos os campos.');
         return;
       }
-      if (!email.includes('@') || !email.includes('.')) {
+      if (emailOrName.includes('@') && (!emailOrName.includes('.') || !emailOrName.includes('@'))) {
         alert('Por favor, insira um e-mail válido.');
         return;
       }
@@ -240,6 +229,23 @@
       localStorage.setItem('isLoggedIn', 'true');
       alert('Login realizado com sucesso!');
       window.location.href = '/scanner.html'; // Redireciona para o scanner após login
+    });
+
+    // Simulação de Login com Google, X, Apple
+    document.getElementById('google-login').addEventListener('click', () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      alert('Login com Google realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
+    });
+    document.getElementById('x-login').addEventListener('click', () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      alert('Login com X realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
+    });
+    document.getElementById('apple-login').addEventListener('click', () => {
+      localStorage.setItem('isLoggedIn', 'true');
+      alert('Login com Apple realizado com sucesso (simulado)!');
+      window.location.href = '/scanner.html';
     });
 
     // Animação ao Scroll
