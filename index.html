@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
         html { scroll-behavior: smooth; }
         body {
@@ -19,82 +18,50 @@
             overflow-x: hidden;
             min-height: 100vh;
             color: #e5e7eb;
-            font-family: 'Inter', sans-serif;
-            background: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
         }
         #particles-js {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             z-index: -1;
-            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
         }
-        .fade-in { animation: fadeIn 1s ease-in-out; }
-        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-        .pulse { animation: pulse 2s infinite ease-in-out; }
-        .shine { position: relative; overflow: hidden; }
-        .shine::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
-            transform: rotate(20deg); animation: shine 4s infinite linear;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+        .fade-scale { animation: fadeScale 1s ease-in-out; }
+        .pulse { animation: pulse 2s infinite; }
+        .glow-pulse { animation: glowPulse 1.5s infinite; }
+        @keyframes fadeScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); transform: scale(1.02); }
+            100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); transform: scale(1); }
         }
-        .holo-nav {
-            background: rgba(17, 24, 39, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            animation: holoGlow 2s infinite alternate;
+        .tesla-btn {
+            background: linear-gradient(45deg, #00d4ff, #0077ff);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            transition: all 0.3s;
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #fff;
+            font-weight: 600;
         }
-        @keyframes holoGlow {
-            0% { box-shadow: 0 0 8px #22d3ee; }
-            100% { box-shadow: 0 0 15px #22d3ee; }
-        }
-        .holo-nav a, .holo-nav button {
-            transition: color 0.3s ease;
-        }
-        .holo-nav a:hover, .holo-nav button:hover {
-            color: #22d3ee;
-            text-shadow: 0 0 5px #22d3ee;
-        }
-        .futuristic-btn {
-            background: linear-gradient(45deg, #7C3AED, #22d3ee);
-            box-shadow: 0 0 8px #22d3ee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: neonPulse 1.5s infinite alternate;
-        }
-        .futuristic-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
-        }
-        @keyframes neonPulse {
-            0% { box-shadow: 0 0 5px #22d3ee; }
-            100% { box-shadow: 0 0 15px #22d3ee; }
+        .tesla-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
         }
         .neon-box {
-            background: linear-gradient(45deg, #1a1a1a, #22d3ee);
+            background: linear-gradient(45deg, #1a1a1a, #00d4ff);
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
@@ -121,15 +88,32 @@
         }
         .progress {
             height: 8px;
-            background: #22d3ee;
+            background: #00d4ff;
             width: 0;
             transition: width 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            video { width: 100%; height: auto; }
+            .neon-box { padding: 10px; }
+        }
+        nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        nav a, nav button {
+            color: #e5e7eb;
+            transition: color 0.3s;
+        }
+        nav a:hover, nav button:hover {
+            color: #00d4ff;
         }
         .dropdown-content {
             display: none;
             position: absolute;
             background: rgba(20, 20, 20, 0.9);
-            border: 1px solid #22d3ee;
+            border: 1px solid #00d4ff;
             border-radius: 8px;
             min-width: 160px;
             z-index: 1;
@@ -141,7 +125,7 @@
         }
         .dropdown-content a:hover {
             background: rgba(30, 30, 30, 0.8);
-            color: #22d3ee;
+            color: #00d4ff;
         }
         .dropdown:hover .dropdown-content {
             display: block;
@@ -150,9 +134,6 @@
             display: none;
         }
         @media (max-width: 768px) {
-            h2 { font-size: 1.8rem; }
-            video { width: 100%; height: auto; }
-            .neon-box { padding: 10px; }
             .nav-links {
                 display: none;
             }
@@ -165,104 +146,98 @@
 <body>
     <div id="particles-js"></div>
 
-    <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <a href="index.html" aria-label="Página inicial da Álibis Digital">
-                    <img src="logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
-                </a>
+    <nav class="fixed top-0 w-full z-40">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html">
+                <img src="logo.png" alt="Álibis Digital Logo" class="h-10">
+            </a>
+            <div class="nav-links flex space-x-4 items-center">
+                <div class="dropdown relative">
+                    <button class="hover:text-[#00d4ff] flex items-center">
+                        Serviços
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="scanner.html">Scanner com IA</a>
+                        <a href="emotional-assessment.html">Avaliação Emocional</a>
+                        <a href="medical-diagnosis.html">Diagnóstico Médico</a>
+                        <a href="alibi-creation.html">Criar Álibi</a>
+                    </div>
+                </div>
+                <a href="blog.html" class="hover:text-[#00d4ff]">Blog</a>
+                <a href="plans.html" class="hover:text-[#00d4ff]">Planos</a>
+                <a href="support.html" class="hover:text-[#00d4ff]">Suporte</a>
+                <a href="plans.html" class="tesla-btn text-sm glow-pulse">🔍 Teste Grátis</a>
             </div>
-            <div class="flex items-center space-x-3">
-                <div class="nav-links flex space-x-4 items-center">
+            <div class="mobile-menu md:hidden">
+                <button id="mobile-menu-button" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div id="mobile-menu-content" class="hidden absolute top-16 left-0 w-full bg-[rgba(0,0,0,0.9)]">
                     <div class="dropdown relative">
-                        <button class="hover:text-[#22d3ee] flex items-center">
+                        <button class="text-white py-2 px-4 w-full text-center hover:bg-gray-900 flex justify-between items-center">
                             Serviços
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </button>
-                        <div class="dropdown-content">
+                        <div class="dropdown-content w-full">
                             <a href="scanner.html">Scanner com IA</a>
-                            <a href="apoio-emocional.html">Apoio Emocional</a>
-                            <a href="medical-ia.html">Diagnósticos Médicos</a>
-                            <a href="alibi.html">Criar Álibi</a>
-                            <a href="relatorios-avancados.html">Relatórios Avançados</a>
+                            <a href="emotional-assessment.html">Avaliação Emocional</a>
+                            <a href="medical-diagnosis.html">Diagnóstico Médico</a>
+                            <a href="alibi-creation.html">Criar Álibi</a>
                         </div>
                     </div>
-                    <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
-                    <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
-                    <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                    <a href="bridge.html" class="futuristic-btn text-sm">🔍 Teste Grátis</a>
-                </div>
-                <div class="mobile-menu md:hidden">
-                    <button id="mobile-menu-button" class="text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                    </button>
-                    <div id="mobile-menu-content" class="hidden absolute top-16 left-0 w-full bg-[rgba(0,0,0,0.9)]">
-                        <div class="dropdown relative">
-                            <button class="text-white py-2 px-4 w-full text-center hover:bg-gray-900 flex justify-between items-center">
-                                Serviços
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class="dropdown-content w-full">
-                                <a href="scanner.html">Scanner com IA</a>
-                                <a href="apoio-emocional.html">Apoio Emocional</a>
-                                <a href="medical-ia.html">Diagnósticos Médicos</a>
-                                <a href="alibi.html">Criar Álibi</a>
-                                <a href="relatorios-avancados.html">Relatórios Avançados</a>
-                            </div>
-                        </div>
-                        <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
-                        <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
-                        <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                        <a href="bridge.html" class="futuristic-btn w-full text-center">🔍 Teste Grátis</a>
-                    </div>
+                    <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
+                    <a href="plans.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
+                    <a href="support.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
+                    <a href="plans.html" class="tesla-btn w-full text-center glow-pulse">🔍 Teste Grátis</a>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <div class="h-16"></div>
 
     <section class="container mx-auto px-4 py-16 text-center">
-        <h1 class="text-4xl font-bold text-white mb-4 fade-in">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h1>
-        <p class="text-lg text-gray-300 mb-8 fade-in">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
+        <h1 class="text-4xl font-bold text-white mb-4 fade-scale">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h1>
+        <p class="text-lg text-gray-300 mb-8 fade-scale">Ative sua câmera e receba um pré-diagnóstico emocional como se estivesse diante de um clínico experiente.</p>
         <div class="flex justify-center mb-6">
-            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
+            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#00d4ff] pulse"></video>
         </div>
-        <button id="analyze-button" class="futuristic-btn text-sm font-bold">Analisar Estado Emocional</button>
+        <button id="analyze-button" class="tesla-btn text-sm font-bold glow-pulse">Analisar Estado Emocional</button>
         <div id="result" class="neon-box mt-4 hidden"></div>
-        <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
+        <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-scale">
             <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório</h3>
             <div class="flex flex-col sm:flex-row gap-2">
                 <input type="email" id="email" placeholder="Seu E-mail" class="w-full p-2 rounded bg-white text-gray-800 text-sm" required>
-                <button type="submit" class="futuristic-btn text-sm">Enviar</button>
+                <button type="submit" class="tesla-btn text-sm glow-pulse">Enviar</button>
             </div>
-            <p class="text-xs mt-2 text-gray-500">🔒 Seus dados estão seguros. Após envio, acesse <a href="obrigado.html" class="text-[#22d3ee] hover:underline">obrigado.html</a> para mais detalhes.</p>
+            <p class="text-xs mt-2 text-gray-500">🔒 Seus dados estão seguros.</p>
         </form>
         <div class="mt-6 flex flex-col justify-center items-center gap-2">
-            <p class="text-sm text-gray-500 fade-in">🚗 Oferta válida até 31/12/2025! Apenas <span id="vagas">5</span> vagas!</p>
-            <a href="bridge.html" class="futuristic-btn text-sm">🚀 Assinar (3 Dias Grátis)</a>
+            <p class="text-sm text-gray-500 fade-scale">🚗 Oferta válida até 31/12/2025! Apenas <span id="vagas">5</span> vagas!</p>
+            <a href="plans.html" class="tesla-btn text-sm glow-pulse">🚀 Assinar (3 Dias Grátis)</a>
         </div>
         <div class="mt-8 max-w-2xl mx-auto">
-            <h3 class="text-xl font-semibold text-white mb-4 fade-in">O que nossos usuários dizem</h3>
+            <h3 class="text-xl font-semibold text-white mb-4">O que nossos usuários dizem</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-in">
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-scale">
                     <p class="text-gray-300 italic">"O scanner me ajudou a entender minhas emoções e a melhorar meu dia!"</p>
                     <p class="text-gray-500 text-sm mt-2">— Ana, São Paulo</p>
                 </div>
-                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-in">
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-scale">
                     <p class="text-gray-300 italic">"Uma ferramenta incrível para cuidar da minha saúde emocional."</p>
                     <p class="text-gray-500 text-sm mt-2">— João, Rio de Janeiro</p>
                 </div>
             </div>
-            <div class="mt-6 fade-in">
+            <div class="mt-6">
                 <p class="text-gray-300">Quer saber mais sobre como lidar com suas emoções?</p>
-                <a href="saude-emocional-triagem-ia.html" class="text-[#22d3ee] hover:underline">Leia mais no nosso blog: Saúde Emocional com Triagem IA</a>
+                <a href="blog.html" class="text-[#00d4ff] hover:underline">Leia mais no nosso blog: Como lidar com suas emoções</a>
             </div>
         </div>
         <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
@@ -271,7 +246,7 @@
     <footer class="bg-[rgba(0,0,0,0.8)] text-gray-400 py-8">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <h3 class="text-white font-semibold mb-2">Álibis Digitais</h3>
+                <h3 class="text-white font-semibold mb-2">Álibis Digital</h3>
                 <p>Soluções de bem-estar com tecnologia avançada.</p>
             </div>
             <div>
@@ -280,14 +255,12 @@
                     <li><a href="index.html" class="hover:text-white">Início</a></li>
                     <li><a href="scanner.html" class="hover:text-white">Scanner</a></li>
                     <li><a href="blog.html" class="hover:text-white">Blog</a></li>
-                    <li><a href="medical-ia.html" class="hover:text-white">Diagnósticos Médicos</a></li>
-                    <li><a href="apoio-emocional.html" class="hover:text-white">Apoio Emocional</a></li>
-                    <li><a href="alibi.html" class="hover:text-white">Criar Álibi</a></li>
-                    <li><a href="bridge.html" class="hover:text-white">Planos</a></li>
-                    <li><a href="suporte.html" class="hover:text-white">Suporte</a></li>
-                    <li><a href="privacidade.html" class="hover:text-white">Privacidade</a></li>
-                    <li><a href="termos.html" class="hover:text-white">Termos</a></li>
-                    <li><a href="politicas.html" class="hover:text-white">Políticas</a></li>
+                    <li><a href="medical-diagnosis.html" class="hover:text-white">Diagnóstico Médico</a></li>
+                    <li><a href="emotional-assessment.html" class="hover:text-white">Avaliação Emocional</a></li>
+                    <li><a href="alibi-creation.html" class="hover:text-white">Criar Álibi</a></li>
+                    <li><a href="plans.html" class="hover:text-white">Planos</a></li>
+                    <li><a href="support.html" class="hover:text-white">Suporte</a></li>
+                    <li><a href="privacy.html" class="hover:text-white">Privacidade</a></li>
                 </ul>
             </div>
             <div>
@@ -299,7 +272,7 @@
             </div>
         </div>
         <div class="text-center mt-4">
-            <p class="text-sm">© 2025 Álibis Digitais. Todos os direitos reservados.</p>
+            <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
         </div>
     </footer>
 
@@ -307,11 +280,11 @@
         particlesJS('particles-js', {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#22d3ee' },
+                color: { value: '#00d4ff' },
                 shape: { type: 'circle' },
                 opacity: { value: 0.3, random: true },
                 size: { value: 2, random: true },
-                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
+                line_linked: { enable: true, distance: 100, color: '#00d4ff', opacity: 0.2, width: 1 },
                 move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
             },
             interactivity: {
@@ -372,7 +345,7 @@
                     .catch(err => {
                         console.error('Camera error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                         resultDiv.classList.remove('hidden');
-                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera. Permita o acesso ou use HTTPS.</p>';
+                        resultDiv.innerHTML = '<p class="fade-scale text-red-500">❌ Não foi possível acessar a câmera. Permita o acesso ou use HTTPS.</p>';
                     });
             }
 
@@ -432,7 +405,7 @@
                 }
 
                 resultDiv.innerHTML = `
-                    <p class="fade-in text-white">Analisando...<span class="loading-dots"></span></p>
+                    <p class="fade-scale text-white">Analisando...<span class="loading-dots"></span></p>
                     <div class="progress-bar"><div id="progress" class="progress"></div></div>
                 `;
                 updateProgress(0);
@@ -441,7 +414,7 @@
 
                 console.log('Attempting facial analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.innerHTML = `
-                    <p class="fade-in text-white">Analisando sua expressão facial...<span class="loading-dots"></span></p>
+                    <p class="fade-scale text-white">Analisando sua expressão facial...<span class="loading-dots"></span></p>
                     <div class="progress-bar"><div id="progress" class="progress"></div></div>
                 `;
                 updateProgress(1);
@@ -453,7 +426,7 @@
 
                 console.log('Attempting voice analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.innerHTML = `
-                    <p class="fade-in text-white">Fale algo por 15 segundos (exemplo: "Estou feliz hoje").<span class="loading-dots"></span></p>
+                    <p class="fade-scale text-white">Fale algo por 15 segundos (exemplo: "Estou feliz hoje").<span class="loading-dots"></span></p>
                     <div class="progress-bar"><div id="progress" class="progress"></div></div>
                 `;
                 updateProgress(2);
@@ -465,7 +438,7 @@
 
                 console.log('Attempting heart rate calculation at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.innerHTML = `
-                    <p class="fade-in text-white">Calculando frequência cardíaca...<span class="loading-dots"></span></p>
+                    <p class="fade-scale text-white">Calculando frequência cardíaca...<span class="loading-dots"></span></p>
                     <div class="progress-bar"><div id="progress" class="progress"></div></div>
                 `;
                 updateProgress(3);
@@ -480,7 +453,7 @@
                 displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form);
             } catch (error) {
                 console.error('Unexpected error in analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
-                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro na análise. Tente novamente.</p>';
+                resultDiv.innerHTML = '<p class="fade-scale text-red-500">❌ Erro na análise. Tente novamente.</p>';
                 form.classList.remove('hidden');
             }
         }
@@ -658,47 +631,47 @@
                 sadness: {
                     text: `Detectamos tristeza. ${voiceTone} que você está mais reservado hoje, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Converse com alguém próximo ou escreva 3 coisas que te trouxeram alegria recentemente.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 anger: {
                     text: `Detectamos raiva. ${voiceTone} estresse, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Respire fundo por 4 segundos e expire lentamente, ou caminhe por 5 minutos para aliviar a tensão.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 happiness: {
                     text: `Detectamos felicidade! ${voiceTone} um estado de alegria, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Aproveite esse momento e compartilhe sua energia positiva com alguém especial.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 surprise: {
                     text: `Detectamos surpresa. ${voiceTone} que algo inesperado chamou sua atenção, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Explore essa situação com atenção plena e anote o que te surpreendeu para refletir depois.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 neutral: {
                     text: `Sua expressão e voz estão neutras. ${voiceTone} que você está calmo, mas talvez reservado, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Tire um momento para relaxar e escreva 3 coisas que te motivam hoje.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 fear: {
                     text: `Detectamos medo. ${voiceTone} ansiedade, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Ouça uma música calma ou pratique uma técnica de respiração: inspire por 4, segure por 4, expire por 4.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 },
                 disgust: {
                     text: `Detectamos desgosto. ${voiceTone} que algo te incomodou, com frequência cardíaca de ${bpm} BPM${bpmContext}.`,
                     suggestion: 'Afaste-se do que está causando desconforto e busque um ambiente tranquilo para se recompor.',
-                    link: 'apoio-emocional.html'
+                    link: 'emotional-assessment.html'
                 }
             };
 
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const diagnosisText = `${diag.text} Sugestão: ${diag.suggestion} Nota: Não substitui avaliação médica.`;
             resultDiv.innerHTML = `
-                <p class="fade-in text-white">${diag.text}</p>
-                <p class="fade-in text-gray-300 mt-2">Sugestão: ${diag.suggestion}</p>
-                <p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
-                <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn text-sm">Obter Apoio</button></div>
+                <p class="fade-scale text-white">${diag.text}</p>
+                <p class="fade-scale text-gray-300 mt-2">Sugestão: ${diag.suggestion}</p>
+                <p class="fade-scale text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
+                <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="tesla-btn text-sm glow-pulse">Obter Apoio</button></div>
             `;
             form.classList.remove('hidden');
             speakDiagnosis(diagnosisText);
