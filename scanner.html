@@ -167,11 +167,11 @@
         <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
         <div id="result" class="neon-box mt-4 hidden">
             <!-- Resultado inicial do diagnóstico -->
-            <div id="diagnosisStep"></div>
+            <div id="diagnosis-step"></div>
             <!-- Etapa de Apoio Emocional -->
-            <div id="emotionalSupportStep" class="hidden"></div>
+            <div id="emotional-support-step" class="hidden"></div>
             <!-- Etapa de Diagnóstico Médico Premium -->
-            <div id="medicalStep" class="hidden"></div>
+            <div id="medical-step" class="hidden"></div>
         </div>
         <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
             <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório</h3>
@@ -429,8 +429,8 @@
         }
 
         function simulateHeartRate() {
-            const baseBpm = 70;
-            const variance = Math.random() * 10 - 5;
+            const baseBpm = 70; // Baseline from healthy adult range
+            const variance = Math.random() * 10 - 5; // ±5 bpm for realism
             return Math.round(baseBpm + variance);
         }
 
@@ -465,25 +465,15 @@
         };
 
         function displayDiagnosis(emotion, bpm, facialData, voiceData, age, resultDiv, form) {
-            const diagnosisStep = document.getElementById('diagnosisStep');
-            const emotionalSupportStep = document.getElementById('emotionalSupportStep');
-            const medicalStep = document.getElementById('medicalStep');
-
-            if (!diagnosisStep || !emotionalSupportStep || !medicalStep) {
-                console.error('Diagnosis steps not found at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro ao carregar os passos do diagnóstico. Tente novamente.</p>';
-                form.classList.remove('hidden');
-                return;
-            }
-
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'dentro da faixa normal para um adulto' : bpm < 60 ? 'abaixo do normal, considere consultar um médico' : 'acima do normal, respire fundo para relaxar';
             const voiceTone = Object.keys(voiceData).length === 1 && voiceData.neutral === 1 ? 'Sua expressão verbal não pôde ser analisada com clareza, mas a transcrição sugeriu raiva.' : `Seu tom de voz sugere um tom ${Object.keys(voiceData)[0] === 'happiness' ? 'alegre' : Object.keys(voiceData)[0] === 'sadness' ? 'melancólico' : 'neutro'}, o que pode indicar`;
             const ageContext = age ? `Com base na sua idade estimada de aproximadamente ${age} anos, ` : '';
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const diagnosisText = diag.text.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext) + (emotion === 'anger' ? ` ${voiceTone}` : '.') + ` ${ageContext}`;
-            const suggestionText = diag.suggestion(age);
-
+            const suggestionText = diag.suggestion(age); // Removida a repetição de ageContext
+            
             // Etapa 1: Mostrar o diagnóstico inicial
+            const diagnosisStep = document.getElementById('diagnosis-step');
             diagnosisStep.innerHTML = `
                 <p class="fade-in text-white">${diagnosisText}</p>
                 <p class="fade-in text-gray-300 mt-2">Sugestão: ${suggestionText}</p>
@@ -494,6 +484,9 @@
             `;
 
             // Etapa 2: Configurar o apoio emocional
+            const emotionalSupportStep = document.getElementById('emotional-support-step');
+            const medicalStep = document.getElementById('medical-step');
+
             document.getElementById('emotionalSupportBtn').addEventListener('click', () => {
                 diagnosisStep.classList.add('hidden');
                 emotionalSupportStep.classList.remove('hidden');
