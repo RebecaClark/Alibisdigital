@@ -450,39 +450,87 @@
 
         const diagnosisMap = {
             sadness: { 
-                emotionalText: "Tô sentindo uma melancolia no teu olhar... Parece que a tristeza tá te acompanhando hoje, né? Aquele peso que não explica direito.", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Mas teu rosto tá pedindo um respiro.", 
-                suggestion: "Para por 2 minutos agora. Fecha os olhos. Respira fundo. Você merece esse cuidado.", 
+                emotionalText: [
+                    "Sua expressão tá mais vazia que minha caneca de café numa segunda-feira de manhã… algo tá pesando aí dentro, né? ☕",
+                    "Olhar caído, sem brilho… parece que seus olhos tavam de folga e esqueceram de avisar! 😄",
+                    "Você tá sorrindo… mas seus olhos não tão acompanhando o rolê, parece que eles não receberam o convite pra festa! 🎉",
+                    "Lábios pressionados, sobrancelhas caídas… parece que tá guardando um drama de novela aí dentro! 📺",
+                    "Sua face tá com sinal de desalento… será que você tá se sentindo o protagonista de um filme triste? 🎥",
+                    "Olhar perdido… parece que sua alegria tá de férias e esqueceu de te mandar um cartão-postal! ✈️",
+                    "Você tá com cara de quem perdeu o controle remoto da felicidade… vamos achar ele juntos? 😂"
+                ], 
+                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo um momento de calma.", 
+                suggestion: "Que tal colocar uma música que te anima ou escrever o que tá te incomodando? Você não tá sozinho!", 
                 link: "apoio-emocional.html" 
             },
             anger: { 
-                emotionalText: "Tô percebendo tensão nos teus traços. Parece que a frustração tá te acompanhando faz um tempo, né? Teu tom de voz carrega um peso que não explica.", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Mas teu corpo tá pedindo pra aliviar essa carga.", 
-                suggestion: "Para por 2 minutos agora. Respira fundo. Ninguém vai te cobrar por cuidar de você.", 
-                link: "apoio-emocional.html" 
-            },
-            happiness: { 
-                emotionalText: "Teu rosto tá contando uma história boa hoje! Sinto um brilho de felicidade nos teus traços. Parece que o dia tá leve, né?", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá em sintonia com essa vibe boa!", 
-                suggestion: "Aproveita essa energia! Que tal compartilhar esse momento com alguém ou fazer algo que te inspire?", 
+                emotionalText: [
+                    "Mandíbula tensa… parece que você tá segurando mais coisa aí dentro do que minha avó no bingo da igreja! 😆",
+                    "Olhar fixo e intenso… será que você tá treinando pra encarar um vilão de filme? 👁️",
+                    "Sobrancelhas arqueadas… alerta de estresse alto, ou só ensaiando pra ser o próximo mestre jedi? ⚡",
+                    "Expressão de raiva contida… parece que tem um vulcão aí dentro pedindo pra explodir com estilo! 🌋",
+                    "Você tá à beira de um colapso… o estresse te convidou pra um date e você aceitou sem querer, né? 😅",
+                    "Mandíbula travada… parece que você tá guardando um monólogo de briga pra soltar depois! 🎤",
+                    "Olhar de quem tá pronto pra discutir com o espelho… relaxa, ele não vai revidar! 😂"
+                ], 
+                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo pra aliviar essa carga.", 
+                suggestion: "Para um pouco e respira fundo. Solta esse peso como se fosse um grito (mas mental, tá?).", 
                 link: "apoio-emocional.html" 
             },
             neutral: { 
-                emotionalText: "Tô vendo uma calma no teu rosto, mas parece que tem algo te segurando... Uma tranquilidade que ainda não tá completa.", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo um pouco mais de leveza.", 
-                suggestion: "Para por 2 minutos agora. Respira fundo e pensa em algo que te motive hoje.", 
+                emotionalText: {
+                    cansaço: [
+                        "Olhos pesados e inchados… parece que o sono te deu um perdido e foi curtir a noite sem você, hein? 😅",
+                        "Expressão exausta… tá carregando o mundo nas costas ou só esqueceu onde estacionou a energia hoje? 🌍",
+                        "Sua pele tá gritando estafa… parece que você tá competindo pro título de ‘herói sem sono’! 🏆",
+                        "Círculos escuros nos olhos… ou será que você tá treinando pra ser panda honorário? 🐼",
+                        "Seu rosto diz: ‘tô no limite’… parece que até teu espelho tá pedindo um intervalo pra você! 😄",
+                        "Olhar de quem brigou com o travesseiro e perdeu feio… o sono te venceu hoje, né? 💤",
+                        "Tá com cara de quem passou a noite contando estrelas… mas sem o glamour da poesia! ✨"
+                    ],
+                    apatia: [
+                        "Fisionomia neutra… parece que você tá no modo zumbi, só esperando o apocalipse pra brilhar, né? 🧟",
+                        "Sem expressão visível… será que você tá treinando pra ser o próximo mestre do poker facial? 🎴",
+                        "Rosto parado, olhos distantes… parece que sua mente tá de férias e esqueceu de te levar! ✈️",
+                        "Você tá ausente… corpo presente, mas a mente tá viajando mais que meu Wi-Fi procurando sinal! 📡",
+                        "Nada no rosto reage… parece que você tá em modo ‘economia de energia emocional’! 🔋",
+                        "Olhar perdido… será que você tá meditando sem saber ou só esquecendo de voltar? 😄",
+                        "Expressão zerada… parece que você tá competindo pro título de ‘mestre do desapego’! 🏅"
+                    ]
+                }, 
+                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo um respiro.", 
+                suggestion: {
+                    cansaço: "Que tal uma pausa de 5 minutinhos pra fechar os olhos e dar um truque nesse sono fujão?",
+                    apatia: "Que tal uma pausa pra focar na tua respiração? Vamos trazer você de volta pro modo humano!"
+                }, 
                 link: "apoio-emocional.html" 
             },
             fear: { 
-                emotionalText: "Tô sentindo uma inquietação nos teus traços... Parece que algo tá te deixando apreensivo, né? Aquele frio na barriga que não explica.", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo um momento de calma.", 
-                suggestion: "Para por 2 minutos agora. Respira fundo, inspira por 4 segundos, segura por 4, e solta por 4. Você consegue.", 
+                emotionalText: [
+                    "Piscar rápido, olhar inquieto… sua ansiedade tá mais acelerada que minha internet tentando abrir um PDF, hein? 📶",
+                    "Movimentos faciais tensos… parece que sua mente tá dirigindo um carro de corrida sem freio! 🏎️",
+                    "Mente a mil, rosto parado… parece que ela tá correndo uma maratona e esqueceu de te avisar! 🏃",
+                    "Expressão alerta demais… você tá esperando um monstro sair do armário ou só ansioso demais? 👹",
+                    "Tensão estampada… parece que sua cabeça tá planejando o futuro enquanto você tenta tomar café! ☕",
+                    "Olhar de quem tá contando os ‘e se’… relaxa, nem o futuro tem roteiro pronto! 😂",
+                    "Piscadas nervosas… parece que seus olhos tão tentando fugir de uma perseguição mental! 🕒"
+                ], 
+                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo um momento de paz.", 
+                suggestion: "Vamos desacelerar juntos: inspira por 4, segura por 4, solta por 4. Você tá seguro aqui!", 
                 link: "apoio-emocional.html" 
             },
-            disgust: { 
-                emotionalText: "Tô vendo um desconforto no teu rosto... Parece que algo tá te incomodando bastante, né? Aquele sentimento que não desce.", 
-                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo pra se afastar disso.", 
-                suggestion: "Para por 2 minutos agora. Respira fundo e tenta se distanciar do que te incomoda. Você merece paz.", 
+            neutral: { // Compensações/Máscaras (como subtipo)
+                emotionalText: [
+                    "Sorriso forçado… parece que você tá tentando pegar o Oscar de melhor atuação, mas ele ainda não chegou, hein? 🎭",
+                    "Expressão travada… quase como se você estivesse se segurando pra não virar um meme viral! 😂",
+                    "Postura facial controlada… parece que você tá ensaiando pra ser o próximo super-herói disfarçado! 🦸",
+                    "Sorrindo com a boca, mas o rosto não acredita… parece que tá dublando uma alegria que não rolou! 🎬",
+                    "Armadura emocional… mais forte que meu celular com 1% de bateria, o mundo tá cobrando demais, né? 📱",
+                    "Cara de quem tá segurando o choro com classe… Oscar de resistência emocional garantido! 🌟",
+                    "Sorriso de vitrine… parece que você tá vendendo felicidade, mas o estoque tá baixo! 😄"
+                ], 
+                physicalText: "Sua frequência cardíaca tá em ${bpm} bpm, ${bpmContext}. Teu corpo tá pedindo pra deixar essa armadura de lado um pouco.", 
+                suggestion: "Tira essa máscara por um segundo e respira fundo. Tá tudo bem ser você mesmo aqui!", 
                 link: "apoio-emocional.html" 
             }
         };
@@ -491,13 +539,25 @@
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'tá de boa, dentro do normal' : bpm < 60 ? 'tá um pouco baixa, que tal consultar um médico?' : 'tá um pouco alta, respira fundo pra relaxar';
             const voiceTone = Object.keys(voiceData).length === 1 && voiceData.neutral === 1 ? 'Tua voz tá difícil de ler hoje, mas parece que tem um peso aí.' : `Teu tom de voz tá ${Object.keys(voiceData)[0] === 'happiness' ? 'leve e alegre' : Object.keys(voiceData)[0] === 'sadness' ? 'carregado de melancolia' : 'bem tranquilo'}, e isso pode dizer muito.`;
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
-            const diagnosisText = `${diag.emotionalText} ${emotion === 'anger' ? voiceTone : ''}`;
+
+            // Escolher aleatoriamente uma frase emocional
+            let emotionalText = Array.isArray(diag.emotionalText) ? diag.emotionalText[Math.floor(Math.random() * diag.emotionalText.length)] : 
+                (typeof diag.emotionalText === 'object' ? 
+                    (emotion === 'neutral' ? 
+                        (facialData && facialData.exhausted ? diag.emotionalText.cansaço[Math.floor(Math.random() * diag.emotionalText.cansaço.length)] : diag.emotionalText.apatia[Math.floor(Math.random() * diag.emotionalText.apatia.length)]) : 
+                        diag.emotionalText[Math.floor(Math.random() * diag.emotionalText.length)]) : 
+                    diag.emotionalText);
+
+            // Ajustar sugestão para subtipo, se aplicável
+            let suggestionText = typeof diag.suggestion === 'object' ? 
+                (facialData && facialData.exhausted ? diag.suggestion.cansaço : diag.suggestion.apatia) : 
+                diag.suggestion;
+
             const physicalText = diag.physicalText.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext);
-            const suggestionText = diag.suggestion;
 
             resultDiv.innerHTML = `
                 <h3 class="text-lg font-semibold text-white mb-2">🧠 Como você tá se sentindo</h3>
-                <p class="fade-in text-white">${diagnosisText}</p>
+                <p class="fade-in text-white">${emotionalText} ${emotion === 'anger' ? voiceTone : ''}</p>
                 <h3 class="text-lg font-semibold text-white mt-4 mb-2">💓 O que teu corpo tá dizendo</h3>
                 <p class="fade-in text-white">${physicalText}</p>
                 <h3 class="text-lg font-semibold text-white mt-4 mb-2">🧘 O que fazer agora</h3>
@@ -506,7 +566,6 @@
                 <div class="mt-4 flex flex-wrap gap-2">
                     <button id="retryBtn" class="futuristic-btn" aria-label="Tentar Novamente">🔄 Tentar Novamente</button>
                     <button id="breathingBtn" class="futuristic-btn" aria-label="Ouvir Respiração Guiada">🎧 Ouvir Respiração Guiada</button>
-                    <button id="alibiBtn" class="futuristic-btn" aria-label="Gerar Álibi Automático">🛑 Gerar Álibi Automático</button>
                     <a href="${diag.link}" class="futuristic-btn" aria-label="Obter Apoio">🫂 Quero Mais Apoio</a>
                 </div>
             `;
@@ -520,11 +579,8 @@
                 alert('Iniciando respiração guiada de 2 minutos... (mock)');
             });
 
-            // Ação para "Gerar Álibi Automático"
-            document.getElementById('alibiBtn').addEventListener('click', () => window.location.href = 'alibi.html');
-
             form.classList.remove('hidden');
-            speakDiagnosis(`${diagnosisText} ${physicalText} ${suggestionText}`);
+            speakDiagnosis(`${emotionalText} ${physicalText} ${suggestionText}`);
         }
     </script>
 </html>
