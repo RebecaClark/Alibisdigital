@@ -459,7 +459,7 @@
             sadness: { text: "A análise indica um estado emocional que pode refletir introspecção ou tristeza, possivelmente influenciado por sua expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Tente conversar com um familiar ou desenhar algo que te traga conforto."; if (age <= 30) return "Que tal ouvir uma música que te acalme ou conversar com um amigo próximo?"; if (age <= 50) return "Considere reservar um momento para relaxar ou escrever sobre o que sente."; return "Experimente meditar por alguns minutos ou conversar com alguém de confiança."; }, link: "apoio-emocional.html" },
             anger: { text: "Os padrões sugerem uma possível frustração ou raiva, detectada em sua intenção verbal e/ou expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Respire fundo e conte até 10, ou peça ajuda a um adulto para conversar."; if (age <= 30) return "Tente uma caminhada rápida ou ouça uma música animada para aliviar a tensão."; if (age <= 50) return "Faça uma pausa e pratique respiração profunda por alguns minutos."; return "Reserve um momento para relaxar e, se possível, pratique uma atividade leve como alongamento."; }, link: "apoio-emocional.html" },
             happiness: { text: "A análise aponta para um estado emocional positivo, possivelmente felicidade, com base em sinais faciais. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Que tal brincar ao ar livre ou compartilhar algo legal com seus amigos?"; if (age <= 30) return "Aproveite para fazer algo que te inspire, como criar uma playlist animada."; if (age <= 50) return "Compartilhe esse momento de alegria com alguém especial."; return "Aproveite esse sentimento e tire um tempo para fazer algo que te renove."; }, link: "apoio-emocional.html" },
-            neutral: { text: "A análise indica um estado emocional equilibrado, com sinais de tranquilidade ou reserva, embora um leve indicativo de apreensão tenha sido detectado na expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Que tal fazer algo divertido, como desenhar ou jogar um jogo que você gosta?"; if (age <= 30) return "Aproveite essa calma para criar algo que te motive, como uma lista de metas para o próximo mês que reflita seus sonhos. Comece agora com um pequeno passo: anote uma ideia que te inspire!"; if (age <= 50) return "Aproveite essa calma para criar algo que te motive, como uma lista de metas para o próximo mês que reflita seus sonhos. Comece agora com um pequeno passo: anote uma ideia que te inspire!"; return "Reserve um tempo para relaxar e pensar em algo que te traga paz."; }, link: "apoio-emocional.html" },
+            neutral: { text: "A análise indica um estado emocional equilibrado, com sinais de tranquilidade ou reserva, embora um leve indicativo de apreensão tenha sido detectado na expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Que tal fazer algo divertido, como desenhar ou jogar um jogo que você gosta?"; if (age <= 30) return "Tire um momento para relaxar e reflita sobre algo que te motive hoje."; if (age <= 50) return "Aproveite essa calma para planejar algo que te traga satisfação."; return "Reserve um tempo para relaxar e pensar em algo que te traga paz."; }, link: "apoio-emocional.html" },
             fear: { text: "Os dados sugerem um estado emocional que pode incluir apreensão ou medo, observado na expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Tente conversar com um adulto ou ouvir uma história que te acalme."; if (age <= 30) return "Ouça uma música tranquila ou pratique respiração lenta para se acalmar."; if (age <= 50) return "Pratique uma respiração profunda (inspire por 4 segundos, segure por 4, expire por 4)."; return "Tente relaxar com uma atividade calma, como ler ou ouvir música suave."; }, link: "apoio-emocional.html" },
             disgust: { text: "A análise aponta para um possível desconforto ou desgosto, detectado em sua expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.", suggestion: age => { if (age < 18) return "Afaste-se do que te incomoda e peça ajuda a um adulto para resolver."; if (age <= 30) return "Saia por um momento e respire ar fresco para se sentir melhor."; if (age <= 50) return "Afaste-se do que te perturba e busque um ambiente mais tranquilo."; return "Tente se distanciar da situação e fazer algo que te traga conforto."; }, link: "apoio-emocional.html" }
         };
@@ -470,7 +470,7 @@
             const ageContext = age ? `Com base na sua idade estimada de aproximadamente ${age} anos, ` : '';
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const diagnosisText = diag.text.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext) + (emotion === 'anger' ? ` ${voiceTone}` : '.') + ` ${ageContext}`;
-            const suggestionText = diag.suggestion(age); // Removida a repetição de ageContext
+            const suggestionText = ageContext + diag.suggestion(age);
             
             // Etapa 1: Mostrar o diagnóstico inicial
             const diagnosisStep = document.getElementById('diagnosis-step');
@@ -493,16 +493,15 @@
                 emotionalSupportStep.innerHTML = `
                     <h3 class="text-lg font-semibold text-white mb-2">Apoio Emocional</h3>
                     <p class="fade-in text-gray-300">Que tal uma respiração guiada de 2 minutos para relaxar e aproveitar sua calma?</p>
-                    <p class="fade-in text-gray-300 mt-2">Agora que você está mais relaxado, que tal explorar uma análise mais profunda da sua saúde emocional e física?</p>
                     <div class="mt-4">
-                        <button id="medicalBtn" class="futuristic-btn" aria-label="Explorar Diagnóstico Médico Premium">Explorar Diagnóstico Médico Premium</button>
+                        <button id="medicalBtn" class="futuristic-btn" aria-label="Explorar Diagnóstico Médico">Explorar Diagnóstico Médico Premium</button>
                     </div>
                     <div class="mt-4">
                         <a href="${diag.link}" class="text-[#22d3ee] hover:underline">Mais opções de apoio emocional</a>
                     </div>
                 `;
                 
-                // Etapa 3: Configurar o diagnóstico médico premium e integração com ORBITA
+                // Etapa 3: Configurar o diagnóstico médico premium
                 document.getElementById('medicalBtn').addEventListener('click', () => {
                     emotionalSupportStep.classList.add('hidden');
                     medicalStep.classList.remove('hidden');
@@ -512,26 +511,9 @@
                         <div class="mt-4">
                             <a href="medical-ia.html" class="futuristic-btn" aria-label="Desbloquear Análise Completa">Desbloquear Análise Completa Agora</a>
                         </div>
-                        <div class="mt-4">
-                            <button id="orbitaBtn" class="futuristic-btn" aria-label="Visualizar em ORBITA">Visualizar em ORBITA</button>
-                        </div>
                         <p class="fade-in text-gray-500 text-xs mt-2">Oferta válida até 31/12/2025.</p>
                     `;
                     speakDiagnosis(`Com base na sua idade de ${age} anos e frequência cardíaca de ${bpm} batimentos por minuto, sua saúde merece uma análise mais profunda. Desbloqueie agora para saber mais.`);
-
-                    // Integração com ORBITA
-                    document.getElementById('orbitaBtn').addEventListener('click', () => {
-                        const orbitaWindow = window.open('orbita.html', '_blank');
-                        orbitaWindow.addEventListener('load', () => {
-                            orbitaWindow.postMessage({
-                                type: 'emotionData',
-                                facialData: facialData,
-                                voiceData: voiceData,
-                                bpm: bpm,
-                                age: age
-                            }, '*');
-                        });
-                    });
                 });
 
                 speakDiagnosis('Que tal uma respiração guiada de 2 minutos para relaxar e aproveitar sua calma?');
