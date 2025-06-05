@@ -354,34 +354,7 @@
     </footer>
 
     <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#22d3ee' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.3, random: true },
-                size: { value: 2, random: true },
-                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
-                move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
-            }
-        });
-
-        const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ';
-        const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
-        const OPENAI_API_KEY = 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
-        const mockFaceResponse = {
-            faces: [{
-                attributes: {
-                    emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 }
-                }
-            }]
-        };
-
+       
         function speakDiagnosis(text) {
             try {
                 const utterance = new SpeechSynthesisUtterance(text);
@@ -394,7 +367,36 @@
                 console.error('Speech synthesis error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
             }
         }
+particlesJS('particles-js', {
+    particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#22d3ee' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.3, random: true },
+        size: { value: 2, random: true },
+        line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
+        move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
+    },
+    interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+    }
+});
 
+const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
+const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
+console.log("Definindo OPENAI_API_KEY...");
+const OPENAI_API_KEY = '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';
+console.log("OPENAI_API_KEY definida com sucesso:", OPENAI_API_KEY.length);
+
+const mockFaceResponse = {
+    faces: [{
+        attributes: {
+            emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 }
+        }
+    }]
+};
         document.addEventListener('DOMContentLoaded', async () => {
             const video = document.getElementById('video');
             const analyzeButton = document.getElementById('analyze-button');
