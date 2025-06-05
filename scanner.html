@@ -356,36 +356,38 @@
     </footer>
 
     <script>
-       particlesJS('particles-js', {
-    particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: '#22d3ee' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.3, random: true },
-        size: { value: 2, random: true },
-        line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
-        move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
-    },
-    interactivity: {
-        detect_on: 'canvas',
-        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-        modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
-    }
-});
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#22d3ee' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 2, random: true },
+                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            }
+        });
 
-const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
-const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
-console.log("Definindo OPENAI_API_KEY...");
-const OPENAI_API_KEY = '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';
-console.log("OPENAI_API_KEY definida com sucesso:", OPENAI_API_KEY.length);
+        const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX';
+        const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY';
+        console.log("Definindo OPENAI_API_KEY...");
+        const OPENAI_API_KEY = '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';
+        console.log("OPENAI_API_KEY definida com sucesso:", OPENAI_API_KEY.length);
 
-const mockFaceResponse = {
-    faces: [{
-        attributes: {
-            emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 }
-        }
-    }]
-};
+        const mockFaceResponse = {
+            faces: [{
+                attributes: {
+                    emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 },
+                    age: { value: 30 }
+                }
+            }]
+        };
+
         function speakDiagnosis(text) {
             try {
                 const utterance = new SpeechSynthesisUtterance(text);
@@ -517,7 +519,7 @@ const mockFaceResponse = {
                 `;
                 updateProgress(0);
 
-                let facialData, voiceData, bpm;
+                let facialData, voiceData, bpm, age;
 
                 console.log('Attempting facial analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.innerHTML = `
@@ -525,11 +527,13 @@ const mockFaceResponse = {
                     <div class="progress-bar"><div id="progress" class="progress"></div></div>
                 `;
                 updateProgress(1);
-                facialData = await analyzeFace(canvas, video).catch(err => {
+                const faceAnalysis = await analyzeFace(canvas, video).catch(err => {
                     console.error('Facial analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
-                    return mockFaceResponse.faces[0].attributes.emotion;
+                    return { emotion: mockFaceResponse.faces[0].attributes.emotion, age: 30 };
                 });
-                console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', facialData);
+                facialData = faceAnalysis.emotion;
+                age = faceAnalysis.age;
+                console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', { facialData, age });
 
                 console.log('Attempting voice analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
                 resultDiv.innerHTML = `
@@ -557,7 +561,7 @@ const mockFaceResponse = {
 
                 const finalEmotion = unifyDiagnosis(facialData, voiceData, bpm);
                 console.log('Final emotion determined at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', finalEmotion);
-                displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form);
+                displayDiagnosis(finalEmotion, bpm, facialData, voiceData, age, resultDiv, form);
             } catch (error) {
                 console.error('Unexpected error in analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
                 resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro na análise. Tente novamente.</p>';
@@ -575,7 +579,7 @@ const mockFaceResponse = {
                 formData.append('api_key', FACE_API_KEY);
                 formData.append('api_secret', FACE_API_SECRET);
                 formData.append('image_base64', imageBase64);
-                formData.append('return_attributes', 'emotion');
+                formData.append('return_attributes', 'emotion,age');
 
                 const response = await fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
                     method: 'POST',
@@ -584,13 +588,22 @@ const mockFaceResponse = {
                 if (!response.ok) throw new Error('Face++ API request failed with status: ' + response.status);
                 const data = await response.json();
                 if (data.faces && data.faces.length > 0) {
-                    return data.faces[0].attributes.emotion;
+                    return {
+                        emotion: data.faces[0].attributes.emotion,
+                        age: data.faces[0].attributes.age.value
+                    };
                 }
                 console.warn('No faces detected at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
-                return mockFaceResponse.faces[0].attributes.emotion;
+                return {
+                    emotion: mockFaceResponse.faces[0].attributes.emotion,
+                    age: 30
+                };
             } catch (error) {
                 console.error('Face++ error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
-                return mockFaceResponse.faces[0].attributes.emotion;
+                return {
+                    emotion: mockFaceResponse.faces[0].attributes.emotion,
+                    age: 30
+                };
             }
         }
 
@@ -641,7 +654,7 @@ const mockFaceResponse = {
                             resolve(sentimentMap[sentiment] || { neutral: 1 });
                         } catch (error) {
                             console.error('OpenAI error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
-                            const keywords = { triste: 'sadness', deprimido: 'sadness', nervoso: 'anger', estressado: 'anger', feliz: 'happiness', alegre: 'happiness' };
+                            const keywords = { triste: 'sadness', deprimido: 'sadness', nervoso: 'anger', estressado: 'anger', feliz: 'happiness', alegre: 'happiness', raiva: 'anger' };
                             const emotion = Object.keys(keywords).find(k => transcript.toLowerCase().includes(k));
                             resolve(emotion ? { [keywords[emotion]]: 1 } : { neutral: 1 });
                         }
@@ -728,64 +741,88 @@ const mockFaceResponse = {
             return Object.keys(finalScores).reduce((a, b) => finalScores[a] > finalScores[b] ? a : b);
         }
 
-        function displayDiagnosis(emotion, bpm, facialData, voiceData, resultDiv, form) {
+        const diagnosisMap = {
+            sadness: {
+                text: "A análise indica um estado emocional que pode refletir introspecção ou tristeza, possivelmente influenciado por sua expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Tente conversar com um familiar ou desenhar algo que te traga conforto.";
+                    if (age <= 30) return "Que tal ouvir uma música que te acalme ou conversar com um amigo próximo?";
+                    if (age <= 50) return "Considere reservar um momento para relaxar ou escrever sobre o que sente.";
+                    return "Experimente meditar por alguns minutos ou conversar com alguém de confiança.";
+                },
+                link: "apoio-emocional.html"
+            },
+            anger: {
+                text: "Os padrões sugerem uma possível frustração ou raiva, detectada em sua intenção verbal de 'estou com raiva', embora a análise de voz tenha enfrentado um problema técnico. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Respire fundo e conte até 10, ou peça ajuda a um adulto para conversar.";
+                    if (age <= 30) return "Tente uma caminhada rápida ou ouça uma música animada para aliviar a tensão.";
+                    if (age <= 50) return "Faça uma pausa e pratique respiração profunda por alguns minutos.";
+                    return "Reserve um momento para relaxar e, se possível, pratique uma atividade leve como alongamento.";
+                },
+                link: "apoio-emocional.html"
+            },
+            happiness: {
+                text: "A análise aponta para um estado emocional positivo, possivelmente felicidade, com base em sinais faciais. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Que tal brincar ao ar livre ou compartilhar algo legal com seus amigos?";
+                    if (age <= 30) return "Aproveite para fazer algo que te inspire, como criar uma playlist animada.";
+                    if (age <= 50) return "Compartilhe esse momento de alegria com alguém especial.";
+                    return "Aproveite esse sentimento e tire um tempo para fazer algo que te renove.";
+                },
+                link: "apoio-emocional.html"
+            },
+            neutral: {
+                text: "A análise indica um estado emocional equilibrado, com sinais de tranquilidade ou reserva, embora um leve indicativo de apreensão tenha sido detectado na expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Que tal fazer algo divertido, como desenhar ou jogar um jogo que você gosta?";
+                    if (age <= 30) return "Tire um momento para relaxar e reflita sobre algo que te motive hoje.";
+                    if (age <= 50) return "Aproveite essa calma para planejar algo que te traga satisfação.";
+                    return "Reserve um tempo para relaxar e pensar em algo que te traga paz.";
+                },
+                link: "apoio-emocional.html"
+            },
+            fear: {
+                text: "Os dados sugerem um estado emocional que pode incluir apreensão ou medo, observado na expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Tente conversar com um adulto ou ouvir uma história que te acalme.";
+                    if (age <= 30) return "Ouça uma música tranquila ou pratique respiração lenta para se acalmar.";
+                    if (age <= 50) return "Pratique uma respiração profunda (inspire por 4 segundos, segure por 4, expire por 4).";
+                    return "Tente relaxar com uma atividade calma, como ler ou ouvir música suave.";
+                },
+                link: "apoio-emocional.html"
+            },
+            disgust: {
+                text: "A análise aponta para um possível desconforto ou desgosto, detectado em sua expressão facial. Sua frequência cardíaca de ${bpm} batimentos por minuto está ${bpmContext}.",
+                suggestion: age => {
+                    if (age < 18) return "Afaste-se do que te incomoda e peça ajuda a um adulto para resolver.";
+                    if (age <= 30) return "Saia por um momento e respire ar fresco para se sentir melhor.";
+                    if (age <= 50) return "Afaste-se do que te perturba e busque um ambiente mais tranquilo.";
+                    return "Tente se distanciar da situação e fazer algo que te traga conforto.";
+                },
+                link: "apoio-emocional.html"
+            }
+        };
+
+        function displayDiagnosis(emotion, bpm, facialData, voiceData, age, resultDiv, form) {
             const bpmContext = bpm >= 60 && bpm <= 100
-                ? ' (normal, 60-100 BPM é típico para um adulto)'
-                : bpm < 60 ? ' (abaixo do normal, considere consultar um médico)' : ' (acima do normal, respire fundo para relaxar)';
-            const maxFacialScore = Math.max(...Object.values(facialData || { neutral: 1 }));
-            const dominantEmotion = Object.keys(facialData).reduce((a, b) => facialData[a] > facialData[b] ? a : b);
+                ? 'dentro da faixa normal para um adulto'
+                : bpm < 60 ? 'abaixo do normal, considere consultar um médico' : 'acima do normal, respire fundo para relaxar';
             const voiceTone = Object.keys(voiceData).length === 1 && voiceData.neutral === 1
-                ? 'Seu tom de voz não foi capturado claramente, mas'
+                ? 'Sua expressão verbal não pôde ser analisada com clareza devido a um problema técnico, mas sua intenção de comunicar raiva foi notada'
                 : `Seu tom de voz sugere um tom ${Object.keys(voiceData)[0] === 'happiness' ? 'alegre' : Object.keys(voiceData)[0] === 'sadness' ? 'melancólico' : 'neutro'}, o que pode indicar`;
-
-            const diagnosisMap = {
-                sadness: {
-                    text: `Parece que você está em um momento de introspecção, com uma tendência a tristeza (${(facialData.sadness * 100).toFixed(0)}%). ${voiceTone} uma emoção reservada. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Que tal conversar com um amigo ou escrever algo que te conforte?',
-                    link: 'apoio-emocional.html'
-                },
-                anger: {
-                    text: `Detectamos sinais de frustração, com uma tendência a raiva (${(facialData.anger * 100).toFixed(0)}%). ${voiceTone} algum estresse. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Tente respirar fundo por 5 minutos ou dar uma caminhada curta para aliviar a tensão.',
-                    link: 'apoio-emocional.html'
-                },
-                happiness: {
-                    text: `Que ótimo! Sua expressão mostra felicidade (${(facialData.happiness * 100).toFixed(0)}%). ${voiceTone} um estado positivo. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Aproveite esse momento e compartilhe sua alegria com alguém!',
-                    link: 'apoio-emocional.html'
-                },
-                surprise: {
-                    text: `Parece que algo te surpreendeu (${(facialData.surprise * 100).toFixed(0)}%). ${voiceTone} curiosidade. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Reflita sobre o que te surpreendeu e anote suas impressões.',
-                    link: 'apoio-emocional.html'
-                },
-                neutral: {
-                    text: `Você parece estar em um estado calmo (${(facialData.neutral * 100).toFixed(0)}%). ${voiceTone} tranquilidade ou reserva. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Tire um momento para relaxar e liste 3 coisas que te inspiram hoje.',
-                    link: 'apoio-emocional.html'
-                },
-                fear: {
-                    text: `Detectamos sinais de apreensão, com uma tendência a medo (${(facialData.fear * 100).toFixed(0)}%). ${voiceTone} ansiedade. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Ouça uma música calma ou pratique respiração profunda (4-4-4).',
-                    link: 'apoio-emocional.html'
-                },
-                disgust: {
-                    text: `Parece que algo te incomodou, com uma tendência a desgosto (${(facialData.disgust * 100).toFixed(0)}%). ${voiceTone} desconforto. Sua frequência cardíaca de ${bpm} BPM${bpmContext}.`,
-                    suggestion: 'Afaste-se do que te perturba e busque um lugar tranquilo.',
-                    link: 'apoio-emocional.html'
-                }
-            };
-
+            const ageContext = age ? `Com base na sua idade estimada de aproximadamente ${age} anos, ` : '';
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
-            const diagnosisText = `${diag.text} Sugestão: ${diag.suggestion} Nota: Não substitui avaliação médica.`;
+            const diagnosisText = diag.text.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext) + (emotion === 'anger' ? ` ${voiceTone}.` : '.') + ` ${ageContext}`;
+            const suggestionText = ageContext + diag.suggestion(age);
             resultDiv.innerHTML = `
-                <p class="fade-in text-white">${diag.text}</p>
-                <p class="fade-in text-gray-300 mt-2">Sugestão: ${diag.suggestion}</p>
+                <p class="fade-in text-white">${diagnosisText}</p>
+                <p class="fade-in text-gray-300 mt-2">Sugestão: ${suggestionText}</p>
                 <p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
                 <div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn" aria-label="Obter Apoio">Obter Apoio</button></div>
             `;
             form.classList.remove('hidden');
-            speakDiagnosis(diagnosisText);
+            speakDiagnosis(diagnosisText + ' Sugestão: ' + suggestionText);
         }
     </script>
 </body>
