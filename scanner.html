@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Scanner Emocional com IA da Álibis Digital. Teste grátis por 3 dias!"> 
+    <meta name="description" content="Scanner Emocional com IA da Álibis Digital. Teste grátis por 3 dias!">
     <meta name="keywords" content="scanner emocional, IA, bem-estar, saúde mental">
     <meta name="author" content="Álibis Digital">
     <title>Scanner Emocional - Álibis Digital</title>
@@ -165,7 +165,14 @@
             <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
         </div>
         <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Analisar Estado Emocional</button>
-        <div id="result" class="neon-box mt-4 hidden"></div>
+        <div id="result" class="neon-box mt-4 hidden">
+            <!-- Resultado inicial do diagnóstico -->
+            <div id="diagnosis-step"></div>
+            <!-- Etapa de Apoio Emocional -->
+            <div id="emotional-support-step" class="hidden"></div>
+            <!-- Etapa de Diagnóstico Médico Premium -->
+            <div id="medical-step" class="hidden"></div>
+        </div>
         <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
             <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório</h3>
             <div class="flex flex-col sm:flex-row gap-2">
@@ -464,7 +471,54 @@
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const diagnosisText = diag.text.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext) + (emotion === 'anger' ? ` ${voiceTone}` : '.') + ` ${ageContext}`;
             const suggestionText = ageContext + diag.suggestion(age);
-            resultDiv.innerHTML = `<p class="fade-in text-white">${diagnosisText}</p><p class="fade-in text-gray-300 mt-2">Sugestão: ${suggestionText}</p><p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p><div class="mt-4"><button onclick="window.location.href='${diag.link}'" class="futuristic-btn" aria-label="Obter Apoio">Obter Apoio</button></div>`;
+            
+            // Etapa 1: Mostrar o diagnóstico inicial
+            const diagnosisStep = document.getElementById('diagnosis-step');
+            diagnosisStep.innerHTML = `
+                <p class="fade-in text-white">${diagnosisText}</p>
+                <p class="fade-in text-gray-300 mt-2">Sugestão: ${suggestionText}</p>
+                <p class="fade-in text-gray-500 text-xs mt-2">Nota: Não substitui avaliação médica.</p>
+                <div class="mt-4">
+                    <button id="emotionalSupportBtn" class="futuristic-btn" aria-label="Obter Apoio Emocional">Obter Apoio Emocional</button>
+                </div>
+            `;
+
+            // Etapa 2: Configurar o apoio emocional
+            const emotionalSupportStep = document.getElementById('emotional-support-step');
+            const medicalStep = document.getElementById('medical-step');
+
+            document.getElementById('emotionalSupportBtn').addEventListener('click', () => {
+                diagnosisStep.classList.add('hidden');
+                emotionalSupportStep.classList.remove('hidden');
+                emotionalSupportStep.innerHTML = `
+                    <h3 class="text-lg font-semibold text-white mb-2">Apoio Emocional</h3>
+                    <p class="fade-in text-gray-300">Que tal uma respiração guiada de 2 minutos para relaxar e aproveitar sua calma?</p>
+                    <div class="mt-4">
+                        <button id="medicalBtn" class="futuristic-btn" aria-label="Explorar Diagnóstico Médico">Explorar Diagnóstico Médico Premium</button>
+                    </div>
+                    <div class="mt-4">
+                        <a href="${diag.link}" class="text-[#22d3ee] hover:underline">Mais opções de apoio emocional</a>
+                    </div>
+                `;
+                
+                // Etapa 3: Configurar o diagnóstico médico premium
+                document.getElementById('medicalBtn').addEventListener('click', () => {
+                    emotionalSupportStep.classList.add('hidden');
+                    medicalStep.classList.remove('hidden');
+                    medicalStep.innerHTML = `
+                        <h3 class="text-lg font-semibold text-white mb-2">Diagnóstico Médico Premium</h3>
+                        <p class="fade-in text-gray-300">Com base na sua idade (${age} anos) e frequência cardíaca (${bpm} bpm), sua saúde merece uma análise mais profunda.</p>
+                        <div class="mt-4">
+                            <a href="medical-ia.html" class="futuristic-btn" aria-label="Desbloquear Análise Completa">Desbloquear Análise Completa Agora</a>
+                        </div>
+                        <p class="fade-in text-gray-500 text-xs mt-2">Oferta válida até 31/12/2025.</p>
+                    `;
+                    speakDiagnosis(`Com base na sua idade de ${age} anos e frequência cardíaca de ${bpm} batimentos por minuto, sua saúde merece uma análise mais profunda. Desbloqueie agora para saber mais.`);
+                });
+
+                speakDiagnosis('Que tal uma respiração guiada de 2 minutos para relaxar e aproveitar sua calma?');
+            });
+
             form.classList.remove('hidden');
             speakDiagnosis(diagnosisText + ' Sugestão: ' + suggestionText);
         }
