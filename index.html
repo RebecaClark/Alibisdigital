@@ -11,7 +11,11 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
     html { scroll-behavior: smooth; }
-    body { position: relative; overflow-x: hidden; }
+    body { 
+      position: relative; 
+      overflow-x: hidden; 
+      padding-top: 80px; /* Ajuste para compensar a altura do header fixo */
+    }
     #particles-js {
       position: absolute;
       width: 100%;
@@ -65,6 +69,11 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 0.1);
       animation: holoGlow 2s infinite alternate;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
     }
     @keyframes holoGlow {
       0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
@@ -85,7 +94,7 @@
       border-radius: 8px;
       padding: 8px 0;
       position: absolute;
-      top: 200px;
+      top: 60px; /* Ajustado para ficar logo abaixo do header */
       left: 0;
       display: none;
       width: 200px;
@@ -109,7 +118,7 @@
       position: static;
     }
     .futuristic-btn {
-      background: linear-gradient(45deg, #7C3AED, #22d3AED);
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
       box-shadow: 0 0 15px #22d3ee;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       animation: neonPulse 1.5s infinite alternate;
@@ -222,7 +231,7 @@
   <div id="particles-js"></div>
 
   <!-- Cabeçalho com Efeito Holográfico -->
-  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+  <header class="holo-nav">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <a href="/">
@@ -286,11 +295,9 @@
     </div>
   </header>
 
-  <div class="h-20"></div>
-
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
-    <div id="chat-bubble">
+    <div id="chat-bubble" class="futuristic-btn">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5l-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
       </svg>
@@ -314,13 +321,13 @@
         Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
       </p>
       <div class="mb-10 relative">
-        <video autoplay muted playsinline loop preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+        <video autoplay playsinline loop preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
           <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação">Tocar Vídeo</button>
         </video>
       </div>
       <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis">🔍 Teste o Scanner Grátis</a>
-      <p class="text-sm text-gray-400 mt-4 fade-in">🚨 Oferta válida até 05/06/2025 ou até acabarem as vagas! Restam <span id="vagas">12</span> vagas!</p>
+      <p class="text-sm text-gray-400 mt-6 fade-in">🚨 Oferta válida até 05/06/2025 ou até acabarem as vagas! Restam <span id="vagas">12</span> vagas!</p>
       <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
         <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
         <div class="flex flex-col sm:flex-row gap-4">
@@ -345,7 +352,7 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Scanner Emocional</h3>
         <p class="mb-3">Identifique estresse ou cansaço em segundos com IA.</p>
-        <a href="/scanner.html" class="text-[#22d3ee] font-semibold hover:underline shine">Experimente agora →</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Experimente o scanner agora">Experimente agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
         <div class="text-[#22d3ee] mb-4 scale-up">
@@ -356,7 +363,7 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Avaliação Detalhada</h3>
         <p class="mb-3">Relatórios personalizados para seu bem-estar.</p>
-        <a href="/emotional-evaluation.html" class="text-[#22d3ee] font-semibold hover:underline shine">Faça agora →</a>
+        <a href="/emotional-evaluation.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <div class="text-[#22d3ee] mb-4 scale-up">
@@ -366,7 +373,7 @@
         </div>
         <h3 class="text-2xl font-semibold mb-4">Álibis Personalizados</h3>
         <p class="mb-3">Desculpas realistas com textos e provas digitais.</p>
-        <a href="/planos.html" class="text-[#22d3ee] font-semibold hover:underline shine">Desbloqueie agora →</a>
+        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Desbloqueie álibis agora">Desbloqueie agora →</a>
       </div>
     </div>
     <div class="mt-12 pulse">
@@ -381,32 +388,32 @@
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho com dicas personalizadas.</p>
-        <a href="/reducao-alimentacao.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/reducao-alimentacao.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
         <p class="mb-4 text-gray-400">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
-        <a href="/saude-emocional.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/saude-emocional.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
-        <a href="/rotinas.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/rotinas.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4">Melhore Seu Sono com Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
-        <a href="/equilibre.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/equilibre.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-2xl font-semibold mb-4">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
         <p class="mb-4 text-gray-400">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
-        <a href="/fortalecer-relacionamentos.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/fortalecer-relacionamentos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-2xl font-semibold mb-4">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
         <p class="mb-4 text-gray-400">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
-        <a href="/equilibre.html" class="text-[#22d3ee] font-semibold hover:underline shine">Leia agora →</a>
+        <a href="/equilibre.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
     </div>
     <div class="mt-12 pulse">
@@ -440,7 +447,7 @@
       <div class="mb-10">
         <span class="text-lg text-gray-400 italic">Oferta válida até 05/06/2025 ou até acabarem as vagas! Restam <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas!</span>
       </div>
-      <a href="/planos.html" class="inline-block futuristic-btn text-white font-semibold py-3 px-8 rounded-full shadow-md" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
+      <a href="/planos.html" class="futuristic-btn text-white font-semibold py-3 px-8 rounded-full shadow-md" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
       <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
     </div>
   </section>
@@ -456,8 +463,8 @@
       </div>
       <p class="mt-4 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
       <div class="flex justify-center gap-4 mt-4">
-        <img src="https://via.placeholder.com/50?text=SSL" alt="Selo de segurança SSL" class="h-10">
-        <img src="https://via.placeholder.com/50?text=Privacidade" alt="Selo de privacidade garantida" class="h-10">
+        <img src="/assets/ssl-seal.png" alt="Selo de segurança SSL" class="h-10">
+        <img src="/assets/privacy-seal.png" alt="Selo de privacidade garantida" class="h-10">
       </div>
     </div>
   </section>
@@ -669,6 +676,19 @@
       addMessage(response, false);
       speak(response);
     }
+
+    // Controle do Vídeo
+    const video = document.querySelector('video');
+    const playButton = document.getElementById('play-video');
+    playButton.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playButton.textContent = 'Pausar Vídeo';
+      } else {
+        video.pause();
+        playButton.textContent = 'Tocar Vídeo';
+      }
+    });
 
     // Eventos de Inicialização
     document.addEventListener('DOMContentLoaded', () => {
