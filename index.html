@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Descubra e gerencie suas emoções com o scanner emocional de IA mais avançado do mercado. Seguro, rápido e futurista - Álibis Digital.">
   <meta name="keywords" content="scanner emocional com IA, bem-estar emocional, álibis digitais, inteligência artificial emocional, tecnologia de ponta, saúde mental, estresse">
   <meta name="author" content="Álibis Digital">
@@ -14,7 +14,11 @@
     body { 
       position: relative; 
       overflow-x: hidden; 
-      padding-top: 80px; /* Ajuste para compensar a altura do header fixo */
+      padding-top: 60px; /* Ajuste para header fixo em telas menores */
+      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: white;
+      margin: 0;
     }
     #particles-js {
       position: absolute;
@@ -74,6 +78,7 @@
       left: 0;
       width: 100%;
       z-index: 50;
+      height: 60px;
     }
     @keyframes holoGlow {
       0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
@@ -98,6 +103,7 @@
       left: 0;
       display: none;
       width: 200px;
+      z-index: 60;
     }
     .dropdown-menu a, .dropdown-menu-mobile a {
       display: block;
@@ -105,7 +111,7 @@
       color: #e5e7eb;
       transition: all 0.3s ease;
     }
-    .dropdown-menu a:hover, .dropdown-menu-mobile:hover a {
+    .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
       background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
@@ -116,6 +122,7 @@
     .dropdown-menu-mobile {
       width: 100%;
       position: static;
+      display: none;
     }
     .futuristic-btn {
       background: linear-gradient(45deg, #7C3AED, #22d3ee);
@@ -140,8 +147,8 @@
     #chat-bubble {
       background: linear-gradient(45deg, #7C3AED, #22d3ee);
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -155,15 +162,16 @@
       backdrop-filter: blur(10px);
       border: 1px solid #22d3ee;
       border-radius: 15px;
-      width: 300px;
-      height: 400px;
+      width: 90%;
+      max-width: 300px;
+      height: 350px;
       position: absolute;
-      bottom: 80px;
+      bottom: 70px;
       right: 0;
       box-shadow: 0 0 20px #22d3ee;
     }
     #chat-messages {
-      height: 300px;
+      height: 250px;
       overflow-y: auto;
       padding: 10px;
       color: #e5e7eb;
@@ -172,9 +180,10 @@
       background: rgba(55, 65, 81, 0.8);
       border: 1px solid #22d3ee;
       border-radius: 20px;
-      padding: 10px;
+      padding: 8px;
       width: 100%;
       color: white;
+      font-size: 14px;
     }
     .listening-indicator {
       display: none;
@@ -215,24 +224,30 @@
       100% { transform: translateX(120%) rotate(20deg); }
     }
     @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      h2 { font-size: 1.8rem; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
       .max-w-4xl { max-width: 100%; padding: 0 1rem; }
       .grid { grid-template-columns: 1fr; }
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       video { width: 100%; height: auto; }
       #chat-window { 
-        width: 80%; /* Reduzido para evitar aparência "espremida" */
-        right: 10%; /* Centralizar melhor */
-        height: 350px; /* Reduzir altura para melhor proporção */
+        width: 80%; 
+        right: 10%; 
+        height: 300px; 
       }
-      #chat-messages {
-        height: 250px; /* Ajustar altura das mensagens */
-      }
-      #chat-input {
-        padding: 8px; /* Reduzir padding para melhor visual */
-      }
+      #chat-messages { height: 200px; }
+      #chat-input { padding: 6px; font-size: 12px; }
+      .holo-nav { height: 50px; }
+      .dropdown-menu { display: none !important; }
+      #navbar { display: none; }
+      #mobile-menu { padding: 10px; }
+      #hero { padding: 10px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .max-w-4xl { max-width: 90%; }
+      video { max-width: 80%; }
+      #chat-window { max-width: 350px; }
     }
   </style>
 </head>
@@ -242,10 +257,10 @@
 
   <!-- Cabeçalho com Efeito Holográfico -->
   <header class="holo-nav">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
       <div class="flex items-center space-x-3">
         <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-8 w-auto fade-in">
         </a>
       </div>
       <div class="flex items-center space-x-3">
@@ -257,8 +272,8 @@
           </button>
         </div>
       </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <div class="dropdown relative">
+      <nav id="navbar" class="hidden md:flex space-x-4 text-sm items-center">
+        <div class="dropdown relative group">
           <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
@@ -268,11 +283,11 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+          <div class="dropdown-menu absolute top-10 left-0 hidden group-hover:block bg-[rgba(31,41,55,0.9)] border border-[#22d3ee] rounded-lg shadow-lg">
+            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
@@ -281,7 +296,7 @@
         <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
       </nav>
     </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+    <div id="mobile-menu" class="md:hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
           <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
@@ -291,10 +306,10 @@
             </svg>
           </button>
           <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
+            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Scanner com IA</a>
+            <a href="/emotional-evaluation.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/medical-ai.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
@@ -308,13 +323,13 @@
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
     <div id="chat-bubble" class="futuristic-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5l-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
       </svg>
     </div>
     <div id="chat-window">
       <div id="chat-messages"></div>
-      <div class="p-4">
+      <div class="p-2">
         <input id="chat-input" type="text" class="w-full" aria-label="Digite ou fale sua mensagem" placeholder="Digite ou fale...">
         <div id="listening-indicator" class="listening-indicator">🎙️ Ouvindo...</div>
       </div>
@@ -322,181 +337,181 @@
   </div>
 
   <!-- Hero -->
-  <section id="hero" class="text-white text-center py-20 px-6 relative">
+  <section id="hero" class="text-white text-center py-10 px-4 relative">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight fade-in">
         Transforme Seu Dia com IA Emocional
       </h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
+      <p class="text-base md:text-lg text-gray-300 mb-6 fade-in">
         Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
       </p>
-      <div class="mb-10 relative">
-        <video id="hero-video" autoplay playsinline loop preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+      <div class="mb-6 relative">
+        <video id="hero-video" autoplay playsinline loop preload="auto" class="w-full max-w-2xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
         </video>
-        <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Pausar vídeo de apresentação">Pausar Vídeo</button>
+        <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-2 px-4 rounded-full text-sm" aria-label="Pausar vídeo de apresentação">Pausar Vídeo</button>
       </div>
-      <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis">🔍 Teste o Scanner Grátis</a>
-      <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
-        <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <input type="email" placeholder="Seu e-mail" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas">
-          <button class="futuristic-btn text-white py-3 px-6 rounded-lg" aria-label="Inscrever-se para receber dicas exclusivas">Inscrever-se</button>
+      <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold shadow-lg w-full md:w-auto" aria-label="Teste o scanner emocional grátis">🔍 Teste o Scanner Grátis</a>
+      <div class="mt-6 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-4 rounded-xl border border-[#22d3ee] shadow-lg">
+        <h3 class="text-lg font-semibold mb-2 fade-in">Receba Dicas Exclusivas</h3>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input type="email" placeholder="Seu e-mail" class="p-2 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas">
+          <button class="futuristic-btn text-white py-2 px-4 rounded-lg w-full sm:w-auto" aria-label="Inscrever-se para receber dicas exclusivas">Inscrever-se</button>
         </div>
-        <p class="text-sm text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
+        <p class="text-xs text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
       </div>
     </div>
   </section>
 
   <!-- Benefícios -->
-  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine">O Que Você Ganha com o Álibis Digital?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <div class="text-[#22d3ee] mb-4 scale-up">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+  <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">O Que Você Ganha com o Álibis Digital?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <div class="text-[#22d3ee] mb-2 scale-up">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
             <path d="M15 8a7.002 7.002 0 0 1-11.027 5.733c.107-.325.347-.573.677-.65a1 1 0 0 0 .707-.707 1 1 0 0 1 .65-.677A4 4 0 0 0 11 8V7a4 4 0 0 0-8 0v1a4.992 4.992 0 0 0 .336 1.813M12 8a5 5 0 0 1-1.367 3.443"/>
             <path d="M16 8A8 8 0 0 1 0 8v1a5 5 0 1 0 10 0V8a3 3 0 1 1 6 0v1a7 7 0 0 1-7 7h-1.5"/>
           </svg>
         </div>
-        <h3 class="text-2xl font-semibold mb-4">Scanner Emocional</h3>
-        <p class="mb-3">Identifique estresse ou cansaço em segundos com IA.</p>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Experimente o scanner agora">Experimente agora →</a>
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Scanner Emocional</h3>
+        <p class="mb-2 text-sm md:text-base">Identifique estresse ou cansaço em segundos com IA.</p>
+        <a href="/scanner.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Experimente o scanner agora">Experimente agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
-        <div class="text-[#22d3ee] mb-4 scale-up">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <div class="text-[#22d3ee] mb-2 scale-up">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/>
             <path d="M12 6a1 1 0 0 0-1 1v6a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 12.586V7a1 1 0 0 0-1-1z"/>
           </svg>
         </div>
-        <h3 class="text-2xl font-semibold mb-4">Avaliação Detalhada</h3>
-        <p class="mb-3">Relatórios personalizados para seu bem-estar.</p>
-        <a href="/emotional-evaluation.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Avaliação Detalhada</h3>
+        <p class="mb-2 text-sm md:text-base">Relatórios personalizados para seu bem-estar.</p>
+        <a href="/emotional-evaluation.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <div class="text-[#22d3ee] mb-4 scale-up">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <div class="text-[#22d3ee] mb-2 scale-up">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
           </svg>
         </div>
-        <h3 class="text-2xl font-semibold mb-4">Álibis Personalizados</h3>
-        <p class="mb-3">Desculpas realistas com textos e provas digitais.</p>
-        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Desbloqueie álibis agora">Desbloqueie agora →</a>
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Álibis Personalizados</h3>
+        <p class="mb-2 text-sm md:text-base">Desculpas realistas com textos e provas digitais.</p>
+        <a href="/planos.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Desbloqueie álibis agora">Desbloqueie agora →</a>
       </div>
     </div>
-    <div class="mt-12 pulse">
-      <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Assine o plano premium">Assine o Plano Premium</a>
+    <div class="mt-6 pulse">
+      <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full" aria-label="Assine o plano premium">Assine o Plano Premium</a>
     </div>
   </section>
 
   <!-- Dicas de Bem-Estar -->
-  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine">Dicas de Bem-Estar</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
-        <p class="mb-4 text-gray-400">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho com dicas personalizadas.</p>
-        <a href="/reducao-alimentacao.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+  <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">Dicas de Bem-Estar</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Como Reduzir o Estresse no Trabalho com Inteligência Artificial</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Descubra como o scanner facial de estresse e o Abili podem aliviar a tensão no trabalho.</p>
+        <a href="/reducao-alimentacao.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
-        <p class="mb-4 text-gray-400">Organize suas contas e reduza a ansiedade financeira com o Abili e apoio emocional por IA.</p>
-        <a href="/saude-emocional.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Organize suas contas e reduza a ansiedade financeira com o Abili.</p>
+        <a href="/saude-emocional.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4">Como Prevenir o Burnout com Tecnologia de Inteligência Artificial</h3>
-        <p class="mb-4 text-gray-400">Evite o esgotamento com o scanner facial e triagem médica por IA, criando uma rotina equilibrada.</p>
-        <a href="/rotinas.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Como Prevenir o Burnout com Tecnologia de IA</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Evite o esgotamento com o scanner facial e triagem por IA.</p>
+        <a href="/rotinas.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4">Melhore Seu Sono com Inteligência Artificial</h3>
-        <p class="mb-4 text-gray-400">Durma melhor com o Abili e o scanner facial, que identificam problemas de sono causados por estresse.</p>
-        <a href="/equilibre.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Melhore Seu Sono com Inteligência Artificial</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Durma melhor com o Abili e o scanner facial.</p>
+        <a href="/equilibre.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <h3 class="text-2xl font-semibold mb-4">Como a IA Pode Melhorar Sua Produtividade no Trabalho</h3>
-        <p class="mb-4 text-gray-400">Aumente sua eficiência com o Abili e o scanner facial, otimizando sua rotina profissional.</p>
-        <a href="/fortalecer-relacionamentos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Como a IA Pode Melhorar Sua Produtividade</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Aumente sua eficiência com o Abili e o scanner facial.</p>
+        <a href="/fortalecer-relacionamentos.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-2xl font-semibold mb-4">Equilibre Sua Vida Pessoal com o Apoio da Inteligência Artificial</h3>
-        <p class="mb-4 text-gray-400">Encontre harmonia com o Abili e apoio emocional por IA, organizando sua vida pessoal.</p>
-        <a href="/equilibre.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Equilibre Sua Vida Pessoal com IA</h3>
+        <p class="mb-2 text-sm md:text-base text-gray-400">Encontre harmonia com o Abili e apoio por IA.</p>
+        <a href="/equilibre.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
     </div>
   </section>
 
   <!-- Prova Social -->
-  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-    <h2 class="text-4xl font-bold mb-10 shine">O Que Nossos Usuários Dizem</h2>
-    <p class="text-lg mb-8 fade-in"><span id="user-count">532</span> pessoas já testaram o scanner hoje!</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-        <p class="italic text-gray-400 mb-4">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito em minutos."</p>
+  <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">O Que Nossos Usuários Dizem</h2>
+    <p class="text-base md:text-lg mb-4 fade-in"><span id="user-count">532</span> pessoas já testaram o scanner hoje!</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <p class="italic text-gray-400 mb-2">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito."</p>
         <p class="font-semibold text-[#22d3ee]">- Ana S., 34 anos</p>
       </div>
-      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <p class="italic text-gray-400 mb-4">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
+      <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <p class="italic text-gray-400 mb-2">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
         <p class="font-semibold text-[#22d3ee]">- João P., 28 anos</p>
       </div>
     </div>
   </section>
 
   <!-- Chamada Final -->
-  <section class="py-20 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Transforme Suas Emoções Agora!</h2>
-      <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">
+  <section class="py-12 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-2xl md:text-4xl font-extrabold mb-4 pulse">🚨 Transforme Suas Emoções Agora!</h2>
+      <p class="text-base md:text-xl mb-4 text-gray-300 fade-in">
         Teste o Scanner e receba insights personalizados para o seu dia.
       </p>
-      <a href="/planos.html" class="futuristic-btn text-white font-semibold py-3 px-8 rounded-full shadow-md" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
-      <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
+      <a href="/planos.html" class="futuristic-btn text-white font-semibold py-2 px-6 rounded-full shadow-md w-full md:w-auto" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
+      <p class="mt-2 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
     </div>
   </section>
 
   <!-- Checkout -->
-  <section id="checkout" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+  <section id="checkout" class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 shine">Escolha Seu Plano</h2>
-      <p class="text-lg mb-8 fade-in">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://pagamento.exemplo.com/pix" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX">Pagar com PIX</a>
-        <a href="https://pagamento.exemplo.com/cartao" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão">Pagar com Cartão</a>
+      <h2 class="text-2xl md:text-3xl font-bold mb-4 shine">Escolha Seu Plano</h2>
+      <p class="text-base md:text-lg mb-4 fade-in">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por apenas R$ 9,90/mês.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-2">
+        <a href="https://pagamento.exemplo.com/pix" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX">Pagar com PIX</a>
+        <a href="https://pagamento.exemplo.com/cartao" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão">Pagar com Cartão</a>
       </div>
-      <p class="mt-4 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
-      <div class="flex justify-center gap-4 mt-4">
-        <img src="/assets/ssl-seal.png" alt="Selo de segurança SSL" class="h-10">
-        <img src="/assets/privacy-seal.png" alt="Selo de privacidade garantida" class="h-10">
+      <p class="mt-2 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos!</p>
+      <div class="flex justify-center gap-2 mt-2">
+        <img src="/assets/ssl-seal.png" alt="Selo de segurança SSL" class="h-8">
+        <img src="/assets/privacy-seal.png" alt="Selo de privacidade garantida" class="h-8">
       </div>
     </div>
   </section>
 
   <!-- Suporte -->
-  <section id="suporte" class="bg-[rgba(15,23,42,0.8)] py-16 px-6 text-white animate-on-scroll">
+  <section id="suporte" class="bg-[rgba(15,23,42,0.8)] py-12 px-4 text-white animate-on-scroll">
     <div class="max-w-3xl mx-auto text-center">
-      <h3 class="text-3xl font-bold mb-4 float">Estamos Aqui para Ajudar</h3>
-      <p class="text-gray-400 mb-8 fade-in">Suporte imediato com discrição total.</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full flex items-center" aria-label="Fale conosco pelo WhatsApp">
-          <svg class="w-5 h-5 mr-2 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
+      <h3 class="text-2xl md:text-3xl font-bold mb-2 float">Estamos Aqui para Ajudar</h3>
+      <p class="text-gray-400 mb-4 fade-in">Suporte imediato com discrição total.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-2">
+        <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-medium py-2 px-4 rounded-full flex items-center w-full sm:w-auto" aria-label="Fale conosco pelo WhatsApp">
+          <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
           WhatsApp
         </a>
-        <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6c3d8f7d6dbded5dec4d3ded0dec3d6db99d4d8da" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full" aria-label="Envie um e-mail para o suporte">Enviar E-mail</a>
+        <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6c3d8f7d6dbded5dec4d3ded0dec3d6db99d4d8da" class="futuristic-btn text-white font-medium py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Envie um e-mail para o suporte">Enviar E-mail</a>
       </div>
     </div>
   </section>
 
   <!-- Rodapé -->
-  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-8 animate-on-scroll">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
       <div class="slide-in-left">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
+        <h3 class="text-white text-xl md:text-2xl font-bold mb-2 shine">Álibis Digital</h3>
         <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegue</h4>
-        <ul class="space-y-2">
+        <h4 class="text-white font-semibold mb-2">Navegue</h4>
+        <ul class="space-y-1">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
@@ -511,8 +526,8 @@
         </ul>
       </div>
       <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4">Contato</h4>
-        <ul class="space-y-2">
+        <h4 class="text-white font-semibold mb-2">Contato</h4>
+        <ul class="space-y-1">
           <li class="fade-in">E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d2e22239c2d3a">[email protected]</a></li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
           <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
@@ -521,28 +536,28 @@
         </ul>
       </div>
     </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    <div class="text-center mt-4">
+      <p class="text-xs">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
-    // Inicializar Partículas
+    // Inicializar Partículas (otimizado para mobile)
     particlesJS('particles-js', {
       "particles": {
-        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, // Reduzido para mobile
         "color": { "value": "#22d3ee" },
         "shape": { "type": "circle" },
-        "opacity": { "value": 0.5, "random": true },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#22d3ee", "opacity": 0.4, "width": 1 },
-        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+        "opacity": { "value": 0.3, "random": true },
+        "size": { "value": 2, "random": true },
+        "line_linked": { "enable": true, "distance": 100, "color": "#22d3ee", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
       },
       "interactivity": {
         "detect_on": "canvas",
-        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-        "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+        "events": { "onhover": { "enable": false }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, // Desativado hover em mobile
+        "modes": { "push": { "particles_nb": 2 } }
       },
       "retina_detect": true
     });
@@ -568,16 +583,15 @@
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
       recognition.interimResults = false;
+      recognition.lang = 'pt-BR';
     }
 
     const speak = (text) => {
-      if (!synth) {
-        console.warn("API de síntese de voz não suportada neste navegador.");
-        return;
+      if (synth && 'speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'pt-BR';
+        synth.speak(utter);
       }
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'pt-BR';
-      synth.speak(utter);
     };
 
     const addMessage = (message, isUser = false) => {
@@ -594,9 +608,8 @@
         const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
         addMessage(welcomeMessage, false);
         speak(welcomeMessage);
-        // Pausar o vídeo ao abrir o chat para evitar interferência
         const video = document.getElementById('hero-video');
-        if (!video.paused) {
+        if (video && !video.paused) {
           video.pause();
           document.getElementById('play-video').textContent = 'Tocar Vídeo';
         }
@@ -614,12 +627,8 @@
     });
 
     if (recognition) {
-      recognition.onstart = () => {
-        listeningIndicator.classList.add('active');
-      };
-      recognition.onend = () => {
-        listeningIndicator.classList.remove('active');
-      };
+      recognition.onstart = () => listeningIndicator.classList.add('active');
+      recognition.onend = () => listeningIndicator.classList.remove('active');
       recognition.onresult = (event) => {
         const spokenText = event.results[0][0].transcript.toLowerCase();
         chatInput.value = spokenText;
@@ -630,26 +639,22 @@
       recognition.onerror = (event) => {
         console.error("Erro no reconhecimento de voz:", event.error);
         listeningIndicator.classList.remove('active');
-        addMessage("Desculpe, o reconhecimento de voz não está disponível no seu navegador. Por favor, digite sua mensagem.", false);
+        addMessage("Desculpe, digite sua mensagem.", false);
       };
-      recognition.lang = 'pt-BR';
       chatInput.addEventListener('focus', () => {
         recognition.start();
-        // Pausar o vídeo ao iniciar o reconhecimento de voz
         const video = document.getElementById('hero-video');
-        if (!video.paused) {
+        if (video && !video.paused) {
           video.pause();
           document.getElementById('play-video').textContent = 'Tocar Vídeo';
         }
       });
     } else {
-      chatInput.addEventListener('focus', () => {
-        addMessage("Desculpe, o reconhecimento de voz não está disponível no seu navegador. Por favor, digite sua mensagem.", false);
-      });
+      chatInput.addEventListener('focus', () => addMessage("Reconhecimento de voz indisponível. Digite.", false));
     }
 
     function respondToUser(message) {
-      let response = "Não entendi, mas posso ajudar! Que tal testar o scanner, explorar o blog ou pedir suporte?";
+      let response = "Não entendi, mas posso ajudar! Teste o scanner, explore o blog ou peça suporte.";
       const redirectMap = {
         'suporte': '/suporte.html',
         'blog': '/blog.html',
@@ -661,22 +666,20 @@
 
       for (let keyword in redirectMap) {
         if (message.includes(keyword)) {
-          response = `Vou te levar para a página de ${keyword}. Confirma?`;
+          response = `Vou te levar para ${keyword}. Confirma?`;
           addMessage(response, false);
           speak(response);
           setTimeout(() => {
-            const confirm = window.confirm("Confirmar redirecionamento?");
-            if (confirm) {
+            if (window.confirm("Confirmar redirecionamento?")) {
               window.location.href = redirectMap[keyword];
             } else {
-              addMessage("Redirecionamento cancelado. Como posso ajudar agora?", false);
-              speak("Redirecionamento cancelado. Como posso ajudar agora?");
+              addMessage("Redirecionamento cancelado. Como ajudar?", false);
+              speak("Redirecionamento cancelado. Como ajudar?");
             }
           }, 1000);
           return;
         }
       }
-
       addMessage(response, false);
       speak(response);
     }
@@ -684,41 +687,35 @@
     // Controle do Vídeo
     const video = document.getElementById('hero-video');
     const playButton = document.getElementById('play-video');
-    playButton.addEventListener('click', () => {
-      if (video.paused) {
-        video.play();
-        playButton.textContent = 'Pausar Vídeo';
-      } else {
-        video.pause();
-        playButton.textContent = 'Tocar Vídeo';
-      }
-    });
+    if (video && playButton) {
+      playButton.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          playButton.textContent = 'Pausar Vídeo';
+        } else {
+          video.pause();
+          playButton.textContent = 'Tocar Vídeo';
+        }
+      });
+    }
 
-    // Eventos de Inicialização
+    // Animações e Menu
     document.addEventListener('DOMContentLoaded', () => {
       const sections = document.querySelectorAll('.animate-on-scroll');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible');
         });
       }, { threshold: 0.1 });
       sections.forEach(section => observer.observe(section));
 
-      // Menu Hamburger
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
       const servicesToggle = document.getElementById('services-toggle');
       const servicesMenu = document.getElementById('services-menu');
 
-      hamburger?.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-
-      servicesToggle?.addEventListener('click', () => {
-        servicesMenu.classList.toggle('hidden');
-      });
+      hamburger?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+      servicesToggle?.addEventListener('click', () => servicesMenu.classList.toggle('hidden'));
     });
   </script>
 </body>
