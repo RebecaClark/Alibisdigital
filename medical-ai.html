@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cuide da sua saúde com pré-diagnósticos por IA na Álibis Digital. Monitore sua saúde mental e física agora!">
-  <meta name="keywords" content="diagnóstico médico, medical IA, scanner emocional, apoio emocional, criar álibi">
+  <meta name="description" content="Obtenha um pré-diagnóstico com IA e um diagnóstico validado por médicos reais via API certificada na Álibis Digital.">
+  <meta name="keywords" content="diagnóstico médico com IA, pré-diagnóstico, saúde com tecnologia, álibis digitais, bem-estar">
   <meta name="author" content="Álibis Digital">
   <title>Diagnóstico Médico com IA - Álibis Digital</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,12 +14,10 @@
     body { 
       position: relative; 
       overflow-x: hidden; 
-      min-height: 100vh; 
-      color: #e5e7eb; 
-      text-shadow: 0 0.5px rgba(0, 0, 0, 0.5); 
+      padding-top: 80px; /* Ajuste para compensar a altura do header fixo */
     }
-    #particles-js { 
-      position: fixed;
+    #particles-js {
+      position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
@@ -30,91 +28,192 @@
     .fade-in { animation: fadeIn 1s ease-in-out; }
     .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
     .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
-    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
-    .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: neonPulse 1.5s infinite alternate; }
-    .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee; }
-    @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; } }
+    .bounce-in { animation: bounceIn 1.2s ease-in-out; }
+    .pulse { animation: pulse 2s infinite ease-in-out; }
+    .float { animation: float 4s infinite ease-in-out; }
+    .scale-up { animation: scaleUp 0.8s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      75% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
     .holo-nav {
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 0.1);
       animation: holoGlow 2s infinite alternate;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
     }
     @keyframes holoGlow {
-      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee; }
-      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
     }
-    .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
-    .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
-    .dropdown-menu {
+    .holo-nav a, .holo-nav button {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .holo-nav a:hover, .holo-nav button:hover {
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
+    }
+    .dropdown-menu, .dropdown-menu-mobile {
       background: rgba(31, 41, 55, 0.9);
       border: 1px solid #22d3ee;
       box-shadow: 0 0 10px #22d3ee;
       border-radius: 8px;
       padding: 8px 0;
       position: absolute;
-      top: 100%;
+      top: 60px;
       left: 0;
       display: none;
       width: 200px;
     }
-    .dropdown-menu a {
+    .dropdown-menu a, .dropdown-menu-mobile a {
       display: block;
       padding: 8px 16px;
       color: #e5e7eb;
       transition: all 0.3s ease;
     }
-    .dropdown-menu a:hover {
+    .dropdown-menu a:hover, .dropdown-menu-mobile:hover a {
       background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
     }
-    .dropdown:hover .dropdown-menu { display: block; }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
     .dropdown-menu-mobile {
-      background: rgba(31, 41, 55, 0.9);
-      border: 1px solid #22d3ee;
-      box-shadow: 0 0 10px #22d3ee;
-      border-radius: 8px;
-      padding: 8px 0;
       width: 100%;
       position: static;
     }
-    .dropdown-menu-mobile a {
-      display: block;
-      padding: 8px 16px;
-      color: #e5e7eb;
-      transition: all 0.3s ease;
+    .futuristic-btn {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      box-shadow: 0 0 15px #22d3ee;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: neonPulse 1.5s infinite alternate;
     }
-    .dropdown-menu-mobile a:hover {
+    .futuristic-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
+    }
+    @keyframes neonPulse {
+      0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
+      100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+    }
+    #chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    #chat-bubble {
+      background: linear-gradient(45deg, #7C3AED, #22d3ee);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px #22d3ee;
+      animation: pulse 2s infinite;
+    }
+    #chat-window {
+      display: none;
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #22d3ee;
+      border-radius: 15px;
+      width: 300px;
+      height: 400px;
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      box-shadow: 0 0 20px #22d3ee;
+    }
+    #chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      color: #e5e7eb;
+    }
+    #chat-input {
       background: rgba(55, 65, 81, 0.8);
+      border: 1px solid #22d3ee;
+      border-radius: 20px;
+      padding: 10px;
+      width: 100%;
+      color: white;
+    }
+    .listening-indicator {
+      display: none;
       color: #22d3ee;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .listening-indicator.active {
+      display: block;
     }
     .animate-on-scroll {
       opacity: 0;
       transform: translateY(50px);
-      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+      transition: opacity 0.9s ease-in-out, transform 0.9s ease-out;
     }
     .animate-on-scroll.visible {
       opacity: 1;
       transform: translateY(0);
     }
-    .neon-box {
-      background: rgba(31, 41, 55, 0.9);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 10px #22d3ee;
-      animation: fadeIn 1s ease-in-out;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
+    .shine {
+      position: relative;
+      overflow: hidden;
     }
-    .form-step { display: none; }
-    .form-step.active { display: block; }
-    .progress-bar { background: #22d3ee; height: 4px; transition: width 0.3s ease; }
+    .shine::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+      transform: rotate(20deg);
+      animation: shine 4s infinite linear;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-120%) rotate(20deg); }
+      100% { transform: translateX(120%) rotate(20deg); }
+    }
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.8rem; }
@@ -122,20 +221,43 @@
       .grid { grid-template-columns: 1fr; }
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-      section { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+      video { width: 100%; height: auto; }
+      #chat-window { 
+        width: 80%; /* Reduzido para evitar aparência "espremida" */
+        right: 10%; /* Centralizar melhor */
+        height: 350px; /* Reduzir altura para melhor proporção */
+      }
+      #chat-messages {
+        height: 250px; /* Ajustar altura das mensagens */
+      }
+      #chat-input {
+        padding: 8px; /* Reduzir padding para melhor visual */
+      }
+      /* Ajustes para formulários responsivos */
+      .form-container select, .form-container input, .form-container textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 0.9rem;
+      }
+      .form-container label {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
-<body class="bg-transparent text-white font-sans">
+<body class="bg-[#0b1120] text-white font-sans">
+  <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
-  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+
+  <!-- Cabeçalho com Efeito Holográfico -->
+  <header class="holo-nav">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center">
-        <a href="/index.html" aria-label="Página inicial da Álibis Digital">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto" onerror="this.src='https://via.placeholder.com/100x40?text=Logo'; console.error('Erro ao carregar logo.png')">
+      <div class="flex items-center space-x-3">
+        <a href="/">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
         </a>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center space-x-3">
         <div class="md:hidden">
           <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,199 +279,370 @@
           </button>
           <div class="dropdown-menu">
             <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
+            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition">Avaliação Emocional</a>
             <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
-            <a href="/criar-alibis-realistas-ia.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+            <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
         <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
         <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
-        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Obter Diagnóstico">Obter Diagnóstico</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
       <nav class="flex flex-col items-center space-y-4">
         <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center">
+          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
             <span>Serviços</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="services-menu" class="dropdown-menu-mobile hidden">
             <a href="/scanner.html" class="hover:bg-gray-700">Scanner com IA</a>
-            <a href="/apoio-emocional.html" class="hover:bg-gray-700">Avaliação Emocional</a>
+            <a href="/emotional-evaluation.html" class="hover:bg-gray-700">Avaliação Emocional</a>
             <a href="/medical-ai.html" class="hover:bg-gray-700">Diagnóstico Médico</a>
-            <a href="/criar-alibis-realistas-ia.html" class="hover:bg-gray-700">Criar Álibi</a>
+            <a href="/alibi.html" class="hover:bg-gray-700">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
         <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
         <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Obter Diagnóstico">Obter Diagnóstico</a>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
       </nav>
     </div>
   </header>
-  <div class="h-20"></div>
 
-  <section id="hero" class="text-white text-center py-20 px-6 relative animate-on-scroll">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight fade-in">Cuide da Sua Saúde com IA 🤖</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">Obtenha um pré-diagnóstico preciso e proteja sua saúde mental e física.</p>
-      <div class="flex justify-center gap-4">
-        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Obter Diagnóstico Completo">Obter Diagnóstico Completo</a>
-        <a href="/index.html" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Teste Grátis">🔍 Teste Grátis</a>
+  <!-- Chat Interativo com Voz -->
+  <div id="chat-container">
+    <div id="chat-bubble" class="futuristic-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5l-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+      </svg>
+    </div>
+    <div id="chat-window">
+      <div id="chat-messages"></div>
+      <div class="p-4">
+        <input id="chat-input" type="text" class="w-full" aria-label="Digite ou fale sua mensagem" placeholder="Digite ou fale...">
+        <div id="listening-indicator" class="listening-indicator">🎙️ Ouvindo...</div>
       </div>
-      <p class="text-sm mt-4 text-red-400">🚨 Apenas 12 vagas para diagnóstico completo!</p>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section id="hero" class="text-white text-center py-20 px-6 relative">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight fade-in">
+        Diagnóstico Médico com IA 🤖
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
+        Uma inovação da Álibis Digital: pré-diagnóstico com IA e diagnóstico validado por médicos reais via API certificada.
+      </p>
+      <a href="#pre-diagnostico" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Comece agora a obter seu diagnóstico">Comece Agora</a>
+      <!-- Removida a mensagem de oferta expirada -->
     </div>
   </section>
 
-  <section class="py-10 px-6 text-center animate-on-scroll">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 shine">Monitore Sua Saúde Agora</h2>
-      <p class="text-lg mb-6 text-gray-300 fade-in">Responda ao questionário abaixo para um pré-diagnóstico personalizado em minutos.</p>
-      <div id="email-form" class="neon-box mb-6">
-        <h3 class="text-xl font-semibold mb-2">Comece Aqui</h3>
-        <input type="email" id="email" placeholder="Seu e-mail" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee] mb-2" required>
-        <button onclick="startDiagnosis()" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Iniciar Pré-Diagnóstico</button>
-      </div>
-      <div id="diagnosis-form" class="neon-box hidden">
-        <div class="w-full bg-gray-800 rounded-full h-2 mb-4">
-          <div id="progress-bar" class="progress-bar" style="width: 12.5%"></div>
+  <!-- Pré-Diagnóstico -->
+  <section id="pre-diagnostico" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine">Pré-Diagnóstico com IA</h2>
+    <p class="text-lg mb-8 fade-in">Selecione as opções abaixo, 3 por vez, para receber seu pré-diagnóstico personalizado.</p>
+    <div class="form-container max-w-2xl mx-auto">
+      <p class="text-sm text-gray-400 mb-4">Passo 1 de 6</p>
+      <div class="form-step space-y-6">
+        <div>
+          <label class="block mb-2">1. Você tem alguma doença crônica?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhuma</option>
+            <option>Hipertensão</option>
+            <option>Diabetes</option>
+            <option>Asma</option>
+            <option>Outra (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
         </div>
-        <div id="step-1" class="form-step active">
-          <h3 class="text-xl font-semibold mb-2">Passo 1 de 8</h3>
-          <label class="block mb-2">1. Você está passando por estresse significativo?</label>
-          <select id="stress" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
+        <div>
+          <label class="block mb-2">2. Tem histórico de cirurgias, hospitalizações ou alergias?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
             <option>Nenhum</option>
-            <option>Leve</option>
-            <option>Moderado</option>
-            <option>Alto</option>
+            <option>Cirurgia</option>
+            <option>Hospitalização</option>
+            <option>Alergia</option>
+            <option>Outro (especifique abaixo)</option>
           </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
         </div>
-        <div id="step-2" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 2 de 8</h3>
-          <label class="block mb-2">2. Você tem tido problemas de sono ou apetite?</label>
-          <select id="sleep-appetite" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
-            <option>Sem alterações</option>
-            <option>Insônia</option>
-            <option>Falta de Apetite</option>
-            <option>Ambos</option>
+        <div>
+          <label class="block mb-2">3. Está tomando algum medicamento regularmente?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhum</option>
+            <option>Sim (especifique abaixo)</option>
           </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
         </div>
-        <div id="step-3" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 3 de 8</h3>
-          <label class="block mb-2">3. Quais são seus principais sintomas? (Selecione até 3)</label>
-          <div class="space-y-2">
-            <label><input type="checkbox" name="symptoms" value="Cansaço"> Cansaço</label>
-            <label><input type="checkbox" name="symptoms" value="Ansiedade"> Ansiedade</label>
-            <label><input type="checkbox" name="symptoms" value="Dor de Cabeça"> Dor de Cabeça</label>
-            <label><input type="checkbox" name="symptoms" value="Febre"> Febre</label>
-            <label><input type="checkbox" name="symptoms" value="Outro"> Outro</label>
-            <input type="text" id="other-symptom" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee] hidden mt-2" placeholder="Especifique">
+      </div>
+      <!-- Outros passos (2 a 6) -->
+      <div class="form-step space-y-6 hidden">
+        <div>
+          <label class="block mb-2">4. Já foi tratado(a) por doenças mentais?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhum</option>
+            <option>Depressão</option>
+            <option>Ansiedade</option>
+            <option>Outro (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
+        </div>
+        <div>
+          <label class="block mb-2">5. Há casos de doenças graves na sua família?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhum</option>
+            <option>Câncer</option>
+            <option>Diabetes</option>
+            <option>Doença Cardíaca</option>
+            <option>Outro (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
+        </div>
+        <div>
+          <label class="block mb-2">6. Quais são seus principais sintomas? (Selecione até 3)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="mr-2"> Febre</label>
+            <label><input type="checkbox" class="mr-2"> Tosse</label>
+            <label><input type="checkbox" class="mr-2"> Dor de Cabeça</label>
+            <label><input type="checkbox" class="mr-2"> Cansaço</label>
+            <label><input type="checkbox" class="mr-2"> Dor Abdominal</label>
+            <label><input type="checkbox" class="mr-2"> Outro (especifique abaixo)</label>
           </div>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
         </div>
-        <div id="step-4" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 4 de 8</h3>
-          <label class="block mb-2">4. Há quantos dias você sente esses sintomas?</label>
-          <select id="duration" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
+      </div>
+      <div class="form-step space-y-6 hidden">
+        <div>
+          <label class="block mb-2">7. Há quantos dias você está sentindo isso?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Selecione...</option>
             <option>1-3 dias</option>
             <option>4-7 dias</option>
             <option>8-14 dias</option>
             <option>Mais de 14 dias</option>
           </select>
         </div>
-        <div id="step-5" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 5 de 8</h3>
-          <label class="block mb-2">5. Já foi tratado(a) por doenças mentais?</label>
-          <select id="mental-history" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
-            <option>Nenhum</option>
-            <option>Depressão</option>
-            <option>Ansiedade</option>
-            <option>Outro</option>
+        <div>
+          <label class="block mb-2">8. Você tem tido problemas de sono ou alterações no apetite?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Sem alterações</option>
+            <option>Insônia</option>
+            <option>Falta de Apetite</option>
+            <option>Ambos</option>
           </select>
-          <input type="text" id="other-mental" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee] hidden mt-2" placeholder="Especifique">
         </div>
-        <div id="step-6" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 6 de 8</h3>
-          <label class="block mb-2">6. Há casos de doenças graves na sua família?</label>
-          <select id="family-history" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
-            <option>Nenhum</option>
-            <option>Câncer</option>
-            <option>Diabetes</option>
-            <option>Doença Cardíaca</option>
-            <option>Outro</option>
+        <div>
+          <label class="block mb-2">9. Notou alguma mudança na visão, audição ou equilíbrio?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhuma</option>
+            <option>Visão Embaçada</option>
+            <option>Zumbido nos Ouvidos</option>
+            <option>Tontura</option>
+            <option>Outro (especifique abaixo)</option>
           </select>
-          <input type="text" id="other-family" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee] hidden mt-2" placeholder="Especifique">
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
         </div>
-        <div id="step-7" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 7 de 8</h3>
-          <label class="block mb-2">7. Você mediu sua pressão arterial recentemente?</label>
-          <select id="blood-pressure" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
+      </div>
+      <div class="form-step space-y-6 hidden">
+        <div>
+          <label class="block mb-2">10. Qual é seu peso (kg) e altura (m)?</label>
+          <div class="flex gap-4">
+            <input type="number" placeholder="Peso (kg)" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <input type="number" placeholder="Altura (m)" class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+          </div>
+        </div>
+        <div>
+          <label class="block mb-2">11. Qual é sua dieta habitual?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Não informado</option>
+            <option>Balanceada (frutas, vegetais, proteínas)</option>
+            <option>Rica em Carboidratos</option>
+            <option>Baixa em Frutas/Vegetais</option>
+            <option>Outro (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
+        </div>
+        <div>
+          <label class="block mb-2">12. Fuma, bebe álcool ou usa outras substâncias?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhum</option>
+            <option>Fumo</option>
+            <option>Álcool</option>
+            <option>Ambos</option>
+            <option>Outro (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
+        </div>
+      </div>
+      <div class="form-step space-y-6 hidden">
+        <div>
+          <label class="block mb-2">13. Você está passando por algum estresse significativo?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhum</option>
+            <option>Leve</option>
+            <option>Moderado</option>
+            <option>Alto</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-2">14. Você mediu sua pressão arterial ou temperatura recentemente?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
             <option>Não medido</option>
             <option>Normal</option>
             <option>Alta</option>
             <option>Baixa</option>
+            <option>Febre</option>
           </select>
         </div>
-        <div id="step-8" class="form-step">
-          <h3 class="text-xl font-semibold mb-2">Passo 8 de 8</h3>
-          <label class="block mb-2">8. Você viajou recentemente ou esteve exposto(a) a pessoas doentes?</label>
-          <select id="exposure" class="w-full p-2 rounded bg-gray-800 text-white border border-[#22d3ee]" required>
-            <option value="">Selecione</option>
+        <div>
+          <label class="block mb-2">15. Percebeu inchaço ou alterações na cor da pele?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Nenhuma</option>
+            <option>Inchaço</option>
+            <option>Vermelhidão</option>
+            <option>Icterícia</option>
+            <option>Outro (especifique abaixo)</option>
+          </select>
+          <textarea class="mt-2 p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" placeholder="Especifique aqui..." rows="2"></textarea>
+        </div>
+      </div>
+      <div class="form-step space-y-6 hidden">
+        <div>
+          <label class="block mb-2">16. Você viajou recentemente ou esteve exposto(a) a pessoas doentes?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
             <option>Nenhuma</option>
             <option>Viagem Recente</option>
             <option>Exposição a Doentes</option>
             <option>Ambos</option>
           </select>
         </div>
-        <div class="flex justify-between mt-4">
-          <button onclick="prevStep()" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full text-sm shine hidden" id="prev-btn">Anterior</button>
-          <button onclick="nextStep()" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full text-sm shine" id="next-btn">Próximo</button>
-          <button onclick="submitDiagnosis()" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full text-sm shine hidden" id="submit-btn">Finalizar</button>
+        <div>
+          <label class="block mb-2">17. Qual sua faixa etária?</label>
+          <select class="p-3 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]">
+            <option>Selecione...</option>
+            <option>Menos de 18</option>
+            <option>18-30</option>
+            <option>31-50</option>
+            <option>51-70</option>
+            <option>Mais de 70</option>
+          </select>
         </div>
       </div>
-      <div id="diagnosis-result" class="neon-box mt-6 hidden">
-        <h3 class="text-xl font-semibold mb-2">🩺 Pré-Diagnóstico</h3>
-        <p id="diagnosis-text">Aguarde...</p>
-        <p class="mt-2">💡 Para um diagnóstico validado por médicos, assine nosso plano Premium.</p>
-        <div class="flex justify-center gap-4 mt-4">
-          <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Obter Diagnóstico Completo</a>
-          <a href="/criar-alibis-realistas-ia.html" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine">Criar Álibi</a>
-        </div>
+      <div class="flex justify-between mt-6">
+        <button id="prev-step" class="futuristic-btn text-white py-2 px-4 rounded-full" disabled>Anterior</button>
+        <button id="next-step" class="futuristic-btn text-white py-2 px-4 rounded-full">Próximo</button>
+        <button id="submit-form" class="futuristic-btn text-white py-2 px-4 rounded-full hidden">Finalizar</button>
       </div>
+    </div>
+    <div id="result" class="mt-10 hidden">
+      <h3 class="text-xl font-semibold mb-4 fade-in">🩺 Pré-Diagnóstico:</h3>
+      <p class="text-gray-400 mb-4" id="diagnosis-result">Aguarde...</p>
+      <p class="text-sm text-gray-500 fade-in">💡 Para um diagnóstico mais profundo, obtenha o Diagnóstico Completo.</p>
     </div>
   </section>
 
-  <section class="py-10 px-6 text-center animate-on-scroll">
+  <!-- Resultado -->
+  <section id="resultado" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll hidden">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 shine">O que Nossos Usuários Dizem</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="neon-box fade-in">
-          <p>"O pré-diagnóstico me ajudou a entender meus sintomas e buscar ajuda rapidamente."</p>
-          <p class="mt-2 font-semibold">- Ana S., 38 anos</p>
-        </div>
-        <div class="neon-box fade-in">
-          <p>"A IA foi precisa e o processo é muito simples. Recomendo!"</p>
-          <p class="mt-2 font-semibold">- Carlos M., 29 anos</p>
-        </div>
+      <h2 class="text-4xl font-bold mb-10 shine">Seu Pré-Diagnóstico</h2>
+      <div class="mb-10 relative">
+        <audio id="diagnosis-audio" src="/assets/diagnosis.mp3"></audio>
+        <button id="play-audio" class="futuristic-btn text-white py-3 px-6 rounded-full mr-2" aria-label="Reproduzir áudio do diagnóstico">Reproduzir</button>
+        <button id="stop-audio" class="futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Parar áudio do diagnóstico">Parar</button>
+      </div>
+      <a href="#checkout" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Obter diagnóstico completo">Obter Diagnóstico Completo</a>
+    </div>
+  </section>
+
+  <!-- Prova Social -->
+  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine">O Que Nossos Usuários Dizem</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <p class="italic text-gray-400 mb-4">"O pré-diagnóstico foi muito útil e me deu confiança para buscar ajuda. O diagnóstico oficial confirmou tudo!"</p>
+        <p class="font-semibold text-[#22d3ee]">- Maria R., 42 anos</p>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <p class="italic text-gray-400 mb-4">"Rápido e seguro! A IA me ajudou a entender meus sintomas, e o diagnóstico médico foi certeiro."</p>
+        <p class="font-semibold text-[#22d3ee]">- Pedro L., 35 anos</p>
       </div>
     </div>
   </section>
 
-  <section class="py-10 px-6 text-center animate-on-scroll">
-    <div class="max-w-4xl mx-auto">
-      <button onclick="alert('Como posso ajudar? Experimente o Scanner Emocional ou Apoio Emocional!')" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full text-sm shine" aria-label="Fale com Suporte">💬 Fale com Suporte</button>
+  <!-- Outros Serviços -->
+  <section class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <h2 class="text-4xl font-bold mb-10 shine">Explore Outros Serviços da Álibis Digital</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
+        <h3 class="text-2xl font-semibold mb-4">Scanner com IA</h3>
+        <p class="mb-4 text-gray-400">Identifique estresse ou cansaço em segundos com nossa tecnologia de análise facial.</p>
+        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Experimente o scanner agora">Experimente agora →</a>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
+        <h3 class="text-2xl font-semibold mb-4">Avaliação Emocional</h3>
+        <p class="mb-4 text-gray-400">Receba relatórios detalhados sobre seu estado emocional e bem-estar.</p>
+        <a href="/emotional-evaluation.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
+      </div>
+      <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
+        <h3 class="text-2xl font-semibold mb-4">Criar Álibi</h3>
+        <p class="mb-4 text-gray-400">Gere álibis personalizados com textos e provas digitais realistas.</p>
+        <a href="/alibi.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Crie um álibi agora">Crie agora →</a>
+      </div>
     </div>
   </section>
 
+  <!-- Chamada Final -->
+  <section class="py-20 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6 pulse">🚨 Cuide da Sua Saúde Hoje!</h2>
+      <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">
+        Obtenha um diagnóstico validado por médicos reais com nossa API certificada.
+      </p>
+      <a href="#checkout" class="futuristic-btn text-white font-semibold py-3 px-8 rounded-full shadow-md" aria-label="Obter diagnóstico completo">Obter Diagnóstico Completo</a>
+      <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
+    </div>
+  </section>
+
+  <!-- Checkout -->
+  <section id="checkout" class="py-16 px-6 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 shine">Obtenha Seu Diagnóstico Completo</h2>
+      <p class="text-lg mb-8 fade-in">Por apenas R$ 19,90, receba um diagnóstico validado por médicos reais via API certificada.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="https://pagamento.exemplo.com/pix" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX">Pagar com PIX</a>
+        <a href="https://pagamento.exemplo.com/cartao" class="futuristic-btn text-white py-3 px-6 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão">Pagar com Cartão</a>
+      </div>
+      <p class="mt-4 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 1.000 usuários satisfeitos!</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <img src="/assets/ssl-seal.png" alt="Selo de segurança SSL" class="h-10">
+        <img src="/assets/privacy-seal.png" alt="Selo de privacidade garantida" class="h-10">
+      </div>
+    </div>
+  </section>
+
+  <!-- Suporte -->
+  <section id="suporte" class="bg-[rgba(15,23,42,0.8)] py-16 px-6 text-white animate-on-scroll">
+    <div class="max-w-3xl mx-auto text-center">
+      <h3 class="text-3xl font-bold mb-4 float">Estamos Aqui para Ajudar</h3>
+      <p class="text-gray-400 mb-8 fade-in">Suporte imediato com discrição total.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full flex items-center" aria-label="Fale conosco pelo WhatsApp">
+          <svg class="w-5 h-5 mr-2 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
+          WhatsApp
+        </a>
+        <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6c3d8f7d6dbded5dec4d3ded0dec3d6db99d4d8da" class="futuristic-btn text-white font-medium py-3 px-6 rounded-full" aria-label="Envie um e-mail para o suporte">Enviar E-mail</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
   <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12 animate-on-scroll">
     <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
       <div class="slide-in-left">
@@ -357,188 +650,255 @@
         <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
       </div>
       <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegue</h4>
+        <h4 class="text-white font-semibold mb-4">Navegação</h4>
         <ul class="space-y-2">
-          <li><a href="/index.html" class="hover:text-white transition">Início</a></li>
+          <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner com IA</a></li>
-          <li><a href="/apoio-emocional.html" class="hover:text-white transition">Avaliação Emocional</a></li>
-          <li><a href="/criar-alibis-realistas-ia.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
           <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
           <li><a href="/planos.html" class="hover:text-white transition">Planos</a></li>
           <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
-          <li><a href="/politica-privacidade.html" class="hover:text-white transition">Privacidade</a></li>
+          <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
+          <li><a href="/termos.html" class="hover:text-white transition">Termos de Uso</a></li>
+          <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
         </ul>
       </div>
       <div class="slide-in-right">
         <h4 class="text-white font-semibold mb-4">Contato</h4>
         <ul class="space-y-2">
-          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
+          <li class="fade-in">E-mail: <a href="/cdn-cgi/l/email-protection" class="hover:text-white transition">[email protected]</a></li>
           <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+          <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
+          <li><a href="/termos.html" class="hover:text-white transition">Termos de Uso</a></li>
+          <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
         </ul>
       </div>
     </div>
     <div class="text-center mt-8">
+      <div class="flex justify-center gap-4 mb-4">
+        <img src="/assets/ssl-seal.png" alt="Selo de segurança SSL" class="h-10">
+        <img src="/assets/privacy-seal.png" alt="Selo de privacidade garantida" class="h-10">
+      </div>
       <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
   </footer>
 
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
+    // Inicializar Partículas
     particlesJS('particles-js', {
-      particles: {
-        number: { value: 120, density: { enable: true, value_area: 800 } },
-        color: { value: '#22d3ee' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#22d3ee" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5, "random": true },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#22d3ee", "opacity": 0.4, "width": 1 },
+        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
       },
-      interactivity: {
-        detect_on: 'canvas',
-        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+        "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
       },
-      retina_detect: true
+      "retina_detect": true
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM carregado, inicializando página...');
-      initScrollAnimations();
+    // Chat Interativo com Voz
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const listeningIndicator = document.getElementById('listening-indicator');
+    const synth = window.speechSynthesis;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let lastUserMessage = '';
 
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.interimResults = false;
+    }
+
+    const speak = (text) => {
+      if (!synth) {
+        console.warn("API de síntese de voz não suportada neste navegador.");
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'pt-BR';
+      synth.speak(utter);
+    };
+
+    const addMessage = (message, isUser = false) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%] fade-in`;
+      messageDiv.textContent = message;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    chatBubble.addEventListener('click', () => {
+      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+      if (chatWindow.style.display === 'block') {
+        const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
+        addMessage(welcomeMessage, false);
+        speak(welcomeMessage);
+      }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        const userMessage = chatInput.value.trim().toLowerCase();
+        addMessage(userMessage, true);
+        lastUserMessage = userMessage;
+        chatInput.value = '';
+        respondToUser(lastUserMessage);
+      }
+    });
+
+    if (recognition) {
+      recognition.onstart = () => {
+        listeningIndicator.classList.add('active');
+      };
+      recognition.onend = () => {
+        listeningIndicator.classList.remove('active');
+      };
+      recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript.toLowerCase();
+        chatInput.value = spokenText;
+        const eventEnter = new Event('keypress');
+        eventEnter.key = 'Enter';
+        chatInput.dispatchEvent(eventEnter);
+      };
+      recognition.onerror = (event) => {
+        console.error("Erro no reconhecimento de voz:", event.error);
+        listeningIndicator.classList.remove('active');
+        addMessage("Desculpe, o reconhecimento de voz não está disponível no seu navegador. Por favor, digite sua mensagem.", false);
+      };
+      recognition.lang = 'pt-BR';
+      chatInput.addEventListener('focus', () => {
+        recognition.start();
+      });
+    } else {
+      chatInput.addEventListener('focus', () => {
+        addMessage("Desculpe, o reconhecimento de voz não está disponível no seu navegador. Por favor, digite sua mensagem.", false);
+      });
+    }
+
+    function respondToUser(message) {
+      let response = "Não entendi, mas posso ajudar! Que tal testar o scanner, explorar o blog ou pedir suporte?";
+      const redirectMap = {
+        'suporte': '/suporte.html',
+        'blog': '/blog.html',
+        'apoio emocional': '/emotional-evaluation.html',
+        'diagnóstico médico': '/medical-ai.html',
+        'scanner': '/scanner.html',
+        'planos': '/planos.html'
+      };
+
+      for (let keyword in redirectMap) {
+        if (message.includes(keyword)) {
+          response = `Vou te levar para a página de ${keyword}. Confirma?`;
+          addMessage(response, false);
+          speak(response);
+          setTimeout(() => {
+            const confirm = window.confirm("Confirmar redirecionamento?");
+            if (confirm) {
+              window.location.href = redirectMap[keyword];
+            } else {
+              addMessage("Redirecionamento cancelado. Como posso ajudar agora?", false);
+              speak("Redirecionamento cancelado. Como posso ajudar agora?");
+            }
+          }, 1000);
+          return;
+        }
+      }
+
+      addMessage(response, false);
+      speak(response);
+    }
+
+    // Formulário de Pré-Diagnóstico
+    const formSteps = document.querySelectorAll('.form-step');
+    const prevStepBtn = document.getElementById('prev-step');
+    const nextStepBtn = document.getElementById('next-step');
+    const submitBtn = document.getElementById('submit-form');
+    const resultSection = document.getElementById('result');
+    const diagnosisResult = document.getElementById('diagnosis-result');
+    const resultadoSection = document.getElementById('resultado');
+    const playAudioBtn = document.getElementById('play-audio');
+    const stopAudioBtn = document.getElementById('stop-audio');
+    const diagnosisAudio = document.getElementById('diagnosis-audio');
+    let currentStep = 0;
+
+    const updateStep = () => {
+      formSteps.forEach((step, index) => {
+        step.classList.toggle('hidden', index !== currentStep);
+      });
+      document.querySelector('.text-sm.text-gray-400.mb-4').textContent = `Passo ${currentStep + 1} de ${formSteps.length}`;
+      prevStepBtn.disabled = currentStep === 0;
+      nextStepBtn.classList.toggle('hidden', currentStep === formSteps.length - 1);
+      submitBtn.classList.toggle('hidden', currentStep !== formSteps.length - 1);
+    };
+
+    nextStepBtn.addEventListener('click', () => {
+      if (currentStep < formSteps.length - 1) {
+        currentStep++;
+        updateStep();
+      }
+    });
+
+    prevStepBtn.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        updateStep();
+      }
+    });
+
+    submitBtn.addEventListener('click', () => {
+      resultSection.classList.remove('hidden');
+      diagnosisResult.textContent = "Possível diagnóstico: Consulte um médico para confirmação.";
+      resultadoSection.classList.remove('hidden');
+    });
+
+    playAudioBtn.addEventListener('click', () => {
+      diagnosisAudio.play();
+    });
+
+    stopAudioBtn.addEventListener('click', () => {
+      diagnosisAudio.pause();
+      diagnosisAudio.currentTime = 0;
+    });
+
+    // Eventos de Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.animate-on-scroll');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      sections.forEach(section => observer.observe(section));
+
+      // Menu Hamburger
       const hamburger = document.getElementById('hamburger-menu');
       const mobileMenu = document.getElementById('mobile-menu');
-      if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-          mobileMenu.classList.toggle('hidden');
-          console.log('Menu mobile toggled');
-        });
-      }
-
       const servicesToggle = document.getElementById('services-toggle');
       const servicesMenu = document.getElementById('services-menu');
-      if (servicesToggle && servicesMenu) {
-        servicesToggle.addEventListener('click', () => {
-          servicesMenu.classList.toggle('hidden');
-          console.log('Menu de serviços mobile toggled');
-        });
-      }
 
-      const otherSymptom = document.getElementById('other-symptom');
-      const symptomCheckboxes = document.querySelectorAll('input[name="symptoms"]');
-      symptomCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-          const checkedCount = document.querySelectorAll('input[name="symptoms"]:checked').length;
-          if (checkedCount > 3) {
-            checkbox.checked = false;
-            alert('Selecione até 3 sintomas.');
-          }
-          otherSymptom.classList.toggle('hidden', !document.querySelector('input[value="Outro"]').checked);
-        });
+      hamburger?.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
       });
 
-      const mentalSelect = document.getElementById('mental-history');
-      const otherMental = document.getElementById('other-mental');
-      if (mentalSelect && otherMental) {
-        mentalSelect.addEventListener('change', () => {
-          otherMental.classList.toggle('hidden', mentalSelect.value !== 'Outro');
-        });
-      }
-
-      const familySelect = document.getElementById('family-history');
-      const otherFamily = document.getElementById('other-family');
-      if (familySelect && otherFamily) {
-        familySelect.addEventListener('change', () => {
-          otherFamily.classList.toggle('hidden', familySelect.value !== 'Outro');
-        });
-      }
+      servicesToggle?.addEventListener('click', () => {
+        servicesMenu.classList.toggle('hidden');
+      });
     });
-
-    function initScrollAnimations() {
-      const animatedElements = document.querySelectorAll('.animate-on-scroll');
-      function checkIfInView() {
-        const windowHeight = window.innerHeight;
-        const windowTopPosition = window.scrollY;
-        const windowBottomPosition = windowTopPosition + windowHeight;
-        animatedElements.forEach(element => {
-          const elementHeight = element.offsetHeight;
-          const elementTopPosition = element.offsetTop;
-          const elementBottomPosition = elementTopPosition + elementHeight;
-          if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
-            element.classList.add('visible');
-          }
-        });
-      }
-      checkIfInView();
-      window.addEventListener('scroll', checkIfInView);
-      window.addEventListener('resize', checkIfInView);
-    }
-
-    let currentStep = 1;
-    const totalSteps = 8;
-
-    function startDiagnosis() {
-      const email = document.getElementById('email').value;
-      if (!email) return alert('Por favor, insira seu e-mail.');
-      document.getElementById('email-form').classList.add('hidden');
-      document.getElementById('diagnosis-form').classList.remove('hidden');
-    }
-
-    function nextStep() {
-      const currentInput = document.querySelector(`#step-${currentStep} select, #step-${currentStep} input:checked`);
-      if (!currentInput || (currentInput.type === 'select-one' && !currentInput.value)) {
-        return alert('Por favor, responda a pergunta.');
-      }
-      if (currentStep < totalSteps) {
-        document.getElementById(`step-${currentStep}`).classList.remove('active');
-        currentStep++;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
-        document.getElementById('progress-bar').style.width = `${(currentStep / totalSteps) * 100}%`;
-        if (currentStep > 1) document.getElementById('prev-btn').classList.remove('hidden');
-        if (currentStep === totalSteps) {
-          document.getElementById('next-btn').classList.add('hidden');
-          document.getElementById('submit-btn').classList.remove('hidden');
-        }
-      }
-    }
-
-    function prevStep() {
-      if (currentStep > 1) {
-        document.getElementById(`step-${currentStep}`).classList.remove('active');
-        currentStep--;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
-        document.getElementById('progress-bar').style.width = `${(currentStep / totalSteps) * 100}%`;
-        if (currentStep === 1) document.getElementById('prev-btn').classList.add('hidden');
-        if (currentStep < totalSteps) {
-          document.getElementById('next-btn').classList.remove('hidden');
-          document.getElementById('submit-btn').classList.add('hidden');
-        }
-      }
-    }
-
-    function submitDiagnosis() {
-      const stress = document.getElementById('stress').value;
-      const sleepAppetite = document.getElementById('sleep-appetite').value;
-      const symptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(input => input.value);
-      const duration = document.getElementById('duration').value;
-      const mentalHistory = document.getElementById('mental-history').value;
-      const familyHistory = document.getElementById('family-history').value;
-      const bloodPressure = document.getElementById('blood-pressure').value;
-      const exposure = document.getElementById('exposure').value;
-
-      let diagnosis = 'Baseado nas suas respostas, recomendamos consultar um médico para avaliação detalhada.';
-      if (stress === 'Alto' || symptoms.includes('Ansiedade') || sleepAppetite === 'Ambos') {
-        diagnosis = 'Possível estresse ou ansiedade detectados. Consulte um médico e considere nosso plano Premium para monitoramento avançado.';
-      } else if (symptoms.includes('Febre') || exposure !== 'Nenhuma') {
-        diagnosis = 'Possível infecção ou exposição a doenças. Consulte um médico imediatamente.';
-      } else if (duration === 'Mais de 14 dias') {
-        diagnosis = 'Sintomas persistentes podem indicar uma condição crônica. Consulte um médico para avaliação.';
-      }
-
-      document.getElementById('diagnosis-text').innerText = diagnosis;
-      document.getElementById('diagnosis-form').classList.add('hidden');
-      document.getElementById('diagnosis-result').classList.remove('hidden');
-    }
   </script>
 </body>
 </html>
