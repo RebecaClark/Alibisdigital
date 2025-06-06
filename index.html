@@ -235,6 +235,28 @@
       .space-y-4 { margin-top: 0.5rem; }
       .space-x-6 { margin-left: 0.5rem; }
       .max-w-md { max-width: 90%; }
+      .logo-img {
+        height: 2rem; /* h-8 */
+        width: auto;
+        object-fit: contain;
+      }
+      .logo-container {
+        gap: 0.5rem; /* space-x-2 */
+      }
+      #mobile-menu {
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      #mobile-menu nav {
+        space-y-2;
+      }
+      #mobile-menu a, #mobile-menu button {
+        font-size: 1rem;
+      }
+      #play-video {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
     }
     @media (max-width: 480px) {
       h1 { font-size: 1.75rem; }
@@ -244,6 +266,10 @@
       .text-sm { font-size: 0.65rem; }
       #chat-window { width: 85%; height: 300px; }
       #chat-messages { height: 200px; }
+      #play-video {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -254,9 +280,9 @@
   <!-- Cabeçalho com Efeito Holográfico -->
   <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center logo-container space-x-3">
         <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto fade-in">
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
         </a>
       </div>
       <div class="flex items-center space-x-3">
