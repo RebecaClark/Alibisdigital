@@ -34,6 +34,7 @@
         .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
         .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
         .pulse { animation: pulse 2s infinite ease-in-out; }
+        .bounce-in { animation: bounceIn 0.8s ease-out; }
         .shine { position: relative; overflow: hidden; }
         .shine::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -44,6 +45,7 @@
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
         @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
         .holo-nav { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); animation: holoGlow 2s infinite alternate; }
         @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
@@ -86,25 +88,59 @@
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         .progress { height: 8px; background: #22d3ee; width: 0; transition: width 0.3s ease; }
-        .dropdown-content { display: none; position: absolute; background: rgba(20, 20, 20, 0.9); border: 1px solid #22d3ee; border-radius: 8px; min-width: 160px; z-index: 1; }
-        .dropdown-content a { color: #e5e7eb; padding: 8px 16px; display: block; }
-        .dropdown-content a:hover { background: rgba(30, 30, 30, 0.8); color: #22d3ee; }
-        .dropdown:hover .dropdown-content { display: block; }
-        .mobile-menu { display: none; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            min-width: 160px;
+            z-index: 10;
+            flex-direction: column;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        .dropdown-menu a:hover { background: rgba(30, 30, 30, 0.8); }
+        .dropdown-menu-mobile {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            margin-top: 4px;
+            padding: 8px 0;
+        }
+        .dropdown-menu-mobile a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
         @media (max-width: 768px) {
             h2 { font-size: 1.8rem; }
             video { width: 100%; height: auto; }
             .neon-box { padding: 10px; }
-            .nav-links { display: none; }
-            .mobile-menu { display: block; }
-            /* Ajustes para o logotipo no mobile */
             .logo-img {
                 height: 2rem; /* h-8 */
                 width: auto;
                 object-fit: contain;
             }
             .logo-container {
-                gap: 0.5rem; /* space-x-2 no mobile */
+                gap: 0.5rem; /* space-x-2 */
+            }
+            #mobile-menu {
+                background: rgba(17, 24, 39, 0.95); /* Consistente com o desktop */
+                backdrop-filter: blur(10px);
+            }
+            #mobile-menu nav {
+                space-y: 2; /* Espaçamento mais compacto */
+            }
+            #mobile-menu a, #mobile-menu button {
+                font-size: 1rem; /* Tamanho de fonte ajustado */
             }
         }
     </style>
@@ -112,66 +148,73 @@
 <body>
     <div id="particles-js"></div>
 
+    <!-- Cabeçalho com Efeito Holográfico -->
     <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center logo-container space-x-3">
-                <a href="index.html" aria-label="Página inicial da Álibis Digital">
-                    <img src="logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto">
+                <a href="/">
+                    <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
                 </a>
             </div>
             <div class="flex items-center space-x-3">
-                <div class="nav-links flex space-x-4 items-center">
-                    <div class="dropdown relative">
-                        <button class="hover:text-[#22d3ee] flex items-center">
-                            Serviços
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="scanner.html">Scanner com IA</a>
-                            <a href="apoio-emocional.html">Apoio Emocional</a>
-                            <a href="medical-ia.html">Diagnósticos Médicos</a>
-                            <a href="alibi.html">Criar Álibi</a>
-                            <a href="relatorios-avancados.html">Relatórios Avançados</a>
-                        </div>
-                    </div>
-                    <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
-                    <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
-                    <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                </div>
-                <div class="mobile-menu md:hidden">
-                    <button id="mobile-menu-button" class="text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                <div class="md:hidden">
+                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    <div id="mobile-menu-content" class="hidden absolute top-16 left-0 w-full bg-[rgba(0,0,0,0.9)]">
-                        <div class="dropdown relative">
-                            <button class="text-white py-2 px-4 w-full text-center hover:bg-gray-900 flex justify-between items-center">
-                                Serviços
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-                            <div class="dropdown-content w-full">
-                                <a href="scanner.html">Scanner com IA</a>
-                                <a href="apoio-emocional.html">Apoio Emocional</a>
-                                <a href="medical-ia.html">Diagnósticos Médicos</a>
-                                <a href="alibi.html">Criar Álibi</a>
-                                <a href="relatorios-avancados.html">Relatórios Avançados</a>
-                            </div>
-                        </div>
-                        <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
-                        <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
-                        <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                    </div>
                 </div>
             </div>
+            <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+                <div class="dropdown relative">
+                    <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                        <span>Serviços</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/scanner.html" class="hover:text-[#22d3ee] transition fade-in">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition fade-in">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:text-[#22d3ee] transition fade-in">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:text-[#22d3ee] transition fade-in">Criar Álibi</a>
+                    </div>
+                </div>
+                <a href="/blog.html" class="hover:text-[#22d3ee] transition fade-in">Blog</a>
+                <a href="/planos.html" class="hover:text-[#22d3ee] transition fade-in">Planos</a>
+                <a href="/suporte.html" class="hover:text-[#22d3ee] transition fade-in">Suporte</a>
+                <a href="/login.html" class="hover:text-[#22d3ee] transition fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+            <nav class="flex flex-col items-center space-y-2">
+                <div class="w-full">
+                    <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center slide-in-left" aria-label="Abrir menu de serviços">
+                        <span>Serviços</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="services-menu" class="dropdown-menu-mobile hidden">
+                        <a href="/scanner.html" class="hover:bg-gray-700 slide-in-right">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:bg-gray-700 slide-in-right">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:bg-gray-700 slide-in-right">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:bg-gray-700 slide-in-right">Criar Álibi</a>
+                    </div>
+                </div>
+                <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Blog</a>
+                <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Planos</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Suporte</a>
+                <a href="/login.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center bounce-in" aria-label="Criar conta">Criar Conta</a>
+            </nav>
         </div>
     </header>
-
-    <div class="h-16"></div>
+    <div class="h-20"></div>
 
     <section class="container mx-auto px-4 py-16 text-center">
         <h1 class="text-4xl font-bold text-white mb-4 fade-in">Seu rosto carrega sinais. Vamos descobrir o que ele diz?</h1>
@@ -267,8 +310,8 @@
             try { 
                 const utterance = new SpeechSynthesisUtterance(text); 
                 utterance.lang = 'pt-BR'; 
-                utterance.rate = 0.9; /* Ajustado para voz mais natural */
-                utterance.pitch = 0.8; /* Tom mais grave */
+                utterance.rate = 0.85; /* Ajustado para voz mais natural */
+                utterance.pitch = 0.7; /* Tom mais grave */
                 utterance.volume = 0.9; /* Volume suavizado */
                 window.speechSynthesis.speak(utterance); 
                 console.log('Diagnosis spoken at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', text); 
@@ -283,6 +326,24 @@
             const resultDiv = document.getElementById('result');
             const form = document.getElementById('lead-form');
 
+            // Evento para o botão de hambúrguer
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (hamburgerMenu && mobileMenu) {
+                hamburgerMenu.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Evento para o toggle do submenu "Serviços" no mobile
+            const servicesToggle = document.getElementById('services-toggle');
+            const servicesMenu = document.getElementById('services-menu');
+            if (servicesToggle && servicesMenu) {
+                servicesToggle.addEventListener('click', () => {
+                    servicesMenu.classList.toggle('hidden');
+                });
+            }
+
             let cameraInitialized = false;
 
             if (video) {
@@ -296,10 +357,6 @@
             if (form) {
                 form.addEventListener('submit', (e) => { e.preventDefault(); const email = document.getElementById('email').value; console.log('Form submitted at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', email); alert('Relatório enviado para: ' + email); createRipple(e); form.reset(); });
             }
-
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenuContent = document.getElementById('mobile-menu-content');
-            if (mobileMenuButton && mobileMenuContent) { mobileMenuButton.addEventListener('click', () => mobileMenuContent.classList.toggle('hidden')); }
 
             const ctaButtons = document.querySelectorAll('.futuristic-btn'); ctaButtons.forEach(button => button.addEventListener('click', createRipple));
 
