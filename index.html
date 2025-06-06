@@ -592,7 +592,7 @@
     chatBubble.addEventListener('click', () => {
       chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
       if (chatWindow.style.display === 'block') {
-        const welcomeMessage = "Olá! Sou seu assistente emocional. Gostaria de testar o scanner emocional?";
+        const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
         addMessage(welcomeMessage, false);
         speak(welcomeMessage);
       }
@@ -600,9 +600,9 @@
 
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && chatInput.value.trim()) {
-        const userMessage = chatInput.value.trim();
+        const userMessage = chatInput.value.trim().toLowerCase();
         addMessage(userMessage, true);
-        lastUserMessage = userMessage.toLowerCase();
+        lastUserMessage = userMessage;
         chatInput.value = '';
         respondToUser(lastUserMessage);
       }
@@ -616,7 +616,7 @@
         listeningIndicator.classList.remove('active');
       };
       recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript;
+        const spokenText = event.results[0][0].transcript.toLowerCase();
         chatInput.value = spokenText;
         const eventEnter = new Event('keypress');
         eventEnter.key = 'Enter';
@@ -638,48 +638,32 @@
     }
 
     function respondToUser(message) {
-      let response = "Não entendi, mas posso ajudar! Quer testar o scanner, saber sobre planos ou obter suporte?";
+      let response = "Não entendi, mas posso ajudar! Que tal testar o scanner, explorar o blog ou pedir suporte?";
+      const redirectMap = {
+        'suporte': '/suporte.html',
+        'blog': '/blog.html',
+        'apoio emocional': '/emotional-evaluation.html',
+        'diagnóstico médico': '/medical-ai.html',
+        'scanner': '/scanner.html',
+        'planos': '/planos.html'
+      };
 
-      // Identificar questões de suporte técnico
-      const supportKeywords = [
-        'login', 'fazer login', 'entrar', 'acessar',
-        'pagamento', 'pagar', 'compra', 'assinatura',
-        'erro', 'problema', 'falha', 'não consigo',
-        'cadastrar', 'cadastro', 'registro'
-      ];
-      const isSupportRelated = supportKeywords.some(keyword => message.includes(keyword));
-
-      if (isSupportRelated) {
-        response = "Posso te ajudar com suporte! Quer falar com nossa equipe via WhatsApp ou e-mail? Vou te redirecionar para a seção de suporte.";
-        setTimeout(() => {
-          addMessage("Te levo para lá agora!", false);
-          speak("Te levo para lá agora!");
-          window.location.href = '#suporte';
-        }, 1500);
-      }
-      // Respostas para engajamento
-      else if (message.includes('sim') || message.includes('gostaria')) {
-        response = "Ótimo! Clique no botão 'Teste o Scanner Grátis' para começar.";
-      } else if (message.includes('não') || message.includes('agora não')) {
-        response = "Entendi! Que tal explorar nosso blog para dicas de bem-estar? Ou posso te ajudar com outra coisa!";
-      } else if (message.includes('como') || message.includes('funciona')) {
-        response = "O scanner emocional usa IA para analisar suas expressões faciais e identificar emoções como estresse ou felicidade. Quer experimentar?";
-      } else if (message.includes('planos') || message.includes('preço')) {
-        response = "Oferecemos 7 dias grátis e um plano por R$ 9,90/mês com álibis ilimitados. Quer ir para a seção de planos?";
-        setTimeout(() => {
-          addMessage("Te levo para lá agora!", false);
-          speak("Te levo para lá agora!");
-          window.location.href = '#checkout';
-        }, 1500);
-      } else if (message.includes('blog') || message.includes('dicas') || message.includes('artigos')) {
-        response = "Ótima ideia! Nosso blog tem várias dicas de bem-estar. Vou te levar para lá!";
-        setTimeout(() => {
+      for (let keyword in redirectMap) {
+        if (message.includes(keyword)) {
+          response = `Vou te levar para a página de ${keyword}. Confirma?`;
           addMessage(response, false);
           speak(response);
-          window.location.href = '/blog.html';
-        }, 1500);
-      } else if (message.includes('bem-estar') || message.includes('estresse') || message.includes('saúde')) {
-        response = "Quer uma dica rápida de bem-estar? Tente respirar profundamente por 1 minuto para reduzir o estresse.";
+          setTimeout(() => {
+            const confirm = window.confirm("Confirmar redirecionamento?");
+            if (confirm) {
+              window.location.href = redirectMap[keyword];
+            } else {
+              addMessage("Redirecionamento cancelado. Como posso ajudar agora?", false);
+              speak("Redirecionamento cancelado. Como posso ajudar agora?");
+            }
+          }, 1000);
+          return;
+        }
       }
 
       addMessage(response, false);
