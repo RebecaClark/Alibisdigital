@@ -94,7 +94,7 @@
       border-radius: 8px;
       padding: 8px 0;
       position: absolute;
-      top: 60px; /* Ajustado para ficar logo abaixo do header */
+      top: 60px;
       left: 0;
       display: none;
       width: 200px;
@@ -222,7 +222,17 @@
       .flex { flex-direction: column; }
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       video { width: 100%; height: auto; }
-      #chat-window { width: 90%; right: 5%; }
+      #chat-window { 
+        width: 80%; /* Reduzido para evitar aparência "espremida" */
+        right: 10%; /* Centralizar melhor */
+        height: 350px; /* Reduzir altura para melhor proporção */
+      }
+      #chat-messages {
+        height: 250px; /* Ajustar altura das mensagens */
+      }
+      #chat-input {
+        padding: 8px; /* Reduzir padding para melhor visual */
+      }
     }
   </style>
 </head>
@@ -321,13 +331,12 @@
         Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.
       </p>
       <div class="mb-10 relative">
-        <video autoplay playsinline loop preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
+        <video id="hero-video" autoplay playsinline loop preload="auto" class="w-full max-w-3xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
           <source src="/assets/vsl-video.mp4" type="video/mp4">
-          <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Tocar vídeo de apresentação">Tocar Vídeo</button>
         </video>
+        <button id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-3 px-6 rounded-full" aria-label="Pausar vídeo de apresentação">Pausar Vídeo</button>
       </div>
       <a href="/scanner.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg font-semibold shadow-lg" aria-label="Teste o scanner emocional grátis">🔍 Teste o Scanner Grátis</a>
-      <p class="text-sm text-gray-400 mt-6 fade-in">🚨 Oferta válida até 05/06/2025 ou até acabarem as vagas! Restam <span id="vagas">12</span> vagas!</p>
       <div class="mt-10 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-6 rounded-xl border border-[#22d3ee] shadow-lg">
         <h3 class="text-xl font-semibold mb-4 fade-in">Receba Dicas Exclusivas</h3>
         <div class="flex flex-col sm:flex-row gap-4">
@@ -416,9 +425,6 @@
         <a href="/equilibre.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
       </div>
     </div>
-    <div class="mt-12 pulse">
-      <a href="https://x.ai/grok" class="futuristic-btn text-white font-bold py-3 px-8 rounded-full" aria-label="Experimente o SuperGrok">Experimente o SuperGrok para mais funcionalidades!</a>
-    </div>
   </section>
 
   <!-- Prova Social -->
@@ -444,9 +450,6 @@
       <p class="text-xl md:text-2xl mb-8 text-gray-300 fade-in">
         Teste o Scanner e receba insights personalizados para o seu dia.
       </p>
-      <div class="mb-10">
-        <span class="text-lg text-gray-400 italic">Oferta válida até 05/06/2025 ou até acabarem as vagas! Restam <span id="vagas-final" class="text-white font-semibold underline shine">12</span> vagas!</span>
-      </div>
       <a href="/planos.html" class="futuristic-btn text-white font-semibold py-3 px-8 rounded-full shadow-md" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
       <p class="mt-6 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
     </div>
@@ -544,17 +547,6 @@
       "retina_detect": true
     });
 
-    // Contador de Vagas Dinâmico
-    let vagas = 12;
-    const updateVagas = () => {
-      if (vagas > 1) {
-        vagas--;
-        document.getElementById('vagas').textContent = vagas;
-        document.getElementById('vagas-final').textContent = vagas;
-      }
-    };
-    setInterval(updateVagas, 3600000);
-
     // Contador de Usuários (Simulado)
     let userCount = 532;
     setInterval(() => {
@@ -602,6 +594,12 @@
         const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
         addMessage(welcomeMessage, false);
         speak(welcomeMessage);
+        // Pausar o vídeo ao abrir o chat para evitar interferência
+        const video = document.getElementById('hero-video');
+        if (!video.paused) {
+          video.pause();
+          document.getElementById('play-video').textContent = 'Tocar Vídeo';
+        }
       }
     });
 
@@ -637,6 +635,12 @@
       recognition.lang = 'pt-BR';
       chatInput.addEventListener('focus', () => {
         recognition.start();
+        // Pausar o vídeo ao iniciar o reconhecimento de voz
+        const video = document.getElementById('hero-video');
+        if (!video.paused) {
+          video.pause();
+          document.getElementById('play-video').textContent = 'Tocar Vídeo';
+        }
       });
     } else {
       chatInput.addEventListener('focus', () => {
@@ -678,7 +682,7 @@
     }
 
     // Controle do Vídeo
-    const video = document.querySelector('video');
+    const video = document.getElementById('hero-video');
     const playButton = document.getElementById('play-video');
     playButton.addEventListener('click', () => {
       if (video.paused) {
