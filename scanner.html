@@ -54,11 +54,11 @@
             display: inline-block;
             background: linear-gradient(45deg, #7C3AED, #22d3ee);
             color: #ffffff;
-            padding: 1rem 2rem;
+            padding: 0.75rem 1.5rem; /* Reduzido */
             border-radius: 9999px;
-            font-size: 1.125rem;
+            font-size: 1rem; /* Reduzido */
             font-weight: 600;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 8px #22d3ee;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee; /* Brilho mais suave */
             transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
             animation: neonPulse 1.5s infinite alternate;
             overflow: hidden;
@@ -72,7 +72,16 @@
         @keyframes neonPulse { 0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; } 100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; } }
         @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
         @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-        .neon-box { background: linear-gradient(45deg, #1a1a1a, #22d3ee); border-radius: 10px; padding: 15px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); max-width: 500px; margin: 0 auto; text-align: left; }
+        .neon-box {
+            background: linear-gradient(45deg, #0a1f2e, #00ccff); /* Gradiente ajustado */
+            border-radius: 15px; /* Bordas mais arredondadas */
+            padding: 20px; /* Padding aumentado */
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+        }
         .loading-dots::after { content: ''; display: inline-block; width: 1em; height: 1em; animation: dots 1.5s steps(3, end) infinite; }
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
@@ -121,7 +130,6 @@
                     <a href="blog.html" class="hover:text-[#22d3ee]">Blog</a>
                     <a href="bridge.html" class="hover:text-[#22d3ee]">Planos</a>
                     <a href="suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-                    <a href="bridge.html" class="futuristic-btn" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                 </div>
                 <div class="mobile-menu md:hidden">
                     <button id="mobile-menu-button" class="text-white">
@@ -148,7 +156,6 @@
                         <a href="blog.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Blog</a>
                         <a href="bridge.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Planos</a>
                         <a href="suporte.html" class="block text-white py-2 px-4 text-center hover:bg-gray-900">Suporte</a>
-                        <a href="bridge.html" class="futuristic-btn w-full text-center" aria-label="Teste Grátis">🔍 Teste Grátis</a>
                     </div>
                 </div>
             </div>
