@@ -192,9 +192,9 @@
       backdrop-filter: blur(10px);
       border: 1px solid #22d3ee;
       border-radius: 15px;
-      width: 400px;
-      max-width: 95%;
-      height: 450px;
+      width: 450px;
+      max-width: 90%;
+      height: 500px;
       position: absolute;
       bottom: 80px;
       right: 10px;
@@ -202,18 +202,23 @@
       overflow: hidden;
     }
     #chat-messages {
-      height: 340px;
+      height: 400px;
       overflow-y: auto;
-      padding: 20px;
+      padding: 25px;
       color: #e5e7eb;
       font-size: 16px;
+    }
+    #chat-messages div {
+      max-width: 70%;
+      word-wrap: break-word;
+      margin-bottom: 15px;
     }
     #chat-input-container {
       display: flex;
       align-items: center;
-      padding: 15px;
+      padding: 15px 25px;
       background: rgba(31, 41, 55, 0.9);
-      gap: 10px;
+      gap: 15px;
     }
     #chat-input {
       background: rgba(55, 65, 81, 0.8);
@@ -224,6 +229,7 @@
       color: white;
       font-size: 16px;
       outline: none;
+      min-width: 0;
     }
     #mic-button {
       background: transparent;
@@ -291,21 +297,25 @@
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       video { width: 100%; height: auto; }
       #chat-window { 
-        width: 95%;
-        height: 400px;
-        right: 2.5%;
+        width: 90%;
+        height: 450px;
+        right: 5%;
       }
       #chat-messages { 
-        height: 280px; 
+        height: 340px;
         padding: 15px;
         font-size: 14px;
       }
-      #chat-input { 
-        padding: 10px; 
-        font-size: 14px; 
+      #chat-messages div {
+        max-width: 80%;
       }
       #chat-input-container {
+        padding: 10px 15px;
+        gap: 10px;
+      }
+      #chat-input { 
         padding: 10px;
+        font-size: 14px;
       }
       .listening-indicator {
         font-size: 1rem;
@@ -321,10 +331,10 @@
       .max-w-4xl { max-width: 90%; }
       video { max-width: 80%; }
       #chat-window { 
-        width: 380px; 
-        height: 420px;
+        width: 400px;
+        height: 480px;
       }
-      #chat-messages { height: 310px; }
+      #chat-messages { height: 370px; }
     }
   </style>
 </head>
@@ -695,7 +705,7 @@
       const messageDiv = document.createElement('div');
       messageDiv.className = `p-2 mb-2 rounded-lg ${
         isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'
-      } max-w-[80%] fade-in`;
+      } max-w-[70%] fade-in`;
       messageDiv.textContent = message;
       chatMessages.appendChild(messageDiv);
 
@@ -711,7 +721,7 @@
     chatBubble.addEventListener('click', () => {
       chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
       if (chatWindow.style.display === 'block') {
-        const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
+        const welcomeMessage = "Salve, eu sou uma IA inspirada por Elon Musk! Vamos revolucionar seu bem-estar emocional juntos. O que você quer explorar hoje?";
         addMessage(welcomeMessage, false);
         speak(welcomeMessage);
         const video = document.getElementById('hero-video');
@@ -751,7 +761,7 @@
         setTimeout(() => {
           if (isListening) {
             recognition.stop();
-            addMessage("Tempo máximo de fala atingido. Envie ou fale novamente.", false);
+            addMessage("Tempo limite atingido! Vamos acelerar e tentar de novo.", false);
           }
         }, maxSpeechDuration);
       };
@@ -814,7 +824,7 @@
         isListening = false;
         micButton.classList.remove('active');
         listeningIndicator.classList.remove('active');
-        addMessage("Desculpe, não consegui entender. Tente digitar ou falar novamente.", false);
+        addMessage("Ops, falha na comunicação! Tente digitar ou falar de novo — vamos superar isso!", false);
         chatInput.placeholder = 'Digite ou clique no microfone para falar...';
       };
 
@@ -833,12 +843,12 @@
     } else {
       micButton.style.display = 'none';
       chatInput.addEventListener('focus', () => {
-        addMessage("Reconhecimento de voz indisponível. Por favor, digite sua mensagem.", false);
+        addMessage("Sem voz por aqui! Use o teclado para me desafiar.", false);
       });
     }
 
     function respondToUserMessage(message) {
-      let response = "Não entendi, mas posso ajudar! Explore o blog, peça suporte ou acesse sua conta.";
+      let response = "Hmm, não captei isso direito. Vamos pensar fora da caixa! Que tal explorar o blog ou pedir suporte para algo revolucionário?";
       const redirectMap = {
         'suporte': '/suporte.html',
         'blog': '/blog.html',
@@ -852,19 +862,28 @@
 
       for (let keyword in redirectMap) {
         if (message.includes(keyword)) {
-          response = `Vou te levar para ${keyword}. Confirma?`;
+          response = `Ótima escolha! Vamos te levar para ${keyword} — confirme se quer dar esse passo rumo ao futuro!`;
           addMessage(response, false);
           speak(response);
           setTimeout(() => {
             if (window.confirm("Confirmar redirecionamento?")) {
               window.location.href = redirectMap[keyword];
             } else {
-              addMessage("Redirecionamento cancelado. Como posso ajudar?", false);
-              speak("Redirecionamento cancelado. Como posso ajudar?");
+              addMessage("Cancelado! Vamos inovar de outra forma — o que mais você quer tentar?", false);
+              speak("Cancelado! Vamos inovar de outra forma — o que mais você quer tentar?");
             }
           }, 500);
           return;
         }
+      }
+
+      // Respostas personalizadas ao estilo Elon Musk
+      if (message.includes('estresse') || message.includes('cansaço')) {
+        response = "Estresse? Isso é só um desafio a ser vencido! Use o Scanner Emocional — vamos hackear seu bem-estar como se fosse um foguete da SpaceX!";
+      } else if (message.includes('álibi') || message.includes('desculpa')) {
+        response = "Álibis? Vamos criar algo épico! Desbloqueie os planos premium e construa desculpas que mudariam o jogo — estilo Tesla!";
+      } else if (message.includes('ajuda') || message.includes('suporte')) {
+        response = "Precisa de ajuda? Estou aqui para acelerar sua solução. Dê um salto e explore o suporte — o futuro não espera!";
       }
       addMessage(response, false);
       speak(response);
