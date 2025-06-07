@@ -319,9 +319,9 @@
   <!-- Cabeçalho com Efeito Holográfico -->
   <header class="holo-nav">
     <div class="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
-      <div class="flex items-center space-x-6"> <!-- Aumentei o space-x de 3 para 6 -->
+      <div class="flex items-center space-x-6">
         <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-8 w-auto fade-in mr-4"> <!-- Adicionei margin-right -->
+          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-8 w-auto fade-in mr-4">
         </a>
       </div>
       <div class="flex items-center space-x-3">
@@ -663,8 +663,9 @@
         isListening = true;
         micButton.classList.add('active');
         listeningIndicator.classList.add('active');
-        chatInput.placeholder = 'Fale agora...';
-        addMessage("Microfone ativado. Continue falando enquanto segura o botão.", false);
+        chatInput.placeholder = 'Fale claramente enquanto segura o botão...';
+        addMessage("Microfone ativado. Fale com clareza.", false);
+        console.log("Reconhecimento de voz iniciado.");
       };
 
       recognition.onend = () => {
@@ -673,10 +674,13 @@
         listeningIndicator.classList.remove('active');
         chatInput.placeholder = 'Digite ou clique e segure o microfone para falar...';
         if (chatInput.value.trim()) {
-          const message = chatInput.value.trim().toLowerCase();
-          addMessage(message, true);
-          respondToUserMessage(message);
+          const normalizedMessage = chatInput.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+          console.log("Mensagem transcrita:", normalizedMessage);
+          addMessage(normalizedMessage, true);
+          respondToUserMessage(normalizedMessage);
           chatInput.value = '';
+        } else {
+          addMessage("Não detectei áudio claro. Fale mais alto ou verifique o microfone.", false);
         }
       };
 
@@ -686,6 +690,7 @@
           interimTranscript += event.results[i][0].transcript;
         }
         chatInput.value = interimTranscript;
+        console.log("Transcrição parcial:", interimTranscript);
       };
 
       recognition.onerror = (event) => {
@@ -694,7 +699,9 @@
         micButton.classList.remove('active');
         listeningIndicator.classList.remove('active');
         if (event.error === 'not-allowed') {
-          addMessage("Erro: Permissão negada. Por favor, permita o acesso ao microfone nas configurações do navegador e recarregue a página.", false);
+          addMessage("Erro: Permissão negada. Permita o acesso ao microfone nas configurações do navegador e recarregue.", false);
+        } else if (event.error === 'no-speech' || event.error === 'audio-capture') {
+          addMessage("Erro: Não detectei fala. Verifique o microfone ou fale mais alto.", false);
         } else {
           addMessage(`Erro: ${event.error}. Tente novamente ou verifique o microfone.`, false);
         }
@@ -703,7 +710,13 @@
 
       micButton.addEventListener('mousedown', () => {
         if (!isListening) {
-          recognition.start();
+          try {
+            recognition.start();
+            console.log("Tentativa de iniciar reconhecimento.");
+          } catch (e) {
+            console.error("Falha ao iniciar reconhecimento:", e);
+            addMessage("Erro ao iniciar o microfone. Verifique as permissões ou recarregue a página.", false);
+          }
           const video = document.getElementById('hero-video');
           if (video && !video.paused) {
             video.pause();
@@ -756,10 +769,10 @@
 
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && chatInput.value.trim()) {
-        const userMessage = chatInput.value.trim().toLowerCase();
-        addMessage(userMessage, true);
+        const normalizedMessage = chatInput.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Remove acentos
+        addMessage(normalizedMessage, true);
         chatInput.value = '';
-        respondToUserMessage(userMessage);
+        respondToUserMessage(normalizedMessage);
       }
     });
 
@@ -781,6 +794,9 @@
       const redirectMap = {
         'scanner': '/scanner.html',
         'apoio emocional': '/apoio-emocional.html',
+        'diagnostico': '/medical-ia.html', // Variação sem "médico"
+        'diagnostico medico': '/medical-ia.html', // Variação comum
+        'diagnóstico': '/medical-ia.html', // Variação parcial
         'diagnóstico médico': '/medical-ia.html',
         'alibi': '/alibi.html',
         'planos': '/planos.html',
@@ -789,14 +805,15 @@
       };
 
       for (let keyword in redirectMap) {
-        if (message.includes(keyword)) {
+        if (message.indexOf(keyword) !== -1) { // Uso de indexOf para busca mais flexível
+          console.log("Comando reconhecido:", keyword);
           window.location.href = redirectMap[keyword];
           return;
         }
       }
 
-      addMessage("Desculpe, não entendi. Digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.", false);
-      speak("Desculpe, não entendi. Digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.");
+      addMessage("Desculpe, não entendi. Fale ou digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.", false);
+      speak("Desculpe, não entendi. Fale ou digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.");
     }
 
     // Controle do Vídeo
