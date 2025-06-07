@@ -221,79 +221,109 @@
   <!-- Fundo com Partículas -->
   <div id="particles-js"></div>
 
-  <!-- Cabeçalho com Efeito Holográfico -->
-  <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
-        </a>
-      </div>
-      <div class="flex items-center space-x-3">
-        <select id="language-selector" class="bg-gray-800 text-white p-1 rounded" aria-label="Selecionar idioma">
-          <option value="pt-BR">Português</option>
-          <option value="en-US">English</option>
-        </select>
-        <div class="md:hidden">
-          <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-            </svg>
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html" class="hover:text-[#22d3ee] transition" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:text-[#22d3ee] transition" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:text-[#22d3ee] transition" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:text-[#22d3ee] transition" data-i18n="alibi">Criar Álibi</a>
-          </div>
-        </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee] transition" data-i18n="blog">Blog</a>
-        <a href="/planos.html" class="hover:text-[#22d3ee] transition" data-i18n="plans">Planos</a>
-        <a href="/suporte.html" class="hover:text-[#22d3ee] transition" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+ <!-- Cabeçalho com Efeito Holográfico -->
+<header class="holo-nav fixed top-0 left-0 w-full z-50 bg-gray-900 bg-opacity-90 shadow-md transition-shadow duration-300">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <a href="/">
+        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+      </a>
     </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <div class="w-full">
-          <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
-            <span data-i18n="services">Serviços</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-          <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="hover:bg-gray-700" data-i18n="scanner">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="hover:bg-gray-700" data-i18n="emotional-evaluation">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="hover:bg-gray-700" data-i18n="medical-ai">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="hover:bg-gray-700" data-i18n="alibi">Criar Álibi</a>
-          </div>
+
+    <!-- Navegação Desktop -->
+    <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+      <div class="dropdown relative">
+        <button class="hover:text-[#22d3ee] transition flex items-center focus:outline-none" aria-label="Abrir menu de serviços">
+          <span>Serviços</span>
+        </button>
+        <div class="dropdown-menu absolute mt-2 bg-gray-800 rounded shadow-lg py-2 w-48 hidden">
+          <a href="/scanner.html" class="block px-4 py-2 hover:text-[#22d3ee]">Scanner com IA</a>
+          <a href="/emotional-evaluation.html" class="block px-4 py-2 hover:text-[#22d3ee]">Avaliação Emocional</a>
+          <a href="/medical-ai.html" class="block px-4 py-2 hover:text-[#22d3ee]">Diagnóstico Médico</a>
+          <a href="/alibi.html" class="block px-4 py-2 hover:text-[#22d3ee]">Criar Álibi</a>
         </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="blog">Blog</a>
-        <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="plans">Planos</a>
-        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded" data-i18n="support">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis" data-i18n="test-free">
-          🔍 Teste Grátis
-        </a>
-      </nav>
+      </div>
+
+      <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+      <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
+      <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+      <a href="/criar-conta.html" class="hover:text-[#22d3ee] transition">Criar Conta</a>
+      <a href="/login.html" class="hover:text-[#22d3ee] transition">Login</a>
+    </nav>
+
+    <!-- Menu Hamburger Mobile -->
+    <div class="md:hidden flex items-center space-x-3">
+      <a href="/criar-conta.html" class="text-white text-sm px-3 py-1 rounded hover:bg-gray-700">Criar Conta</a>
+      <a href="/login.html" class="text-white text-sm px-3 py-1 rounded hover:bg-gray-700">Login</a>
+      <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
-  </header>
-  <div class="h-20"></div>
+  </div>
+
+  <!-- Menu Mobile -->
+  <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+    <nav class="flex flex-col items-center space-y-4">
+      <div class="w-full">
+        <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded focus:outline-none">
+          Serviços
+        </button>
+        <div id="services-menu" class="dropdown-menu-mobile hidden flex flex-col">
+          <a href="/scanner.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Scanner com IA</a>
+          <a href="/emotional-evaluation.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Avaliação Emocional</a>
+          <a href="/medical-ai.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Diagnóstico Médico</a>
+          <a href="/alibi.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Criar Álibi</a>
+        </div>
+      </div>
+
+      <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+      <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
+      <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+      <a href="/criar-conta.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Conta</a>
+      <a href="/login.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Espaço para compensar altura do header fixo -->
+<div class="h-20"></div>
+
+<!-- Script básico para abrir/fechar menus -->
+<script>
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger-menu');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Dropdown serviços desktop
+  const dropdownBtn = document.querySelector('.dropdown > button');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  dropdownBtn.addEventListener('mouseenter', () => {
+    dropdownMenu.classList.remove('hidden');
+  });
+  dropdownBtn.addEventListener('mouseleave', () => {
+    dropdownMenu.classList.add('hidden');
+  });
+  dropdownMenu.addEventListener('mouseenter', () => {
+    dropdownMenu.classList.remove('hidden');
+  });
+  dropdownMenu.addEventListener('mouseleave', () => {
+    dropdownMenu.classList.add('hidden');
+  });
+
+  // Dropdown serviços mobile
+  const servicesToggle = document.getElementById('services-toggle');
+  const servicesMenu = document.getElementById('services-menu');
+  servicesToggle.addEventListener('click', () => {
+    servicesMenu.classList.toggle('hidden');
+  });
+</script>
+
 
   <!-- Chat Interativo com Voz -->
   <div id="chat-container">
