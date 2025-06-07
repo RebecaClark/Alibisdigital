@@ -71,7 +71,7 @@
     .holo-nav {
       background: rgba(17, 24, 39, 0.8);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       animation: holoGlow 2s infinite alternate;
       position: fixed;
       top: 0;
@@ -92,37 +92,59 @@
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
     }
-    .dropdown-menu, .dropdown-menu-mobile {
+    .dropdown-menu {
       background: rgba(31, 41, 55, 0.9);
       border: 1px solid #22d3ee;
       box-shadow: 0 0 10px #22d3ee;
       border-radius: 8px;
       padding: 8px 0;
       position: absolute;
-      top: 60px;
+      top: 100%;
       left: 0;
-      display: none;
       width: 200px;
       z-index: 60;
+      display: none;
     }
-    .dropdown-menu a, .dropdown-menu-mobile a {
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu a {
       display: block;
       padding: 8px 16px;
       color: #e5e7eb;
       transition: all 0.3s ease;
     }
-    .dropdown-menu a:hover, .dropdown-menu-mobile a:hover {
+    .dropdown-menu a:hover {
       background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
     }
-    .dropdown:hover .dropdown-menu {
-      display: block;
-    }
     .dropdown-menu-mobile {
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 10px #22d3ee;
+      border-radius: 8px;
+      padding: 8px 0;
       width: 100%;
-      position: static;
       display: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+    .dropdown-menu-mobile.active {
+      display: block;
+      max-height: 200px;
+    }
+    .dropdown-menu-mobile a {
+      display: block;
+      padding: 8px 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+    .dropdown-menu-mobile a:hover {
+      background: rgba(55, 65, 81, 0.8);
+      color: #22d3ee;
+      text-shadow: 0 0 5px #22d3ee;
     }
     .futuristic-btn {
       background: linear-gradient(45deg, #7C3AED, #22d3ee);
@@ -137,6 +159,14 @@
     @keyframes neonPulse {
       0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
       100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+    }
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+    #mobile-menu.active {
+      max-height: 500px;
     }
     #chat-container {
       position: fixed;
@@ -283,11 +313,11 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
-          <div class="dropdown-menu absolute top-10 left-0 hidden group-hover:block bg-[rgba(31,41,55,0.9)] border border-[#22d3ee] rounded-lg shadow-lg">
-            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Criar Álibi</a>
+          <div class="dropdown-menu">
+            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Scanner com IA">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Apoio Emocional">Apoio Emocional</a>
+            <a href="/medical-ia.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Diagnóstico Médico">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Criar Álibi">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
@@ -302,14 +332,14 @@
           <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center" aria-label="Abrir menu de serviços">
             <span>Serviços</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
-          <div id="services-menu" class="dropdown-menu-mobile hidden">
-            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Scanner com IA</a>
-            <a href="/emotional-evaluation.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Diagnóstico Médico</a>
-            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition">Criar Álibi</a>
+          <div id="services-menu" class="dropdown-menu-mobile">
+            <a href="/scanner.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Scanner com IA">Scanner com IA</a>
+            <a href="/apoio-emocional.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Apoio Emocional">Apoio Emocional</a>
+            <a href="/medical-ia.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Diagnóstico Médico">Diagnóstico Médico</a>
+            <a href="/alibi.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-[#22d3ee] transition" aria-label="Ir para Criar Álibi">Criar Álibi</a>
           </div>
         </div>
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
@@ -387,7 +417,7 @@
         </div>
         <h3 class="text-xl md:text-2xl font-semibold mb-2">Avaliação Detalhada</h3>
         <p class="mb-2 text-sm md:text-base">Relatórios personalizados para seu bem-estar.</p>
-        <a href="/emotional-evaluation.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
+        <a href="/apoio-emocional.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <div class="text-[#22d3ee] mb-2 scale-up">
@@ -417,27 +447,27 @@
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
         <h3 class="text-xl md:text-2xl font-semibold mb-2">Gerencie Suas Finanças e Reduza o Estresse com IA</h3>
         <p class="mb-2 text-sm md:text-base text-gray-400">Organize suas contas e reduza a ansiedade financeira com o Abili.</p>
-        <a href="/saude-emocional.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <a href="/saude-em.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <h3 class="text-xl md:text-2xl font-semibold mb-2">Como Prevenir o Burnout com Tecnologia de IA</h3>
-        <p class="mb-2 text-sm md:text-base text-gray-400">Evite o esgotamento com o scanner facial e triagem por IA.</p>
-        <a href="/rotinas.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <p class="mb-2 text-sm md:text-sm text-gray-400">Evite o esgotamento com o scanner facial e triagem por IA.</p>
+        <a href="/gerenciar-financas-estresse.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <h3 class="text-xl md:text-2xl font-semibold mb-2">Melhore Seu Sono com Inteligência Artificial</h3>
-        <p class="mb-2 text-sm md:text-base text-gray-400">Durma melhor com o Abili e o scanner facial.</p>
-        <a href="/equilibre.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <p class="mb-2 text-sm md:text-sm text-gray-400">Durma melhor com o Abili e o scanner facial.</p>
+        <a href="/melhorar-sono-com-ia.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-lg md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
         <h3 class="text-xl md:text-2xl font-semibold mb-2">Como a IA Pode Melhorar Sua Produtividade</h3>
-        <p class="mb-2 text-sm md:text-base text-gray-400">Aumente sua eficiência com o Abili e o scanner facial.</p>
-        <a href="/fortalecer-relacionamentos.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <p class="mb-2 text-sm md:text-sm text-gray-400">Aumente sua eficiência com o Abili e o scanner facial.</p>
+        <a href="/fortalecer-relacionamentos.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora</a>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Equilibre Sua Vida Pessoal com IA</h3>
-        <p class="mb-2 text-sm md:text-base text-gray-400">Encontre harmonia com o Abili e apoio por IA.</p>
-        <a href="/equilibre.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <h3 class="text-xl md:text-2xl font-semibold mb-2">Equilibre Estudo, Trabalho e Vida Pessoal com IA</h3>
+        <p class="mb-2 text-sm md:text-sm text-gray-400">Encontre harmonia com o Abili e apoio por IA.</p>
+        <a href="/equilibre.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-lg md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora</a>
       </div>
     </div>
   </section>
@@ -445,15 +475,15 @@
   <!-- Prova Social -->
   <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
     <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">O Que Nossos Usuários Dizem</h2>
-    <p class="text-base md:text-lg mb-4 fade-in"><span id="user-count">532</span> pessoas já testaram o scanner hoje!</p>
+    <p class="text-base md:text-lg mb-4 fade-in"><span id="user-count">421</span> pessoas já testaram o scanner hoje!</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
         <p class="italic text-gray-400 mb-2">"O Scanner Emocional salvou meu dia! Descobri meu estresse e criei um álibi perfeito."</p>
-        <p class="font-semibold text-[#22d3ee]">- Ana S., 34 anos</p>
+        <p class="font-semibold text-[#22d3ee]">- Ana S., 29 anos</p>
       </div>
       <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
         <p class="italic text-gray-400 mb-2">"Álibis realistas e suporte incrível. Recomendo a todos que valorizam privacidade!"</p>
-        <p class="font-semibold text-[#22d3ee]">- João P., 28 anos</p>
+        <p class="font-semibold text-[#22d3ee]">- João P., 32 anos</p>
       </div>
     </div>
   </section>
@@ -461,12 +491,12 @@
   <!-- Chamada Final -->
   <section class="py-12 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
     <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-2xl md:text-4xl font-extrabold mb-4 pulse">🚨 Transforme Suas Emoções Agora!</h2>
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4 pulse">🚀 Transforme Suas Emoções Agora!</h2>
       <p class="text-base md:text-xl mb-4 text-gray-300 fade-in">
         Teste o Scanner e receba insights personalizados para o seu dia.
       </p>
       <a href="/planos.html" class="futuristic-btn text-white font-semibold py-2 px-6 rounded-full shadow-md w-full md:w-auto" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
-      <p class="mt-2 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via PIX ou cartão.</p>
+      <p class="mt-2 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via Pix ou cartão.</p>
     </div>
   </section>
 
@@ -494,29 +524,27 @@
       <p class="text-gray-400 mb-4 fade-in">Suporte imediato com discrição total.</p>
       <div class="flex flex-col sm:flex-row justify-center gap-2">
         <a href="https://wa.me/5511912345678" class="futuristic-btn text-white font-medium py-2 px-4 rounded-full flex items-center w-full sm:w-auto" aria-label="Fale conosco pelo WhatsApp">
-          <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4c-2.2 0-4.3-.4-6.2-1.2l-.4-.2-4.9 1L6 25.2l-.2-.4C4.3 22.4 4 20.3 4 18 4 9.8 9.8 4 16 4s12 5.8 12 14c0 8.2-5.8 14-12 14z"/><path d="M22.6 19.5c-.3-.1-1.9-.9-2.2-1-1-.4-1.2-.1-1.6.2s-.8 1-1.2 1.2c-.5.2-.9 0-1.3-.2-1.4-.6-2.7-1.9-3.6-3.3-.4-.7-.5-1.3-.1-1.7.2-.3.4-.4.6-.7.1-.1.1-.2.2-.3.1-.3.1-.5.1-.7s0-.5-.1-.7c-.2-.3-.5-.7-.7-1-.2-.3-.5-.3-.7-.3-.2 0-.4 0-.6.1s-.5.1-.7.6c-.2.4-.8 1.1-.8 2.6 0 1.5.9 2.9 1.1 3.1.1.1 1.8 2.8 4.4 4 .6.2 1.1.4 1.5.5.6.2 1.1.1 1.6.1.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2c0-.1-.3-.1-.6-.2z"/></svg>
+          <svg class="w-4 h-4 mr-1 fill-current" viewBox="0 0 32 32"><path d="M16 .3C7.2.3.3 7.2.3 16c0 3 0 5.2 1.6 7.8L.3 31.7l8.1-1.6C11.4 31.7 13.7 32 16 32c8.8 0 15.7-6.9 15.7-16C31.7 7.2 24.8.3 16 .3zm0 29.4-2.2-4.9 1L6 25.2l-.2-.4C4.3 22.4.3 4 18 4 18 4 4 9.8 16 4s12 5.8 12 12c0 8.2-5.8 14-12"></path></svg>
           WhatsApp
         </a>
-        <a href="/cdn-cgi/l/email-protection#b7d4d8d9c3d6c3d8f7d6dbded5dec4d3ded0dec3d6db99d4d8da" class="futuristic-btn text-white font-medium py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Envie um e-mail para o suporte">Enviar E-mail</a>
+        <a href="mailto:support@alibisdigital.com.br" class="futuristic-btn text-white font-medium py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Envie um e-mail para o suporte">Enviar E-mail</a>
       </div>
     </div>
-  </section>
-
   <!-- Rodapé -->
-  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-8 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-      <div class="slide-in-left">
-        <h3 class="text-white text-xl md:text-2xl font-bold mb-2 shine">Álibis Digital</h3>
-        <p class="fade-in">Soluções de bem-estar com tecnologia avançada.</p>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-4">
+        <h3 class="text-xl font-bold text-white shine">Álibi Digital</h3>
+        <p class="text-sm text-gray-400 fade-in">Soluções de bem-estar com tecnologia avançada.</p>
       </div>
-      <div class="fade-in">
-        <h4 class="text-white font-semibold mb-2">Navegue</h4>
-        <ul class="space-y-1">
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white">Navegue</h4>
+        <ul class="space-y-2 text-sm">
           <li><a href="/" class="hover:text-white transition">Início</a></li>
           <li><a href="/scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
+          <li><a href="/medical-ia.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
+          <li><a href="/apoio-emocional.html" class="hover:text-white transition">Apoio Emocional</a></li>
           <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
           <li><a href="/planos.html" class="hover:text-white transition">Planos</a></li>
           <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
@@ -525,198 +553,213 @@
           <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
         </ul>
       </div>
-      <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-2">Contato</h4>
-        <ul class="space-y-1">
-          <li class="fade-in">E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4d2e22239c2d3a">[email protected]</a></li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white">Contato</h4>
+        <ul class="space-y-2 text-sm">
+          <li class="fade-in">E-mail: <a href="mailto:support@alibisdigital.com.br" class="hover:text-white transition">support@alibisdigital.com.br</a></li>
+          <li class="fade-in">WhatsApp: <a href="https://wa.me/5511912345678" class="hover:text-white transition">(11) 91234-5678</a></li>
           <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
           <li><a href="/termos.html" class="hover:text-white transition">Termos de Uso</a></li>
           <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
         </ul>
       </div>
     </div>
-    <div class="text-center mt-4">
-      <p class="text-xs">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+    <div class="mt-8 text-center">
+      <p class="text-xs text-gray-500">© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-  <script>
-    // Inicializar Partículas (otimizado para mobile)
-    particlesJS('particles-js', {
-      "particles": {
-        "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, // Reduzido para mobile
-        "color": { "value": "#22d3ee" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.3, "random": true },
-        "size": { "value": 2, "random": true },
-        "line_linked": { "enable": true, "distance": 100, "color": "#22d3ee", "opacity": 0.3, "width": 1 },
-        "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": { "onhover": { "enable": false }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, // Desativado hover em mobile
-        "modes": { "push": { "particles_nb": 2 } }
-      },
-      "retina_detect": true
-    });
+<script>
+  // Inicializar Partículas (otimizado para mobile)
+  particlesJS('particles-js', {
+    "particles": {
+      "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, // Reduzido para mobile
+      "color": { "value": "#22d3ee" },
+      "shape": { "type": "circle" },
+      "opacity": { "value": 0.3, "random": true },
+      "size": { "value": 2, "random": true },
+      "line_linked": { "enable": true, "distance": 100, "color": "#22d3ee", "opacity": 0.3, "width": 1 },
+      "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": { "onhover": { "enable": false }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, // Desativado hover em mobile
+      "modes": { "push": { "particles_nb": 2 } }
+    },
+    "retina_detect": true
+  });
 
-    // Contador de Usuários (Simulado)
-    let userCount = 532;
-    setInterval(() => {
-      userCount += Math.floor(Math.random() * 5);
-      document.getElementById('user-count').textContent = userCount;
-    }, 10000);
+  // Contador de Usuários (Simulado)
+  let userCount = 421;
+  setInterval(() => {
+    userCount += Math.floor(Math.random() * 5);
+    document.getElementById('user-count').textContent = userCount;
+  }, 10000);
 
-    // Chat Interativo com Voz
-    const chatBubble = document.getElementById('chat-bubble');
-    const chatWindow = document.getElementById('chat-window');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chat-input');
-    const listeningIndicator = document.getElementById('listening-indicator');
-    const synth = window.speechSynthesis;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    let lastUserMessage = '';
+  // Chat Interativo com Voz
+  const chatBubble = document.getElementById('chat-bubble');
+  const chatWindow = document.getElementById('chat-window');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const listeningIndicator = document.getElementById('listening-indicator');
+  const synth = window.speechSynthesis;
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+  let lastUserMessage = '';
 
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-      recognition.interimResults = false;
-      recognition.lang = 'pt-BR';
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.interimResults = false;
+    recognition.lang = 'pt-BR';
+  }
+
+  const speak = (text) => {
+    if (synth && 'speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'pt-BR';
+      synth.speak(utter);
     }
+  };
 
-    const speak = (text) => {
-      if (synth && 'speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'pt-BR';
-        synth.speak(utter);
+  const addMessage = (message, isUser = false) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%] fade-in`;
+    messageDiv.textContent = message;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  };
+
+  chatBubble.addEventListener('click', () => {
+    chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+    if (chatWindow.style.display === 'block') {
+      const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
+      addMessage(welcomeMessage, false);
+      speak(welcomeMessage);
+      const video = document.getElementById('hero-video');
+      if (video && !video.paused) {
+        video.pause();
+        document.getElementById('play-video').textContent = 'Tocar Vídeo';
       }
+    }
+  });
+
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && chatInput.value.trim()) {
+      const userMessage = chatInput.value.trim().toLowerCase();
+      addMessage(userMessage, true);
+      lastUserMessage = userMessage;
+      chatInput.value = '';
+      respondToUser(lastUserMessage);
+    }
+  });
+
+  if (recognition) {
+    recognition.onstart = () => listeningIndicator.classList.add('active');
+    recognition.onend = () => listeningIndicator.classList.remove('active');
+    recognition.onresult = (event) => {
+      const spokenText = event.results[0][0].transcript.toLowerCase();
+      chatInput.value = spokenText;
+      const eventEnter = new Event('keypress');
+      eventEnter.key = 'Enter';
+      chatInput.dispatchEvent(eventEnter);
+    };
+    recognition.onerror = (event) => {
+      console.error("Erro no reconhecimento de voz:", event.error);
+      listeningIndicator.classList.remove('active');
+      addMessage("Desculpe, digite sua mensagem.", false);
+    };
+    chatInput.addEventListener('focus', () => {
+      recognition.start();
+      const video = document.getElementById('hero-video');
+      if (video && !video.paused) {
+        video.pause();
+        document.getElementById('play-video').textContent = 'Tocar Vídeo';
+      }
+    });
+  } else {
+    chatInput.addEventListener('focus', () => addMessage("Reconhecimento de voz indisponível. Digite.", false));
+  }
+
+  function respondToUser(message) {
+    let response = "Não entendi, mas posso ajudar! Teste o scanner, explore o blog ou peça suporte.";
+    const redirectMap = {
+      'suporte': '/suporte.html',
+      'blog': '/blog.html',
+      'apoio emocional': '/apoio-emocional.html',
+      'diagnóstico médico': '/medical-ia.html',
+      'scanner': '/scanner.html',
+      'planos': '/planos.html'
     };
 
-    const addMessage = (message, isUser = false) => {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%] fade-in`;
-      messageDiv.textContent = message;
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
+    for (let keyword in redirectMap) {
+      if (message.includes(keyword)) {
+        response = `Vou te levar para ${keyword}. Confirma?`;
+        addMessage(response, false);
+        speak(response);
+        setTimeout(() => {
+          if (window.confirm("Confirmar redirecionamento?")) {
+            window.location.href = redirectMap[keyword];
+          } else {
+            addMessage("Redirecionamento cancelado. Como ajudar?", false);
+            speak("Redirecionamento cancelado. Como ajudar?");
+          }
+        }, 1000);
+        return;
+      }
+    }
+    addMessage(response, false);
+    speak(response);
+  }
 
-    chatBubble.addEventListener('click', () => {
-      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
-      if (chatWindow.style.display === 'block') {
-        const welcomeMessage = "Olá! Como posso te ajudar hoje a cuidar do seu bem-estar?";
-        addMessage(welcomeMessage, false);
-        speak(welcomeMessage);
-        const video = document.getElementById('hero-video');
-        if (video && !video.paused) {
-          video.pause();
-          document.getElementById('play-video').textContent = 'Tocar Vídeo';
-        }
+  // Controle do Vídeo
+  const video = document.getElementById('hero-video');
+  const playButton = document.getElementById('play-video');
+  if (video && playButton) {
+    playButton.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playButton.textContent = 'Pausar Vídeo';
+      } else {
+        video.pause();
+        playButton.textContent = 'Tocar Vídeo';
       }
     });
+  }
 
-    chatInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && chatInput.value.trim()) {
-        const userMessage = chatInput.value.trim().toLowerCase();
-        addMessage(userMessage, true);
-        lastUserMessage = userMessage;
-        chatInput.value = '';
-        respondToUser(lastUserMessage);
-      }
-    });
-
-    if (recognition) {
-      recognition.onstart = () => listeningIndicator.classList.add('active');
-      recognition.onend = () => listeningIndicator.classList.remove('active');
-      recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript.toLowerCase();
-        chatInput.value = spokenText;
-        const eventEnter = new Event('keypress');
-        eventEnter.key = 'Enter';
-        chatInput.dispatchEvent(eventEnter);
-      };
-      recognition.onerror = (event) => {
-        console.error("Erro no reconhecimento de voz:", event.error);
-        listeningIndicator.classList.remove('active');
-        addMessage("Desculpe, digite sua mensagem.", false);
-      };
-      chatInput.addEventListener('focus', () => {
-        recognition.start();
-        const video = document.getElementById('hero-video');
-        if (video && !video.paused) {
-          video.pause();
-          document.getElementById('play-video').textContent = 'Tocar Vídeo';
-        }
+  // Animações e Menu
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    } else {
-      chatInput.addEventListener('focus', () => addMessage("Reconhecimento de voz indisponível. Digite.", false));
-    }
+    }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
 
-    function respondToUser(message) {
-      let response = "Não entendi, mas posso ajudar! Teste o scanner, explore o blog ou peça suporte.";
-      const redirectMap = {
-        'suporte': '/suporte.html',
-        'blog': '/blog.html',
-        'apoio emocional': '/emotional-evaluation.html',
-        'diagnóstico médico': '/medical-ai.html',
-        'scanner': '/scanner.html',
-        'planos': '/planos.html'
-      };
+    const hamburger = document.getElementById('hamburger-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const servicesToggle = document.getElementById('services-toggle');
+    const servicesMenu = document.getElementById('services-menu');
 
-      for (let keyword in redirectMap) {
-        if (message.includes(keyword)) {
-          response = `Vou te levar para ${keyword}. Confirma?`;
-          addMessage(response, false);
-          speak(response);
-          setTimeout(() => {
-            if (window.confirm("Confirmar redirecionamento?")) {
-              window.location.href = redirectMap[keyword];
-            } else {
-              addMessage("Redirecionamento cancelado. Como ajudar?", false);
-              speak("Redirecionamento cancelado. Como ajudar?");
-            }
-          }, 1000);
-          return;
-        }
-      }
-      addMessage(response, false);
-      speak(response);
-    }
-
-    // Controle do Vídeo
-    const video = document.getElementById('hero-video');
-    const playButton = document.getElementById('play-video');
-    if (video && playButton) {
-      playButton.addEventListener('click', () => {
-        if (video.paused) {
-          video.play();
-          playButton.textContent = 'Pausar Vídeo';
-        } else {
-          video.pause();
-          playButton.textContent = 'Tocar Vídeo';
-        }
-      });
-    }
-
-    // Animações e Menu
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('.animate-on-scroll');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      }, { threshold: 0.1 });
-      sections.forEach(section => observer.observe(section));
-
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const servicesToggle = document.getElementById('services-toggle');
-      const servicesMenu = document.getElementById('services-menu');
-
-      hamburger?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-      servicesToggle?.addEventListener('click', () => servicesMenu.classList.toggle('hidden'));
+    hamburger?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('active');
+      servicesMenu.classList.remove('active');
     });
-  </script>
+
+    servicesToggle?.addEventListener('click', () => {
+      servicesMenu.classList.toggle('active');
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('active');
+        servicesMenu.classList.remove('active');
+      });
+    });
+  });
+</script>
 </body>
 </html>
