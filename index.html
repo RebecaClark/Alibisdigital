@@ -81,8 +81,8 @@
       height: 60px;
     }
     @keyframes holoGlow {
-      0% { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
-      100% { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
+      0% { box-shadow: 0 0 10px #22d3ee; 0 0 20px #22d3ee; 0 0 30px #22d3ee; }
+      100% { box-shadow: 0 0 20px #22d3ee; 0 0 30px #22d3ee; 0 0 40px #22d3ee; }
     }
     .holo-nav a, .holo-nav button {
       position: relative;
@@ -142,7 +142,7 @@
       transition: all 0.3s ease;
     }
     .dropdown-menu-mobile a:hover {
-      background: #rgba(55, 65%, 81%, 0.8);
+      background: rgba(55, 65, 81, 0.8);
       color: #22d3ee;
       text-shadow: 0 0 5px #22d3ee;
     }
@@ -343,7 +343,8 @@
         <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
         <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
         <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
+        <a href="/criar-conta.html" class="hover:text-[#22d3ee] transition">Criar Conta</a>
+        <a href="/login.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Fazer login">Login</a>
       </nav>
     </div>
     <div id="mobile-menu" class="md:hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
@@ -365,7 +366,8 @@
         <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
         <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
         <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
-        <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Teste o scanner emocional grátis">🔍 Teste Grátis</a>
+        <a href="/criar-conta.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Conta</a>
+        <a href="/login.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center" aria-label="Fazer login">Login</a>
       </nav>
     </div>
   </header>
@@ -578,9 +580,6 @@
             <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
             <li><a href="/planos.html" class="hover:text-white transition">Planos</a></li>
             <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
-            <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
-            <li><a href="/termos.html" class="hover:text-white transition">Termos de Uso</a></li>
-            <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
           </ul>
         </div>
         <div class="space-y-4">
@@ -706,7 +705,7 @@
         let interimTranscript = '';
         let finalTranscript = '';
 
-        for (let i = event.resultIndex; i < event.results.length i++) {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript.toLowerCase();
           if (event.results[i].isFinal) {
             finalTranscript += transcript;
@@ -728,7 +727,7 @@
               respondToUserMessage(message);
               recognition.stop();
             }
-          }, 1000);
+          }, 2000);
         }
 
         if (finalTranscript) {
@@ -777,7 +776,9 @@
         'apoio emocional': '/apoio-emocional.html',
         'diagnóstico médico': '/medical-ia.html',
         'scanner': '/scanner.html',
-        'planos': '/planos.html'
+        'planos': '/planos.html',
+        'criar conta': '/criar-conta.html',
+        'login': '/login.html'
       };
 
       for (let keyword in redirectMap) {
