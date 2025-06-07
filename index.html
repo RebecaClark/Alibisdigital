@@ -69,7 +69,7 @@
       to { opacity: 1; transform: scale(1); }
     }
     .holo-nav {
-      background: rgba(17, 24, 39, 0.8);
+      background: rgba(17, 24, 39, 0.9);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       animation: holoGlow 2s infinite alternate;
@@ -81,8 +81,8 @@
       height: 60px;
     }
     @keyframes holoGlow {
-      0% { box-shadow: 0 0 10px #22d3ee; 0 0 20px #22d3ee; 0 0 30px #22d3ee; }
-      100% { box-shadow: 0 0 20px #22d3ee; 0 0 30px #22d3ee; 0 0 40px #22d3ee; }
+      from { box-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
+      to { box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee, 0 0 40px #22d3ee; }
     }
     .holo-nav a, .holo-nav button {
       position: relative;
@@ -157,8 +157,8 @@
       box-shadow: 0 0 25px #22d3ee, 0 0 35px #22d3ee;
     }
     @keyframes neonPulse {
-      0% { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
-      100% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+      from { box-shadow: 0 0 5px #22d3ee, 0 0 10px #22d3ee; }
+      to { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
     }
     #mobile-menu {
       max-height: 0;
@@ -192,57 +192,63 @@
       backdrop-filter: blur(10px);
       border: 1px solid #22d3ee;
       border-radius: 15px;
-      width: 350px;
-      max-width: 90%;
-      height: 400px;
+      width: 400px;
+      max-width: 95%;
+      height: 450px;
       position: absolute;
       bottom: 80px;
       right: 10px;
       box-shadow: 0 0 20px #22d3ee;
+      overflow: hidden;
     }
     #chat-messages {
-      height: 300px;
+      height: 340px;
       overflow-y: auto;
-      padding: 15px;
+      padding: 20px;
       color: #e5e7eb;
+      font-size: 16px;
     }
     #chat-input-container {
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding: 15px;
+      background: rgba(31, 41, 55, 0.9);
       gap: 10px;
     }
     #chat-input {
       background: rgba(55, 65, 81, 0.8);
       border: 1px solid #22d3ee;
       border-radius: 20px;
-      padding: 10px;
+      padding: 12px 15px;
       flex-grow: 1;
       color: white;
       font-size: 16px;
+      outline: none;
     }
     #mic-button {
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: 5px;
+      padding: 8px;
       display: flex;
       align-items: center;
+      transition: transform 0.2s ease;
     }
     #mic-button.active {
+      transform: scale(1.2);
       animation: micPulse 1s infinite;
     }
     @keyframes micPulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      0% { transform: scale(1.2); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1.2); }
     }
     .listening-indicator {
       display: none;
       color: #22d3ee;
-      font-size: 1rem;
+      font-size: 1.1rem;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 10px;
       animation: fadeIn 0.5s ease-in-out;
     }
     .listening-indicator.active {
@@ -273,8 +279,8 @@
       animation: shine 4s infinite linear;
     }
     @keyframes shine {
-      0% { transform: translateX(-120%) rotate(20deg); }
-      100% { transform: translateX(120%) rotate(20deg); }
+      from { transform: translateX(-120%) rotate(20deg); }
+      to { transform: translateX(120%) rotate(20deg); }
     }
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
@@ -285,12 +291,26 @@
       .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
       video { width: 100%; height: auto; }
       #chat-window { 
-        width: 90%;
-        height: 350px;
-        right: 5%;
+        width: 95%;
+        height: 400px;
+        right: 2.5%;
       }
-      #chat-messages { height: 250px; }
-      #chat-input { padding: 8px; font-size: 14px; }
+      #chat-messages { 
+        height: 280px; 
+        padding: 15px;
+        font-size: 14px;
+      }
+      #chat-input { 
+        padding: 10px; 
+        font-size: 14px; 
+      }
+      #chat-input-container {
+        padding: 10px;
+      }
+      .listening-indicator {
+        font-size: 1rem;
+        margin-top: 8px;
+      }
       .holo-nav { height: 50px; }
       .dropdown-menu { display: none !important; }
       #navbar { display: none; }
@@ -300,7 +320,11 @@
     @media (min-width: 769px) and (max-width: 1024px) {
       .max-w-4xl { max-width: 90%; }
       video { max-width: 80%; }
-      #chat-window { max-width: 400px; }
+      #chat-window { 
+        width: 380px; 
+        height: 420px;
+      }
+      #chat-messages { height: 310px; }
     }
   </style>
 </head>
@@ -385,7 +409,7 @@
         <div id="chat-input-container">
           <input id="chat-input" type="text" aria-label="Digite ou fale sua mensagem" placeholder="Digite ou fale...">
           <button id="mic-button" aria-label="Ativar microfone">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#22d3ee]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#22d3ee]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
             </svg>
           </button>
@@ -580,6 +604,11 @@
             <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
             <li><a href="/planos.html" class="hover:text-white transition">Planos</a></li>
             <li><a href="/suporte.html" class="hover:text-white transition">Suporte</a></li>
+            <li><a href="/criar-conta.html" class="hover:text-white transition">Criar Conta</a></li>
+            <li><a href="/login.html" class="hover:text-white transition">Login</a></li>
+            <li><a href="/privacidade.html" class="hover:text-white transition">Política de Privacidade</a></li>
+            <li><a href="/termos.html" class="hover:text-white transition">Termos de Uso</a></li>
+            <li><a href="/politicas.html" class="hover:text-white transition">Políticas Gerais</a></li>
           </ul>
         </div>
         <div class="space-y-4">
@@ -638,12 +667,14 @@
     let recognition = null;
     let lastUserMessage = '';
     let isListening = false;
+    let interimMessageDiv = null;
 
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
       recognition.interimResults = true;
       recognition.lang = 'pt-BR';
       recognition.maxAlternatives = 1;
+      recognition.continuous = true;
     }
 
     const speak = (text) => {
@@ -654,11 +685,26 @@
       }
     };
 
-    const addMessage = (message, isUser = false) => {
+    const addMessage = (message, isUser = false, isInterim = false) => {
+      if (isInterim && interimMessageDiv) {
+        interimMessageDiv.textContent = message;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return;
+      }
+
       const messageDiv = document.createElement('div');
-      messageDiv.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[80%] fade-in`;
+      messageDiv.className = `p-2 mb-2 rounded-lg ${
+        isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'
+      } max-w-[80%] fade-in`;
       messageDiv.textContent = message;
       chatMessages.appendChild(messageDiv);
+
+      if (isInterim) {
+        interimMessageDiv = messageDiv;
+      } else {
+        interimMessageDiv = null;
+      }
+
       chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
@@ -686,19 +732,39 @@
       }
     });
 
+    chatInput.addEventListener('focus', () => {
+      if (!isListening && !chatInput.value) {
+        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
+      }
+    });
+
     if (recognition) {
       let interimTimeout = null;
+      const pauseThreshold = 1500;
+      const maxSpeechDuration = 30000;
 
       recognition.onstart = () => {
         isListening = true;
         micButton.classList.add('active');
         listeningIndicator.classList.add('active');
+        chatInput.placeholder = 'Fale agora...';
+        setTimeout(() => {
+          if (isListening) {
+            recognition.stop();
+            addMessage("Tempo máximo de fala atingido. Envie ou fale novamente.", false);
+          }
+        }, maxSpeechDuration);
       };
 
       recognition.onend = () => {
         isListening = false;
         micButton.classList.remove('active');
         listeningIndicator.classList.remove('active');
+        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
+        if (interimMessageDiv) {
+          interimMessageDiv.remove();
+          interimMessageDiv = null;
+        }
       };
 
       recognition.onresult = (event) => {
@@ -706,7 +772,7 @@
         let finalTranscript = '';
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript.toLowerCase();
+          const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
             finalTranscript += transcript;
           } else {
@@ -714,29 +780,29 @@
           }
         }
 
-        chatInput.value = interimTranscript || finalTranscript;
-
         if (interimTranscript) {
+          chatInput.value = interimTranscript;
+          addMessage(interimTranscript, true, true);
           clearTimeout(interimTimeout);
           interimTimeout = setTimeout(() => {
             if (chatInput.value.trim()) {
-              const message = chatInput.value.trim();
+              const message = chatInput.value.trim().toLowerCase();
               addMessage(message, true);
               lastUserMessage = message;
               chatInput.value = '';
               respondToUserMessage(message);
               recognition.stop();
             }
-          }, 2000);
+          }, pauseThreshold);
         }
 
         if (finalTranscript) {
           clearTimeout(interimTimeout);
-          const message = finalTranscript.trim();
+          const message = finalTranscript.trim().toLowerCase();
           if (message) {
+            chatInput.value = '';
             addMessage(message, true);
             lastUserMessage = message;
-            chatInput.value = '';
             respondToUserMessage(message);
           }
           recognition.stop();
@@ -749,6 +815,7 @@
         micButton.classList.remove('active');
         listeningIndicator.classList.remove('active');
         addMessage("Desculpe, não consegui entender. Tente digitar ou falar novamente.", false);
+        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
       };
 
       micButton.addEventListener('click', () => {
@@ -765,11 +832,13 @@
       });
     } else {
       micButton.style.display = 'none';
-      chatInput.addEventListener('focus', () => addMessage("Reconhecimento de voz indisponível. Digite.", false));
+      chatInput.addEventListener('focus', () => {
+        addMessage("Reconhecimento de voz indisponível. Por favor, digite sua mensagem.", false);
+      });
     }
 
     function respondToUserMessage(message) {
-      let response = "Não entendi, mas posso ajudar! Teste o scanner, explore o blog ou peça suporte.";
+      let response = "Não entendi, mas posso ajudar! Explore o blog, peça suporte ou acesse sua conta.";
       const redirectMap = {
         'suporte': '/suporte.html',
         'blog': '/blog.html',
