@@ -222,63 +222,53 @@
   <div id="particles-js"></div>
 
  <!-- Cabeçalho com Efeito Holográfico -->
-<header class="holo-nav fixed top-0 left-0 w-full z-50 bg-gray-900 bg-opacity-90 shadow-md transition-shadow duration-300">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <!-- Logo -->
-    <div class="flex items-center space-x-3">
-      <a href="/">
-        <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
-      </a>
-    </div>
+<header class="fixed w-full top-0 left-0 z-50 bg-white shadow-md">
+  <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-3 md:py-4">
+    
+    <!-- LOGO -->
+    <a href="/index.html" class="flex items-center space-x-2">
+      <img src="/assets/img/logo.png" alt="Álibi Digital" class="h-10 w-auto" />
+      <span class="text-xl font-bold text-gray-900">Álibi Digital</span>
+    </a>
 
-    <!-- Navegação Desktop -->
-    <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-      <div class="dropdown relative">
-        <button class="hover:text-[#22d3ee] transition flex items-center focus:outline-none" aria-label="Abrir menu de serviços">
-          <span>Serviços</span>
-        </button>
-        <div class="dropdown-menu absolute mt-2 bg-gray-800 rounded shadow-lg py-2 w-48 hidden">
-          <a href="/scanner.html" class="block px-4 py-2 hover:text-[#22d3ee]">Scanner com IA</a>
-          <a href="/emotional-evaluation.html" class="block px-4 py-2 hover:text-[#22d3ee]">Avaliação Emocional</a>
-          <a href="/medical-ai.html" class="block px-4 py-2 hover:text-[#22d3ee]">Diagnóstico Médico</a>
-          <a href="/alibi.html" class="block px-4 py-2 hover:text-[#22d3ee]">Criar Álibi</a>
-        </div>
-      </div>
-
-      <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
-      <a href="/planos.html" class="hover:text-[#22d3ee] transition">Planos</a>
-      <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
-      <a href="/criar-conta.html" class="futuristic-btn text-white py-4 px-6 rounded-full text-lg font-semibold shadow-lg" aria-label="Criar conta">Criar Conta</a>
-      <a href="/login.html" class="futuristic-btn text-white py-4 px-6 rounded-full text-lg font-semibold shadow-lg" aria-label="Fazer login">Login</a>
-
+    <!-- DESKTOP NAV -->
+    <nav class="hidden md:flex items-center space-x-6 text-gray-800 font-medium">
+      <a href="/scanner.html" class="hover:text-blue-600 transition">Scanner Facial</a>
+      <a href="/emotional-evaluation.html" class="hover:text-blue-600 transition">Apoio Emocional</a>
+      <a href="/medical-ai.html" class="hover:text-blue-600 transition">Consulta Médica</a>
+      <a href="/alibi.html" class="hover:text-blue-600 transition">Gerar Álibi</a>
+      <a href="/planos.html" class="hover:text-blue-600 transition">Planos</a>
     </nav>
 
-    <!-- Menu Hamburger Mobile -->
-    <div class="md:hidden flex items-center space-x-3">
-      <a href="/criar-conta.html" class="text-white text-sm px-3 py-1 rounded hover:bg-gray-700">Criar Conta</a>
-      <a href="/login.html" class="text-white text-sm px-3 py-1 rounded hover:bg-gray-700">Login</a>
-      <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+    <!-- BOTÕES -->
+    <div class="hidden md:flex space-x-3">
+      <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-5 rounded-full text-sm font-semibold shadow-lg" aria-label="Criar conta">Criar Conta</a>
+      <a href="/login.html" class="futuristic-btn text-white py-2 px-5 rounded-full text-sm font-semibold shadow-lg" aria-label="Fazer login">Login</a>
     </div>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
   </div>
 
-  <!-- Menu Mobile -->
-  <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-    <nav class="flex flex-col items-center space-y-4">
-      <div class="w-full">
-        <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded focus:outline-none">
-          Serviços
-        </button>
-        <div id="services-menu" class="dropdown-menu-mobile hidden flex flex-col">
-          <a href="/scanner.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Scanner com IA</a>
-          <a href="/emotional-evaluation.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Avaliação Emocional</a>
-          <a href="/medical-ai.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Diagnóstico Médico</a>
-          <a href="/alibi.html" class="text-white py-2 px-4 hover:bg-gray-700 rounded w-full text-center">Criar Álibi</a>
-        </div>
-      </div>
+  <!-- MOBILE NAV -->
+  <div id="mobile-menu" class="md:hidden hidden bg-white shadow-md px-4 pb-4">
+    <nav class="flex flex-col space-y-2 text-gray-800 font-medium">
+      <a href="/scanner.html" class="hover:text-blue-600">Scanner Facial</a>
+      <a href="/emotional-evaluation.html" class="hover:text-blue-600">Apoio Emocional</a>
+      <a href="/medical-ai.html" class="hover:text-blue-600">Consulta Médica</a>
+      <a href="/alibi.html" class="hover:text-blue-600">Gerar Álibi</a>
+      <a href="/planos.html" class="hover:text-blue-600">Planos</a>
+      <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-5 rounded-full text-sm font-semibold shadow-lg mt-2" aria-label="Criar conta">Criar Conta</a>
+      <a href="/login.html" class="futuristic-btn text-white py-2 px-5 rounded-full text-sm font-semibold shadow-lg" aria-label="Fazer login">Login</a>
+    </nav>
+  </div>
+</header>
+
 
       <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
       <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Planos</a>
