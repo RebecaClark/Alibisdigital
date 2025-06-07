@@ -201,9 +201,15 @@
     }
     #chat-messages {
       height: 300px;
-      overflow-y: auto;
+      overflow-y: auto; /* Mantém a rolagem */
       padding: 10px;
       color: #e5e7eb;
+      /* Oculta a barra de rolagem visualmente */
+      -ms-overflow-style: none; /* IE e Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    #chat-messages::-webkit-scrollbar {
+      display: none; /* Chrome, Safari e Opera */
     }
     #chat-messages div {
       max-width: 70%;
@@ -405,7 +411,7 @@
       <div id="chat-messages"></div>
       <div class="p-2">
         <div id="chat-input-container">
-          <input id="chat-input" type="text" aria-label="Digite ou fale sua mensagem" placeholder="Digite ou fale...">
+          <input id="chat-input" type="text" aria-label="Digite ou fale sua mensagem" placeholder="Digite ou clique e segure o microfone para falar...">
           <button id="mic-button" aria-label="Ativar microfone">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#22d3ee]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
@@ -663,53 +669,101 @@
     const synth = window.speechSynthesis;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition = null;
-    let lastUserMessage = '';
     let isListening = false;
-    let interimMessageDiv = null;
 
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
       recognition.interimResults = true;
       recognition.lang = 'pt-BR';
       recognition.maxAlternatives = 1;
-      recognition.continuous = true;
+      recognition.continuous = false;
+
+      // Verificação inicial de permissão
+      recognition.onstart = () => {
+        isListening = true;
+        micButton.classList.add('active');
+        listeningIndicator.classList.add('active');
+        chatInput.placeholder = 'Fale agora...';
+        addMessage("Microfone ativado. Continue falando enquanto segura o botão.", false);
+      };
+
+      recognition.onend = () => {
+        isListening = false;
+        micButton.classList.remove('active');
+        listeningIndicator.classList.remove('active');
+        chatInput.placeholder = 'Digite ou clique e segure o microfone para falar...';
+        if (chatInput.value.trim()) {
+          const message = chatInput.value.trim().toLowerCase();
+          addMessage(message, true);
+          respondToUserMessage(message);
+          chatInput.value = '';
+        }
+      };
+
+      recognition.onresult = (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          interimTranscript += event.results[i][0].transcript;
+        }
+        chatInput.value = interimTranscript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Erro no reconhecimento de voz:", event.error);
+        isListening = false;
+        micButton.classList.remove('active');
+        listeningIndicator.classList.remove('active');
+        if (event.error === 'not-allowed') {
+          addMessage("Erro: Permissão negada. Por favor, permita o acesso ao microfone nas configurações do navegador e recarregue a página.", false);
+        } else {
+          addMessage(`Erro: ${event.error}. Tente novamente ou verifique o microfone.`, false);
+        }
+        chatInput.placeholder = 'Digite ou clique e segure o microfone para falar...';
+      };
+
+      micButton.addEventListener('mousedown', () => {
+        if (!isListening) {
+          recognition.start();
+          const video = document.getElementById('hero-video');
+          if (video && !video.paused) {
+            video.pause();
+            document.getElementById('play-video').textContent = 'Tocar Vídeo';
+          }
+        }
+      });
+
+      micButton.addEventListener('mouseup', () => {
+        if (isListening) {
+          recognition.stop();
+        }
+      });
+
+      micButton.addEventListener('mouseleave', () => {
+        if (isListening) {
+          recognition.stop();
+        }
+      });
+    } else {
+      micButton.style.display = 'none';
+      chatInput.addEventListener('focus', () => {
+        addMessage("Sem suporte a voz neste navegador. Use o teclado.", false);
+      });
     }
 
-    const speak = (text) => {
-      if (synth && 'speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'pt-BR';
-        synth.speak(utter);
-      }
-    };
-
-    const addMessage = (message, isUser = false, isInterim = false) => {
-      if (isInterim && interimMessageDiv) {
-        interimMessageDiv.textContent = message;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return;
-      }
-
+    const addMessage = (message, isUser = false) => {
       const messageDiv = document.createElement('div');
       messageDiv.className = `p-2 mb-2 rounded-lg ${
         isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'
       } max-w-[70%] fade-in`;
       messageDiv.textContent = message;
       chatMessages.appendChild(messageDiv);
-
-      if (isInterim) {
-        interimMessageDiv = messageDiv;
-      } else {
-        interimMessageDiv = null;
-      }
-
       chatMessages.scrollTop = chatMessages.scrollHeight;
     };
 
     chatBubble.addEventListener('click', () => {
       chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
       if (chatWindow.style.display === 'block') {
-        const welcomeMessage = "Salve, eu sou uma IA inspirada por Elon Musk! Vamos revolucionar seu bem-estar emocional juntos. O que você quer explorar hoje?";
+        const welcomeMessage = "O que posso te ajudar hoje?";
         addMessage(welcomeMessage, false);
         speak(welcomeMessage);
         const video = document.getElementById('hero-video');
@@ -724,7 +778,6 @@
       if (e.key === 'Enter' && chatInput.value.trim()) {
         const userMessage = chatInput.value.trim().toLowerCase();
         addMessage(userMessage, true);
-        lastUserMessage = userMessage;
         chatInput.value = '';
         respondToUserMessage(userMessage);
       }
@@ -732,149 +785,38 @@
 
     chatInput.addEventListener('focus', () => {
       if (!isListening && !chatInput.value) {
-        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
+        chatInput.placeholder = 'Digite ou clique e segure o microfone para falar...';
       }
     });
 
-    if (recognition) {
-      let interimTimeout = null;
-      const pauseThreshold = 1500;
-      const maxSpeechDuration = 30000;
-
-      recognition.onstart = () => {
-        isListening = true;
-        micButton.classList.add('active');
-        listeningIndicator.classList.add('active');
-        chatInput.placeholder = 'Fale agora...';
-        setTimeout(() => {
-          if (isListening) {
-            recognition.stop();
-            addMessage("Tempo limite atingido! Vamos acelerar e tentar de novo.", false);
-          }
-        }, maxSpeechDuration);
-      };
-
-      recognition.onend = () => {
-        isListening = false;
-        micButton.classList.remove('active');
-        listeningIndicator.classList.remove('active');
-        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
-        if (interimMessageDiv) {
-          interimMessageDiv.remove();
-          interimMessageDiv = null;
-        }
-      };
-
-      recognition.onresult = (event) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript;
-          } else {
-            interimTranscript += transcript;
-          }
-        }
-
-        if (interimTranscript) {
-          chatInput.value = interimTranscript;
-          addMessage(interimTranscript, true, true);
-          clearTimeout(interimTimeout);
-          interimTimeout = setTimeout(() => {
-            if (chatInput.value.trim()) {
-              const message = chatInput.value.trim().toLowerCase();
-              addMessage(message, true);
-              lastUserMessage = message;
-              chatInput.value = '';
-              respondToUserMessage(message);
-              recognition.stop();
-            }
-          }, pauseThreshold);
-        }
-
-        if (finalTranscript) {
-          clearTimeout(interimTimeout);
-          const message = finalTranscript.trim().toLowerCase();
-          if (message) {
-            chatInput.value = '';
-            addMessage(message, true);
-            lastUserMessage = message;
-            respondToUserMessage(message);
-          }
-          recognition.stop();
-        }
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Erro no reconhecimento de voz:", event.error);
-        isListening = false;
-        micButton.classList.remove('active');
-        listeningIndicator.classList.remove('active');
-        addMessage("Ops, falha na comunicação! Tente digitar ou falar de novo — vamos superar isso!", false);
-        chatInput.placeholder = 'Digite ou clique no microfone para falar...';
-      };
-
-      micButton.addEventListener('click', () => {
-        if (isListening) {
-          recognition.stop();
-        } else {
-          recognition.start();
-          const video = document.getElementById('hero-video');
-          if (video && !video.paused) {
-            video.pause();
-            document.getElementById('play-video').textContent = 'Tocar Vídeo';
-          }
-        }
-      });
-    } else {
-      micButton.style.display = 'none';
-      chatInput.addEventListener('focus', () => {
-        addMessage("Sem voz por aqui! Use o teclado para me desafiar.", false);
-      });
-    }
+    const speak = (text) => {
+      if (synth && 'speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'pt-BR';
+        synth.speak(utter);
+      }
+    };
 
     function respondToUserMessage(message) {
-      let response = "Hmm, não captei isso direito. Vamos pensar fora da caixa! Que tal explorar o blog ou pedir suporte para algo revolucionário?";
       const redirectMap = {
-        'suporte': '/suporte.html',
-        'blog': '/blog.html',
+        'scanner': '/scanner.html',
         'apoio emocional': '/apoio-emocional.html',
         'diagnóstico médico': '/medical-ia.html',
-        'scanner': '/scanner.html',
+        'alibi': '/alibi.html',
         'planos': '/planos.html',
-        'criar conta': '/criar-conta.html',
-        'login': '/login.html'
+        'blog': '/blog.html',
+        'suporte': '/suporte.html'
       };
 
       for (let keyword in redirectMap) {
         if (message.includes(keyword)) {
-          response = `Ótima escolha! Vamos te levar para ${keyword} — confirme se quer dar esse passo rumo ao futuro!`;
-          addMessage(response, false);
-          speak(response);
-          setTimeout(() => {
-            if (window.confirm("Confirmar redirecionamento?")) {
-              window.location.href = redirectMap[keyword];
-            } else {
-              addMessage("Cancelado! Vamos inovar de outra forma — o que mais você quer tentar?", false);
-              speak("Cancelado! Vamos inovar de outra forma — o que mais você quer tentar?");
-            }
-          }, 500);
+          window.location.href = redirectMap[keyword];
           return;
         }
       }
 
-      // Respostas personalizadas ao estilo Elon Musk
-      if (message.includes('estresse') || message.includes('cansaço')) {
-        response = "Estresse? Isso é só um desafio a ser vencido! Use o Scanner Emocional — vamos hackear seu bem-estar como se fosse um foguete da SpaceX!";
-      } else if (message.includes('álibi') || message.includes('desculpa')) {
-        response = "Álibis? Vamos criar algo épico! Desbloqueie os planos premium e construa desculpas que mudariam o jogo — estilo Tesla!";
-      } else if (message.includes('ajuda') || message.includes('suporte')) {
-        response = "Precisa de ajuda? Estou aqui para acelerar sua solução. Dê um salto e explore o suporte — o futuro não espera!";
-      }
-      addMessage(response, false);
-      speak(response);
+      addMessage("Desculpe, não entendi. Digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.", false);
+      speak("Desculpe, não entendi. Digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.");
     }
 
     // Controle do Vídeo
