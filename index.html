@@ -216,7 +216,7 @@
     #chat-input-container { display: flex; align-items: center; padding: 10px 15px; background: rgba(31, 41, 55, 0.9); gap: 10px; }
     #chat-input { background: rgba(55, 65, 81, 0.8); border: 1px solid #22d3ee; border-radius: 20px; padding: 8px; width: 100%; color: white; font-size: 14px; }
     #mic-button { background: transparent; border: none; cursor: pointer; padding: 8px; display: flex; align-items: center; transition: transform 0.2s ease; }
-    #mic-button.active { transform: scale(1.2); animation: micPulse 1s infinite;
+    #mic-button.active { transform: scale(1.2); animation: micPulse 1s infinite; }
     @keyframes micPulse {
       0% { transform: scale(1.2); }
       50% { transform: scale(1.3); }
@@ -678,8 +678,6 @@
           addMessage(normalizedMessage, true);
           respondToUserMessage(normalizedMessage);
           chatInput.value = '';
-        } else {
-          addMessage("Não detectei áudio claro. Fale mais alto ou verifique o microfone.", false);
         }
       };
 
@@ -804,13 +802,14 @@
       };
 
       for (let keyword in redirectMap) {
-        if (message.indexOf(keyword) !== -1) { // Uso de indexOf para busca mais flexível
+        if (message.includes(keyword)) { // Uso de includes para busca mais robusta
           console.log("Comando reconhecido:", keyword);
           window.location.href = redirectMap[keyword];
           return;
         }
       }
 
+      // Só exibe mensagem de erro se nenhum comando for reconhecido
       addMessage("Desculpe, não entendi. Fale ou digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.", false);
       speak("Desculpe, não entendi. Fale ou digite 'scanner', 'apoio emocional', 'diagnóstico médico', 'alibi', 'planos', 'blog' ou 'suporte' para ser ajudado.");
     }
