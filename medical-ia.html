@@ -13,7 +13,6 @@
       margin: 0;
       padding: 0;
       line-height: 1.6;
-      overflow-x: hidden;
     }
     #particles-js {
       position: absolute;
@@ -28,11 +27,6 @@
     @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     .fade-in { animation: fadeIn 1s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .slide-up { animation: slideUp 0.8s ease-out; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-    .glow { position: relative; }
-    .glow::after { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, transparent 70%); border-radius: 50%; animation: glowPulse 3s infinite; }
-    @keyframes glowPulse { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
     .holo-nav { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); animation: holoGlow 2s infinite alternate; }
     @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
     .futuristic-btn {
@@ -43,21 +37,19 @@
       font-size: 1rem;
       font-weight: 600;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
       animation: neonPulse 1.5s infinite alternate;
     }
     @keyframes neonPulse { 0% { box-shadow: 0 0 5px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
     .futuristic-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 0 20px #22d3ee; background: linear-gradient(45deg, #6D28D9, #06B6D4); }
     .form-container { background: rgba(20, 20, 20, 0.8); padding: 32px; border-radius: 15px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); backdrop-filter: blur(5px); }
-    .progress-circle { width: 100px; height: 100px; position: relative; }
-    .progress-circle .pie { clip: rect(0, 100px, 100px, 50px); height: 100px; border-radius: 50%; position: absolute; background: #22d3ee; }
-    .progress-circle .pie.left { transform: rotate(0deg); }
-    .progress-circle .pie.right { transform: rotate(180deg); }
-    .progress-circle .shadow { clip: rect(0, 50px, 100px, 0); height: 100px; border-radius: 50%; position: absolute; background: #1a1a1a; }
-    .progress-circle .text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.2rem; font-weight: bold; }
-    .symptom-item, .chronic-item { transition: all 0.3s ease; }
-    .symptom-item:hover, .chronic-item:hover { background: rgba(34, 211, 238, 0.2); transform: translateY(-2px); }
-    .symptom-item input:checked + span, .chronic-item input:checked + span { color: #22d3ee; font-weight: 600; }
+    .progress-bar { background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+    .progress { height: 8px; background: #22d3ee; transition: width 0.3s ease; }
+    .symptom-item { transition: all 0.3s ease; }
+    .symptom-item:hover { background: rgba(34, 211, 238, 0.2); transform: translateY(-2px); }
+    .symptom-item input:checked + span { color: #22d3ee; font-weight: 600; }
+    .chronic-item:hover { background: rgba(34, 211, 238, 0.2); transform: translateY(-2px); }
+    .chronic-item input:checked + span { color: #22d3ee; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -67,68 +59,55 @@
       <div class="flex items-center space-x-3">
         <a href="/"><img src="/assets/logo.png" alt="Álibis Digital" class="h-10 fade-in" onerror="this.src='https://via.placeholder.com/150x40?text=Logo';"></a>
       </div>
-      <div class="flex items-center space-x-3">
-        <select id="language-toggle" class="bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white rounded px-2 py-1">
-          <option value="pt-BR">Português</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-        </select>
+      <nav class="space-x-6 text-sm items-center">
+        <a href="/medical-ia.html" class="hover:text-[#22d3ee] transition fade-in">Diagnóstico Médico</a>
         <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in">Criar Conta</a>
-      </div>
+      </nav>
     </div>
   </header>
 
-  <section id="questionario" class="section pt-20 md:pt-24 min-h-screen flex items-center">
+  <section id="questionario" class="section py-16 pt-20 md:pt-24">
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 pulse">Diagnóstico Médico Inteligente com IA 🩺</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">Responda com precisão para um pré-diagnóstico avançado, validado por especialistas.</p>
-      <div class="progress-circle mx-auto mb-6">
-        <div class="pie right"></div>
-        <div class="pie left"></div>
-        <div class="shadow"></div>
-        <div class="text" id="progress-text">14%</div>
-      </div>
+      <h1 class="text-4xl font-bold text-white mb-4 pulse">Diagnóstico Médico Inteligente com IA 🩺</h1>
+      <p class="text-lg text-gray-300 mb-8 fade-in">Responda com precisão para receber um pré-diagnóstico detalhado, validado por especialistas após análise.</p>
+      <div class="progress-bar"><div id="progress-fill" class="progress" style="width: 14.29%;"></div></div>
       <p class="step-indicator text-xl text-[#22d3ee] mb-4 fade-in">Passo <span id="current-step">1</span> de 7</p>
       <div class="form-container">
         <form id="diagnostico-form">
           <!-- Step 1: Dados Demográficos -->
-          <div id="step-1" class="step active slide-up">
+          <div id="step-1" class="step active">
             <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
-              Forneça suas informações básicas para iniciar.
+              Forneça suas informações básicas para iniciar o diagnóstico.
             </div>
             <div class="form-group">
               <label class="required" for="sexo">Sexo Biológico</label>
-              <select id="sexo" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow" required>
+              <select id="sexo" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
                 <option value="">Selecione...</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
               </select>
-              <div id="sexo-error" class="error-message">Selecione uma opção.</div>
+              <div id="sexo-error" class="error-message">Por favor, selecione uma opção.</div>
             </div>
             <div class="form-group">
               <label class="required" for="idade">Idade (anos)</label>
-              <input id="idade" type="number" min="0" max="120" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow" placeholder="Ex.: 40" required />
-              <div id="idade-error" class="error-message">Informe sua idade.</div>
+              <input id="idade" type="number" min="0" max="120" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: 40" required />
+              <div id="idade-error" class="error-message">Por favor, informe sua idade.</div>
             </div>
             <div class="form-group">
               <label class="required">Peso (kg) e Altura (m)</label>
               <div class="flex gap-4">
-                <input id="peso" type="number" step="0.1" min="0" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow" placeholder="Ex.: 70" required />
-                <input id="altura" type="number" step="0.01" min="0" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow" placeholder="Ex.: 1.80" required />
+                <input id="peso" type="number" step="0.1" min="0" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: 70" required />
+                <input id="altura" type="number" step="0.01" min="0" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: 1.80" required />
               </div>
-              <div id="peso-error" class="error-message">Informe seu peso.</div>
-              <div id="altura-error" class="error-message">Informe sua altura.</div>
-            </div>
-            <div class="form-group">
-              <label for="wearable-data">Conectar Dispositivo Wearable (opcional)</label>
-              <input id="wearable-data" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: Fitbit HR: 80 bpm, SpO2: 96%" />
+              <div id="peso-error" class="error-message">Por favor, informe seu peso.</div>
+              <div id="altura-error" class="error-message">Por favor, informe sua altura.</div>
             </div>
           </div>
 
           <!-- Step 2: Sintomas Principais -->
-          <div id="step-2" class="step slide-up">
+          <div id="step-2" class="step">
             <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
-              Selecione até 5 sintomas principais. Detalhes aparecem dinamicamente.
+              Selecione até 5 sintomas principais. Detalhe quando solicitado.
             </div>
             <div class="form-group">
               <label class="required text-lg">Sintomas Principais (Selecionados: <span id="symptom-count">0</span>/5)</label>
@@ -141,38 +120,251 @@
                   <input type="checkbox" name="sintomas" value="Tosse" class="form-checkbox h-5 w-5 text-[#22d3ee]">
                   <span>Tosse</span>
                 </label>
-                <!-- Other symptoms remain the same -->
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Dispneia" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Dispneia (Falta de Ar)</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Dor de Cabeça" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Dor de Cabeça</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Dor Muscular" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Dor Muscular/Articular</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Fadiga" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Fadiga (Cansaço Extremo)</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Náusea/Vômito" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Náusea/Vômito</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Dor Abdominal" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Dor Abdominal</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Manchas Cutâneas" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Manchas Cutâneas</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Icterícia" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Icterícia</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas" value="Outro" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Outro</span>
+                </label>
               </div>
-              <div id="sintomas-error" class="error-message">Selecione pelo menos um sintoma.</div>
-              <input id="sintomas-outra" type="text" class="w-full p-2 mt-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white hidden" placeholder="Especifique" />
+              <div id="sintomas-error" class="error-message">Por favor, selecione pelo menos um sintoma.</div>
+              <input id="sintomas-outra" type="text" class="w-full p-2 mt-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white hidden" placeholder="Especifique o sintoma" />
             </div>
             <div class="form-group hidden" id="febre-details">
-              <label for="temperatura">Temperatura (°C) & Rash?</label>
-              <div class="flex gap-4">
-                <input id="temperatura" type="number" step="0.1" min="35" max="42" class="w-1/2 p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow" placeholder="Ex.: 38.5" />
-                <select id="febre-rash" class="w-1/2 p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white glow">
-                  <option value="Não">Não</option>
-                  <option value="Sim">Sim</option>
-                </select>
-              </div>
+              <label for="temperatura">Temperatura Máxima (°C)</label>
+              <input id="temperatura" type="number" step="0.1" min="35" max="42" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: 38.5" />
             </div>
-            <!-- Other details sections remain -->
+            <div class="form-group hidden" id="dor-details">
+              <label for="dor-intensidade">Intensidade da Dor (0-10)</label>
+              <input id="dor-intensidade" type="number" min="0" max="10" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: 7" />
+            </div>
+            <div class="form-group hidden" id="tosse-details">
+              <label for="tosse-tipo">Tipo de Tosse</label>
+              <select id="tosse-tipo" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white">
+                <option value="">Selecione...</option>
+                <option value="Seca">Seca</option>
+                <option value="Produtiva">Produtiva (com secreção)</option>
+              </select>
+            </div>
+            <div class="form-group hidden" id="dispneia-details">
+              <label for="dispneia-gravidade">Gravidade da Dispneia (0-4)</label>
+              <select id="dispneia-gravidade" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white">
+                <option value="0">0: Sem falta de ar</option>
+                <option value="1">1: Leve, só em esforços intensos</option>
+                <option value="2">2: Moderada, ao caminhar rápido</option>
+                <option value="3">3: Grave, ao caminhar devagar</option>
+                <option value="4">4: Muito grave, em repouso</option>
+              </select>
+            </div>
           </div>
 
-          <!-- Remaining steps (3-6) remain similar, with glow class added to inputs -->
+          <!-- Step 3: Contexto dos Sintomas -->
+          <div id="step-3" class="step">
+            <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
+              Descreva o contexto dos seus sintomas, incluindo duração e fatores relacionados.
+            </div>
+            <div class="form-group">
+              <label class="required" for="duracao">Duração dos Sintomas</label>
+              <select id="duracao" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
+                <option value="">Selecione...</option>
+                <option value="Horas">Horas</option>
+                <option value="1-3 Dias">1-3 Dias</option>
+                <option value="4-7 Dias">4-7 Dias</option>
+                <option value="8-14 Dias">8-14 Dias</option>
+                <option value="Mais de 14 Dias">Mais de 14 Dias</option>
+                <option value="Crônico">Crônico (>3 meses)</option>
+              </select>
+              <div id="duracao-error" class="error-message">Por favor, selecione a duração.</div>
+            </div>
+            <div class="form-group">
+              <label for="desencadeantes">Fatores Desencadeantes ou Agravantes</label>
+              <input id="desencadeantes" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: frio, esforço físico" />
+            </div>
+            <div class="form-group">
+              <label for="aliviantes">Fatores Aliviantes</label>
+              <input id="aliviantes" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: repouso, medicamentos" />
+            </div>
+            <div class="form-group">
+              <label class="required" for="exposicao">Contexto de Exposição</label>
+              <select id="exposicao" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
+                <option value="Nenhuma">Nenhuma</option>
+                <option value="Viagem Internacional">Viagem Internacional</option>
+                <option value="Contato com Doentes">Contato com Doentes</option>
+                <option value="Água Contaminada">Água Contaminada (ex.: enchentes)</option>
+                <option value="Animais ou Insetos">Animais ou Insetos (ex.: mosquitos)</option>
+                <option value="Área com Surtos">Área com Surtos (ex.: Dengue)</option>
+              </select>
+              <div id="exposicao-error" class="error-message">Por favor, selecione uma opção.</div>
+            </div>
+          </div>
 
-          <div class="flex justify-center mt-6">
-            <button id="magic-wand" type="button" class="futuristic-btn mr-4">Varinha Mágica</button>
+          <!-- Step 4: Condições Médicas Preexistentes -->
+          <div id="step-4" class="step">
+            <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
+              Informe suas condições médicas preexistentes e histórico de saúde.
+            </div>
+            <div class="form-group">
+              <label class="text-lg">Doenças Crônicas</label>
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Nenhuma" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Nenhuma</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Diabetes" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Diabetes</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Hipertensão" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Hipertensão</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Asma" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Asma</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Doença do Coração" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Doença do Coração</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Depressão" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Depressão</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Enxaqueca" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Enxaqueca</span>
+                </label>
+                <label class="chronic-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="cronicas" value="Outra" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Outra</span>
+                </label>
+              </div>
+              <input id="cronicas-outra" type="text" class="w-full p-2 mt-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white hidden" placeholder="Especifique (ex.: artrite)" />
+            </div>
+            <div class="form-group">
+              <label for="cirurgias">Cirurgias Prévias</label>
+              <input id="cirurgias" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: apendicectomia em 2010" />
+            </div>
+            <div class="form-group">
+              <label for="alergias">Alergias Medicamentosas ou Ambientais</label>
+              <input id="alergias" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: penicilina, pólen" />
+            </div>
+            <div class="form-group">
+              <label for="medicamentos">Medicamentos em Uso</label>
+              <input id="medicamentos" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: Losartana 50 mg, 1x/dia" />
+            </div>
+          </div>
+
+          <!-- Step 5: Estilo de Vida -->
+          <div id="step-5" class="step">
+            <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
+              Detalhe seu estilo de vida para refinar o diagnóstico.
+            </div>
+            <div class="form-group">
+              <label class="required" for="tabagismo">Tabagismo</label>
+              <select id="tabagismo" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
+                <option value="Nunca Fumou">Nunca Fumou</option>
+                <option value="Ex-Fumante">Ex-Fumante</option>
+                <option value="Fumante Ativo">Fumante Ativo</option>
+              </select>
+              <div id="tabagismo-error" class="error-message">Por favor, selecione uma opção.</div>
+              <input id="tabagismo-detalhes" type="text" class="w-full p-2 mt-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white hidden" placeholder="Ex.: 20 maços-ano" />
+            </div>
+            <div class="form-group">
+              <label class="required" for="etilismo">Etilismo</label>
+              <select id="etilismo" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
+                <option value="Não Bebe">Não Bebe</option>
+                <option value="Uso Social">Uso Social</option>
+                <option value="Uso Regular">Uso Regular</option>
+              </select>
+              <div id="etilismo-error" class="error-message">Por favor, selecione uma opção.</div>
+              <input id="etilismo-detalhes" type="text" class="w-full p-2 mt-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white hidden" placeholder="Ex.: 2 doses/semana" />
+            </div>
+            <div class="form-group">
+              <label class="required" for="atividade-fisica">Atividade Física</label>
+              <select id="atividade-fisica" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" required>
+                <option value="Sedentário">Sedentário</option>
+                <option value="Leve">Leve (ex.: caminhada 2x/semana)</option>
+                <option value="Moderada">Moderada (ex.: academia 3-4x/semana)</option>
+                <option value="Intensa">Intensa (ex.: treino diário)</option>
+              </select>
+              <div id="atividade-fisica-error" class="error-message">Por favor, selecione uma opção.</div>
+            </div>
+            <div class="form-group">
+              <label for="estresse">Nível de Estresse (0-5)</label>
+              <input id="estresse" type="number" min="0" max="5" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="0 = Nenhum, 5 = Extremo" />
+            </div>
+          </div>
+
+          <!-- Step 6: Revisão de Sistemas -->
+          <div id="step-6" class="step">
+            <div class="instructions text-gray-300 mb-4 p-4 bg-[rgba(45,55,72,0.9)] rounded-md">
+              Informe sintomas adicionais ou observações para completar sua avaliação.
+            </div>
+            <div class="form-group">
+              <label for="sinais-vitais">Sinais Vitais Recentes (opcional)</label>
+              <input id="sinais-vitais" type="text" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Ex.: PA 130/80 mmHg, FC 72 bpm" />
+            </div>
+            <div class="form-group">
+              <label>Sintomas Secundários</label>
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas-secundarios" value="Perda de Paladar/Olfato" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Perda de Paladar/Olfato</span>
+                </label>
+                <label class="symptom-item p-2 rounded cursor-pointer flex items-center space-x-2">
+                  <input type="checkbox" name="sintomas-secundarios" value="Dor de Garganta" class="form-checkbox h-5 w-5 text-[#22d3ee]">
+                  <span>Dor de Garganta</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="observacoes">Observações Adicionais</label>
+              <textarea id="observacoes" rows="5" class="w-full p-2 rounded bg-[rgba(55,65,81,0.8)] border-2 border-[#22d3ee] text-white" placeholder="Descreva outros sintomas ou informações relevantes"></textarea>
+            </div>
+          </div>
+
+          <div class="flex justify-between mt-6">
             <button id="prev-step" type="button" class="futuristic-btn hidden">Anterior</button>
             <button id="next-step" type="button" class="futuristic-btn" disabled>Próximo</button>
             <button id="submit-form" type="submit" class="futuristic-btn hidden" disabled>Enviar</button>
           </div>
         </form>
 
-        <div id="resultado-diagnostico" class="result-container hidden mt-4 slide-up">
+        <div id="resultado-diagnostico" class="result-container hidden mt-4">
           <h2 class="text-2xl font-bold text-white mb-4">🩺 Pré-Diagnóstico Clínico</h2>
           <div id="resposta-diagnostico"></div>
-          <p class="text-gray-400 mt-4">⚠️ Pré-diagnóstico por IA. Consulte um médico.</p>
+          <p class="text-gray-400 mt-4">⚠️ Este é um pré-diagnóstico gerado por IA. Consulte um médico para um diagnóstico preciso.</p>
         </div>
       </div>
     </div>
@@ -182,7 +374,7 @@
     <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
         <h3 class="text-white font-semibold mb-2">Álibis Digitais</h3>
-        <p>Soluções de bem-estar com IA avançada.</p>
+        <p>Soluções de bem-estar com tecnologia avançada.</p>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-2">Navegue</h4>
@@ -190,14 +382,21 @@
           <li><a href="index.html" class="hover:text-white transition">Início</a></li>
           <li><a href="scanner.html" class="hover:text-white transition">Scanner</a></li>
           <li><a href="blog.html" class="hover:text-white transition">Blog</a></li>
-          <!-- Other links -->
+          <li><a href="medical-ia.html" class="hover:text-white transition">Diagnósticos Médicos</a></li>
+          <li><a href="apoio-emocional.html" class="hover:text-white transition">Apoio Emocional</a></li>
+          <li><a href="alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
+          <li><a href="bridge.html" class="hover:text-white transition">Planos</a></li>
+          <li><a href="suporte.html" class="hover:text-white transition">Suporte</a></li>
+          <li><a href="privacidade.html" class="hover:text-white transition">Privacidade</a></li>
+          <li><a href="termos.html" class="hover:text-white transition">Termos</a></li>
+          <li><a href="politicas.html" class="hover:text-white transition">Políticas</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-2">Contato</h4>
         <ul class="space-y-1">
-          <li><a href="mailto:contato@alibisdigitais.com.br" class="hover:text-white transition">E-mail</a></li>
-          <li><a href="https://wa.me/5511912345678" class="hover:text-white transition">WhatsApp</a></li>
+          <li><a href="mailto:contato@alibisdigitais.com.br" class="hover:text-white transition">E-mail: contato@alibisdigitais.com.br</a></li>
+          <li><a href="https://wa.me/5511912345678" class="hover:text-white transition">WhatsApp: (11) 91234-5678</a></li>
         </ul>
       </div>
     </div>
@@ -209,48 +408,38 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS('particles-js', {
-      particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#22d3ee' }, shape: { type: 'circle' }, opacity: { value: 0.3 }, size: { value: 2 }, line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2 }, move: { enable: true, speed: 1 } },
-      interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } } }
+      particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#22d3ee' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 }, move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' } },
+      interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('[INIT] DOM loaded, initializing form');
+
       let currentStep = 1;
-      const totalSteps = 6; // Adjusted due to dynamic flow
+      const totalSteps = 7;
       const steps = document.querySelectorAll('.step');
       const prevButton = document.getElementById('prev-step');
       const nextButton = document.getElementById('next-step');
       const submitButton = document.getElementById('submit-form');
-      const magicWand = document.getElementById('magic-wand');
-      const progressText = document.getElementById('progress-text');
+      const progressFill = document.getElementById('progress-fill');
       const currentStepText = document.getElementById('current-step');
       const symptomCount = document.getElementById('symptom-count');
-      const languageToggle = document.getElementById('language-toggle');
-
-      function updateProgress() {
-        const percentage = ((currentStep - 1) / totalSteps) * 100;
-        const rightPie = document.querySelector('.pie.right');
-        const leftPie = document.querySelector('.pie.left');
-        progressText.textContent = `${Math.round(percentage)}%`;
-        if (percentage <= 50) {
-          rightPie.style.transform = `rotate(${percentage * 3.6}deg)`;
-          leftPie.style.transform = 'rotate(0deg)';
-        } else {
-          rightPie.style.transform = 'rotate(180deg)';
-          leftPie.style.transform = `rotate(${ (percentage - 50) * 3.6 }deg)`;
-        }
-      }
 
       function updateStep() {
-        steps.forEach((step, index) => step.classList.toggle('active', index === currentStep - 1));
+        console.log(`[NAV] Updating to step ${currentStep}`);
+        steps.forEach((step, index) => {
+          step.classList.toggle('active', index === currentStep - 1);
+        });
         prevButton.classList.toggle('hidden', currentStep === 1);
         nextButton.classList.toggle('hidden', currentStep === totalSteps);
         submitButton.classList.toggle('hidden', currentStep !== totalSteps);
+        progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
         currentStepText.textContent = currentStep;
-        updateProgress();
         validateStep();
       }
 
       function validateStep() {
+        console.log(`[VALIDATE] Validating step ${currentStep}`);
         let valid = true;
         const currentStepElement = steps[currentStep - 1];
         const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
@@ -278,13 +467,24 @@
           }
           if (checkedSymptoms.length > 5) {
             checkedSymptoms[checkedSymptoms.length - 1].checked = false;
-            alert('Selecione até 5 sintomas.');
+            alert('Por favor, selecione apenas até 5 sintomas.');
             symptomCount.textContent = 5;
             valid = false;
           }
-          document.getElementById('sintomas-outra').classList.toggle('hidden', !checkedSymptoms.some(c => c.value === 'Outro'));
-          document.getElementById('febre-details').classList.toggle('hidden', !checkedSymptoms.some(c => c.value === 'Febre/Hipertermia'));
-          // Other dynamic details
+          document.getElementById('sintomas-outra').classList.toggle('hidden', !Array.from(checkedSymptoms).some(c => c.value === 'Outro'));
+          document.getElementById('febre-details').classList.toggle('hidden', !Array.from(checkedSymptoms).some(c => c.value === 'Febre/Hipertermia'));
+          document.getElementById('dor-details').classList.toggle('hidden', !Array.from(checkedSymptoms).some(c => ['Dor de Cabeça', 'Dor Muscular', 'Dor Abdominal'].includes(c.value)));
+          document.getElementById('tosse-details').classList.toggle('hidden', !Array.from(checkedSymptoms).some(c => c.value === 'Tosse'));
+          document.getElementById('dispneia-details').classList.toggle('hidden', !Array.from(checkedSymptoms).some(c => c.value === 'Dispneia'));
+        }
+
+        if (currentStep === 4) {
+          const checkedChronic = currentStepElement.querySelectorAll('input[name="cronicas"]:checked');
+          document.getElementById('cronicas-outra').classList.toggle('hidden', !Array.from(checkedChronic).some(c => c.value === 'Outra'));
+          if (checkedChronic.length > 0 && Array.from(checkedChronic).some(c => c.value === 'Nenhuma')) {
+            checkedChronic.forEach(c => { if (c.value !== 'Nenhuma') c.checked = false; });
+            document.getElementById('cronicas-outra').classList.add('hidden');
+          }
         }
 
         nextButton.disabled = !valid;
@@ -292,17 +492,43 @@
         return valid;
       }
 
-      prevButton.addEventListener('click', () => { if (currentStep > 1) { currentStep--; updateStep(); } });
-      nextButton.addEventListener('click', () => { if (currentStep < totalSteps && validateStep()) { currentStep++; updateStep(); } });
-      submitButton.addEventListener('click', (e) => { e.preventDefault(); if (validateStep()) processarDiagnostico(); });
-      magicWand.addEventListener('click', () => { if (validateStep()) { currentStep++; updateStep(); } });
-      document.querySelectorAll('input[name="sintomas"]').forEach(cb => cb.addEventListener('change', validateStep));
+      prevButton.addEventListener('click', () => {
+        if (currentStep > 1) {
+          currentStep--;
+          updateStep();
+        }
+      });
 
-      languageToggle.addEventListener('change', (e) => {
-        const lang = e.target.value;
-        document.querySelectorAll('[data-lang]').forEach(el => {
-          el.textContent = el.getAttribute(`data-${lang}`);
-        });
+      nextButton.addEventListener('click', () => {
+        if (currentStep < totalSteps && validateStep()) {
+          currentStep++;
+          updateStep();
+        }
+      });
+
+      submitButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (validateStep()) {
+          processarDiagnostico();
+        }
+      });
+
+      document.querySelectorAll('input[name="sintomas"]').forEach(cb => {
+        cb.addEventListener('change', validateStep);
+      });
+
+      document.querySelectorAll('input[name="cronicas"]').forEach(cb => {
+        cb.addEventListener('change', validateStep);
+      });
+
+      document.getElementById('tabagismo').addEventListener('change', (e) => {
+        document.getElementById('tabagismo-detalhes').classList.toggle('hidden', e.target.value === 'Nunca Fumou');
+        validateStep();
+      });
+
+      document.getElementById('etilismo').addEventListener('change', (e) => {
+        document.getElementById('etilismo-detalhes').classList.toggle('hidden', e.target.value === 'Não Bebe');
+        validateStep();
       });
 
       function processarDiagnostico() {
@@ -312,31 +538,65 @@
           peso: parseFloat(document.getElementById('peso').value) || 0,
           altura: parseFloat(document.getElementById('altura').value) || 0.1,
           imc: (parseFloat(document.getElementById('peso').value) / (parseFloat(document.getElementById('altura').value) ** 2)).toFixed(1) || 0,
-          wearable: document.getElementById('wearable-data').value || 'Nenhum',
           sintomas: Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(c => c.value === 'Outro' ? document.getElementById('sintomas-outra').value : c.value).join(', ') || 'Nenhum',
           temperatura: parseFloat(document.getElementById('temperatura').value) || 0,
-          febre_rash: document.getElementById('febre-rash').value || 'Não',
-          // Other data points
+          dor_intensidade: parseInt(document.getElementById('dor-intensidade').value) || 0,
+          tosse_tipo: document.getElementById('tosse-tipo').value || 'Não definido',
+          dispneia_gravidade: parseInt(document.getElementById('dispneia-gravidade').value) || 0,
           duracao: document.getElementById('duracao').value || 'Não informado',
-          // ... (rest of data collection)
+          desencadeantes: document.getElementById('desencadeantes').value || 'Nenhum',
+          aliviantes: document.getElementById('aliviantes').value || 'Nenhum',
+          exposicao: document.getElementById('exposicao').value || 'Nenhuma',
+          cronicas: Array.from(document.querySelectorAll('input[name="cronicas"]:checked')).map(c => c.value === 'Outra' ? document.getElementById('cronicas-outra').value : c.value).join(', ') || 'Nenhuma',
+          cirurgias: document.getElementById('cirurgias').value || 'Nenhuma',
+          alergias: document.getElementById('alergias').value || 'Nenhuma',
+          medicamentos: document.getElementById('medicamentos').value || 'Nenhum',
+          tabagismo: document.getElementById('tabagismo').value + (document.getElementById('tabagismo-detalhes').value ? `: ${document.getElementById('tabagismo-detalhes').value}` : '') || 'Não informado',
+          etilismo: document.getElementById('etilismo').value + (document.getElementById('etilismo-detalhes').value ? `: ${document.getElementById('etilismo-detalhes').value}` : '') || 'Não informado',
+          atividade: document.getElementById('atividade-fisica').value || 'Não informado',
+          estresse: parseInt(document.getElementById('estresse').value) || 0,
+          sinais_vitais: document.getElementById('sinais-vitais').value || 'Não informado',
+          sintomas_secundarios: Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).join(', ') || 'Nenhum',
+          observacoes: document.getElementById('observacoes').value || 'Nenhuma'
         };
 
         let scores = { influenza: 0, covid19: 0, bronchitis: 0, dengue: 0, tension_headache: 0 };
         if (dados.sintomas.includes('Febre/Hipertermia')) {
           scores.influenza += 30; scores.covid19 += 25; scores.dengue += 25; scores.bronchitis += 15;
           if (dados.temperatura >= 38) { scores.influenza += 20; scores.covid19 += 10; scores.dengue += 15; }
-          if (dados.febre_rash === 'Sim') scores.dengue += 20;
         }
-        // ... (rest of scoring logic with wearable data adjustments)
-        if (dados.wearable.includes('SpO2') && parseInt(dados.wearable.match(/\d+/)) < 92) scores.covid19 += 15;
+        if (dados.sintomas.includes('Tosse')) {
+          scores.influenza += 20; scores.covid19 += 25; scores.bronchitis += 30;
+          if (dados.tosse_tipo === 'Seca') { scores.covid19 += 15; scores.influenza += 10; }
+          else if (dados.tosse_tipo === 'Produtiva') scores.bronchitis += 20;
+        }
+        if (dados.sintomas.includes('Dor de Cabeça')) {
+          scores.influenza += 15; scores.covid19 += 10; scores.dengue += 20; scores.tension_headache += 30;
+          if (dados.dor_intensidade >= 7) { scores.tension_headache += 10; scores.dengue += 10; }
+        }
+        if (dados.sintomas.includes('Dor Muscular')) {
+          scores.influenza += 25; scores.covid19 += 15; scores.dengue += 20; scores.tension_headache += 10;
+        }
+        if (['1-3 Dias', '4-7 Dias'].includes(dados.duracao)) {
+          scores.influenza += 10; scores.covid19 += 10; scores.dengue += 10;
+        }
+        if (dados.exposicao === 'Contato com Doentes') {
+          scores.influenza += 15; scores.covid19 += 15; scores.bronchitis += 10;
+        }
+        if (dados.exposicao === 'Área com Surtos') scores.dengue += 15;
+        if (dados.cronicas.includes('Asma')) scores.bronchitis += 20;
 
         const possiveisDiagnosticos = [];
-        if (scores.influenza >= 50) possiveisDiagnosticos.push({ nome: 'Influenza', probabilidade: Math.min(90, scores.influenza), recomendacao: 'Repouse e consulte um médico.' });
-        // ... (rest of diagnosis logic)
+        if (scores.influenza >= 50) possiveisDiagnosticos.push({ nome: 'Influenza (Gripe)', probabilidade: Math.min(90, scores.influenza), recomendacao: 'Repouse, hidrate-se e consulte um médico para antivirais.' });
+        if (scores.covid19 >= 50) possiveisDiagnosticos.push({ nome: 'COVID-19', probabilidade: Math.min(85, scores.covid19), recomendacao: 'Faça um teste PCR e isole-se.' });
+        if (scores.dengue >= 50) possiveisDiagnosticos.push({ nome: 'Dengue', probabilidade: Math.min(80, scores.dengue), recomendacao: 'Procure exames de sangue e hidrate-se.' });
+        if (scores.bronchitis >= 50) possiveisDiagnosticos.push({ nome: 'Bronquite', probabilidade: Math.min(70, scores.bronchitis), recomendacao: 'Consulte um pneumologista.' });
+        if (scores.tension_headache >= 40) possiveisDiagnosticos.push({ nome: 'Cefaleia Tensional', probabilidade: Math.min(60, scores.tension_headache), recomendacao: 'Relaxe e use analgésicos se necessário.' });
+        possiveisDiagnosticos.sort((a, b) => b.probabilidade - a.probabilidade);
 
-        let output = `<h3 class="text-lg font-bold mb-3">Resumo</h3><ul class="list-disc pl-6 mb-4"><li><strong>Sexo:</strong> ${dados.sexo}</li><li><strong>Idade:</strong> ${dados.idade}</li><li><strong>Wearable:</strong> ${dados.wearable}</li></ul><h3 class="text-lg font-bold mb-3">Diagnósticos</h3><ul class="list-decimal pl-6">`;
-        if (possiveisDiagnosticos.length === 0) output += '<li>Nenhum diagnóstico provável.</li>';
-        else possiveisDiagnosticos.forEach(diag => output += `<li><strong>${diag.nome}</strong> (${diag.probabilidade}%)<br>${diag.recomendacao}</li>`);
+        let output = `<h3 class="text-lg font-bold mb-3">Resumo dos Dados</h3><ul class="list-disc pl-6 mb-4"><li><strong>Sexo:</strong> ${dados.sexo}</li><li><strong>Idade:</strong> ${dados.idade} anos</li><li><strong>Peso:</strong> ${dados.peso} kg</li><li><strong>Altura:</strong> ${dados.altura} m</li><li><strong>IMC:</strong> ${dados.imc}</li><li><strong>Sintomas:</strong> ${dados.sintomas}</li><li><strong>Condições Crônicas:</strong> ${dados.cronicas}</li></ul><h3 class="text-lg font-bold mb-3">Possíveis Diagnósticos</h3><ul class="list-decimal pl-6">`;
+        if (possiveisDiagnosticos.length === 0) output += '<li>Nenhum diagnóstico provável. Consulte um médico.</li>';
+        else possiveisDiagnosticos.forEach(diag => output += `<li><strong>${diag.nome}</strong> (${diag.probabilidade}%)<br><span>${diag.recomendacao}</span></li>`);
         output += '</ul>';
 
         document.getElementById('resposta-diagnostico').innerHTML = output;
