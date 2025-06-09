@@ -72,10 +72,10 @@
         @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
         @keyframes ripple { to { transform: scale(4); opacity: 0; } }
         .neon-box {
-            background: linear-gradient(45deg, #0a1f2e, #00ccff);
+            background: linear-gradient(45deg, #1e40af, #3b82f6);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
             max-width: 500px;
             margin: 0 auto;
             text-align: left;
@@ -217,8 +217,7 @@
         <div class="container">
             <h2 class="text-3xl font-bold text-[#22d3ee] mb-6">Questionário Clínico para Pré-Diagnóstico</h2>
             <p class="text-lg text-gray-300 mb-4">Responda com precisão para obter um pré-diagnóstico técnico. Todos os campos marcados com <span class="text-red-500">*</span> são obrigatórios.</p>
-            <div class="progress-bar"><div id="progress-fill" class="progress" style="width: 16.67%;"></div></div>
-            <p class="step-indicator text-[#22d3ee] mt-2">Passo <span id="current-step">1</span> de 6</p>
+            <div class="progress-bar"><div id="progress-fill" class="progress" style="width: 100%;"></div></div>
             <div class="neon-box mt-6">
                 <form id="diagnostico-form">
                     <!-- Step 1: Dados Demográficos -->
@@ -256,7 +255,7 @@
                     </div>
 
                     <!-- Step 2: Sintomas Principais -->
-                    <div id="step-2" class="step">
+                    <div id="step-2" class="step active">
                         <div class="instructions text-gray-400 mb-4">
                             Selecione até 5 sintomas principais que você está enfrentando. Forneça detalhes adicionais quando solicitado.
                         </div>
@@ -307,7 +306,7 @@
                     </div>
 
                     <!-- Step 3: Contexto dos Sintomas -->
-                    <div id="step-3" class="step">
+                    <div id="step-3" class="step active">
                         <div class="instructions text-gray-400 mb-4">
                             Descreva o contexto dos seus sintomas, incluindo duração e fatores relacionados.
                         </div>
@@ -347,7 +346,7 @@
                     </div>
 
                     <!-- Step 4: Doenças Crônicas -->
-                    <div id="step-4" class="step">
+                    <div id="step-4" class="step active">
                         <div class="instructions text-gray-400 mb-4">
                             Informe suas condições médicas preexistentes e histórico de saúde.
                         </div>
@@ -380,7 +379,7 @@
                     </div>
 
                     <!-- Step 5: Estilo de Vida -->
-                    <div id="step-5" class="step">
+                    <div id="step-5" class="step active">
                         <div class="instructions text-gray-400 mb-4">
                             Detalhe seu estilo de vida para ajudar na avaliação do seu estado de saúde.
                         </div>
@@ -421,7 +420,7 @@
                     </div>
 
                     <!-- Step 6: Revisão de Sistemas -->
-                    <div id="step-6" class="step">
+                    <div id="step-6" class="step active">
                         <div class="instructions text-gray-400 mb-4">
                             Informe sintomas adicionais ou observações para completar sua avaliação.
                         </div>
@@ -452,10 +451,8 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-between mt-6">
-                        <button id="prev-step" type="button" class="futuristic-btn hidden">Anterior</button>
-                        <button id="next-step" type="button" disabled class="futuristic-btn">Próximo</button>
-                        <button id="submit-form" type="submit" class="futuristic-btn hidden" disabled>Enviar</button>
+                    <div class="flex justify-end mt-6">
+                        <button id="submit-form" type="submit" class="futuristic-btn" disabled>Obter Diagnóstico</button>
                     </div>
                 </form>
 
@@ -468,7 +465,7 @@
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-center py-4 text-gray-400">
+    <footer class="bg-gray-900 text-center py-4 text-gray-400 mt-10">
         <p>© 2025 Álibis Digital. Todos os direitos reservados.</p>
     </footer>
 
@@ -487,8 +484,8 @@
             const form = document.getElementById('diagnostico-form');
 
             if (!steps.length) console.error('[ERROR] No .step elements found');
-            if (!prevButton || !nextButton || !submitButton) console.error('[ERROR] Navigation buttons missing');
-            if (!progressFill || !currentStepText) console.error('[ERROR] Progress elements missing');
+            if (!submitButton) console.error('[ERROR] Submit button missing');
+            if (!progressFill) console.error('[ERROR] Progress element missing');
 
             // Inicializar partículas
             particlesJS('particles-js', {
@@ -513,11 +510,7 @@
                         step.classList.toggle('active', isActive);
                         console.log(`[NAV] Step ${index + 1} active: ${isActive}`);
                     });
-                    prevButton.classList.toggle('hidden', currentStep === 1);
-                    nextButton.classList.toggle('hidden', currentStep === totalSteps);
-                    submitButton.classList.toggle('hidden', currentStep !== totalSteps);
-                    progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
-                    currentStepText.textContent = currentStep;
+                    progressFill.style.width = '100%';
                     validateStep();
                 } catch (e) {
                     console.error(`[ERROR] updateStep failed: ${e.message}`);
@@ -564,9 +557,8 @@
                     }
                 }
 
-                nextButton.disabled = !valid;
                 submitButton.disabled = !valid;
-                console.log(`[VALIDATE] Step ${currentStep} valid: ${valid}, Next button disabled: ${nextButton.disabled}`);
+                console.log(`[VALIDATE] Step ${currentStep} valid: ${valid}, Submit button disabled: ${submitButton.disabled}`);
                 return valid;
             }
 
@@ -587,29 +579,6 @@
                     step.querySelectorAll('input[name="sintomas"]').forEach(cb => {
                         cb.addEventListener('change', validateStep);
                     });
-                }
-            });
-
-            prevButton.addEventListener('click', () => {
-                console.log('[NAV] Previous button clicked');
-                if (currentStep > 1) {
-                    currentStep--;
-                    updateStep();
-                }
-            });
-
-            nextButton.addEventListener('click', () => {
-                console.log('[NAV] Next button clicked');
-                try {
-                    if (currentStep < totalSteps && validateStep()) {
-                        currentStep++;
-                        updateStep();
-                        console.log(`[NAV] Advanced to step ${currentStep}`);
-                    } else {
-                        console.log(`[NAV] Cannot advance: Step ${currentStep} invalid or max step reached`);
-                    }
-                } catch (e) {
-                    console.error(`[ERROR] Next button click failed: ${e.message}`);
                 }
             });
 
@@ -770,20 +739,6 @@
 
                     // Generate diagnosis output
                     const possiveisDiagnosticos = [];
-                    if (scores.influenza >= 50) {
-                        possiveisDiagnosticos.push({
-                            nome: 'Influenza (Gripe)',
-                            probabilidade: Math.min(90, scores.influenza),
-                            recomendacao: 'Repouse, mantenha-se hidratado e monitore a febre. Procure atendimento se persistir por mais de 4 dias.'
-                        });
-                    }
-                    if (scores.covid19 >= 50) {
-                        possiveisDiagnosticos.push({
-                            nome: 'COVID-19',
-                            probabilidade: Math.min(85, scores.covid19),
-                            recomendacao: 'Realize um teste PCR ou antígeno imediatamente. Isole-se e contate um serviço de saúde. Monitore oxigenação e sintomas respiratórios.'
-                        });
-                    }
                     if (scores.dengue >= 50) {
                         possiveisDiagnosticos.push({
                             nome: 'Dengue',
@@ -791,17 +746,24 @@
                             recomendacao: 'Procure um médico para exames de sangue (hemograma) e avaliação de plaquetas. Hidrate-se bem.'
                         });
                     }
-                    if (scores.bronchitis >= 50) {
+                    if (scores.influenza >= 50) {
                         possiveisDiagnosticos.push({
-                            nome: 'Bronquite',
-                            probabilidade: Math.min(70, scores.bronchitis),
-                            recomendacao: 'Consulte um pneumologista para avaliação. Evite irritantes respiratórios.'
+                            nome: 'Influenza (Gripe)',
+                            probabilidade: Math.min(75, scores.influenza),
+                            recomendacao: 'Repouse, mantenha-se hidratado e monitore a febre. Procure atendimento se persistir por mais de 4 dias.'
+                        });
+                    }
+                    if (scores.covid19 >= 50) {
+                        possiveisDiagnosticos.push({
+                            nome: 'COVID-19',
+                            probabilidade: Math.min(55, scores.covid19),
+                            recomendacao: 'Realize um teste PCR ou antígeno imediatamente. Isole-se e contate um serviço de saúde. Monitore oxigenação e sintomas respiratórios.'
                         });
                     }
                     if (scores.tension_headache >= 40) {
                         possiveisDiagnosticos.push({
                             nome: 'Cefaleia Tensional',
-                            probabilidade: Math.min(60, scores.tension_headache),
+                            probabilidade: Math.min(40, scores.tension_headache),
                             recomendacao: 'Tente relaxar e hidrate-se. Consulte um médico se a dor persistir.'
                         });
                     }
@@ -818,16 +780,16 @@
                             <li><strong>IMC:</strong> ${dados.imc} (Normal)</li>
                             <li><strong>Sintomas:</strong> ${dados.sintomas}</li>
                         </ul>
-                        <h3 class="text-lg font-bold text-[#22d3ee] mb-3">Possíveis Diagnósticos</h3>
-                        <ul class="list-decimal pl-6">
+                        <h3 class="text-lg font-bold text-[#22d3ee] mb-3">Possíveis Diagnósticos (Ordenados por Probabilidade)</h3>
+                        <ul class="list-decimal pl-6 text-gray-300">
                     `;
                     if (possiveisDiagnosticos.length === 0) {
-                        output += '<li class="text-gray-300">Nenhum diagnóstico provável identificado. Consulte um médico para avaliação detalhada.</li>';
+                        output += '<li>Nenhum diagnóstico provável identificado. Consulte um médico para avaliação detalhada.</li>';
                     } else {
-                        possiveisDiagnosticos.forEach(diag => {
+                        possiveisDiagnosticos.forEach((diag, index) => {
                             output += `
-                                <li class="mb-2 text-gray-300">
-                                    <strong>${diag.nome}</strong> (Probabilidade aproximada: ${diag.probabilidade}%)<br/>
+                                <li class="mb-2">
+                                    <strong>${diag.nome}</strong> (<span class="text-[#22d3ee]">${diag.probabilidade}%</span>)<br>
                                     <span>${diag.recomendacao}</span>
                                 </li>
                             `;
