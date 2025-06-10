@@ -3,139 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Melhore a qualidade do seu caso com a IA da Álibis Digital. Use o scanner facial e o Abili para noites mais tranquilas e dias mais produtivos.">
-    <meta name="keywords" content="melhorar sono, IA para sono, Álibis Digital, scanner facial, Abili, saúde do sono">
+    <meta name="description" content="Melhore a qualidade do seu sono com a IA da Álibis Digital. Use o scanner facial e o Abili para noites mais tranquilas e dias mais produtivos.">
+    <meta name="keywords" content="melhorar sono, IA para sono, Álibis Digital, scanner facial, Abili, saúde do sono, bem-estar">
     <meta name="author" content="Álibis Digital">
-        <title>Melhorar Seu Sono com o Poder da Inteligência Artificial - Álibis Digital</title>
-        <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
-        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-        <style>
-            html { scroll-behavior: smooth; }
-            body { 
-                position: relative; 
-                overflow-x: hidden; 
-                font-family: 'Inter', sans-serif; 
-                background: transparent; 
-            }
-            #particles-js { 
-                position: absolute; 
-                width: 100%; 
-                height: 100%; 
-                top: 0; 
-                left: 0; 
-                z-index: -1; 
-                background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065); 
-            }
-            .fade-in { animation: fadeIn 1s ease-in-out; }
-            .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-            .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-            .pulse { animation: pulse 2s infinite ease-in-out; }
-            .shine { position: relative; overflow: hidden; }
-            .shine::after { 
-                content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
-                background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0)); 
-                transform: rotate(20deg); animation: shine 4s infinite linear; 
-            }
-            @keyframes fadeIn { 
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes slideInLeft { 
-                from { opacity: 0; transform: translateX(-50px); }
-                to { opacity: 1; transform: translateX(0); }
-            }
-            @keyframes slideInRight { 
-                from { opacity: 0; transform: translateX(50px); }
-                to { opacity: 1; transform: translateX(0); }
-            }
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                to50% { transform: scale(1.05); }
-                to100% { transform: scale(1); }
-            }
-            @keyframes shine { 
-                0% { transform: translateX(-100%) rotate(45deg); }
-                to100% { transform: translateX(100%) rotate(45deg); }
-            }
-            .holo-nav { 
-                background: rgba(17,24,39,0.85); 
-                backdrop-filter: blur(10px); 
-                border-bottom: 1px solid rgba(255,255,255,0.1); 
-                animation: holoGlow 2s infinite alternate; 
-            }
-            @keyframes holoGlow { 
-                0% { box-shadow: from0 0 8px #22d3ee; }
-                to100% { box-shadow: 0 0 15px #22d3ee; }
-            }
-            .holo-nav a, .holo-nav button { 
-                transition: color 0.3s ease; 
-            }
-            .holo-nav a:hover, .holo-nav button:hover { 
-                color: #22d3ee; 
-                text-shadow: 0 0 5px #22d3ee; 
-            }
-            .futuristic-btn { 
-                background: linear-gradient(45deg, #7C3AED, #22d3ee); 
-                box-shadow: 0 0 8px #22d3ee; 
-                transition: transform 0.3s ease, box-shadow 0.3s ease; 
-                animation: neonPulse 1.5s infinite alternate; 
-            }
-            .futuristic-btn:hover { 
-                transform: translateY(-3px); 
-                box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; 
-            }
-            @keyframes neonPulse { 
-                from { box-shadow: 0 0 5px #22d3ee; }
-                to { box-shadow: 0 0 15px #22d3ee; }
-            }
-            .neon-box { 
-                background: rgba(31,41,55,0.9); 
-                border-radius: 10px; 
-                padding: 16px; 
-                box-shadow: 0 0 8px #22d3ee; 
-            }
-            .cookie-banner { 
-                position: fixed; 
-                bottom: 0; 
-                left: 0; 
-                width: 100%; 
-                background: rgba(17,25,40,0.95); 
-                border-top: 2px solid #22d3ee; 
-                padding: 16px; 
-                display: none; 
-                justify-content: space-between; 
-                align-items: center; 
-                z-index: 1000; 
-            }
-            .cookie-banner p { font-size: 14px; max-width: 70%; }
-            .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
-            @media (min-width: 1440px) {
-                .max-w-7xl { max-width: 1280px; }
-                .max-w-4xl { max-width: 896px; }
-                .futuristic-btn { font-size: 1.125rem; padding: 1rem 2rem; }
-            }
-            @media (max-width: 1024px) {
-                .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
-                .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-                .futuristic-btn { font-size: 1rem; padding: 0.75rem 1.5rem; }
-            }
-            @media (max-width: 768px) {
-                h1 { font-size: 2.25rem; line-height: 2.5rem; }
-                h2 { font-size: 1.5rem; }
-                h3 { font-size: 1.25rem; }
-                .max-w-7xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-                .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
-                .cookie-banner { flex-direction: column; text-align: center; }
-                .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
-            }
-            @media (max-width: 480px) {
-                h1 { font-size: 1.75rem; line-height: 2rem; }
-                h2 { font-size: 1.25rem; }
-                h3 { font-size: 1rem; }
-                .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
-            }
-        </style>
+    <title>Melhore Seu Sono com o Poder da Inteligência Artificial - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+        }
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .holo-nav {
+            background: rgba(17,24,39,0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: holoGlow 2s infinite alternate;
+        }
+        @keyframes holoGlow {
+            0% { box-shadow: 0 0 8px #22d3ee; }
+            100% { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .holo-nav a, .holo-nav button {
+            transition: color 0.3s ease;
+        }
+        .holo-nav a:hover, .holo-nav button:hover {
+            color: #22d3ee;
+            text-shadow: 0 0 5px #22d3ee;
+        }
+        .futuristic-btn {
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            box-shadow: 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+        }
+        .futuristic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+        }
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 5px #22d3ee; }
+            to { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .neon-box {
+            background: rgba(31,41,55,0.9);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 0 8px #22d3ee;
+        }
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(17,25,40,0.95);
+            border-top: 2px solid #22d3ee;
+            padding: 16px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .cookie-banner p { font-size: 14px; max-width: 70%; }
+        .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
+        @media (min-width: 1440px) {
+            .max-w-7xl { max-width: 1280px; }
+            .max-w-4xl { max-width: 896px; }
+            .futuristic-btn { font-size: 1.125rem; padding: 1rem 2rem; }
+        }
+        @media (max-width: 1024px) {
+            .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
+            .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .futuristic-btn { font-size: 1rem; padding: 0.75rem 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.25rem; line-height: 2.5rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.25rem; }
+            .max-w-7xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
+            .cookie-banner { flex-direction: column; text-align: center; }
+            .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 1.75rem; line-height: 2rem; }
+            h2 { font-size: 1.25rem; }
+            h3 { font-size: 1rem; }
+            .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
+        }
+    </style>
 </head>
 <body class="text-white">
     <!-- Fundo com Partículas -->
@@ -168,7 +168,7 @@
                 <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Criar conta">Criar Conta</a>
             </nav>
         </div>
-        <div id="mobile-menu" class="md-hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
+        <div id="mobile-menu" class="md:hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
             <nav class="flex flex-col items-center space-y-4">
                 <a href="/blog.html" class="text-[#22d3ee] font-bold py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
                 <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
@@ -258,25 +258,59 @@
         </div>
     </footer>
 
+    <!-- Script XLSX -->
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.sheet_to_csv(XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)));
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return '';
+                }
+            }
+            return gk_fileData[filename] || '';
+        }
+    </script>
+
+    <!-- Scripts Gerais -->
     <script>
         function setCookie(name, value, days) {
-            let expires = "";
+            let expires = '';
             if (days) {
                 const date = new Date();
                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
+                expires = '; expires=' + date.toUTCString();
             }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+            document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Strict';
             console.log(`Cookie set: ${name}=${value}`);
         }
 
         function getCookie(name) {
-            const nameEQ = name + "=";
+            const nameEQ = name + '=';
             const ca = document.cookie.split(';');
             for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
             }
             return null;
         }
@@ -294,7 +328,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM carregado: melhorar-sono-com-ia.html');
+            console.log('DOM carregado: melhore-seu-sono-ia.html');
 
             // Inicializar partículas
             particlesJS('particles-js', {
