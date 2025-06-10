@@ -148,21 +148,21 @@
         .animate-on-scroll.visible {
             opacity: 1;
             transform: translateY(0);
-      }
-    .form-input, .form-textarea {
-      background: rgba(55, 65, 81, 0.8);
-      border: 1px solid #22d3ee;
-      border-radius: 8px;
-      padding: 12px;
-      color: white;
-      width: 100%;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .form-input:focus, .form-textarea:focus {
-      outline: none;
-      border-color: #22d3ee;
-      box-shadow: 0 0 8px #22d3ee;
-    }
+        }
+        .form-input, .form-textarea {
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            width: 100%;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 8px #22d3ee;
+        }
         .screen {
             display: none;
             opacity: 0;
@@ -180,6 +180,18 @@
             .grid { grid-template-columns: 1fr; }
             .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
             #chat-window { width: 95%; right: 2.5%; }
+        }
+        @media (max-width: 480px) {
+            #avaliacao-emocional { py-10 px-4; }
+            .neon-box { padding: 1rem; max-height: 70vh; overflow-y: auto; }
+            .form-group { margin-bottom: 0.5rem; }
+            .flex { flex-direction: column; gap: 0.5rem; }
+            .checkbox-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 1.25rem; }
+            label, .instructions { font-size: 0.875rem; }
+            #mobile-menu a { font-size: 1rem; }
+            #chat-window { width: 90%; right: 5%; height: 350px; }
+            #chat-messages { height: 270px; }
         }
     </style>
 </head>
@@ -232,7 +244,7 @@
       <p class="text-white mb-4 text-center">Obtenha um pré-diagnóstico avançado com tecnologia de ponta. Responda ao questionário abaixo.</p>
       <div class="neon-box mt-6 max-w-4xl mx-auto p-8 bg-gray-800 bg-opacity-80 backdrop-filter backdrop-blur-sm">
         <form id="diagnostico-form">
-          <!-- Step 1: Dados Demográficos -->
+          <!-- Step 1: Dados Demográficos (First Set) -->
           <div id="step-1" class="step active">
             <div class="instructions text-white-400 mb-4">
               Forneça suas informações básicas para começar. Esses dados ajudam a personalizar seu pré-diagnóstico.
@@ -264,12 +276,13 @@
                 </div>
               </div>
             </div>
+            <button id="next-set-1" type="button" class="futuristic-btn mt-4">Próximo</button>
           </div>
 
-          <!-- Step 2: Sintomas Principais -->
-          <div id="step-2" class="step active">
+          <!-- Step 2-3: Sintomas e Contexto (Second Set) -->
+          <div id="step-2-3" class="step">
             <div class="instructions text-gray-400 mb-4">
-              Selecione até 5 sintomas principais que você está enfrentando. Forneça detalhes adicionais quando solicitado.
+              Selecione seus sintomas e forneça o contexto. Responda às três próximas perguntas.
             </div>
             <div class="form-group mb-4">
               <label class="required text-white">Sintomas Principais (Selecione até 5)</label>
@@ -315,13 +328,6 @@
                 <option value="4">4: Muito grave, em repouso</option>
               </select>
             </div>
-          </div>
-
-          <!-- Step 3: Contexto dos Sintomas -->
-          <div id="step-3" class="step active">
-            <div class="instructions text-gray-400 mb-4">
-              Descreva o contexto dos seus sintomas, incluindo duração e fatores relacionados.
-            </div>
             <div class="form-group mb-4">
               <label class="required text-white" for="duracao">Duração dos Sintomas</label>
               <select id="duracao" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
@@ -339,28 +345,13 @@
               <label class="text-white" for="desencadeantes">Fatores Desencadeantes ou Agravantes</label>
               <input id="desencadeantes" type="text" placeholder="Ex.: frio, esforço físico" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
             </div>
-            <div class="form-group mb-4">
-              <label class="text-white" for="aliviantes">Fatores Aliviantes</label>
-              <input id="aliviantes" type="text" placeholder="Ex.: repouso" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-            <div class="form-group mb-4">
-              <label class="required text-white" for="exposicao">Contexto de Exposição</label>
-              <select id="exposicao" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-                <option value="Nenhuma">Nenhuma</option>
-                <option value="Viagem Internacional">Viagem Internacional</option>
-                <option value="Contato com Doentes">Contato com Doentes</option>
-                <option value="Água Contaminada">Água Contaminada (ex.: enchentes)</option>
-                <option value="Animais ou Insetos">Animais ou Insetos (ex.: mosquitos)</option>
-                <option value="Área com Surtos">Área com Surtos (ex.: Dengue)</option>
-              </select>
-              <div id="exposicao-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
-            </div>
+            <button id="next-set-2" type="button" class="futuristic-btn mt-4">Próximo</button>
           </div>
 
-          <!-- Step 4: Doenças Crônicas -->
-          <div id="step-4" class="step active">
+          <!-- Step 4-6: Doenças, Estilo de Vida e Revisão (Third Set) -->
+          <div id="step-4-6" class="step">
             <div class="instructions text-gray-400 mb-4">
-              Informe suas condições médicas preexistentes e histórico de saúde.
+              Informe condições crônicas, estilo de vida e sintomas adicionais.
             </div>
             <div class="form-group mb-4">
               <label class="text-white">Doenças Crônicas</label>
@@ -377,25 +368,6 @@
               <input id="cronicas-outra" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Especifique (ex.: artrite)">
             </div>
             <div class="form-group mb-4">
-              <label class="text-white" for="cirurgias">Cirurgias Prévias</label>
-              <input id="cirurgias" type="text" placeholder="Ex.: apendicectomia em 2010" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-            <div class="form-group mb-4">
-              <label class="text-white" for="alergias">Alergias Medicamentosas ou Ambientais</label>
-              <input id="alergias" type="text" placeholder="Ex.: penicilina, pólen" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-            <div class="form-group mb-4">
-              <label class="text-white" for="medicamentos">Medicamentos em Uso</label>
-              <input id="medicamentos" type="text" placeholder="Ex.: Losartana 50 mg, 1x/dia" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-          </div>
-
-          <!-- Step 5: Estilo de Vida -->
-          <div id="step-5" class="step active">
-            <div class="instructions text-gray-400 mb-4">
-              Detalhe seu estilo de vida para ajudar na avaliação do seu estado de saúde.
-            </div>
-            <div class="form-group mb-4">
               <label class="required text-white" for="tabagismo">Tabagismo</label>
               <select id="tabagismo" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
                 <option value="Nunca Fumou">Nunca Fumou</option>
@@ -406,73 +378,18 @@
               <input id="tabagismo-detalhes" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Ex.: 20 maços-ano">
             </div>
             <div class="form-group mb-4">
-              <label class="required text-white" for="etilismo">Etilismo</label>
-              <select id="etilismo" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-                <option value="Não Bebe">Não Bebe</option>
-                <option value="Uso Social">Uso Social</option>
-                <option value="Uso Regular">Uso Regular</option>
-              </select>
-              <div id="etilismo-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
-              <input id="etilismo-detalhes" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Ex.: 2 doses/semana">
-            </div>
-            <div class="form-group mb-4">
-              <label class="required text-white" for="atividade-fisica">Atividade Física</label>
-              <select id="atividade-fisica" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-                <option value="Sedentário">Sedentário</option>
-                <option value="Leve">Leve (ex.: caminhada 2x/semana)</option>
-                <option value="Moderada">Moderada (ex.: academia 3-4x/semana)</option>
-                <option value="Intensa">Intensa (ex.: treino diário)</option>
-              </select>
-              <div id="atividade-fisica-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
-            </div>
-            <div class="form-group mb-4">
-              <label class="text-white" for="estresse">Nível de Estresse (0-5)</label>
-              <input id="estresse" type="number" min="0" max="5" placeholder="0 = Nenhum, 5 = Extremo" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-          </div>
-
-          <!-- Step 6: Revisão de Sistemas -->
-          <div id="step-6" class="step active">
-            <div class="instructions text-gray-400 mb-4">
-              Informe sintomas adicionais ou observações para completar sua avaliação.
-            </div>
-            <div class="form-group mb-4">
-              <label class="text-white" for="sinais-vitais">Sinais Vitais Recentes (opcional)</label>
-              <input id="sinais-vitais" type="text" placeholder="Ex.: PA 130/80 mmHg, FC 72 bpm" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
-            </div>
-            <div class="form-group mb-4">
-              <label class="text-white">Sintomas Secundários</label>
-              <div class="checkbox-grid grid grid-cols-2 gap-2">
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Perda de Paladar/Olfato" class="mr-2"> Perda de Paladar/Olfato</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Dor de Garganta" class="mr-2"> Dor de Garganta</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Coriza" class="mr-2"> Coriza (Nariz Escorrendo)</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Diarreia" class="mr-2"> Diarreia</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Tontura" class="mr-2"> Tontura</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Perda de Peso" class="mr-2"> Perda de Peso Involuntária</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Suores Noturnos" class="mr-2"> Suores Noturnos</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Confusão Mental" class="mr-2"> Confusão Mental</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Tremor" class="mr-2"> Tremor</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Tristeza Persistente" class="mr-2"> Tristeza Persistente</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Manchas Anestésicas" class="mr-2"> Manchas Anestésicas</label>
-                <label class="flex items-center"><input type="checkbox" name="sintomas-secundarios" value="Sede Excessiva" class="mr-2"> Sede Excessiva</label>
-              </div>
-            </div>
-            <div class="form-group mb-4">
               <label class="text-white" for="observacoes">Observações Adicionais</label>
-              <textarea id="observacoes" rows="5" placeholder="Descreva outros sintomas ou informações relevantes" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded"></textarea>
+              <textarea id="observacoes" rows="3" placeholder="Descreva outros sintomas ou informações relevantes" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded"></textarea>
             </div>
+            <button id="submit-form" type="submit" class="futuristic-btn mt-4" disabled>Obter Diagnóstico</button>
           </div>
 
-          <div class="flex justify-end mt-6">
-            <button id="submit-form" type="submit" class="futuristic-btn" disabled>Obter Diagnóstico</button>
+          <div id="resultado-diagnostico" class="result-container hidden mt-6">
+            <h2 class="text-2xl font-bold text-[#22d3ee] mb-4">🩺 Pré-Diagnóstico Clínico</h2>
+            <div id="resposta-diagnostico"></div>
+            <p class="text-gray-400 mt-4">⚠️ Este é um pré-diagnóstico gerado por IA. Não substitui uma consulta médica profissional. Consulte um médico para um diagnóstico preciso.</p>
           </div>
         </form>
-
-        <div id="resultado-diagnostico" class="result-container hidden mt-6">
-          <h2 class="text-2xl font-bold text-[#22d3ee] mb-4">🩺 Pré-Diagnóstico Clínico</h2>
-          <div id="resposta-diagnostico"></div>
-          <p class="text-gray-400 mt-4">⚠️ Este é um pré-diagnóstico gerado por IA. Não substitui uma consulta médica profissional. Consulte um médico para um diagnóstico preciso.</p>
-        </div>
       </div>
     </div>
   </section>
@@ -521,19 +438,15 @@
     document.addEventListener('DOMContentLoaded', () => {
       console.log('[INIT] DOM loaded, initializing form');
 
-      let currentStep = 1;
-      const totalSteps = 6;
+      let currentSet = 1;
       const steps = document.querySelectorAll('.step');
-      const prevButton = document.getElementById('prev-step');
-      const nextButton = document.getElementById('next-step');
       const submitButton = document.getElementById('submit-form');
-      const progressFill = document.getElementById('progress-fill');
-      const currentStepText = document.getElementById('current-step');
       const form = document.getElementById('diagnostico-form');
+      const nextSet1 = document.getElementById('next-set-1');
+      const nextSet2 = document.getElementById('next-set-2');
 
       if (!steps.length) console.error('[ERROR] No .step elements found');
       if (!submitButton) console.error('[ERROR] Submit button missing');
-      if (!progressFill) console.error('[ERROR] Progress element missing');
 
       // Inicializar partículas
       particlesJS('particles-js', {
@@ -550,33 +463,27 @@
         }
       });
 
-      function updateStep() {
-        console.log(`[NAV] Updating to step ${currentStep}`);
-        try {
-          steps.forEach((step, index) => {
-            const isActive = index === currentStep - 1;
-            step.classList.toggle('active', isActive);
-            console.log(`[NAV] Step ${index + 1} active: ${isActive}`);
-          });
-          progressFill.style.width = '100%';
-          validateStep();
-        } catch (e) {
-          console.error(`[ERROR] updateStep failed: ${e.message}`);
-        }
+      function updateSet() {
+        console.log(`[NAV] Updating to set ${currentSet}`);
+        steps.forEach((step, index) => {
+          const isActive = (index === currentSet - 1);
+          step.classList.toggle('active', isActive);
+          console.log(`[NAV] Step ${index + 1} active: ${isActive}`);
+        });
+        validateSet();
       }
 
-      function validateStep() {
-        console.log(`[VALIDATE] Validating step ${currentStep}`);
+      function validateSet() {
+        console.log(`[VALIDATE] Validating set ${currentSet}`);
         let valid = true;
-        const currentStepElement = steps[currentStep - 1];
-        if (!currentStepElement) {
-          console.error(`[ERROR] Step ${currentStep} element not found`);
+        const currentStep = steps[currentSet - 1];
+        if (!currentStep) {
+          console.error(`[ERROR] Step ${currentSet} element not found`);
           return false;
         }
 
-        // Validate required inputs
-        const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
-        inputs.forEach(input => {
+        const requiredInputs = currentStep.querySelectorAll('input[required], select[required]');
+        requiredInputs.forEach(input => {
           const errorElement = document.getElementById(`${input.id}-error`);
           const isValid = input.value && input.value !== '';
           if (!isValid) {
@@ -591,9 +498,9 @@
           }
         });
 
-        // Special validation for Step 2 (checkboxes)
-        if (currentStep === 2) {
-          const checkedSymptoms = currentStepElement.querySelectorAll('input[name="sintomas"]:checked');
+        // Special validation for Step 2-3 (symptoms)
+        if (currentSet === 2) {
+          const checkedSymptoms = currentStep.querySelectorAll('input[name="sintomas"]:checked');
           const symptomsError = document.getElementById('sintomas-error');
           if (checkedSymptoms.length === 0) {
             valid = false;
@@ -605,8 +512,16 @@
           }
         }
 
-        submitButton.disabled = !valid;
-        console.log(`[VALIDATE] Step ${currentStep} valid: ${valid}, Submit button disabled: ${submitButton.disabled}`);
+        if (currentSet === 1) {
+          nextSet1.disabled = !valid;
+          console.log(`[VALIDATE] Next button for set 1 disabled: ${!valid}`);
+        } else if (currentSet === 2) {
+          nextSet2.disabled = !valid;
+          console.log(`[VALIDATE] Next button for set 2 disabled: ${!valid}`);
+        } else {
+          submitButton.disabled = !valid;
+          console.log(`[VALIDATE] Submit button disabled: ${!valid}`);
+        }
         return valid;
       }
 
@@ -615,25 +530,40 @@
         step.querySelectorAll('input, select').forEach(input => {
           input.addEventListener('input', () => {
             console.log(`[INPUT] ${input.id} changed to: ${input.value}`);
-            validateStep();
+            validateSet();
           });
           input.addEventListener('change', () => {
             console.log(`[CHANGE] ${input.id} changed to: ${input.value}`);
-            validateStep();
+            validateSet();
           });
         });
-        // Checkbox listeners for Step 2
-        if (step.id === 'step-2') {
+        if (step.id === 'step-2-3') {
           step.querySelectorAll('input[name="sintomas"]').forEach(cb => {
-            cb.addEventListener('change', validateStep);
+            cb.addEventListener('change', validateSet);
           });
+        }
+      });
+
+      nextSet1.addEventListener('click', () => {
+        if (validateSet()) {
+          currentSet = 2;
+          updateSet();
+          console.log('[NAV] Moved to set 2');
+        }
+      });
+
+      nextSet2.addEventListener('click', () => {
+        if (validateSet()) {
+          currentSet = 3;
+          updateSet();
+          console.log('[NAV] Moved to set 3');
         }
       });
 
       submitButton.addEventListener('click', (e) => {
         e.preventDefault();
         console.log('[SUBMIT] Submit button clicked');
-        if (validateStep()) {
+        if (validateSet()) {
           processarDiagnostico();
         } else {
           console.log('[SUBMIT] Form invalid, cannot submit');
@@ -655,7 +585,7 @@
           document.getElementById('dor-details').classList.toggle('hidden', !Array.from(checked).some(c => ['Dor de Cabeça', 'Dor Muscular', 'Dor Abdominal'].includes(c.value)));
           document.getElementById('tosse-details').classList.toggle('hidden', !Array.from(checked).some(c => c.value === 'Tosse'));
           document.getElementById('dispneia-details').classList.toggle('hidden', !Array.from(checked).some(c => c.value === 'Dispneia'));
-          validateStep();
+          validateSet();
         });
       });
 
@@ -671,20 +601,14 @@
             document.querySelector('input[name="cronicas"][value="Nenhuma"]').checked = false;
             document.getElementById('cronicas-outra').classList.toggle('hidden', !Array.from(checked).some(c => c.value === 'Outra'));
           }
-          validateStep();
+          validateSet();
         });
       });
 
       document.getElementById('tabagismo').addEventListener('change', (e) => {
         console.log(`[CONDITIONAL] Tabagismo changed to ${e.target.value}`);
         document.getElementById('tabagismo-detalhes').classList.toggle('hidden', e.target.value === 'Nunca Fumou');
-        validateStep();
-      });
-
-      document.getElementById('etilismo').addEventListener('change', (e) => {
-        console.log(`[CONDITIONAL] Etilismo changed to ${e.target.value}`);
-        document.getElementById('etilismo-detalhes').classList.toggle('hidden', e.target.value === 'Não Bebe');
-        validateStep();
+        validateSet();
       });
 
       function processarDiagnostico() {
@@ -721,7 +645,7 @@
           return;
         }
 
-        // Scoring system for diagnoses
+        // Scoring system for diagnoses (unchanged)
         let scores = {
           influenza: 0,
           covid19: 0,
@@ -785,7 +709,7 @@
 
           console.log('[DIAG] Scores:', scores);
 
-          // Generate diagnosis output
+          // Generate diagnosis output (unchanged)
           const possiveisDiagnosticos = [];
           if (scores.dengue >= 50) {
             possiveisDiagnosticos.push({
@@ -869,7 +793,7 @@
 
       // Initialize
       console.log('[INIT] Starting form initialization');
-      updateStep();
+      updateSet();
       console.log('[INIT] Form initialized successfully');
     });
   </script>
