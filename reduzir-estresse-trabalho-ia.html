@@ -1,204 +1,394 @@
-<script type="text/javascript">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra como a IA da Álibis Digital, com o scanner facial de estresse e o Abili, pode ajudar a reduzir o estresse no trabalho e melhorar seu bem-estar.">
+    <meta name="keywords" content="IA para estresse, reduzir estresse no trabalho, Álibis Digital, scanner facial, Abili, saúde mental, bem-estar profissional">
+    <meta name="author" content="Álibis Digital">
+    <title>Reduza o Estresse no Trabalho com Inteligência Artificial - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+        }
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .holo-nav {
+            background: rgba(17,24,39,0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: holoGlow 2s infinite alternate;
+        }
+        @keyframes holoGlow {
+            0% { box-shadow: 0 0 8px #22d3ee; }
+            100% { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .holo-nav a, .holo-nav button {
+            transition: color 0.3s ease;
+        }
+        .holo-nav a:hover, .holo-nav button:hover {
+            color: #22d3ee;
+            text-shadow: 0 0 5px #22d3ee;
+        }
+        .futuristic-btn {
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            box-shadow: 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+        }
+        .futuristic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+        }
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 5px #22d3ee; }
+            to { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .neon-box {
+            background: rgba(31,41,55,0.9);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 0 8px #22d3ee;
+        }
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(17,25,40,0.95);
+            border-top: 2px solid #22d3ee;
+            padding: 16px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .cookie-banner p { font-size: 14px; max-width: 70%; }
+        .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
+        @media (min-width: 1440px) {
+            .max-w-7xl { max-width: 1280px; }
+            .max-w-4xl { max-width: 896px; }
+            .futuristic-btn { font-size: 1.125rem; padding: 1rem 2rem; }
+        }
+        @media (max-width: 1024px) {
+            .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
+            .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .futuristic-btn { font-size: 1rem; padding: 0.75rem 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.25rem; line-height: 2.5rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.25rem; }
+            .max-w-7xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
+            .cookie-banner { flex-direction: column; text-align: center; }
+            .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 1.75rem; line-height: 2rem; }
+            h2 { font-size: 1.25rem; }
+            h3 { font-size: 1rem; }
+            .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Fundo com Partículas -->
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho com Efeito Holográfico -->
+    <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-xai">
+                <a href="/index.html" aria-label="Página inicial da Álibis Digital">
+                    <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+                </a>
+            </div>
+            <div class="flex items-center space-xai">
+                <div class="md:hidden">
+                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <nav id="navbar" class="hidden md:flex space-x-4 text-sm items-center">
+                <a href="/blog.html" class="text-[#22d3ee] font-bold transition">Blog</a>
+                <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+                <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+                <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Apoio Emocional</a>
+                <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+                <a href="/login.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Fazer login">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold">Criar Conta</a>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md-hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
+            <nav class="flex flex-col items-center space-y-4">
+                <a href="/blog.html" class="text-[#22d3ee] font-bold py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+                <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
+                <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
+                <a href="/apoio-emocional.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Apoio Emocional</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+            </nav>
+        </div>
+    </header>
+    <div class="h-20"></div>
+
+    <section id="hero" class="text-white text-center py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 fade-instructions shine">Reduza o Estresse no Trabalho com Inteligência Artificial</h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 slide-in-left">Transforme sua rotina profissional com tecnologia de IA que cuida do seu bem-estar.</p>
+        </div>
+    </section>
+
+    <section id="article" class="py-16 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="neon-box p-6 fade-in">
+                <h2 class="text-2xl font-bold mb-4 shine">Quando o Trabalho Se Torna um Peso</h2>
+                <p class="text-gray-400 mb-6 fade-in" style="animation-delay: 0.1s;">Você já sentiu o coração acelerar antes de uma reunião ou passou noites em claro pensando em prazos? O estresse no trabalho é uma realidade para muitos, e seus efeitos vão além da produtividade: insônia, dores de cabeça e até problemas mais sérios podem surgir. Mas há uma solução – e a tecnologia pode ser sua aliada.</p>
+                
+                <h2 class="text-2xl font-bold mb-4 shine" style="animation-delay: 0.2s;">IA: Sua Parceira Contra o Estresse</h2>
+                <p class="text-gray-400 mb-4 fade-in" style="animation-delay: 0.3s;">Na Álibis Digital, desenvolvemos ferramentas de IA que ajudam você a retomar o controle. Nosso <strong>scanner facial de estresse</strong> analisa microexpressões para identificar sinais de tensão antes que você perceba. Já o <strong>Abili</strong>, nosso assistente virtual, organiza sua agenda para incluir pausas estratégicas e atividades que aliviam a pressão, como uma caminhada rápida ou uma sessão de respiração guiada.</p>
+                
+                <h3 class="text-xl font-semibold mb-3 shine" style="animation-delay: 0.4s;">Como Começar: 3 Passos Simples</h3>
+                <ul class="list-disc list-inside text-gray-400 mb-6 fade-in" style="animation-delay: 0.5s;">
+                    <li><strong>Monitore seu estresse:</strong> Use o scanner facial pela manhã para entender como você está se sentindo e identificar padrões ao longo da semana.</li>
+                    <li><strong>Planeje pausas inteligentes:</strong> Deixe o Abili reservar 10 minutos a cada duas horas para você se desconectar – seja com uma música relaxante ou um alongamento.</li>
+                    <li><strong>Receba dicas personalizadas:</strong> Com base nos dados do scanner, o Abili sugere técnicas de relaxamento, como respiração profunda, adaptadas ao seu nível de estresse.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold mb-4 shine" style="animation-delay: 0.6s;">Por Que Escolher a Álibis Digital?</h2>
+                <p class="text-gray-400 mb-6 fade-in" style="animation-delay: 0.7s;">Nossa tecnologia é mais do que um recurso – é um parceiro para sua saúde mental. Imagine trabalhar com mais foco, sem a sensação de estar sempre correndo contra o tempo. Com o scanner facial e o Abili, você pode transformar seus dias, encontrando equilíbrio e bem-estar. Milhares de usuários já experimentaram a diferença. Dê o primeiro passo para um trabalho mais saudável hoje.</p>
+                <a href="/scanner.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full fade-in" style="animation-delay: 0.8s;">Experimente o Scanner com IA</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
+        <div>
+            <button onclick="acceptCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Aceitar</button>
+            <button onclick="declineCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Recusar</button>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-[rgba(15,23,42,0.8)] py-10 px-4 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-white shine">Álibis Digital</h3>
+                    <p class="text-sm text-gray-400 fade-in">Soluções de bem-estar com tecnologia avançada.</p>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-white">Navegação</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/index.html" class="text-gray-400 hover:text-white transition">Início</a></li>
+                        <li><a href="/alibi.html" class="text-gray-400 hover:text-white transition">Criar Álibi</a></li>
+                        <li><a href="/scanner.html" class="text-gray-400 hover:text-white transition">Scanner com IA</a></li>
+                        <li><a href="/apoio-emocional.html" class="text-gray-400 hover:text-white transition">Apoio Emocional</a></li>
+                        <li><a href="/medical-ia.html" class="text-gray-400 hover:text-white transition">Diagnósticos</a></li>
+                        <li><a href="/blog.html" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="/planos.html" class="text-gray-400 hover:text-white transition">Planos</a></li>
+                        <li><a href="/suporte.html" class="text-gray-400 hover:text-white transition">Suporte</a></li>
+                        <li><a href="/sobre.html" class="text-gray-400 hover:text-white transition">Sobre</a></li>
+                        <li><a href="/login.html" class="text-gray-400 hover:text-white transition">Login</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-white">Contato</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="fade-in">E-mail: <a href="mailto:support@alibisdigital.com.br" class="text-gray-400 hover:text-white transition">support@alibisdigital.com.br</a></li>
+                        <li class="fade-in">WhatsApp: <a href="https://wa.me/5511912345678" class="text-gray-400 hover:text-white transition">+55 11 91234-5678</a></li>
+                        <li><a href="/privacidade.html" class="text-gray-400 hover:text-white transition">Política de Privacidade</a></li>
+                        <li><a href="/termos.html" class="text-gray-400 hover:text-white transition">Termos de Uso</a></li>
+                        <li><a href="/politicas.html" class="text-gray-400 hover:text-white transition">Políticas Gerais</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-500">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script XLSX -->
+    <script type="text/javascript">
         var gk_isXlsx = false;
         var gk_xlsxFileLookup = {};
         var gk_fileData = {};
         function filledCell(cell) {
-          return cell !== '' && cell != null;
+            return cell !== '' && cell != null;
         }
         function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
 
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
+                    // Convert sheet to JSON to filter blank rows
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
 
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
+                    // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    // Fallback
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+
+                    // Convert filtered JSON back to CSV
+                    var csv = XLSX.utils.sheet_to_csv(XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)));
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return '';
                 }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
             }
+            return gk_fileData[filename] || '';
         }
-        return gk_fileData[filename] || "";
+    </script>
+
+    <!-- Scripts Gerais -->
+    <script>
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+            console.log(`Cookie set: ${name}=${value}`);
         }
-        </script><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Descubra como a IA da Álibis Digital, com o scanner facial de estresse e o Abili, pode ajudar a reduzir o estresse no trabalho e melhorar seu bem-estar.">
-  <meta name="keywords" content="IA para estresse, reduzir estresse no trabalho, Álibis Digital, scanner facial, Abili, saúde mental, bem-estar profissional">
-  <meta name="author" content="Álibis Digital">
-  <title>Reduza o Estresse no Trabalho com Inteligência Artificial - Álibis Digital</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    body { position: relative; overflow-x: hidden; }
-    .fade-in { animation: fadeIn 1s ease-in-out; }
-    .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-    .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
-    .shine { position: relative; overflow: hidden; }
-    .shine::after { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)); transform: rotate(20deg); animation: shine 4s infinite linear; }
-    @keyframes shine { 0% { transform: translateX(-120%) rotate(20deg); } 100% { transform: translateX(120%) rotate(20deg); } }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-    .animated-btn { transition: all 0.4s ease; position: relative; overflow: hidden; z-index: 1; border: 1px solid #7C3AED; }
-    .animated-btn:after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.1); z-index: -2; }
-    .animated-btn:before { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 100%; background: linear-gradient(90deg, #7C3AED, #16A34A); transition: width 0.4s ease; z-index: -1; }
-    .animated-btn:hover:before { width: 100%; }
-    .animate-on-scroll { opacity: 0; transform: translateY(50px); transition: opacity 0.9s ease-out, transform 0.9s ease-out; }
-    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-    .tech-gradient { background: linear-gradient(135deg, #1e293b, #4c1d95, #0f172a); }
-    @media (max-width: 768px) { h1 { font-size: 2.5rem; } h2 { font-size: 1.8rem; } .max-w-4xl { max-width: 100%; padding: 0 1rem; } .grid { grid-template-columns: 1fr; } .flex { flex-direction: column; } .animated-btn { width: 100%; margin-bottom: 0.5rem; } #navbar, #mobile-menu { width: 100%; } #mobile-menu a { width: 100%; text-align: center; } }
-  </style>
-</head>
-<body class="bg-[#0b1120] text-white font-sans">
-  <header class="bg-[#0f172a] text-white shadow-md fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.png" alt="Álibis Digital Logo" class="h-10 w-auto">
-        </a>
-      </div>
-      <div class="md:hidden flex items-center">
-        <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-      <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
-        <a href="/alibi.html" class="hover:text-green-400 transition">Criar Álibi</a>
-        <a href="/scanner.html" class="hover:text-green-400 transition">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="hover:text-green-400 transition">Avaliação Emocional</a>
-        <a href="/medical-ai.html" class="hover:text-green-400 transition">Diagnóstico Médico</a>
-        <a href="/blog.html" class="text-green-400 font-bold transition">Blog</a>
-        <a href="/order.html" class="hover:text-green-400 transition">Meus Pedidos</a>
-      </nav>
-    </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
-        <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
-        <a href="/emotional-evaluation.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Avaliação Emocional</a>
-        <a href="/medical-ai.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Diagnóstico Médico</a>
-        <a href="/blog.html" class="text-green-400 font-bold py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
-        <a href="/order.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Meus Pedidos</a>
-      </nav>
-    </div>
-  </header>
-  <div class="h-20"></div>
 
-  <section id="hero" class="tech-gradient text-white text-center py-20 px-6 relative">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight fade-in">
-        Reduza o Estresse no Trabalho com Inteligência Artificial
-      </h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 fade-in">
-        Transforme sua rotina profissional com tecnologia de IA que cuida do seu bem-estar.
-      </p>
-    </div>
-  </section>
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
 
-  <section class="py-16 px-6 bg-[#1E293B] text-gray-200 animate-on-scroll">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-bold mb-4">Quando o Trabalho Se Torna um Peso</h2>
-      <p class="text-gray-400 mb-6">Você já sentiu o coração acelerar antes de uma reunião ou passou noites em claro pensando em prazos? O estresse no trabalho é uma realidade para muitos, e seus efeitos vão além da produtividade: insônia, dores de cabeça e até problemas cardíacos podem surgir. Mas há uma solução – e ela está na palma da sua mão.</p>
-      
-      <h2 class="text-2xl font-bold mb-4">IA: Sua Aliada Contra o Estresse</h2>
-      <p class="text-gray-400 mb-4">Na Álibis Digital, desenvolvemos ferramentas de IA que ajudam você a retomar o controle. Nosso <strong>scanner facial de estresse</strong> analisa microexpressões para identificar sinais de tensão antes que você perceba. Já o <strong>Abili</strong>, nosso assistente virtual, organiza sua agenda para incluir pausas estratégicas e atividades que aliviam a pressão, como uma caminhada rápida ou uma sessão de respiração guiada.</p>
-      
-      <h3 class="text-xl font-semibold mb-3">Como Começar: 3 Passos Simples</h3>
-      <ul class="list-disc list-inside text-gray-400 mb-6">
-        <li><strong>Monitore seu estresse:</strong> Use o scanner facial pela manhã para entender como você está se sentindo e identificar padrões ao longo da semana.</li>
-        <li><strong>Planeje pausas inteligentes:</strong> Deixe o Abili reservar 10 minutos a cada duas horas para você se desconectar – seja com uma música relaxante ou um alongamento.</li>
-        <li><strong>Receba dicas personalizadas:</strong> Com base nos dados do scanner, o Abili sugere técnicas de relaxamento, como respiração profunda, adaptadas ao seu nível de estresse.</li>
-      </ul>
+        function acceptCookies() {
+            setCookie('cookies_accepted', 'true', 365);
+            document.getElementById('cookie-banner').style.display = 'none';
+            console.log('Cookies aceitos');
+        }
 
-      <h2 class="text-2xl font-bold mb-4">Por Que Escolher a Álibis Digital?</h2>
-      <p class="text-gray-400 mb-6">Nossa tecnologia é mais do que um recurso – é um parceiro para sua saúde mental. Imagine trabalhar com mais foco, sem a sensação de estar sempre correndo contra o tempo. Com o scanner facial e o Abili, você pode transformar seus dias, encontrando equilíbrio e bem-estar. Milhares de usuários já experimentaram a diferença. E você, está pronto para mudar?</p>
-      <a href="/scanner.html" class="bg-[#7C3AED] text-white py-3 px-6 rounded-full animated-btn hover:bg-[#6D28D9]">Experimente o Scanner com IA</a>
-    </div>
-  </section>
+        function declineCookies() {
+            setCookie('cookies_accepted', 'false', 365);
+            document.getElementById('cookie-banner').style.display = 'none';
+            console.log('Cookies recusados');
+        }
 
-  <footer class="bg-[#0b1120] text-gray-400 py-12 animate-on-scroll">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-      <div class="slide-in-left">
-        <h3 class="text-white text-2xl font-bold mb-4 shine">Álibis Digital</h3>
-        <p class="fade-in">Soluções de privacidade e bem-estar com tecnologia avançada.</p>
-      </div>
-      <div class="fade-in">
-        <h4 class="text-white font-semibold mb-4">Navegação</h4>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:text-white transition">Início</a></li>
-          <li><a href="/alibi.html" class="hover:text-white transition">Criar Álibi</a></li>
-          <li><a href="/scanner.html" class="hover:text-white transition">Scanner com IA</a></li>
-          <li><a href="/emotional-evaluation.html" class="hover:text-white transition">Avaliação Emocional</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white transition">Diagnóstico Médico</a></li>
-          <li><a href="/blog.html" class="hover:text-white transition">Blog</a></li>
-          <li><a href="/order.html" class="hover:text-white transition">Meus Pedidos</a></li>
-        </ul>
-      </div>
-      <div class="slide-in-right">
-        <h4 class="text-white font-semibold mb-4">Contato</h4>
-        <ul class="space-y-2">
-          <li class="fade-in">E-mail: contato@alibisdigital.com</li>
-          <li class="fade-in">WhatsApp: (11) 91234-5678</li>
-        </ul>
-      </div>
-    </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM carregado: reduza-estresse-trabalho-ia.html');
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const animItems = document.querySelectorAll('.animate-on-scroll');
-      const windowHeight = window.innerHeight;
-      function animOnScroll() {
-        animItems.forEach(item => {
-          const itemTop = item.getBoundingClientRect().top;
-          const animStart = 150;
-          if (itemTop < windowHeight - animStart) {
-            item.classList.add('visible');
-          }
+            // Inicializar partículas
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#22d3ee' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    move: { enable: true, speed: 2, direction: 'none', random: true }
+                },
+                interactivity: {
+                    events: { onhover: { enable: true, mode: 'repulse' } }
+                }
+            });
+
+            // Cookie banner
+            if (!getCookie('cookies_accepted')) {
+                document.getElementById('cookie-banner').style.display = 'flex';
+                console.log('Cookie banner exibido');
+            }
+
+            // Menu mobile
+            const hamburger = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            hamburger.addEventListener('click', () => {
+                mobileMenu.classList.class('toggle('hidden');
+            console.log('Mobile menu toggled');
+            });
+
+            // Animação de scroll
+            const elements = document.getElementsByQuerySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+            const windowHeight = window.innerHeight;
+            function checkElements() {
+                elements.forEach(el => {
+                    const elTop = el.getBoundingClientRect();
+                .top;
+                if (elTop < windowHeight - 150 && !el.classList.contains('animate')) {
+                    el.classList.add('animate');
+                }
+            });
+            }
+            window.addEventListener('scroll', () => {
+                checkElements();
+                if (window.scrollY > 50) {
+                    document.querySelector('header').classList.add('shadow-lg');
+                } else {
+                    document.querySelector('header').classList.remove('shadow-lg');
+                }
+            });
+            checkElements();
         });
-      }
-      animOnScroll();
-      window.addEventListener('scroll', animOnScroll);
-
-      const hamburger = document.getElementById('hamburger-menu');
-      const mobileMenu = document.getElementById('mobile-menu');
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          document.querySelector('header').classList.add('shadow-lg');
-        } else {
-          document.querySelector('header').classList.remove('shadow-lg');
-        }
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>
