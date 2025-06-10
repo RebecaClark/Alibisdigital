@@ -1,565 +1,583 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Crie álibis personalizados com a Álibis Digital. Desculpas perfeitas sob medida.">
-  <meta name="keywords" content="álibis, desculpas, privacidade, IA">
-  <meta name="author" content="Álibis Digital">
-  <title>Criar Álibi - Álibis Digital</title>
-  <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    body { 
-      position: relative; 
-      overflow-x: hidden; 
-      min-height: 100vh; 
-      color: #e5e7eb; 
-      background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
-      font-family: Arial, sans-serif;
-    }
-    #particles-js { 
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-    .fade-in { animation: fadeIn 1s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .futuristic-btn { 
-      background: linear-gradient(45deg, #7C3AED, #22d3ee); 
-      box-shadow: 0 0 10px #22d3ee; 
-      transition: transform 0.3s ease, box-shadow 0.3s ease; 
-    }
-    .futuristic-btn:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 0 20px #22d3ee; 
-    }
-    .holo-nav {
-      background: rgba(17, 24, 39, 0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
-    .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; }
-    .dropdown-menu {
-      background: rgba(31, 41, 55, 0.9);
-      border: 1px solid #22d3ee;
-      box-shadow: 0 0 10px #22d3ee;
-      border-radius: 8px;
-      padding: 8px 0;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      display: none;
-      width: 200px;
-    }
-    .dropdown-menu a {
-      display: block;
-      padding: 8px 16px;
-      color: #e5e7eb;
-      transition: all 0.3s ease;
-    }
-    .dropdown-menu a:hover {
-      background: rgba(55, 65, 81, 0.95);
-      color: #22d3ee;
-    }
-    .dropdown:hover .dropdown-menu { display: block; }
-    .neon-box {
-      background: rgba(31, 41, 55, 0.9);
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 0 8px #22d3ee;
-    }
-    .cookie-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(17, 25, 40, 0.95);
-      border-top: 2px solid #22d3ee;
-      padding: 16px;
-      display: none;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-    }
-    .cookie-banner p { font-size: 14px; max-width: 70%; }
-    .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
-    .holoGlow { animation: holoGlow 2s infinite alternate; }
-    @keyframes holoGlow { from { box-shadow: 0 0 5px #22d3ee; } to { box-shadow: 0 0 15px #22d3ee; } }
-    .neonPulse { animation: neonPulse 1.5s infinite; }
-    @keyframes neonPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    .preview-box { border-left: 4px solid #22d3ee; }
-    .error { border-color: #ef4444; }
-    .error-message { color: #ef4444; font-size: 0.875rem; }
-    .whatsapp-message { 
-      background: #1e293b; 
-      padding: 8px 12px; 
-      border-radius: 8px; 
-      margin-bottom: 8px; 
-      max-width: 70%; 
-    }
-    .whatsapp-message.sent { 
-      background: #075e54; 
-      margin-left: auto; 
-      border-top-right-radius: 0; 
-    }
-    .whatsapp-message.received { 
-      background: #4b5563; 
-      margin-right: auto; 
-      border-top-left-radius: 0; 
-    }
-    @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      h2 { font-size: 1.8rem; }
-      .max-w-6xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
-      .futuristic-btn { width: 100%; margin-bottom: 0.5rem; }
-      .cookie-banner { flex-direction: column; text-align: center; }
-      .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crie álibis personalizados com a Álibis Digital. Desculpas perfeitas sob medida.">
+    <meta name="keywords" content="álibis, desculpas, privacidade, IA">
+    <meta name="author" content="Álibis Digital">
+    <title>Criar Álibi - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com/3.4.3" onerror="console.error('Erro ao carregar Tailwind CDN')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.error('Erro ao carregar particles.js')"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+        }
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .holo-nav {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: holoGlow 2s infinite alternate;
+        }
+        @keyframes holoGlow {
+            0% { box-shadow: 0 0 8px #22d3ee; }
+            100% { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .holo-nav a, .holo-nav button {
+            transition: color 0.3s ease;
+        }
+        .holo-nav a:hover, .holo-nav button:hover {
+            color: #22d3ee;
+            text-shadow: 0 0 5px #22d3ee;
+        }
+        .futuristic-btn {
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            box-shadow: 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+        }
+        .futuristic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+        }
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 5px #22d3ee; }
+            to { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .form-input, .form-textarea {
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            width: 100%;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #22d3ee;
+            box-shadow: 0 0 8px #22d3ee;
+        }
+        .error { border-color: #ef4444; }
+        .error-message { color: #ef4444; font-size: 0.875rem; margin-top: 4px; }
+        .neon-box {
+            background: rgba(31, 41, 55, 0.9);
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 0 8px #22d3ee;
+        }
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(17, 25, 40, 0.95);
+            border-top: 2px solid #22d3ee;
+            padding: 16px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .cookie-banner p { font-size: 14px; max-width: 70%; }
+        .cookie-banner button { padding: 8px 16px; margin-left: 10px; }
+        .whatsapp-message {
+            background: #1e293b;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            max-width: 70%;
+        }
+        .whatsapp-message.sent {
+            background: #075e54;
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+        .whatsapp-message.received {
+            background: #4b5563;
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+        .preview-box { border-left: 4px solid #22d3ee; }
+        @media (min-width: 1440px) {
+            .max-w-7xl { max-width: 1280px; }
+            .max-w-4xl { max-width: 896px; }
+            .form-input, .form-textarea { font-size: 1.125rem; }
+            .futuristic-btn { font-size: 1.125rem; padding: 1rem 2rem; }
+        }
+        @media (max-width: 1024px) {
+            .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
+            .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .form-input, .form-textarea { font-size: 1rem; }
+            .futuristic-btn { font-size: 1rem; padding: 0.75rem 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.25rem; line-height: 2.5rem; }
+            h2 { font-size: 1.5rem; }
+            .max-w-7xl, .max-w-4xl { max-width: 100%; padding: 0 1rem; }
+            .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
+            .cookie-banner { flex-direction: column; text-align: center; }
+            .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+            .form-input, .form-textarea { font-size: 0.875rem; }
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 1.75rem; line-height: 2rem; }
+            h2 { font-size: 1.25rem; }
+            .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
+            .form-input, .form-textarea { padding: 8px; }
+        }
+    </style>
 </head>
-<body>
-  <div id="particles-js"></div>
-  <header class="holo-nav fixed top-0 left-0 w-full z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="/index.html" aria-label="Home">
-        <img src="/logotipo.png" alt="Logo Álibis Digital" class="h-10">
-      </a>
-      <div class="md:hidden">
-        <button id="menu-toggle" onclick="toggleMobileMenu()" class="text-white focus:outline-none">
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-      </div>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <div class="dropdown relative">
-          <button class="hover:text-[#22d3ee] flex items-center">
-            Serviços
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-6-6"/>
-            </svg>
-          </button>
-          <div class="dropdown-menu">
-            <a href="/scanner.html">Scanner com IA</a>
-            <a href="/apoio-emocional.html">Avaliação Emocional</a>
-            <a href="/medical-ai.html">Diagnóstico Médico</a>
-            <a href="/alibis.html">Criar Álibi</a>
-          </div>
+<body class="text-white">
+    <!-- Fundo com Partículas -->
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho com Efeito Holográfico -->
+    <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="/index.html" aria-label="Página inicial da Álibis Digital">
+                    <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="h-10 w-auto">
+                </a>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="md:hidden">
+                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <nav id="navbar" class="hidden md:flex space-x-4 text-sm items-center">
+                <a href="/blog.html" class="hover:text-[#22d3ee] transition">Blog</a>
+                <a href="/alibi.html" class="hover:text-[#22d3ee] transition">Criar Álibi</a>
+                <a href="/scanner.html" class="hover:text-[#22d3ee] transition">Scanner com IA</a>
+                <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition">Apoio Emocional</a>
+                <a href="/suporte.html" class="hover:text-[#22d3ee] transition">Suporte</a>
+                <a href="/login.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold" aria-label="Fazer login">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
+            </nav>
         </div>
-        <a href="/blog.html" class="hover:text-[#22d3ee]">Blog</a>
-        <a href="/planos.html" class="hover:text-[#22d3ee]">Planos</a>
-        <a href="/suporte.html" class="hover:text-[#22d3ee]">Suporte</a>
-        <a href="/dashboard.html" class="hover:text-[#22d3ee]">Meus Pedidos</a>
-        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full">Assinar Agora</a>
-      </nav>
+        <div id="mobile-menu" class="md:hidden bg-[rgba(31,41,55,0.9)] w-full hidden py-4">
+            <nav class="flex flex-col items-center space-y-4">
+                <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Blog</a>
+                <a href="/alibi.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Criar Álibi</a>
+                <a href="/scanner.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Scanner com IA</a>
+                <a href="/apoio-emocional.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Apoio Emocional</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded">Suporte</a>
+            </nav>
+        </div>
+    </header>
+    <div class="h-20"></div>
+
+    <section id="hero" class="text-white text-center py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 fade-in shine">Crie Seu Álibi Perfeito</h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8 slide-in-left">Desculpas realistas geradas por IA avançada.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 slide-in-right">
+                <a href="#create-alibi" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Agora</a>
+                <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Ver Planos</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="modules" class="py-12 px-4 md:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 fade-in shine">Nossos Serviços</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="neon-box p-6 fade-in">
+                    <h3 class="text-xl font-semibold mb-4">🕵️‍♂️ Álibis Pessoais</h3>
+                    <p>Desculpas para situações sociais, amorosas ou profissionais com áudios realistas, prints falsos e documentos simulados.</p>
+                </div>
+                <div class="neon-box p-6 fade-in" style="animation-delay: 0.2s;">
+                    <h3 class="text-xl font-semibold mb-4">📵 Porta de Saída Social</h3>
+                    <p>Sons falsos de ligação, prints de emergência e mensagens prontas para sair de compromissos desconfortáveis.</p>
+                </div>
+                <div class="neon-box p-6 fade-in" style="animation-delay: 0.4s;">
+                    <h3 class="text-xl font-semibold mb-4">💅 Influencer de Mentirinha</h3>
+                    <p>Stories editados, parcerias falsas e comentários simulados para uma presença digital impressionante.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="create-alibi" class="py-12 px-4 md:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 fade-in shine">Crie Seu Álibi</h2>
+            <form id="alibi-form" class="neon-box p-6">
+                <div class="mb-6">
+                    <label for="recipient" class="block text-sm font-medium mb-2 text-white">Para quem é o álibi?</label>
+                    <input type="text" id="recipient" name="recipient" class="form-input" placeholder="Ex.: Meu chefe" required>
+                    <p id="recipient-error" class="error-message hidden">Este campo é obrigatório.</p>
+                </div>
+                <div class="mb-6">
+                    <label for="content" class="block text-sm font-medium mb-2 text-white">Qual o motivo real?</label>
+                    <textarea id="content" name="content" class="form-textarea" rows="4" placeholder="Ex.: Quero faltar ao trabalho para viajar" required></textarea>
+                    <p id="content-error" class="error-message hidden">Este campo é obrigatório.</p>
+                </div>
+                <div class="mb-6">
+                    <label for="type" class="block text-sm font-medium mb-2 text-white">Tipo de desculpa</label>
+                    <select id="type" name="type" class="form-input" required>
+                        <option value="">Selecione</option>
+                        <option value="pessoal">Pessoal</option>
+                        <option value="profissional">Profissional</option>
+                        <option value="social">Social</option>
+                        <option value="familiar">Familiar</option>
+                        <option value="emergência">Emergência</option>
+                        <option value="acadêmica">Acadêmica</option>
+                    </select>
+                    <p id="type-error" class="error-message hidden">Selecione um tipo.</p>
+                </div>
+                <div class="mb-6">
+                    <label for="format" class="block text-sm font-medium mb-2 text-white">Formato do álibi</label>
+                    <select id="format" name="format" class="form-input" required>
+                        <option value="">Selecione</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="audio">Áudio</option>
+                        <option value="email">E-mail</option>
+                        <option value="pdf">PDF</option>
+                        <option value="sms">SMS</option>
+                    </select>
+                    <p id="format-error" class="error-message hidden">Selecione um formato.</p>
+                </div>
+                <div class="mb-6">
+                    <label for="date" class="block text-sm font-medium mb-2 text-white">Data (opcional)</label>
+                    <input type="date" id="date" name="date" class="form-input">
+                </div>
+                <div class="mb-6">
+                    <label for="time" class="block text-sm font-medium mb-2 text-white">Hora (opcional)</label>
+                    <input type="time" id="time" name="time" class="form-input">
+                </div>
+                <button type="submit" class="futuristic-btn w-full text-white font-bold py-3 px-6 rounded-full">Gerar Álibi</button>
+            </form>
+            <div id="alibi-preview" class="neon-box p-6 mt-6 hidden fade-in">
+                <h3 class="text-xl font-semibold mb-4">Visualização do Álibi</h3>
+                <div id="preview-content" class="preview-box p-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plans" class="py-12 px-4 md:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 fade-in shine">Nossos Planos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="neon-box p-6 text-center fade-in">
+                    <h3 class="text-xl font-semibold mb-4">Plano Fuga</h3>
+                    <p class="text-2xl font-bold mb-4">R$9,90/mês</p>
+                    <ul class="text-left mb-4 space-y-2">
+                        <li>✔ 1 áudio</li>
+                        <li>✔ 1 print</li>
+                        <li>✔ Desculpa personalizada</li>
+                    </ul>
+                    <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
+                </div>
+                <div class="neon-box p-6 text-center fade-in" style="animation-delay: 0.2s;">
+                    <h3 class="text-xl font-semibold mb-4">Plano Sumido Pro</h3>
+                    <p class="text-2xl font-bold mb-4">R$29,90/mês</p>
+                    <ul class="text-left mb-4 space-y-2">
+                        <li>✔ 3 desculpas</li>
+                        <li>✔ 1 documento</li>
+                        <li>✔ Áudio realista</li>
+                    </ul>
+                    <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
+                </div>
+                <div class="neon-box p-6 text-center fade-in" style="animation-delay: 0.4s;">
+                    <h3 class="text-xl font-semibold mb-4">Plano Influencer™</h3>
+                    <p class="text-2xl font-bold mb-4">R$59,90/mês</p>
+                    <ul class="text-left mb-4 space-y-2">
+                        <li>✔ 5 prints</li>
+                        <li>✔ 2 stories falsos</li>
+                        <li>✔ 1 parceria fake</li>
+                    </ul>
+                    <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
+                </div>
+                <div class="neon-box p-6 text-center fade-in" style="animation-delay: 0.6s;">
+                    <h3 class="text-xl font-semibold mb-4">Plano Supremo</h3>
+                    <p class="text-2xl font-bold mb-4">R$99,90/mês</p>
+                    <ul class="text-left mb-4 space-y-2">
+                        <li>✔ Tudo incluso</li>
+                        <li>✔ Pack visual personalizado</li>
+                        <li>✔ Nome e cidade customizados</li>
+                    </ul>
+                    <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-12 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6 fade-in shine">Fale com a Gente</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-4 mb-8 slide-in-left">
+                <a href="https://wa.me/5511912345678" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">WhatsApp</a>
+                <a href="https://t.me/alibisdigital" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Telegram</a>
+                <a href="https://instagram.com/alibisdigital" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Instagram</a>
+            </div>
+            <h3 class="text-xl font-semibold mb-4 slide-in-right">Baixe nosso Kit de Amostras</h3>
+            <p class="text-lg mb-6 text-gray-300 slide-in-right">Confira exemplos reais de prints, áudios e documentos.</p>
+            <a href="/kit-amostras.pdf" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" download>Baixar PDF</a>
+        </div>
+    </section>
+
+    <a href="/suporte.html" class="futuristic-btn fixed bottom-4 right-4 text-white font-bold py-2 px-4 rounded-full text-sm pulse">💬 Suporte</a>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
+        <div>
+            <button onclick="acceptCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Aceitar</button>
+            <button onclick="declineCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Recusar</button>
+        </div>
     </div>
-    <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
-      <nav class="flex flex-col items-center space-y-4">
-        <div class="w-full">
-          <button id="services-toggle" onclick="toggleServicesMenu()" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 flex justify-between">
-            Serviços
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-6-6"/>
-            </svg>
-          </button>
-          <div id="services-menu" class="hidden">
-            <a href="/scanner.html" class="block py-2 px-4 text-white hover:bg-gray-700">Scanner com IA</a>
-            <a href="/apoio-emocional.html" class="block py-2 px-4 text-white hover:bg-gray-700">Avaliação Emocional</a>
-            <a href="/medical-ai.html" class="block py-2 px-4 text-white hover:bg-gray-700">Diagnóstico Médico</a>
-            <a href="/alibis.html" class="block py-2 px-4 text-white hover:bg-gray-700">Criar Álibi</a>
-          </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-[rgba(15,23,42,0.8)] py-10 px-4 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-white shine">Álibis Digital</h3>
+                    <p class="text-sm text-gray-400 fade-in">Soluções de bem-estar com tecnologia avançada.</p>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-white">Navegação</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/index.html" class="text-gray-400 hover:text-white transition">Início</a></li>
+                        <li><a href="/alibi.html" class="text-gray-400 hover:text-white transition">Criar Álibi</a></li>
+                        <li><a href="/scanner.html" class="text-gray-400 hover:text-white transition">Scanner com IA</a></li>
+                        <li><a href="/apoio-emocional.html" class="text-gray-400 hover:text-white transition">Apoio Emocional</a></li>
+                        <li><a href="/medical-ia.html" class="text-gray-400 hover:text-white transition">Diagnósticos</a></li>
+                        <li><a href="/blog.html" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="/planos.html" class="text-gray-400 hover:text-white transition">Planos</a></li>
+                        <li><a href="/suporte.html" class="text-gray-400 hover:text-white transition">Suporte</a></li>
+                        <li><a href="/sobre.html" class="text-gray-400 hover:text-white transition">Sobre</a></li>
+                        <li><a href="/login.html" class="text-gray-400 hover:text-white transition">Login</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-semibold text-white">Contato</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="fade-in">E-mail: <a href="mailto:support@alibisdigital.com.br" class="text-gray-400 hover:text-white transition">support@alibisdigital.com.br</a></li>
+                        <li class="fade-in">WhatsApp: <a href="https://wa.me/5511912345678" class="text-gray-400 hover:text-white transition">+55 11 91234-5678</a></li>
+                        <li><a href="/privacidade.html" class="text-gray-400 hover:text-white transition">Política de Privacidade</a></li>
+                        <li><a href="/termos.html" class="text-gray-400 hover:text-white transition">Termos de Uso</a></li>
+                        <li><a href="/politicas.html" class="text-gray-400 hover:text-white transition">Políticas Gerais</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-500">© 2025 Álibis Digital. Todos os direitos reservados.</p>
+            </div>
         </div>
-        <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Blog</a>
-        <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Planos</a>
-        <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Suporte</a>
-        <a href="/dashboard.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700">Meus Pedidos</a>
-        <a href="/planos.html" class="futuristic-btn text-white py-2 px-4 rounded-full w-full">Assinar Agora</a>
-      </nav>
-    </div>
-  </header>
-  <div class="h-20"></div>
+    </footer>
 
-  <section id="hero" class="text-white text-center py-16 px-4">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6 fade-in">Crie Seu Álibi Perfeito</h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in neonPulse">Desculpas realistas geradas por IA avançada.</p>
-      <div class="flex flex-col md:flex-row justify-center gap-4">
-        <a href="#create-alibi" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Criar Agora</a>
-        <a href="/planos.html" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Ver Planos</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="modules" class="py-12 px-4 md:px-8">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-8">Nossos Serviços</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="neon-box p-6 holoGlow">
-          <h3 class="text-xl font-semibold mb-4">🕵️‍♂️ Álibis Pessoais</h3>
-          <p>Desculpas para situações sociais, amorosas ou profissionais com áudios realistas, prints falsos e documentos simulados.</p>
-        </div>
-        <div class="neon-box p-6 holoGlow">
-          <h3 class="text-xl font-semibold mb-4">📵 Porta de Saída Social</h3>
-          <p>Sons falsos de ligação, prints de emergência e mensagens prontas para sair de compromissos desconfortáveis.</p>
-        </div>
-        <div class="neon-box p-6 holoGlow">
-          <h3 class="text-xl font-semibold mb-4">💅 Influencer de Mentirinha</h3>
-          <p>Stories editados, parcerias falsas e comentários simulados para uma presença digital impressionante.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="create-alibi" class="py-12 px-4 md:px-8">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-8">Crie Seu Álibi</h2>
-      <form id="alibi-form" class="neon-box p-6">
-        <div class="mb-4">
-          <label for="recipient" class="block text-sm font-medium mb-2">Para quem é o álibi?</label>
-          <input type="text" id="recipient" name="recipient" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" placeholder="Ex.: Meu chefe" required>
-          <p id="recipient-error" class="error-message hidden">Este campo é obrigatório.</p>
-        </div>
-        <div class="mb-4">
-          <label for="content" class="block text-sm font-medium mb-2">Qual o motivo real?</label>
-          <textarea id="content" name="content" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" rows="4" placeholder="Ex.: Quero faltar ao trabalho para viajar" required></textarea>
-          <p id="content-error" class="error-message hidden">Este campo é obrigatório.</p>
-        </div>
-        <div class="mb-4">
-          <label for="type" class="block text-sm font-medium mb-2">Tipo de desculpa</label>
-          <select id="type" name="type" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" required>
-            <option value="">Selecione</option>
-            <option value="pessoal">Pessoal</option>
-            <option value="profissional">Profissional</option>
-            <option value="social">Social</option>
-            <option value="familiar">Familiar</option>
-            <option value="emergência">Emergência</option>
-            <option value="acadêmica">Acadêmica</option>
-          </select>
-          <p id="type-error" class="error-message hidden">Selecione um tipo.</p>
-        </div>
-        <div class="mb-4">
-          <label for="format" class="block text-sm font-medium mb-2">Formato do álibi</label>
-          <select id="format" name="format" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]" required>
-            <option value="">Selecione</option>
-            <option value="whatsapp">WhatsApp</option>
-            <option value="audio">Áudio</option>
-            <option value="email">E-mail</option>
-            <option value="pdf">PDF</option>
-            <option value="sms">SMS</option>
-          </select>
-          <p id="format-error" class="error-message hidden">Selecione um formato.</p>
-        </div>
-        <div class="mb-4">
-          <label for="date" class="block text-sm font-medium mb-2">Data (opcional)</label>
-          <input type="date" id="date" name="date" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]">
-        </div>
-        <div class="mb-4">
-          <label for="time" class="block text-sm font-medium mb-2">Hora (opcional)</label>
-          <input type="time" id="time" name="time" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-[#22d3ee]">
-        </div>
-        <button type="submit" class="futuristic-btn w-full text-white font-bold py-3 px-6 rounded-full">Gerar Álibi</button>
-      </form>
-      <div id="alibi-preview" class="neon-box p-6 mt-6 hidden">
-        <h3 class="text-xl font-semibold mb-4">Visualização do Álibi</h3>
-        <div id="preview-content" class="preview-box p-4"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="plans" class="py-12 px-4 md:px-8">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-8">Nossos Planos</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="neon-box p-6 text-center holoGlow">
-          <h3 class="text-xl font-semibold mb-4">Plano Fuga</h3>
-          <p class="text-2xl font-bold mb-4">R$9,90/mês</p>
-          <ul class="text-left mb-4 space-y-2">
-            <li>✔ 1 áudio</li>
-            <li>✔ 1 print</li>
-            <li>✔ Desculpa personalizada</li>
-          </ul>
-          <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
-        </div>
-        <div class="neon-box p-6 text-center holoGlow">
-          <h3 class="text-xl font-semibold mb-4">Plano Sumido Pro</h3>
-          <p class="text-2xl font-bold mb-4">R$29,90/mês</p>
-          <ul class="text-left mb-4 space-y-2">
-            <li>✔ 3 desculpas</li>
-            <li>✔ 1 documento</li>
-            <li>✔ Áudio realista</li>
-          </ul>
-          <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
-        </div>
-        <div class="neon-box p-6 text-center holoGlow">
-          <h3 class="text-xl font-semibold mb-4">Plano Influencer™</h3>
-          <p class="text-2xl font-bold mb-4">R$59,90/mês</p>
-          <ul class="text-left mb-4 space-y-2">
-            <li>✔ 5 prints</li>
-            <li>✔ 2 stories falsos</li>
-            <li>✔ 1 parceria fake</li>
-          </ul>
-          <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
-        </div>
-        <div class="neon-box p-6 text-center holoGlow">
-          <h3 class="text-xl font-semibold mb-4">Plano Supremo</h3>
-          <p class="text-2xl font-bold mb-4">R$99,90/mês</p>
-          <ul class="text-left mb-4 space-y-2">
-            <li>✔ Tudo incluso</li>
-            <li>✔ Pack visual personalizado</li>
-            <li>✔ Nome e cidade customizados</li>
-          </ul>
-          <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-4 rounded-full">Escolher</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="py-12 px-4 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6">Fale com a Gente</h2>
-      <div class="flex flex-col md:flex-row justify-center gap-4 mb-8">
-        <a href="https://wa.me/5511912345678" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">WhatsApp</a>
-        <a href="https://t.me/alibisdigital" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Telegram</a>
-        <a href="https://instagram.com/alibisdigital" target="_blank" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full">Instagram</a>
-      </div>
-      <h3 class="text-xl font-semibold mb-4">Baixe nosso Kit de Amostras</h3>
-      <p class="text-lg mb-6 text-gray-300">Confira exemplos reais de prints, áudios e documentos.</p>
-      <a href="/kit-amostras.pdf" class="futuristic-btn text-white font-bold py-3 px-6 rounded-full" download>Baixar PDF</a>
-    </div>
-  </section>
-
-  <a href="/suporte.html" class="futuristic-btn fixed bottom-4 right-4 text-white font-bold py-2 px-4 rounded-full text-sm">💬 Suporte</a>
-
-  <div id="cookie-banner" class="cookie-banner">
-    <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
-    <div>
-      <button onclick="acceptCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Aceitar</button>
-      <button onclick="declineCookies()" class="futuristic-btn text-white py-2 px-4 rounded-full">Recusar</button>
-    </div>
-  </div>
-
-  <footer class="bg-[rgba(11,17,32,0.8)] text-gray-400 py-12">
-    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-      <div>
-        <h3 class="text-white text-2xl font-bold mb-4">Álibis Digital</h3>
-        <p>Soluções de privacidade e bem-estar com tecnologia avançada.</p>
-      </div>
-      <div>
-        <h4 class="text-white font-semibold mb-4">Navegue</h4>
-        <ul class="space-y-2">
-          <li><a href="/index.html" class="hover:text-white">Início</a></li>
-          <li><a href="/alibis.html" class="hover:text-white">Criar Álibi</a></li>
-          <li><a href="/scanner.html" class="hover:text-white">Scanner com IA</a></li>
-          <li><a href="/apoio-emocional.html" class="hover:text-white">Avaliação Emocional</a></li>
-          <li><a href="/medical-ai.html" class="hover:text-white">Diagnóstico Médico</a></li>
-          <li><a href="/blog.html" class="hover:text-white">Blog</a></li>
-          <li><a href="/planos.html" class="hover:text-white">Planos</a></li>
-          <li><a href="/suporte.html" class="hover:text-white">Suporte</a></li>
-          <li><a href="/dashboard.html" class="hover:text-white">Meus Pedidos</a></li>
-          <li><a href="/privacidade.html" class="hover:text-white">Privacidade</a></li>
-          <li><a href="/politicas.html" class="hover:text-white">Políticas</a></li>
-          <li><a href="/termos.html" class="hover:text-white">Termos</a></li>
-          <li><a href="/cookies.html" class="hover:text-white">Cookies</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="text-white font-semibold mb-4">Contato</h4>
-        <ul class="space-y-2">
-          <li>E-mail: contato@alibisdigital.com</li>
-          <li>WhatsApp: (11) 91234-5678</li>
-        </ul>
-      </div>
-    </div>
-    <div class="text-center mt-8">
-      <p class="text-sm">© 2025 Álibis Digital. Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
-  <script>
-    function toggleMobileMenu() {
-      const mobileMenu = document.getElementById('mobile-menu');
-      mobileMenu.classList.toggle('hidden');
-      console.log('Menu mobile toggled');
-    }
-
-    function toggleServicesMenu() {
-      const servicesMenu = document.getElementById('services-menu');
-      servicesMenu.classList.toggle('hidden');
-      console.log('Menu de serviços toggled');
-    }
-
-    function setCookie(name, value, days) {
-      let expires = "";
-      if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-      }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
-      console.log(`Cookie set: ${name}=${value}`);
-    }
-
-    function getCookie(name) {
-      const nameEQ = name + "=";
-      const ca = document.cookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-      }
-      return null;
-    }
-
-    function acceptCookies() {
-      setCookie('cookies_accepted', 'true', 365);
-      document.getElementById('cookie-banner').style.display = 'none';
-      console.log('Cookies aceitos');
-    }
-
-    function declineCookies() {
-      setCookie('cookies_accepted', 'false', 365);
-      document.getElementById('cookie-banner').style.display = 'none';
-      console.log('Cookies recusados');
-    }
-
-    try {
-      if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-          particles: {
-            number: { value: 80, density: { enable: true, value_area: 800 } },
-            color: { value: '#22d3ee' },
-            shape: { type: 'circle' },
-            opacity: { value: 0.5, random: true },
-            size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-            move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out' }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-            modes: { repulse: { distance: 100, duration: 0.4 } }
-          }
-        });
-        console.log('particles.js inicializado');
-      } else {
-        console.warn('particles.js não carregado');
-      }
-    } catch (e) {
-      console.error('Erro ao inicializar particles.js:', e);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM carregado: alibis.html');
-      try {
-        if (!getCookie('cookies_accepted')) {
-          document.getElementById('cookie-banner').style.display = 'flex';
-          console.log('Cookie banner exibido');
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+            console.log('Menu mobile toggled');
         }
 
-        const form = document.getElementById('alibi-form');
-        const previewSection = document.getElementById('alibi-preview');
-        const previewContent = document.getElementById('preview-content');
-
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          console.log('Formulário submetido');
-
-          // Validação
-          let hasError = false;
-          const fields = ['recipient', 'content', 'type', 'format'];
-          fields.forEach(field => {
-            const input = document.getElementById(field);
-            const error = document.getElementById(`${field}-error`);
-            if (!input.value) {
-              input.classList.add('error');
-              error.classList.remove('hidden');
-              hasError = true;
-            } else {
-              input.classList.remove('error');
-              error.classList.add('hidden');
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
             }
-          });
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+            console.log(`Cookie set: ${name}=${value}`);
+        }
 
-          if (hasError) {
-            console.log('Erro de validação');
-            return;
-          }
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
 
-          // Coletar dados
-          const data = {
-            recipient: document.getElementById('recipient').value,
-            content: document.getElementById('content').value,
-            type: document.getElementById('type').value,
-            format: document.getElementById('format').value,
-            date: document.getElementById('date').value,
-            time: document.getElementById('time').value,
-          };
+        function acceptCookies() {
+            setCookie('cookies_accepted', 'true', 365);
+            document.getElementById('cookie-banner').style.display = 'none';
+            console.log('Cookies aceitos');
+        }
 
-          try {
-            const response = await fetch('http://localhost:3000/api/generate-alibi', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data),
+        function declineCookies() {
+            setCookie('cookies_accepted', 'false', 365);
+            document.getElementById('cookie-banner').style.display = 'none';
+            console.log('Cookies recusados');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM carregado: alibis.html');
+
+            // Inicializar partículas
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#22d3ee' },
+                    shape: { type: 'circle' },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    move: { enable: true, speed: 2, direction: 'none', random: true }
+                },
+                interactivity: {
+                    events: { onhover: { enable: true, mode: 'repulse' } }
+                }
             });
 
-            const result = await response.json();
-            if (!response.ok) {
-              throw new Error(result.error || 'Erro ao gerar álibi');
+            // Cookie banner
+            if (!getCookie('cookies_accepted')) {
+                document.getElementById('cookie-banner').style.display = 'flex';
+                console.log('Cookie banner exibido');
             }
 
-            console.log('Álibi gerado:', result);
+            // Menu mobile
+            document.getElementById('hamburger-menu').addEventListener('click', toggleMobileMenu);
 
-            // Exibir preview
-            previewContent.innerHTML = '';
-            if (result.alibi.preview) {
-              if (result.alibi.format === 'whatsapp') {
-                result.alibi.preview.messages.forEach(msg => {
-                  const div = document.createElement('div');
-                  div.className = `whatsapp-message ${msg.type}`;
-                  div.innerHTML = `<p>${msg.content}</p><small>${msg.time}</small>`;
-                  previewContent.appendChild(div);
-                });
-              } else if (result.alibi.format === 'audio') {
-                previewContent.innerHTML = `
-                  <p><strong>Transcrição:</strong> ${result.alibi.preview.transcript}</p>
-                  <p><strong>Duração:</strong> ${result.alibi.preview.duration}</p>
-                `;
-              } else if (result.alibi.format === 'email') {
-                previewContent.innerHTML = `
-                  <p><strong>Assunto:</strong> ${result.alibi.preview.subject}</p>
-                  <p><strong>Corpo:</strong> ${result.alibi.preview.body}</p>
-                `;
-              } else if (result.alibi.format === 'pdf') {
-                previewContent.innerHTML = `
-                  <p><strong>Documento:</strong> ${result.alibi.preview.document}</p>
-                `;
-              } else if (result.alibi.format === 'sms') {
-                previewContent.innerHTML = `
-                  <p><strong>Mensagem:</strong> ${result.alibi.preview.message}</p>
-                `;
-              }
-            } else {
-              previewContent.innerHTML = `<p>${result.alibi.content}</p>`;
-            }
+            // Formulário
+            const form = document.getElementById('alibi-form');
+            const previewSection = document.getElementById('alibi-preview');
+            const previewContent = document.getElementById('preview-content');
 
-            previewSection.classList.remove('hidden');
-            console.log('Preview exibido');
-          } catch (error) {
-            console.error('Erro ao gerar álibi:', error);
-            previewContent.innerHTML = `<p class="error-message">Erro ao gerar álibi: ${error.message}. Verifique a conexão ou tente novamente.</p>`;
-            previewSection.classList.remove('hidden');
-          }
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log('Formulário submetido');
+
+                // Validação
+                let hasError = false;
+                const fields = ['recipient', 'content', 'type', 'format'];
+                fields.forEach(field => {
+                    const input = document.getElementById(field);
+                    const error = document.getElementById(`${field}-error`);
+                    if (!input.value) {
+                        input.classList.add('error');
+                        error.classList.remove('hidden');
+                        hasError = true;
+                    } else {
+                        input.classList.remove('error');
+                        error.classList.add('hidden');
+                    }
+                }));
+
+                if (hasError) {
+                    console.log('Erro de validação');
+                    return;
+                }
+
+                // Coletar dados
+                const data = {
+                    recipient: document.getElementById('recipient').value,
+                    content: document.getElementById('content').value,
+                    type: document.getElementById('type').value,
+                    format: document.getElementById('format').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                };
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/generate-alibi', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Erro ao gerar álibi');
+                    }
+
+                    console.log('Álibi gerado:', result);
+
+                    // Exibir preview
+                    previewContent.innerHTML = '';
+                    if (result.alibi.preview) {
+                        if (result.alibi.format === 'whatsapp') {
+                            result.alibi.preview.messages.forEach(msg => {
+                                const div = document.createElement('div');
+                                div.className = `whatsapp-message ${msg.type}`;
+                                div.innerHTML = `<p>${msg.content}</p><small>${msg.time}</small>`;
+                                previewContent.appendChild(div);
+                            });
+                        } else if (result.alibi.format === 'audio') {
+                            previewContent.innerHTML = `
+                                <p><strong>Transcrição:</strong> ${result.alibi.preview.transcript}</p>
+                                <p><strong>Duração:</strong> ${result.alibi.preview.duration}</p>
+                            `;
+                        } else if (result.alibi.format === 'email') {
+                            previewContent.innerHTML = `
+                                <p><strong>Assunto:</strong> ${result.alibi.preview.subject}</p>
+                                <p><strong>Corpo:</strong> ${result.alibi.preview.body}</p>
+                            `;
+                        } else if (result.alibi.format === 'pdf') {
+                            previewContent.innerHTML = `
+                                <p><strong>Documento:</strong> ${result.alibi.preview.document}</p>
+                            `;
+                        } else if (result.alibi.format === 'sms') {
+                            previewContent.innerHTML = `
+                                <p><strong>Mensagem:</strong> ${result.alibi.preview.content}</p>
+                            `;
+                        }
+                    } else {
+                        previewContent.innerHTML = `<p>${result.alibi.content}</p>`;
+                    }
+
+                    previewSection.classList.remove('hidden');
+                    console.log('Preview exibido');
+                } catch (error) {
+                    console.error('Erro ao gerar álibi:', error);
+                    previewContent.innerHTML = `<p class="error-message">Erro ao gerar álibi: ${error.message}. Verifique a conexão ou tente novamente.</p>`;
+                    previewSection.classList.remove('hidden');
+                }
+            });
         });
-      } catch (e) {
-        console.error('Erro na inicialização:', e);
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
