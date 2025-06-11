@@ -7,7 +7,7 @@
     <meta name="keywords" content="meditação guiada, relaxamento, bem-estar, saúde mental">
     <meta name="author" content="Álibis Digital">
     <title>Meditação Guiada - Álibis Digital</title>
-    <link href="dist/output.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
@@ -140,8 +140,8 @@
     <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center logo-container space-x-3">
-                <a href="/index.html" aria-label="Página inicial da Álibis Digital">
-                    <img src="assets/images/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
+                <a href="/scanner.html">
+                    <img src="https://via.placeholder.com/150x50" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
                 </a>
             </div>
             <div class="flex items-center space-x-3">
@@ -263,7 +263,7 @@
     </section>
 
     <!-- Rodapé -->
-    <footer class="bg-black bg-opacity-80 text-gray-400 py-8">
+    <footer class="bg-[rgba(0,0,0,0.8)] text-gray-400 py-8">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <h3 class="text-white font-semibold mb-2">Álibis Digitais</h3>
@@ -272,16 +272,17 @@
             <div>
                 <h4 class="text-white font-semibold mb-2">Navegue</h4>
                 <ul class="space-y-1">
-                    <li><a href="/index.html" class="hover:text-white">Início</a></li>
-                    <li><a href="/scanner.html" class="hover:text-white">Scanner com IA</a></li>
-                    <li><a href="/blog.html" class="hover:text-white">Blog</a></li>
-                    <li><a href="/medical-ia.html" class="hover:text-white">Diagnósticos Médicos</a></li>
-                    <li><a href="/apoio-emocional.html" class="hover:text-white">Apoio Emocional</a></li>
-                    <li><a href="/alibi.html" class="hover:text-white">Criar Álibi</a></li>
-                    <li><a href="/planos.html" class="hover:text-white">Planos</a></li>
-                    <li><a href="/suporte.html" class="hover:text-white">Suporte</a></li>
-                    <li><a href="/privacidade.html" class="hover:text-white">Privacidade</a></li>
-                    <li><a href="/termos.html" class="hover:text-white">Termos</a></li>
+                    <li><a href="scanner.html" class="hover:text-white">Início</a></li>
+                    <li><a href="scanner.html" class="hover:text-white">Scanner</a></li>
+                    <li><a href="blog.html" class="hover:text-white">Blog</a></li>
+                    <li><a href="medical-ia.html" class="hover:text-white">Diagnósticos Médicos</a></li>
+                    <li><a href="apoio-emocional.html" class="hover:text-white">Apoio Emocional</a></li>
+                    <li><a href="alibi.html" class="hover:text-white">Criar Álibi</a></li>
+                    <li><a href="planos.html" class="hover:text-white">Planos</a></li>
+                    <li><a href="suporte.html" class="hover:text-white">Suporte</a></li>
+                    <li><a href="privacidade.html" class="hover:text-white">Privacidade</a></li>
+                    <li><a href="termos.html" class="hover:text-white">Termos</a></li>
+                    <li><a href="politicas.html" class="hover:text-white">Políticas</a></li>
                 </ul>
             </div>
             <div>
@@ -419,17 +420,17 @@
             }
 
             // Efeito ripple nos botões
-            const buttons = document.querySelectorAll('.botao-futurista');
-            buttons.forEach(button => {
-                button.addEventListener('click', (e) => {
+            const botoes = document.querySelectorAll('.botao-futurista');
+            botoes.forEach(botao => {
+                botao.addEventListener('click', (e) => {
                     const ripple = document.createElement('span');
                     ripple.classList.add('ripple');
-                    const rect = button.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    ripple.style.width = ripple.style.height = `${size}px`;
-                    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
-                    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
-                    button.appendChild(ripple);
+                    const rect = botao.getBoundingClientRect();
+                    const tamanho = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = `${tamanho}px`;
+                    ripple.style.left = `${e.clientX - rect.left - tamanho / 2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - tamanho / 2}px`;
+                    botao.appendChild(ripple);
                     ripple.addEventListener('animationend', () => ripple.remove());
                 });
             });
