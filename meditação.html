@@ -20,7 +20,7 @@
             font-family: 'Inter', sans-serif;
             background: transparent;
         }
-        #particles-js {
+        #particulas-js {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -50,7 +50,7 @@
         @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
         .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
         .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
-        .futuristic-btn {
+        .botao-futurista {
             position: relative;
             display: inline-block;
             background: linear-gradient(45deg, #7C3AED, #22d3ee);
@@ -64,23 +64,23 @@
             animation: neonPulse 1.5s infinite alternate;
             overflow: hidden;
         }
-        .futuristic-btn::after {
+        .botao-futurista::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             animation: lightSweep 3s infinite linear;
         }
-        .futuristic-btn:hover {
+        .botao-futurista:hover {
             transform: translateY(-3px) rotate(2deg);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee;
             background: linear-gradient(45deg, #6D28D9, #06B6D4);
         }
-        .futuristic-btn:active { transform: scale(0.95); }
-        .futuristic-btn:disabled { background: linear-gradient(45deg, #4B5563, #6B7280); box-shadow: none; opacity: 0.6; cursor: not-allowed; animation: none; }
-        .futuristic-btn .ripple { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+        .botao-futurista:active { transform: scale(0.95); }
+        .botao-futurista:disabled { background: linear-gradient(45deg, #4B5563, #6B7280); box-shadow: none; opacity: 0.6; cursor: not-allowed; animation: none; }
+        .botao-futurista .ripple { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
         @keyframes neonPulse { 0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; } 100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; } }
         @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
         @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-        .neon-box {
+        .caixa-neon {
             background: linear-gradient(45deg, #0a1f2e, #00ccff);
             border-radius: 15px;
             padding: 20px;
@@ -90,7 +90,7 @@
             text-align: left;
             backdrop-filter: blur(5px);
         }
-        .dropdown-menu {
+        .menu-suspenso {
             display: none;
             position: absolute;
             background: rgba(20, 20, 20, 0.9);
@@ -101,21 +101,21 @@
             flex-direction: column;
             padding: 8px 0;
         }
-        .dropdown:hover .dropdown-menu { display: flex; }
-        .dropdown-menu a {
+        .dropdown:hover .menu-suspenso { display: flex; }
+        .menu-suspenso a {
             color: #e5e7eb;
             padding: 8px 16px;
             display: block;
             transition: background 0.3s ease;
         }
-        .dropdown-menu a:hover { background: rgba(30, 30, 30, 0.8); }
-        .dropdown-menu-mobile {
+        .menu-suspenso a:hover { background: rgba(30, 30, 30, 0.8); }
+        .menu-suspenso-mobile {
             background: rgba(30, 30, 30, 0.9);
             border-radius: 8px;
             margin-top: 4px;
             padding: 8px 0;
         }
-        .dropdown-menu-mobile a {
+        .menu-suspenso-mobile a {
             color: #e5e7eb;
             padding: 8px 16px;
             display: block;
@@ -124,17 +124,17 @@
         }
         @media (max-width: 768px) {
             h2 { font-size: 1.8rem; }
-            .neon-box { padding: 10px; }
+            .caixa-neon { padding: 10px; }
             .logo-img { height: 2rem; width: auto; object-fit: contain; }
             .logo-container { gap: 0.5rem; }
-            #mobile-menu { background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); }
-            #mobile-menu nav { space-y: 2; }
-            #mobile-menu a, #mobile-menu button { font-size: 1rem; }
+            #menu-mobile { background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); }
+            #menu-mobile nav { space-y: 2; }
+            #menu-mobile a, #menu-mobile button { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
+    <div id="particulas-js"></div>
 
     <!-- Cabeçalho -->
     <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
@@ -146,7 +146,7 @@
             </div>
             <div class="flex items-center space-x-3">
                 <div class="md:hidden">
-                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                    <button id="menu-hamburguer" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -164,7 +164,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="menu-suspenso">
                         <a href="/scanner.html" class="hover:text-[#22d3ee] transition fade-in">Scanner com IA</a>
                         <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition fade-in">Avaliação Emocional</a>
                         <a href="/medical-ia.html" class="hover:text-[#22d3ee] transition fade-in">Diagnóstico Médico</a>
@@ -175,19 +175,19 @@
                 <a href="/planos.html" class="hover:text-[#22d3ee] transition fade-in">Planos</a>
                 <a href="/suporte.html" class="hover:text-[#22d3ee] transition fade-in">Suporte</a>
                 <a href="/login.html" class="hover:text-[#22d3ee] transition fade-in">Login</a>
-                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
+                <a href="/criar-conta.html" class="botao-futurista text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
             </nav>
         </div>
-        <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+        <div id="menu-mobile" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
             <nav class="flex flex-col items-center space-y-2">
                 <div class="w-full">
-                    <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center slide-in-left" aria-label="Abrir menu de serviços">
+                    <button id="alternar-servicos" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center slide-in-left" aria-label="Abrir menu de serviços">
                         <span>Serviços</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div id="services-menu" class="dropdown-menu-mobile hidden">
+                    <div id="menu-servicos" class="menu-suspenso-mobile hidden">
                         <a href="/scanner.html" class="hover:bg-gray-700 slide-in-right">Scanner com IA</a>
                         <a href="/apoio-emocional.html" class="hover:bg-gray-700 slide-in-right">Avaliação Emocional</a>
                         <a href="/medical-ia.html" class="hover:bg-gray-700 slide-in-right">Diagnóstico Médico</a>
@@ -198,7 +198,7 @@
                 <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Planos</a>
                 <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Suporte</a>
                 <a href="/login.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
-                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center py-2">Criar Conta</a>
+                <a href="/criar-conta.html" class="botao-futurista text-white py-2 px-4 rounded-full text-lg w-full text-center bounce-in" aria-label="Criar conta">Criar Conta</a>
             </nav>
         </div>
     </header>
@@ -207,45 +207,45 @@
     <!-- Conteúdo Principal -->
     <section class="container mx-auto px-4 py-16 text-center">
         <h1 class="text-4xl font-bold text-white mb-4 fade-in">Meditação Guiada para Relaxamento</h1>
-        <p class="text-lg text-gray-600 mb-8 fade-in">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe com música calmante.</p>
+        <p class="text-lg text-gray-300 mb-8 fade-in">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe com música calmante.</p>
 
         <!-- Meditação para Estresse -->
-        <div class="neon-box mt-8 fade-in" id="stress-meditation">
+        <div class="caixa-neon mt-8 fade-in" id="meditacao-estresse">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Estresse</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para estresse">
-                <source src="assets/audio/stress-meditation.mp3" type="audio/mpeg">
+                <source src="assets/audio/meditacao-estresse.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Sente-se confortavelmente ou deite-se. Feche os olhos suavemente. Coloque uma mão no peito e outra no abdômen. Inspire pelo nariz por 4 segundos, sentindo o abdômen subir. Segure por 4 segundos. Expire lentamente por 6 segundos, liberando a tensão. Repita por 5 minutos, deixando pensamentos fluírem sem julgamento.
             </p>
-            <button class="futuristic-btn" id="bg-music-stress" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="botao-futurista" id="musica-fundo-estresse" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Meditação para Raiva -->
-        <div class="neon-box mt-8 fade-in" id="anger-meditation">
+        <div class="caixa-neon mt-8 fade-in" id="meditacao-raiva">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Raiva</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para raiva">
-                <source src="assets/audio/anger-meditation.mp3" type="audio/mpeg">
+                <source src="assets/audio/meditacao-raiva.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Encontre um lugar tranquilo e sente-se com a coluna ereta. Feche os olhos. Observe a raiva no seu corpo: onde ela está? No peito? Nos ombros? Inspire por 4 segundos, trazendo calma. Expire por 8 segundos, visualizando a raiva se dissolvendo como fumaça. Repita por 10 minutos, focando na suavidade da respiração.
             </p>
-            <button class="futuristic-btn" id="bg-music-anger" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="botao-futurista" id="musica-fundo-raiva" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Meditação para Nervosismo -->
-        <div class="neon-box mt-8 fade-in" id="nervousness-meditation">
+        <div class="caixa-neon mt-8 fade-in" id="meditacao-nervosismo">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Nervosismo</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para nervosismo">
-                <source src="assets/audio/nervousness-meditation.mp3" type="audio/mpeg">
+                <source src="assets/audio/meditacao-nervosismo.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Deite-se ou sente-se em um lugar calmo. Feche os olhos e relaxe os ombros. Comece escaneando o corpo: observe a testa, o pescoço, os braços. Inspire por 4 segundos, trazendo paz. Expire por 6 segundos, liberando inquietação. Repita por 7 minutos, movendo a atenção dos pés à cabeça.
             </p>
-            <button class="futuristic-btn" id="bg-music-nervousness" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="botao-futurista" id="musica-fundo-nervosismo" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Recursos Adicionais -->
@@ -256,8 +256,8 @@
         </div>
 
         <!-- Música de Fundo -->
-        <audio id="background-music" loop preload="auto">
-            <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+        <audio id="musica-de-fundo" loop preload="auto">
+            <source src="assets/audio/musica-de-fundo.mp3" type="audio/mpeg">
             Seu navegador não suporta áudio.
         </audio>
     </section>
@@ -300,7 +300,7 @@
 
     <script>
         // Inicializar particles.js
-        particlesJS('particles-js', {
+        particlesJS('particulas-js', {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
                 color: { value: '#22d3ee' },
@@ -320,117 +320,117 @@
         // Gerenciar navegação e áudio
         document.addEventListener('DOMContentLoaded', () => {
             // Navegação mobile
-            const hamburgerMenu = document.getElementById('hamburger-menu');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const servicesToggle = document.getElementById('services-toggle');
-            const servicesMenu = document.getElementById('services-menu');
+            const menuHamburguer = document.getElementById('menu-hamburguer');
+            const menuMobile = document.getElementById('menu-mobile');
+            const alternarServicos = document.getElementById('alternar-servicos');
+            const menuServicos = document.getElementById('menu-servicos');
 
-            if (hamburgerMenu && mobileMenu) {
-                hamburgerMenu.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            if (menuHamburguer && menuMobile) {
+                menuHamburguer.addEventListener('click', () => {
+                    menuMobile.classList.toggle('hidden');
                 });
             }
 
-            if (servicesToggle && servicesMenu) {
-                servicesToggle.addEventListener('click', () => {
-                    servicesMenu.classList.toggle('hidden');
+            if (alternarServicos && menuServicos) {
+                alternarServicos.addEventListener('click', () => {
+                    menuServicos.classList.toggle('hidden');
                 });
             }
 
             // Gerenciar áudio
-            const bgMusic = document.getElementById('background-music');
-            const meditationAudios = document.querySelectorAll('audio:not(#background-music)');
-            const bgMusicButtons = document.querySelectorAll('[id^=bg-music-]');
+            const musicaFundo = document.getElementById('musica-de-fundo');
+            const audiosMeditacao = document.querySelectorAll('audio:not(#musica-de-fundo)');
+            const botoesMusicaFundo = document.querySelectorAll('[id^=musica-fundo-]');
 
             // Inicializar volume e garantir que música de fundo não toque automaticamente
-            bgMusic.volume = 1.0;
-            bgMusic.pause();
-            bgMusic.currentTime = 0;
+            musicaFundo.volume = 1.0;
+            musicaFundo.pause();
+            musicaFundo.currentTime = 0;
 
             // Função para fade-out
-            function fadeOut(audio, duration = 1500) {
+            function fadeOut(audio, duracao = 1500) {
                 if (audio.paused) return Promise.resolve();
                 return new Promise(resolve => {
-                    const initialVolume = audio.volume;
-                    const steps = 20;
-                    const interval = duration / steps;
-                    let currentStep = 0;
+                    const volumeInicial = audio.volume;
+                    const passos = 20;
+                    const intervalo = duracao / passos;
+                    let passoAtual = 0;
 
-                    const fadeInterval = setInterval(() => {
-                        currentStep++;
-                        audio.volume = initialVolume * (1 - currentStep / steps);
-                        if (currentStep >= steps) {
-                            clearInterval(fadeInterval);
+                    const intervaloFade = setInterval(() => {
+                        passoAtual++;
+                        audio.volume = volumeInicial * (1 - passoAtual / passos);
+                        if (passoAtual >= passos) {
+                            clearInterval(intervaloFade);
                             audio.pause();
                             audio.currentTime = 0;
-                            audio.volume = initialVolume;
+                            audio.volume = volumeInicial;
                             resolve();
                         }
-                    }, interval);
+                    }, intervalo);
                 });
             }
 
             // Pausar música de fundo com fade-out quando uma meditação toca
-            meditationAudios.forEach(audio => {
+            audiosMeditacao.forEach(audio => {
                 audio.addEventListener('play', async () => {
-                    if (!bgMusic.paused) {
-                        await fadeOut(bgMusic);
-                        bgMusicButtons.forEach(btn => {
-                            btn.textContent = '🎶 Ativar Música de Fundo';
+                    if (!musicaFundo.paused) {
+                        await fadeOut(musicaFundo);
+                        botoesMusicaFundo.forEach(botao => {
+                            botao.textContent = '🎶 Ativar Música de Fundo';
                         });
                     }
                 });
             });
 
             // Gerenciar botões de música de fundo
-            bgMusicButtons.forEach(button => {
-                button.addEventListener('click', async () => {
-                    if (bgMusic.paused) {
+            botoesMusicaFundo.forEach(botao => {
+                botao.addEventListener('click', async () => {
+                    if (musicaFundo.paused) {
                         // Pausar todas as meditações antes de tocar música de fundo
-                        for (const audio of meditationAudios) {
+                        for (const audio of audiosMeditacao) {
                             if (!audio.paused) {
                                 audio.pause();
                                 audio.currentTime = 0;
                             }
                         }
-                        bgMusic.volume = 1.0; // Restaurar volume
-                        bgMusic.play();
-                        button.textContent = '🔇 Desativar Música de Fundo';
+                        musicaFundo.volume = 1.0; // Restaurar volume
+                        musicaFundo.play();
+                        botao.textContent = '🔇 Desativar Música de Fundo';
                     } else {
-                        await fadeOut(bgMusic);
-                        button.textContent = '🎶 Ativar Música de Fundo';
+                        await fadeOut(musicaFundo);
+                        botao.textContent = '🎶 Ativar Música de Fundo';
                     }
                 });
             });
 
-            // Destacar meditação baseada em query parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            const emotion = urlParams.get('emotion');
-            const meditationMap = {
-                'anger': 'anger-meditation',
-                'sadness': 'stress-meditation',
-                'fear': 'nervousness-meditation'
+            // Destacar meditação baseada em parâmetro de query
+            const paramsUrl = new URLSearchParams(window.location.search);
+            const emocao = paramsUrl.get('emocao');
+            const mapaMeditacao = {
+                'raiva': 'meditacao-raiva',
+                'tristeza': 'meditacao-estresse',
+                'medo': 'meditacao-nervosismo'
             };
-            if (emotion && meditationMap[emotion]) {
-                const section = document.getElementById(meditationMap[emotion]);
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                    section.classList.add('pulse');
+            if (emocao && mapaMeditacao[emocao]) {
+                const secao = document.getElementById(mapaMeditacao[emocao]);
+                if (secao) {
+                    secao.scrollIntoView({ behavior: 'smooth' });
+                    secao.classList.add('pulse');
                 }
             }
 
             // Efeito ripple nos botões
-            const buttons = document.querySelectorAll('.futuristic-btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', (e) => {
+            const botoes = document.querySelectorAll('.botao-futurista');
+            botoes.forEach(botao => {
+                botao.addEventListener('click', (e) => {
                     const ripple = document.createElement('span');
                     ripple.classList.add('ripple');
-                    const rect = button.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    ripple.style.width = ripple.style.height = `${size}px`;
-                    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
-                    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
-                    button.appendChild(ripple);
+                    const rect = botao.getBoundingClientRect();
+                    const tamanho = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = `${tamanho}px`;
+                    ripple.style.left = `${e.clientX - rect.left - tamanho / 2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - tamanho / 2}px`;
+                    botao.appendChild(ripple);
                     ripple.addEventListener('animationend', () => ripple.remove());
                 });
             });
