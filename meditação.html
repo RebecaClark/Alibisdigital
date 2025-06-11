@@ -7,7 +7,7 @@
     <meta name="keywords" content="meditação guiada, relaxamento, bem-estar, saúde mental">
     <meta name="author" content="Álibis Digital">
     <title>Meditação Guiada - Álibis Digital</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/dist/output.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
@@ -141,7 +141,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center logo-container space-x-3">
                 <a href="/scanner.html">
-                    <img src="https://via.placeholder.com/150x50" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
+                    <img src="assets/images/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
                 </a>
             </div>
             <div class="flex items-center space-x-3">
@@ -376,7 +376,7 @@
                     if (!musicaFundo.paused) {
                         await fadeOut(musicaFundo);
                         botoesMusicaFundo.forEach(botao => {
-                            botao.textContent = '🎶 Ativar Música de Fundo';
+                            botao.textContent = '🎶 Ativar Música';
                         });
                     }
                 });
@@ -386,7 +386,7 @@
             botoesMusicaFundo.forEach(botao => {
                 botao.addEventListener('click', async () => {
                     if (musicaFundo.paused) {
-                        // Pausar todas as meditações antes de tocar música de fundo
+                        // Pausar todas as meditações antes de tocar música
                         for (const audio of audiosMeditacao) {
                             if (!audio.paused) {
                                 audio.pause();
@@ -395,15 +395,15 @@
                         }
                         musicaFundo.volume = 1.0; // Restaurar volume
                         musicaFundo.play();
-                        botao.textContent = '🔇 Desativar Música de Fundo';
+                        botao.textContent = '🔇 Desativar Música';
                     } else {
                         await fadeOut(musicaFundo);
-                        botao.textContent = '🎶 Ativar Música de Fundo';
+                        botao.textContent = '🎶 Ativar Música';
                     }
                 });
             });
 
-            // Destacar meditação baseada em parâmetro de query
+            // Destacar meditação baseada em parâmetro
             const paramsUrl = new URLSearchParams(window.location.search);
             const emocao = paramsUrl.get('emocao');
             const mapaMeditacao = {
@@ -427,9 +427,9 @@
                     ripple.classList.add('ripple');
                     const rect = botao.getBoundingClientRect();
                     const tamanho = Math.max(rect.width, rect.height);
-                    ripple.style.width = ripple.style.height = `${tamanho}px`;
-                    ripple.style.left = `${e.clientX - rect.left - tamanho / 2}px`;
-                    ripple.style.top = `${e.clientY - rect.top - tamanho / 2}px`;
+                    ripple.style.width = ripple.style.height = '${tamanho}px';
+                    ripple.style.left = '${e.clientX - rect.left - tamanho / 2}px';
+                    ripple.style.top = '${e.clientY - rect.top - tamanho / 2}px';
                     botao.appendChild(ripple);
                     ripple.addEventListener('animationend', () => ripple.remove());
                 });
