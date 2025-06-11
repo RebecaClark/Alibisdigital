@@ -204,7 +204,7 @@
     </header>
     <div class="h-20"></div>
 
- <!-- Conteúdo Principal -->
+    <!-- Conteúdo Principal -->
     <section class="container mx-auto px-4 py-16 text-center">
         <h1 class="text-4xl font-bold text-white mb-4">Meditação Guiada para Relaxamento</h1>
         <p class="text-lg text-gray-300 mb-8">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe.</p>
@@ -308,7 +308,7 @@
             }
         });
 
-        // Gerenciar navegação e áudio
+        // Gerenciar navegação e redirecionamento
         document.addEventListener('DOMContentLoaded', () => {
             // Navegação mobile
             const menuHamburguer = document.getElementById('menu-hamburguer');
@@ -327,72 +327,6 @@
                     menuServicos.classList.toggle('hidden');
                 });
             }
-
-            // Gerenciar áudio
-            const musicaFundo = document.getElementById('musica-de-fundo');
-            const audiosMeditacao = document.querySelectorAll('audio:not(#musica-de-fundo)');
-            const botoesMusicaFundo = document.querySelectorAll('[id^=musica-fundo-]');
-
-            // Inicializar volume e garantir que música de fundo não toque automaticamente
-            musicaFundo.volume = 1.0;
-            musicaFundo.pause();
-            musicaFundo.currentTime = 0;
-
-            // Função para fade-out
-            function fadeOut(audio, duracao = 1500) {
-                if (audio.paused) return Promise.resolve();
-                return new Promise(resolve => {
-                    const volumeInicial = audio.volume;
-                    const passos = 20;
-                    const intervalo = duracao / passos;
-                    let passoAtual = 0;
-
-                    const intervaloFade = setInterval(() => {
-                        passoAtual++;
-                        audio.volume = volumeInicial * (1 - passoAtual / passos);
-                        if (passoAtual >= passos) {
-                            clearInterval(intervaloFade);
-                            audio.pause();
-                            audio.currentTime = 0;
-                            audio.volume = volumeInicial;
-                            resolve();
-                        }
-                    }, intervalo);
-                });
-            }
-
-            // Pausar música de fundo com fade-out quando uma meditação toca
-            audiosMeditacao.forEach(audio => {
-                audio.addEventListener('play', async () => {
-                    if (!musicaFundo.paused) {
-                        await fadeOut(musicaFundo);
-                        botoesMusicaFundo.forEach(botao => {
-                            botao.textContent = '🎶 Ativar Música de Fundo';
-                        });
-                    }
-                });
-            });
-
-            // Gerenciar botões de música de fundo
-            botoesMusicaFundo.forEach(botao => {
-                botao.addEventListener('click', async () => {
-                    if (musicaFundo.paused) {
-                        // Pausar todas as meditações antes de tocar música de fundo
-                        for (const audio of audiosMeditacao) {
-                            if (!audio.paused) {
-                                audio.pause();
-                                audio.currentTime = 0;
-                            }
-                        }
-                        musicaFundo.volume = 1.0; // Restaurar volume
-                        musicaFundo.play();
-                        botao.textContent = '🔇 Desativar Música de Fundo';
-                    } else {
-                        await fadeOut(musicaFundo);
-                        botao.textContent = '🎶 Ativar Música de Fundo';
-                    }
-                });
-            });
 
             // Destacar meditação baseada em parâmetro de query
             const paramsUrl = new URLSearchParams(window.location.search);
