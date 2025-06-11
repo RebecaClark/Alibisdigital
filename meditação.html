@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Meditação Guiada com IA da Álibis Digital para relaxamento e bem-estar.">
+    <meta name="keywords" content="meditação guiada, relaxamento, bem-estar, saúde mental">
+    <meta name="author" content="Álibis Digital">
+    <title>Meditação Guiada - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            color: #e5e7eb;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+        }
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .bounce-in { animation: bounceIn 0.8s ease-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        .holo-nav { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); animation: holoGlow 2s infinite alternate; }
+        @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
+        .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
+        .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
+        .futuristic-btn {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+            overflow: hidden;
+        }
+        .futuristic-btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: lightSweep 3s infinite linear;
+        }
+        .futuristic-btn:hover {
+            transform: translateY(-3px) rotate(2deg);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee;
+            background: linear-gradient(45deg, #6D28D9, #06B6D4);
+        }
+        .futuristic-btn:active { transform: scale(0.95); }
+        .futuristic-btn:disabled { background: linear-gradient(45deg, #4B5563, #6B7280); box-shadow: none; opacity: 0.6; cursor: not-allowed; animation: none; }
+        .futuristic-btn .ripple { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+        @keyframes neonPulse { 0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; } 100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; } }
+        @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        .neon-box {
+            background: linear-gradient(45deg, #0a1f2e, #00ccff);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            min-width: 160px;
+            z-index: 10;
+            flex-direction: column;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        .dropdown-menu a:hover { background: rgba(30, 30, 30, 0.8); }
+        .dropdown-menu-mobile {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            margin-top: 4px;
+            padding: 8px 0;
+        }
+        .dropdown-menu-mobile a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            .neon-box { padding: 10px; }
+            .logo-img { height: 2rem; width: auto; object-fit: contain; }
+            .logo-container { gap: 0.5rem; }
+            #mobile-menu { background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px); }
+            #mobile-menu nav { space-y: 2; }
+            #mobile-menu a, #mobile-menu button { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <!-- Cabeçalho -->
+    <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center logo-container space-x-3">
+                <a href="/scanner.html">
+                    <img src="https://via.placeholder.com/150x50" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
+                </a>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="md:hidden">
+                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+                <div class="dropdown relative">
+                    <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                        <span>Serviços</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/scanner.html" class="hover:text-[#22d3ee] transition fade-in">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition fade-in">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:text-[#22d3ee] transition fade-in">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:text-[#22d3ee] transition fade-in">Criar Álibi</a>
+                    </div>
+                </div>
+                <a href="/blog.html" class="hover:text-[#22d3ee] transition fade-in">Blog</a>
+                <a href="/planos.html" class="hover:text-[#22d3ee] transition fade-in">Planos</a>
+                <a href="/suporte.html" class="hover:text-[#22d3ee] transition fade-in">Suporte</a>
+                <a href="/login.html" class="hover:text-[#22d3ee] transition fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
+            </nav>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+            <nav class="flex flex-col items-center space-y-2">
+                <div class="w-full">
+                    <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center slide-in-left" aria-label="Abrir menu de serviços">
+                        <span>Serviços</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="services-menu" class="dropdown-menu-mobile hidden">
+                        <a href="/scanner.html" class="hover:bg-gray-700 slide-in-right">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:bg-gray-700 slide-in-right">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:bg-gray-700 slide-in-right">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:bg-gray-700 slide-in-right">Criar Álibi</a>
+                    </div>
+                </div>
+                <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Blog</a>
+                <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Planos</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Suporte</a>
+                <a href="/login.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center py-2">Criar Conta</a>
+            </nav>
+        </div>
+    </header>
+    <div class="h-20"></div>
+
+    <!-- Conteúdo Principal -->
+    <section class="container mx-auto px-4 py-16 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4 fade-in">Meditação Guiada para Relaxamento</h1>
+        <p class="text-lg text-gray-600 mb-8 fade-in">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe com música calmante.</p>
+
+        <!-- Meditação para Estresse -->
+        <div class="neon-box mt-8 fade-in" id="stress-meditation">
+            <h2 class="text-2xl font-semibold text-white mb-4">Para Estresse</h2>
+            <audio controls class="w-full mb-4" aria-label="Meditação guiada para estresse">
+                <source src="assets/audio/stress-meditation.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+            <p class="text-gray-300 mb-4">
+                Sente-se confortavelmente ou deite-se. Feche os olhos suavemente. Coloque uma mão no peito e outra no abdômen. Inspire pelo nariz por 4 segundos, sentindo o abdômen subir. Segure por 4 segundos. Expire lentamente por 6 segundos, liberando a tensão. Repita por 5 minutos, deixando pensamentos fluírem sem julgamento.
+            </p>
+            <button class="futuristic-btn" id="bg-music-stress" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+        </div>
+
+        <!-- Meditação para Raiva -->
+        <div class="neon-box mt-8 fade-in" id="anger-meditation">
+            <h2 class="text-2xl font-semibold text-white mb-4">Para Raiva</h2>
+            <audio controls class="w-full mb-4" aria-label="Meditação guiada para raiva">
+                <source src="assets/audio/anger-meditation.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+            <p class="text-gray-300 mb-4">
+                Encontre um lugar tranquilo e sente-se com a coluna ereta. Feche os olhos. Observe a raiva no seu corpo: onde ela está? No peito? Nos ombros? Inspire por 4 segundos, trazendo calma. Expire por 8 segundos, visualizando a raiva se dissolvendo como fumaça. Repita por 10 minutos, focando na suavidade da respiração.
+            </p>
+            <button class="futuristic-btn" id="bg-music-anger" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+        </div>
+
+        <!-- Meditação para Nervosismo -->
+        <div class="neon-box mt-8 fade-in" id="nervousness-meditation">
+            <h2 class="text-2xl font-semibold text-white mb-4">Para Nervosismo</h2>
+            <audio controls class="w-full mb-4" aria-label="Meditação guiada para nervosismo">
+                <source src="assets/audio/nervousness-meditation.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
+            <p class="text-gray-300 mb-4">
+                Deite-se ou sente-se em um lugar calmo. Feche os olhos e relaxe os ombros. Comece escaneando o corpo: observe a testa, o pescoço, os braços. Inspire por 4 segundos, trazendo paz. Expire por 6 segundos, liberando inquietação. Repita por 7 minutos, movendo a atenção dos pés à cabeça.
+            </p>
+            <button class="futuristic-btn" id="bg-music-nervousness" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+        </div>
+
+        <!-- Recursos Adicionais -->
+        <div class="mt-8 max-w-2xl mx-auto fade-in">
+            <h3 class="text-xl font-semibold text-white mb-4">Recursos Adicionais</h3>
+            <p class="text-gray-300">Quer aprender mais sobre como gerenciar suas emoções?</p>
+            <a href="https://www.mind.org.uk/information-support/types-of-mental-health-problems/anger/managing-anger/" class="text-[#22d3ee] hover:underline" target="_blank" rel="noopener">Leia sobre gestão de raiva no Mind</a>
+        </div>
+
+        <!-- Música de Fundo -->
+        <audio id="background-music" loop preload="auto">
+            <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        </audio>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-[rgba(0,0,0,0.8)] text-gray-400 py-8">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-white font-semibold mb-2">Álibis Digitais</h3>
+                <p>Soluções de bem-estar com tecnologia avançada.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-2">Navegue</h4>
+                <ul class="space-y-1">
+                    <li><a href="scanner.html" class="hover:text-white">Início</a></li>
+                    <li><a href="scanner.html" class="hover:text-white">Scanner</a></li>
+                    <li><a href="blog.html" class="hover:text-white">Blog</a></li>
+                    <li><a href="medical-ia.html" class="hover:text-white">Diagnósticos Médicos</a></li>
+                    <li><a href="apoio-emocional.html" class="hover:text-white">Apoio Emocional</a></li>
+                    <li><a href="alibi.html" class="hover:text-white">Criar Álibi</a></li>
+                    <li><a href="planos.html" class="hover:text-white">Planos</a></li>
+                    <li><a href="suporte.html" class="hover:text-white">Suporte</a></li>
+                    <li><a href="privacidade.html" class="hover:text-white">Privacidade</a></li>
+                    <li><a href="termos.html" class="hover:text-white">Termos</a></li>
+                    <li><a href="politicas.html" class="hover:text-white">Políticas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-2">Contato</h4>
+                <ul class="space-y-1">
+                    <li><a href="mailto:contato@alibisdigitais.com.br" class="hover:text-white">E-mail: contato@alibisdigitais.com.br</a></li>
+                    <li><a href="https://wa.me/5511912345678" class="hover:text-white">WhatsApp: (11) 91234-5678</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p class="text-sm">© 2025 Álibis Digitais. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#22d3ee' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 2, random: true },
+                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            }
+        });
+
+        // Gerenciar navegação e áudio
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navegação mobile
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const servicesToggle = document.getElementById('services-toggle');
+            const servicesMenu = document.getElementById('services-menu');
+
+            if (hamburgerMenu && mobileMenu) {
+                hamburgerMenu.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            if (servicesToggle && servicesMenu) {
+                servicesToggle.addEventListener('click', () => {
+                    servicesMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Gerenciar áudio
+            const bgMusic = document.getElementById('background-music');
+            const meditationAudios = document.querySelectorAll('audio:not(#background-music)');
+            const bgMusicButtons = document.querySelectorAll('[id^=bg-music-]');
+
+            // Inicializar volume e garantir que música de fundo não toque automaticamente
+            bgMusic.volume = 1.0;
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+
+            // Função para fade-out
+            function fadeOut(audio, duration = 1500) {
+                if (audio.paused) return Promise.resolve();
+                return new Promise(resolve => {
+                    const initialVolume = audio.volume;
+                    const steps = 20;
+                    const interval = duration / steps;
+                    let currentStep = 0;
+
+                    const fadeInterval = setInterval(() => {
+                        currentStep++;
+                        audio.volume = initialVolume * (1 - currentStep / steps);
+                        if (currentStep >= steps) {
+                            clearInterval(fadeInterval);
+                            audio.pause();
+                            audio.currentTime = 0;
+                            audio.volume = initialVolume;
+                            resolve();
+                        }
+                    }, interval);
+                });
+            }
+
+            // Pausar música de fundo com fade-out quando uma meditação toca
+            meditationAudios.forEach(audio => {
+                audio.addEventListener('play', async () => {
+                    if (!bgMusic.paused) {
+                        await fadeOut(bgMusic);
+                        bgMusicButtons.forEach(btn => {
+                            btn.textContent = '🎶 Ativar Música de Fundo';
+                        });
+                    }
+                });
+            });
+
+            // Gerenciar botões de música de fundo
+            bgMusicButtons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    if (bgMusic.paused) {
+                        // Pausar todas as meditações antes de tocar música de fundo
+                        for (const audio of meditationAudios) {
+                            if (!audio.paused) {
+                                audio.pause();
+                                audio.currentTime = 0;
+                            }
+                        }
+                        bgMusic.volume = 1.0; // Restaurar volume
+                        bgMusic.play();
+                        button.textContent = '🔇 Desativar Música de Fundo';
+                    } else {
+                        await fadeOut(bgMusic);
+                        button.textContent = '🎶 Ativar Música de Fundo';
+                    }
+                });
+            });
+
+            // Destacar meditação baseada em query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const emotion = urlParams.get('emotion');
+            const meditationMap = {
+                'anger': 'anger-meditation',
+                'sadness': 'stress-meditation',
+                'fear': 'nervousness-meditation'
+            };
+            if (emotion && meditationMap[emotion]) {
+                const section = document.getElementById(meditationMap[emotion]);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    section.classList.add('pulse');
+                }
+            }
+
+            // Efeito ripple nos botões
+            const buttons = document.querySelectorAll('.futuristic-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    const rect = button.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+                    button.appendChild(ripple);
+                    ripple.addEventListener('animationend', () => ripple.remove());
+                });
+            });
+        });
+    </script>
+</body>
+</html>
