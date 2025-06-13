@@ -19,7 +19,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            background: #1e3a8a url('https://via.placeholder.com/1920x1080?text=Ambiente+RV') no-repeat center center/cover;
+            background: #1e3a8a;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -34,21 +34,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        #vr-overlay.active {
-            opacity: 1;
+            opacity: 1; /* Garante que o conteúdo seja visível */
         }
         .neon-text {
             font-size: 3rem;
             font-weight: bold;
             text-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee;
-            animation: neonBlink 1.5s infinite alternate;
-        }
-        @keyframes neonBlink {
-            from { text-shadow: 0 0 10px #22d3ee; }
-            to { text-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
         }
         .futuristic-btn {
             background: #22d3ee;
@@ -58,31 +49,15 @@
             border-radius: 10px;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-        }
-        .futuristic-btn:hover {
-            background: #06b6d4;
-            transform: scale(1.1);
-        }
-        .fade-in {
-            animation: fadeIn 1s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @media (max-width: 768px) {
-            .neon-text { font-size: 2rem; }
-            .futuristic-btn { padding: 10px 20px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
     <div id="vr-container">
         <div id="vr-overlay">
-            <h1 class="neon-text fade-in">Bem-vindo à Realidade Virtual</h1>
-            <p class="text-gray-300 mt-4 fade-in">Explore um mundo imersivo de bem-estar e autocuidado.</p>
-            <button id="enterVrBtn" class="futuristic-btn mt-6 fade-in" aria-label="Entrar na Experiência RV">🌌 Entrar na Experiência</button>
+            <h1 class="neon-text">Bem-vindo à Realidade Virtual</h1>
+            <p>Explore um mundo imersivo de bem-estar e autocuidado.</p>
+            <button id="enterVrBtn" class="futuristic-btn">🌌 Entrar na Experiência</button>
         </div>
     </div>
 
@@ -91,14 +66,10 @@
         const enterVrBtn = document.getElementById('enterVrBtn');
 
         if (!vrOverlay || !enterVrBtn) {
-            console.error('Elementos não encontrados:', { vrOverlay, enterVrBtn });
+            console.error('Elementos não encontrados!');
         } else {
             enterVrBtn.addEventListener('click', () => {
-                vrOverlay.classList.add('active');
-                setTimeout(() => {
-                    alert('Experiência RV iniciada! (Mock - Em breve, uma imersão real com WebXR)');
-                    vrOverlay.classList.remove('active');
-                }, 2000);
+                alert('Experiência RV iniciada! (Em breve, uma imersão real)');
             });
         }
     </script>
