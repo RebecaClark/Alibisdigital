@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realidade Virtual</title>
+    <title>Realidade Virtual - Álibis Digitais</title>
     <style>
         body {
             margin: 0;
@@ -81,9 +81,14 @@
         const vrOverlay = document.getElementById('vr-overlay');
         const enterVrBtn = document.getElementById('enterVrBtn');
 
-        enterVrBtn.addEventListener('click', () => {
-            vrOverlay.classList.add('active');
-        });
+        if (!vrOverlay || !enterVrBtn) {
+            console.error('Elementos não encontrados:', { vrOverlay, enterVrBtn });
+        } else {
+            enterVrBtn.addEventListener('click', () => {
+                vrOverlay.classList.add('active');
+                console.log('Botão clicado, overlay ativado');
+            });
+        }
     </script>
 </body>
 </html>
