@@ -3,97 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realidade Virtual - Álibis Digitais</title>
+    <title>Relaxamento RV</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            color: #fff;
             overflow: hidden;
-            background: linear-gradient(135deg, #0a192f, #1e3a8a);
+            background: #000;
         }
-        #vr-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+        #vr-canvas {
+            width: 100vw;
+            height: 100vh;
+        }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
+            gap: 10px;
         }
-        #vr-overlay {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: 2; /* Garante que fique acima do botão */
-        }
-        #vr-overlay.active {
-            opacity: 1;
-        }
-        .neon-text {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee;
-            animation: neonBlink 1.5s infinite alternate;
-        }
-        @keyframes neonBlink {
-            from { text-shadow: 0 0 10px #22d3ee; }
-            to { text-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
-        }
-        .futuristic-btn {
+        .controls button {
+            padding: 10px 20px;
             background: #22d3ee;
             color: #0a192f;
-            padding: 15px 30px;
             border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
+            border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-            z-index: 3; /* Garante que o botão fique acima do overlay */
         }
-        .futuristic-btn:hover {
+        .controls button:hover {
             background: #06b6d4;
-            transform: scale(1.1);
-        }
-        @media (max-width: 768px) {
-            .neon-text { font-size: 2rem; }
-            .futuristic-btn { padding: 10px 20px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
-    <div id="vr-container">
-        <button id="enterVrBtn" class="futuristic-btn">Iniciar RV</button>
-        <div id="vr-overlay">
-            <h1 class="neon-text">Experiência RV Iniciada</h1>
-            <p>Imersão em ambiente virtual ativada.</p>
-        </div>
+    <canvas id="vr-canvas"></canvas>
+    <div class="controls">
+        <button id="playPauseBtn">Pausar</button>
+        <button id="changeSceneBtn">Trocar Cena</button>
     </div>
-
+    <audio id="bg-music" loop>
+        <source src="assets/relaxamento.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script>
-        const vrOverlay = document.getElementById('vr-overlay');
-        const enterVrBtn = document.getElementById('enterVrBtn');
-
-        if (enterVrBtn && vrOverlay) {
-            enterVrBtn.addEventListener('click', () => {
-                vrOverlay.classList.add('active');
-                console.log('Botão clicado, overlay ativado');
-            });
-        } else {
-            console.error('Elementos não encontrados:', { enterVrBtn, vrOverlay });
-        }
+        // Código JavaScript vem aqui
     </script>
 </body>
 </html>
