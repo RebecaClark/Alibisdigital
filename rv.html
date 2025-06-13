@@ -5,71 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Realidade Virtual - Álibis Digitais</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            color: #fff;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0a192f, #1e3a8a);
-        }
-        #vr-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: #1e3a8a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        #vr-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 1; /* Garante que o conteúdo seja visível */
-        }
-        .neon-text {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee;
-        }
-        .futuristic-btn {
-            background: #22d3ee;
-            color: #0a192f;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
+        body { margin: 0; padding: 0; font-family: Arial; color: #fff; overflow: hidden; background: linear-gradient(135deg, #0a192f, #1e3a8a); }
+        #vr-container { position: fixed; width: 100%; height: 100%; top: 0; left: 0; display: flex; justify-content: center; align-items: center; }
+        #vr-overlay { position: absolute; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s; }
+        #vr-overlay.active { opacity: 1; }
+        .neon-text { font-size: 3rem; font-weight: bold; text-shadow: 0 0 10px #22d3ee; }
+        .futuristic-btn { background: #22d3ee; color: #0a192f; padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.2rem; cursor: pointer; }
+        .futuristic-btn:hover { background: #06b6d4; transform: scale(1.1); }
+        @media (max-width: 768px) { .neon-text { font-size: 2rem; } .futuristic-btn { padding: 10px 20px; font-size: 1rem; } }
     </style>
 </head>
 <body>
     <div id="vr-container">
         <div id="vr-overlay">
-            <h1 class="neon-text">Bem-vindo à Realidade Virtual</h1>
-            <p>Explore um mundo imersivo de bem-estar e autocuidado.</p>
-            <button id="enterVrBtn" class="futuristic-btn">🌌 Entrar na Experiência</button>
+            <h1 class="neon-text">Relaxamento com RV</h1>
+            <p>Iniciando experiência imersiva para estresse...</p>
+            <audio id="bg-music" loop autoplay style="display:none;">
+                <source src="assets/audio/meditacao-estresse.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio.
+            </audio>
         </div>
+        <button id="enterVrBtn" class="futuristic-btn">Iniciar RV</button>
     </div>
-
     <script>
         const vrOverlay = document.getElementById('vr-overlay');
         const enterVrBtn = document.getElementById('enterVrBtn');
+        const bgMusic = document.getElementById('bg-music');
 
-        if (!vrOverlay || !enterVrBtn) {
-            console.error('Elementos não encontrados!');
-        } else {
+        if (enterVrBtn) {
             enterVrBtn.addEventListener('click', () => {
-                alert('Experiência RV iniciada! (Em breve, uma imersão real)');
+                vrOverlay.classList.add('active');
+                if (bgMusic) bgMusic.play().catch(e => console.error('Erro ao tocar áudio:', e));
             });
         }
     </script>
