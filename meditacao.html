@@ -7,7 +7,7 @@
     <meta name="keywords" content="meditação guiada, relaxamento, bem-estar, saúde mental">
     <meta name="author" content="Álibis Digital">
     <title>Meditação Guiada - Álibis Digital</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="dist/output.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
@@ -141,7 +141,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center logo-container space-x-3">
                 <a href="/scanner.html">
-                    <img src="https://via.placeholder.com/150x50" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
+                    <img src="alibisdigital_htmls/assets/images/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
                 </a>
             </div>
             <div class="flex items-center space-x-3">
@@ -207,42 +207,45 @@
     <!-- Conteúdo Principal -->
     <section class="container mx-auto px-4 py-16 text-center">
         <h1 class="text-4xl font-bold text-white mb-4">Meditação Guiada para Relaxamento</h1>
-        <p class="text-lg text-gray-300 mb-8">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe.</p>
+        <p class="text-lg text-gray-300 mb-8">Escolha uma meditação para aliviar estresse, raiva ou nervosismo. Siga as instruções e relaxe com música calmante.</p>
 
         <!-- Meditação para Estresse -->
         <div class="caixa-neon mt-8" id="meditacao-estresse">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Estresse</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para estresse">
-                <source src="assets/audio/meditacao-estresse.mp3" type="audio/mpeg">
+                <source src="alibisdigital_htmls/assets/audio/meditacao-estresse.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Sente-se confortavelmente ou deite-se. Feche os olhos suavemente. Coloque uma mão no peito e outra no abdômen. Inspire pelo nariz por 4 segundos, sentindo o abdômen subir. Segure por 4 segundos. Expire lentamente por 6 segundos, liberando a tensão. Repita por 5 minutos, deixando pensamentos fluírem sem julgamento.
             </p>
+            <button class="botao-futurista mt-2" onclick="playBackgroundMusic('estresse')">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Meditação para Raiva -->
         <div class="caixa-neon mt-8" id="meditacao-raiva">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Raiva</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para raiva">
-                <source src="assets/audio/meditacao-raiva.mp3" type="audio/mpeg">
+                <source src="alibisdigital_htmls/assets/audio/meditacao-raiva.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Encontre um lugar tranquilo e sente-se com a coluna ereta. Feche os olhos. Observe a raiva no seu corpo: onde ela está? No peito? Nos ombros? Inspire por 4 segundos, trazendo calma. Expire por 8 segundos, visualizando a raiva se dissolvendo como fumaça. Repita por 10 minutos, focando na suavidade da respiração.
             </p>
+            <button class="botao-futurista mt-2" onclick="playBackgroundMusic('raiva')">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Meditação para Nervosismo -->
         <div class="caixa-neon mt-8" id="meditacao-nervosismo">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Nervosismo</h2>
             <audio controls class="w-full mb-4" aria-label="Meditação guiada para nervosismo">
-                <source src="assets/audio/meditacao-nervosismo.mp3" type="audio/mpeg">
+                <source src="alibisdigital_htmls/assets/audio/meditacao-nervosismo.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Deite-se ou sente-se em um lugar calmo. Feche os olhos e relaxe os ombros. Comece escaneando o corpo: observe a testa, o pescoço, os braços. Inspire por 4 segundos, trazendo paz. Expire por 6 segundos, liberando inquietação. Repita por 7 minutos, movendo a atenção dos pés à cabeça.
             </p>
+            <button class="botao-futurista mt-2" onclick="playBackgroundMusic('nervosismo')">🎶 Ativar Música de Fundo</button>
         </div>
 
         <!-- Recursos Adicionais -->
@@ -308,9 +311,17 @@
             }
         });
 
+        // Música de fundo
+        let backgroundAudio = null;
+        function playBackgroundMusic(type) {
+            if (backgroundAudio) backgroundAudio.pause();
+            backgroundAudio = new Audio(`alibisdigital_htmls/assets/audio/meditacao-${type}.mp3`);
+            backgroundAudio.loop = true;
+            backgroundAudio.play().catch(error => console.log("Erro ao tocar música:", error));
+        }
+
         // Gerenciar navegação e redirecionamento
         document.addEventListener('DOMContentLoaded', () => {
-            // Navegação mobile
             const menuHamburguer = document.getElementById('menu-hamburguer');
             const menuMobile = document.getElementById('menu-mobile');
             const alternarServicos = document.getElementById('alternar-servicos');
@@ -328,7 +339,6 @@
                 });
             }
 
-            // Destacar meditação baseada em parâmetro de query
             const paramsUrl = new URLSearchParams(window.location.search);
             const emocao = paramsUrl.get('emocao');
             const mapaMeditacao = {
@@ -344,7 +354,6 @@
                 }
             }
 
-            // Efeito ripple nos botões
             const botoes = document.querySelectorAll('.botao-futurista');
             botoes.forEach(botao => {
                 botao.addEventListener('click', (e) => {
