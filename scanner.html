@@ -631,39 +631,35 @@
                         diag.emotionalText[Math.floor(Math.random() * diag.emotionalText.length)]) : 
                     diag.emotionalText);
 
-            // Ajustar sugestão para subtipo, se aplicável
-            let suggestionText = typeof diag.suggestion === 'object' ? 
-                (facialData && facialData.exhausted ? diag.suggestion.cansaço : diag.suggestion.apatia) : 
-                diag.suggestion;
+  // Ajustar sugestão para subtipo, se aplicável
+let suggestionText = typeof diag.suggestion === 'object' ? 
+    (facialData && facialData.exhausted ? diag.suggestion.cansaço : diag.suggestion.apatia) : 
+    diag.suggestion;
 
-            const physicalText = diag.physicalText.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext);
+const physicalText = diag.physicalText.replace('${bpm}', bpm).replace('${bpmContext}', bpmContext);
 
-            resultDiv.innerHTML = `
-                <h3 class="text-lg font-semibold text-white mb-2">🧠 Como você tá se sentindo</h3>
-                <p class="fade-in text-white">${emotionalText} ${emotion === 'anger' ? voiceTone : ''}</p>
-                <h3 class="text-lg font-semibold text-white mt-4 mb-2">💓 O que teu corpo tá dizendo</h3>
-                <p class="fade-in text-white">${physicalText}</p>
-                <h3 class="text-lg font-semibold text-white mt-4 mb-2">🧘 O que fazer agora</h3>
-                <p class="fade-in text-gray-300">${suggestionText}</p>
-                <p class="fade-in text-gray-500 text-xs mt-2">Nota: Isso não substitui um médico, tá? É só um primeiro passo.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <button id="retryBtn" class="futuristic-btn" aria-label="Tentar Novamente">🔄 Tentar Novamente</button>
-                    <button id="breathingBtn" class="futuristic-btn" aria-label="Ouvir Respiração Guiada">🎧 Ouvir Respiração Guiada</button>
-                    <a href="${diag.link}" class="futuristic-btn" aria-label="Obter Apoio">🫂 Quero Mais Apoio</a>
-                </div>
-            `;
+resultDiv.innerHTML = `
+    <h3 class="text-lg font-semibold text-white mb-2">🧠 Como você tá se sentindo</h3>
+    <p class="fade-in text-white">${emotionalText} ${emotion === 'anger' ? voiceTone : ''}</p>
+    <h3 class="text-lg font-semibold text-white mt-4 mb-2">💓 O que teu corpo tá dizendo</h3>
+    <p class="fade-in text-white">${physicalText}</p>
+    <h3 class="text-lg font-semibold text-white mt-4 mb-2">🧘 O que fazer agora</h3>
+    <p class="fade-in text-gray-300">${suggestionText}</p>
+    <p class="fade-in text-gray-500 text-xs mt-2">Nota: Isso não substitui um médico, tá? É só um primeiro passo.</p>
+    <div class="mt-4 flex flex-wrap gap-2">
+        <button id="retryBtn" class="futuristic-btn" aria-label="Tentar Novamente">🔄 Tentar Novamente</button>
+        <a href="meditacao.html" class="futuristic-btn" aria-label="Ir para Meditação Guiada">🧘‍♀️ Meditação Guiada</a>
+        <a href="${diag.link}" class="futuristic-btn" aria-label="Obter Apoio">🫂 Quero Mais Apoio</a>
+    </div>
+`;
 
-            // Ação para "Tentar Novamente"
-            document.getElementById('retryBtn').addEventListener('click', () => startAnalysis());
+// Ação para "Tentar Novamente"
+document.getElementById('retryBtn').addEventListener('click', () => startAnalysis());
 
-            // Ação para "Ouvir Respiração Guiada" (mock)
-            document.getElementById('breathingBtn').addEventListener('click', () => {
-                speakDiagnosis('Vamos fazer uma respiração guiada. Inspire por 4 segundos, segure por 4, e solte por 4. Vamos lá?');
-                alert('Iniciando respiração guiada de 2 minutos... (mock)');
-            });
+// Remova a ação para "Ouvir Respiração Guiada" pois foi substituída pelo link
 
-            form.classList.remove('hidden');
-            speakDiagnosis(`${emotionalText} ${physicalText} ${suggestionText}`);
+form.classList.remove('hidden');
+speakDiagnosis(`${emotionalText} ${physicalText} ${suggestionText}`);
         }
     </script>
 </html>
