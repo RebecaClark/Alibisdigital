@@ -149,23 +149,26 @@
             }
         });
 
-        // Configuração da cena 3D (túnel horizontal)
+        // Configuração da cena 3D (túnel corrigido)
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('vr-canvas') });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('vr-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Fundo transparente para evitar tela preta
 
-        // Criar um plano infinito como túnel
-        const geometry = new THREE.PlaneGeometry(100, 100, 100, 100); // Plano segmentado
+        // Criar um cilindro como túnel
+        const geometry = new THREE.CylinderGeometry(5, 5, 100, 32, 1, true); // Cilindro vertical
         const textureLoader = new THREE.TextureLoader();
         let currentTexture = textureLoader.load('assets/paisagem.jpg');
         const material = new THREE.MeshBasicMaterial({ map: currentTexture, side: THREE.DoubleSide });
         const tunnel = new THREE.Mesh(geometry, material);
-        tunnel.rotation.x = Math.PI / 2; // Horizontal
+        tunnel.rotation.x = Math.PI / 2; // Deita o cilindro para horizontal
+        tunnel.position.z = -50; // Move para trás para a câmera ver o interior
         scene.add(tunnel);
 
-        // Posiciona a câmera no túnel
-        camera.position.set(0, 0, 0);
+        // Posiciona a câmera dentro do túnel
+        camera.position.set(0, 0, 0); // Centro do túnel
+        camera.lookAt(0, 0, -1); // Olha para frente
 
         // Movimento do túnel (avançar para frente)
         let tunnelOffset = 0;
@@ -173,7 +176,7 @@
         function animate() {
             requestAnimationFrame(animate);
             tunnelOffset += speed;
-            tunnel.material.map.offset.y = tunnelOffset % 1; // Move a textura para trás
+            tunnel.material.map.offset.x = tunnelOffset % 1; // Move a textura horizontalmente
             renderer.render(scene, camera);
         }
         animate();
@@ -214,7 +217,7 @@
             textureLoader.load(scenes[currentSceneIndex], (newTexture) => {
                 tunnel.material.map = newTexture;
                 tunnel.material.needsUpdate = true;
-                speed = currentSceneIndex === 1 ? 0.15 : 0.1; // Ajusta velocidade
+                speed = currentSceneIndex === 1 ? 0.15 : 0.1;
             });
         });
 
@@ -227,7 +230,7 @@
                 textureLoader.load('assets/paisagem2.jpg', (newTexture) => {
                     tunnel.material.map = newTexture;
                     tunnel.material.needsUpdate = true;
-                    speed = 0.15; // Velocidade maior para raiva
+                    speed = 0.15;
                 });
             }
         }
