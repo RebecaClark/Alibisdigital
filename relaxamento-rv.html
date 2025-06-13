@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galáxia do Relaxamento RV - Álibis Digitais</title>
+    <title>Túnel do Relaxamento RV - Álibis Digitais</title>
     <style>
         body {
             margin: 0;
@@ -94,13 +94,13 @@
 </head>
 <body>
     <header>
-        <h1>Galáxia do Relaxamento RV</h1>
+        <h1>Túnel do Relaxamento RV</h1>
         <div id="particles-header"></div>
     </header>
     <canvas id="vr-canvas"></canvas>
     <div class="controls">
         <button id="playPauseBtn">Pausar</button>
-        <button id="changeSceneBtn">Explorar Nebulosa</button>
+        <button id="changeSceneBtn">Explorar Horizonte</button>
     </div>
     <audio id="bg-music" loop>
         <source src="assets/relaxamento.mp3" type="audio/mpeg">
@@ -149,25 +149,31 @@
             }
         });
 
-        // Configuração da cena 3D
+        // Configuração da cena 3D (túnel horizontal)
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('vr-canvas') });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // Esfera com textura cósmica
-        const geometry = new THREE.SphereGeometry(500, 60, 40);
+        // Criar um plano infinito como túnel
+        const geometry = new THREE.PlaneGeometry(100, 100, 100, 100); // Plano segmentado
         const textureLoader = new THREE.TextureLoader();
         let currentTexture = textureLoader.load('assets/paisagem.jpg');
-        const material = new THREE.MeshBasicMaterial({ map: currentTexture, side: THREE.BackSide });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
+        const material = new THREE.MeshBasicMaterial({ map: currentTexture, side: THREE.DoubleSide });
+        const tunnel = new THREE.Mesh(geometry, material);
+        tunnel.rotation.x = Math.PI / 2; // Horizontal
+        scene.add(tunnel);
 
-        // Efeito de rotação suave
-        let rotationSpeed = 0.001;
+        // Posiciona a câmera no túnel
+        camera.position.set(0, 0, 0);
+
+        // Movimento do túnel (avançar para frente)
+        let tunnelOffset = 0;
+        const speed = 0.1;
         function animate() {
             requestAnimationFrame(animate);
-            sphere.rotation.y += rotationSpeed;
+            tunnelOffset += speed;
+            tunnel.material.map.offset.y = tunnelOffset % 1; // Move a textura para trás
             renderer.render(scene, camera);
         }
         animate();
@@ -206,9 +212,9 @@
         changeSceneBtn.addEventListener('click', () => {
             currentSceneIndex = (currentSceneIndex + 1) % scenes.length;
             textureLoader.load(scenes[currentSceneIndex], (newTexture) => {
-                sphere.material.map = newTexture;
-                sphere.material.needsUpdate = true;
-                rotationSpeed = currentSceneIndex === 1 ? 0.002 : 0.001;
+                tunnel.material.map = newTexture;
+                tunnel.material.needsUpdate = true;
+                speed = currentSceneIndex === 1 ? 0.15 : 0.1; // Ajusta velocidade
             });
         });
 
@@ -219,9 +225,9 @@
             if (diagnostico === 'raiva' || diagnostico === 'estresse' || diagnostico === 'irritado') {
                 console.log(`Diagnóstico: ${diagnostico}. Iniciando jornada de relaxamento.`);
                 textureLoader.load('assets/paisagem2.jpg', (newTexture) => {
-                    sphere.material.map = newTexture;
-                    sphere.material.needsUpdate = true;
-                    rotationSpeed = 0.002;
+                    tunnel.material.map = newTexture;
+                    tunnel.material.needsUpdate = true;
+                    speed = 0.15; // Velocidade maior para raiva
                 });
             }
         }
