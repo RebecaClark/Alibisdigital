@@ -33,6 +33,8 @@
             margin: 0;
             font-size: 2rem;
             text-shadow: 0 0 10px #22d3ee;
+            position: relative;
+            z-index: 11;
         }
         footer {
             background: linear-gradient(135deg, #1e3a8a, #0a192f);
@@ -44,6 +46,10 @@
             bottom: 0;
             z-index: 10;
             font-size: 0.9rem;
+        }
+        footer p {
+            position: relative;
+            z-index: 11;
         }
         .controls {
             position: absolute;
@@ -72,75 +78,74 @@
             transform: scale(1.1) rotate(5deg);
             box-shadow: 0 8px 20px rgba(34, 211, 238, 0.7);
         }
-        #startAudioBtn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
-            background: #22d3ee;
-            color: #0a192f;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 30;
-            display: block;
-        }
-        #startAudioBtn:hover {
-            background: #06b6d4;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
         @keyframes float {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(-10px); }
         }
-        #particles-js {
+        #particles-header, #particles-footer {
             position: absolute;
             width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 5;
+            height: 50px;
+            z-index: 9;
         }
+        #particles-header { top: 0; }
+        #particles-footer { bottom: 0; }
     </style>
 </head>
 <body>
     <header>
         <h1>Galáxia do Relaxamento RV</h1>
+        <div id="particles-header"></div>
     </header>
     <canvas id="vr-canvas"></canvas>
-    <div id="particles-js"></div>
     <div class="controls">
         <button id="playPauseBtn">Pausar</button>
         <button id="changeSceneBtn">Explorar Nebulosa</button>
     </div>
-    <button id="startAudioBtn">Ativar Som Relaxante</button>
     <audio id="bg-music" loop>
         <source src="assets/relaxamento.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
     <footer>
         <p>© 2025 Álibis Digitais. Viaje para a paz interior.</p>
+        <div id="particles-footer"></div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script>
-        // Configuração de partículas (igual ao site)
-        particlesJS('particles-js', {
+        // Configuração de partículas para cabeçalho
+        particlesJS('particles-header', {
             particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
+                number: { value: 50, density: { enable: true, value_area: 400 } },
                 color: { value: '#22d3ee' },
                 shape: { type: 'circle' },
                 opacity: { value: 0.7, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1 } },
-                size: { value: 4, random: true, anim: { enable: true, size_min: 2 } },
-                line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
+                size: { value: 3, random: true, anim: { enable: true, size_min: 1 } },
+                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'top', random: false, straight: true, out_mode: 'out' }
             },
             interactivity: {
                 detect_on: 'canvas',
                 events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } },
-                modes: { grab: { distance: 200, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+                modes: { grab: { distance: 100, line_linked: { opacity: 0.5 } }, push: { particles_nb: 2 } }
+            }
+        });
+
+        // Configuração de partículas para rodapé
+        particlesJS('particles-footer', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 400 } },
+                color: { value: '#22d3ee' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.7, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1 } },
+                size: { value: 3, random: true, anim: { enable: true, size_min: 1 } },
+                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'bottom', random: false, straight: true, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } },
+                modes: { grab: { distance: 100, line_linked: { opacity: 0.5 } }, push: { particles_nb: 2 } }
             }
         });
 
@@ -174,20 +179,18 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Áudio com botão inicial
+        // Áudio
+        let audioInitialized = false;
         const bgMusic = document.getElementById('bg-music');
         const playPauseBtn = document.getElementById('playPauseBtn');
-        const startAudioBtn = document.getElementById('startAudioBtn');
-
-        startAudioBtn.addEventListener('click', () => {
-            bgMusic.play().then(() => {
-                startAudioBtn.style.display = 'none'; // Esconde após ativar
-                playPauseBtn.style.display = 'inline-block'; // Mostra controle
-            }).catch(err => console.error('Erro ao tocar áudio:', err));
-        });
 
         playPauseBtn.addEventListener('click', () => {
-            if (bgMusic.paused) {
+            if (!audioInitialized) {
+                bgMusic.play().then(() => {
+                    audioInitialized = true;
+                    playPauseBtn.textContent = 'Pausar';
+                }).catch(err => console.error('Erro ao iniciar áudio:', err));
+            } else if (bgMusic.paused) {
                 bgMusic.play();
                 playPauseBtn.textContent = 'Pausar';
             } else {
