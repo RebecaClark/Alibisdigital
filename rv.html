@@ -22,17 +22,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1;
         }
         #vr-overlay {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
             background: rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 2; /* Garante que fique acima do botão */
         }
         #vr-overlay.active {
             opacity: 1;
@@ -41,6 +46,11 @@
             font-size: 3rem;
             font-weight: bold;
             text-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee;
+            animation: neonBlink 1.5s infinite alternate;
+        }
+        @keyframes neonBlink {
+            from { text-shadow: 0 0 10px #22d3ee; }
+            to { text-shadow: 0 0 20px #22d3ee, 0 0 30px #22d3ee; }
         }
         .futuristic-btn {
             background: #22d3ee;
@@ -50,9 +60,12 @@
             border-radius: 10px;
             font-size: 1.2rem;
             cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            z-index: 3; /* Garante que o botão fique acima do overlay */
         }
         .futuristic-btn:hover {
             background: #06b6d4;
+            transform: scale(1.1);
         }
         @media (max-width: 768px) {
             .neon-text { font-size: 2rem; }
@@ -62,11 +75,25 @@
 </head>
 <body>
     <div id="vr-container">
-        <div id="vr-overlay" class="active"> <!-- Overlay visível por padrão para teste -->
+        <button id="enterVrBtn" class="futuristic-btn">Iniciar RV</button>
+        <div id="vr-overlay">
             <h1 class="neon-text">Experiência RV Iniciada</h1>
             <p>Imersão em ambiente virtual ativada.</p>
         </div>
-        <button id="enterVrBtn" class="futuristic-btn">Iniciar RV</button>
     </div>
+
+    <script>
+        const vrOverlay = document.getElementById('vr-overlay');
+        const enterVrBtn = document.getElementById('enterVrBtn');
+
+        if (enterVrBtn && vrOverlay) {
+            enterVrBtn.addEventListener('click', () => {
+                vrOverlay.classList.add('active');
+                console.log('Botão clicado, overlay ativado');
+            });
+        } else {
+            console.error('Elementos não encontrados:', { enterVrBtn, vrOverlay });
+        }
+    </script>
 </body>
 </html>
