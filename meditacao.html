@@ -212,40 +212,40 @@
         <!-- Meditação para Estresse -->
         <div class="neon-box mt-8 fade-in" id="stress-meditation">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Estresse</h2>
-            <audio controls class="w-full mb-4" aria-label="Meditação guiada para estresse">
+            <audio controls class="w-full mb-4 hidden" id="meditation-audio-stress" aria-label="Meditação guiada para estresse">
                 <source src="assets/audio/stress-meditation.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Sente-se confortavelmente ou deite-se. Feche os olhos suavemente. Coloque uma mão no peito e outra no abdômen. Inspire pelo nariz por 4 segundos, sentindo o abdômen subir. Segure por 4 segundos. Expire lentamente por 6 segundos, liberando a tensão. Repita por 5 minutos, deixando pensamentos fluírem sem julgamento.
             </p>
-            <button class="futuristic-btn" id="bg-music-stress" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="futuristic-btn" id="play-stress" aria-label="Iniciar meditação para estresse">🎶 Iniciar Meditação</button>
         </div>
 
         <!-- Meditação para Raiva -->
         <div class="neon-box mt-8 fade-in" id="anger-meditation">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Raiva</h2>
-            <audio controls class="w-full mb-4" aria-label="Meditação guiada para raiva">
+            <audio controls class="w-full mb-4 hidden" id="meditation-audio-anger" aria-label="Meditação guiada para raiva">
                 <source src="assets/audio/anger-meditation.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Encontre um lugar tranquilo e sente-se com a coluna ereta. Feche os olhos. Observe a raiva no seu corpo: onde ela está? No peito? Nos ombros? Inspire por 4 segundos, trazendo calma. Expire por 8 segundos, visualizando a raiva se dissolvendo como fumaça. Repita por 10 minutos, focando na suavidade da respiração.
             </p>
-            <button class="futuristic-btn" id="bg-music-anger" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="futuristic-btn" id="play-anger" aria-label="Iniciar meditação para raiva">🎶 Iniciar Meditação</button>
         </div>
 
         <!-- Meditação para Nervosismo -->
         <div class="neon-box mt-8 fade-in" id="nervousness-meditation">
             <h2 class="text-2xl font-semibold text-white mb-4">Para Nervosismo</h2>
-            <audio controls class="w-full mb-4" aria-label="Meditação guiada para nervosismo">
+            <audio controls class="w-full mb-4 hidden" id="meditation-audio-nervousness" aria-label="Meditação guiada para nervosismo">
                 <source src="assets/audio/nervousness-meditation.mp3" type="audio/mpeg">
                 Seu navegador não suporta áudio.
             </audio>
             <p class="text-gray-300 mb-4">
                 Deite-se ou sente-se em um lugar calmo. Feche os olhos e relaxe os ombros. Comece escaneando o corpo: observe a testa, o pescoço, os braços. Inspire por 4 segundos, trazendo paz. Expire por 6 segundos, liberando inquietação. Repita por 7 minutos, movendo a atenção dos pés à cabeça.
             </p>
-            <button class="futuristic-btn" id="bg-music-nervousness" aria-label="Ativar música de fundo">🎶 Ativar Música de Fundo</button>
+            <button class="futuristic-btn" id="play-nervousness" aria-label="Iniciar meditação para nervosismo">🎶 Iniciar Meditação</button>
         </div>
 
         <!-- Recursos Adicionais -->
@@ -339,13 +339,26 @@
 
             // Gerenciar áudio
             const bgMusic = document.getElementById('background-music');
-            const meditationAudios = document.querySelectorAll('audio:not(#background-music)');
-            const bgMusicButtons = document.querySelectorAll('[id^=bg-music-]');
+            const meditationAudios = {
+                'stress': document.getElementById('meditation-audio-stress'),
+                'anger': document.getElementById('meditation-audio-anger'),
+                'nervousness': document.getElementById('meditation-audio-nervousness')
+            };
+            const playButtons = {
+                'stress': document.getElementById('play-stress'),
+                'anger': document.getElementById('play-anger'),
+                'nervousness': document.getElementById('play-nervousness')
+            };
 
-            // Inicializar volume e garantir que música de fundo não toque automaticamente
-            bgMusic.volume = 1.0;
+            // Inicializar volume e pausar automaticamente
+            bgMusic.volume = 0.5;
             bgMusic.pause();
             bgMusic.currentTime = 0;
+            Object.values(meditationAudios).forEach(audio => {
+                audio.volume = 1.0;
+                audio.pause();
+                audio.currentTime = 0;
+            });
 
             // Função para fade-out
             function fadeOut(audio, duration = 1500) {
@@ -370,35 +383,25 @@
                 });
             }
 
-            // Pausar música de fundo com fade-out quando uma meditação toca
-            meditationAudios.forEach(audio => {
-                audio.addEventListener('play', async () => {
-                    if (!bgMusic.paused) {
-                        await fadeOut(bgMusic);
-                        bgMusicButtons.forEach(btn => {
-                            btn.textContent = '🎶 Ativar Música de Fundo';
-                        });
-                    }
-                });
-            });
-
-            // Gerenciar botões de música de fundo
-            bgMusicButtons.forEach(button => {
+            // Gerenciar botões de meditação
+            Object.entries(playButtons).forEach(([emotion, button]) => {
                 button.addEventListener('click', async () => {
-                    if (bgMusic.paused) {
-                        // Pausar todas as meditações antes de tocar música de fundo
-                        for (const audio of meditationAudios) {
-                            if (!audio.paused) {
-                                audio.pause();
-                                audio.currentTime = 0;
-                            }
-                        }
-                        bgMusic.volume = 1.0; // Restaurar volume
-                        bgMusic.play();
-                        button.textContent = '🔇 Desativar Música de Fundo';
-                    } else {
+                    const audio = meditationAudios[emotion];
+                    if (audio.paused) {
+                        // Pausar música de fundo e outras meditações
                         await fadeOut(bgMusic);
-                        button.textContent = '🎶 Ativar Música de Fundo';
+                        Object.values(meditationAudios).forEach(otherAudio => {
+                            if (otherAudio !== audio && !otherAudio.paused) {
+                                otherAudio.pause();
+                                otherAudio.currentTime = 0;
+                            }
+                        });
+                        audio.play();
+                        button.textContent = '🔇 Pausar Meditação';
+                        audio.classList.remove('hidden');
+                    } else {
+                        await fadeOut(audio);
+                        button.textContent = '🎶 Iniciar Meditação';
                     }
                 });
             });
@@ -416,6 +419,8 @@
                 if (section) {
                     section.scrollIntoView({ behavior: 'smooth' });
                     section.classList.add('pulse');
+                    const playButton = playButtons[emotion === 'sadness' ? 'stress' : emotion];
+                    if (playButton) playButton.click(); // Inicia automaticamente
                 }
             }
 
