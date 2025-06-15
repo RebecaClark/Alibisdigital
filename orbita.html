@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="ÓRBITA Quântica - Autocuidado para mente, corpo e emoção">
-    <meta name="keywords" content="ÓRBITA, autocuidado, saúde mental, meditação, monitoramento, bem-estar">
+    <meta name="description" content="ÓRBITA Quântica - Autocuidado completo">
+    <meta name="keywords" content="ÓRBITA, autocuidado, meditação, saúde mental, bem-estar">
     <meta name="author" content="Álibis Digital">
     <title>ÓRBITA Quântica</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,7 +35,7 @@
 <body>
     <div id="particles-js"></div>
 
-    <!-- Cabeçalho Reduzido -->
+    <!-- Cabeçalho -->
     <header class="header">
         <a href="/"><img src="/assets/logo.png" alt="Logo ÓRBITA" class="fade-in"></a>
         <button class="nav-btn" id="menu-btn">☰</button>
@@ -45,24 +45,33 @@
     <div class="content">
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Monitoramento Emocional</h2>
-            <p class="text-gray-300 mb-4">Acompanhe seu estado emocional em tempo real.</p>
+            <p class="text-gray-300 mb-4">Acompanhe seu estado emocional.</p>
             <video id="video" autoplay muted class="mt-2 hidden"></video>
             <button id="scan-btn" class="futuristic-btn mt-4 w-full" disabled>Escanear Agora</button>
             <div id="scan-result" class="mt-4 hidden"></div>
         </div>
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Ciclo Diário</h2>
-            <p class="text-gray-300 mb-4">Monitore hábitos e receba sugestões.</p>
+            <p class="text-gray-300 mb-4">Monitore hábitos e progresso.</p>
             <div id="daily-suggestions" class="mt-2">
-                <p class="text-gray-400">Escanear para ver sugestões!</p>
+                <p class="text-gray-400">Escanear para sugestões!</p>
             </div>
             <button id="habit-log-btn" class="futuristic-btn mt-2 w-full">Registrar Hábito</button>
+            <div id="progress-display" class="mt-2 text-gray-300 hidden">Progresso: 0 hábitos</div>
         </div>
         <div class="card fade-in">
-            <h2 class="text-xl font-semibold mb-2">Gerenciamento de Estresse</h2>
-            <p class="text-gray-300 mb-4">Ferramentas para relaxar e meditar.</p>
-            <a href="#" id="meditation-btn" class="futuristic-btn w-full text-center">🧘 Meditação Guiada</a>
-            <button id="journal-btn" class="futuristic-btn w-full mt-2">✍️ Diário</button>
+            <h2 class="text-xl font-semibold mb-2">Bem-Estar e Relaxamento</h2>
+            <p class="text-gray-300 mb-4">Ferramentas para estresse e sono.</p>
+            <select id="meditation-type" class="futuristic-btn w-full mb-2 text-left p-2 bg-transparent border-none">
+                <option value="anxiety">Meditação para Ansiedade</option>
+                <option value="insomnia">Meditação para Insônia</option>
+                <option value="focus">Meditação para Foco</option>
+            </select>
+            <button id="meditation-btn" class="futuristic-btn w-full">🧘 Iniciar Meditação</button>
+            <button id="sleep-story-btn" class="futuristic-btn w-full mt-2">🌙 História para Dormir</button>
+            <button id="stretch-btn" class="futuristic-btn w-full mt-2">🤸 Alongamento</button>
+            <button id="breath-btn" class="futuristic-btn w-full mt-2">🌬 Respiração</button>
+            <button id="sound-btn" class="futuristic-btn w-full mt-2">🎶 Sons Relaxantes</button>
         </div>
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Comunidade Órbita</h2>
@@ -81,29 +90,31 @@
             interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 80 }, push: { particles_nb: 2 } } }
         });
 
-        // Configurações
         let dailyData = [];
+        let habitCount = 0;
 
-        // Elementos DOM
         const video = document.getElementById('video');
         const scanBtn = document.getElementById('scan-btn');
         const scanResult = document.getElementById('scan-result');
         const dailySuggestions = document.getElementById('daily-suggestions');
         const habitLogBtn = document.getElementById('habit-log-btn');
+        const progressDisplay = document.getElementById('progress-display');
         const meditationBtn = document.getElementById('meditation-btn');
-        const journalBtn = document.getElementById('journal-btn');
+        const sleepStoryBtn = document.getElementById('sleep-story-btn');
+        const stretchBtn = document.getElementById('stretch-btn');
+        const breathBtn = document.getElementById('breath-btn');
+        const soundBtn = document.getElementById('sound-btn');
         const communityBtn = document.getElementById('community-btn');
         const menuBtn = document.getElementById('menu-btn');
+        const meditationType = document.getElementById('meditation-type');
         let cameraInitialized = false;
 
-        // Inicializar câmera
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
                 cameraInitialized = true;
                 video.classList.remove('hidden');
                 scanBtn.disabled = false;
-                console.log('Câmera pronta!');
             })
             .catch(err => {
                 console.error('Erro na câmera:', err.message);
@@ -111,16 +122,15 @@
                 scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não acessada. Verifique permissões.</p>';
             });
 
-        // Eventos
-        scanBtn.addEventListener('click', () => {
-            if (!cameraInitialized) return;
-            startScan();
-        });
+        scanBtn.addEventListener('click', startScan);
         menuBtn.addEventListener('click', () => alert('Menu (simulação)'));
         communityBtn.addEventListener('click', () => alert('Comunidade (simulação)'));
         habitLogBtn.addEventListener('click', logHabit);
         meditationBtn.addEventListener('click', startMeditation);
-        journalBtn.addEventListener('click', showJournalTips);
+        sleepStoryBtn.addEventListener('click', playSleepStory);
+        stretchBtn.addEventListener('click', startStretch);
+        breathBtn.addEventListener('click', startBreathing);
+        soundBtn.addEventListener('click', playSounds);
 
         async function startScan() {
             scanBtn.disabled = true;
@@ -159,16 +169,16 @@
         }
 
         function simulateHeartRate() {
-            return Math.round(60 + Math.random() * 40); // Entre 60 e 100 bpm
+            return Math.round(60 + Math.random() * 40);
         }
 
         function displayScanResult(emotion, bpm) {
             const diagnosisMap = {
-                happiness: { text: "Energia positiva! 🌟", suggestion: "Mantenha o ritmo com uma caminhada." },
-                sadness: { text: "Energia baixa… reabasteça! ✈️", suggestion: "Tente música ou escreva." },
-                anger: { text: "Tensão… vulcão ativo! 🌋", suggestion: "Respire fundo." },
-                neutral: { text: "Campo neutro… equilíbrio! ⚖️", suggestion: "Foco na respiração." },
-                fear: { text: "Mente em órbita… desacelere! 🏎️", suggestion: "Inspira 4, segura 4, solta 4." }
+                happiness: { text: "Energia positiva! 🌟", suggestion: "Respire fundo e caminhe." },
+                sadness: { text: "Energia baixa… reabasteça! ✈️", suggestion: "Tente meditação ou diário." },
+                anger: { text: "Tensão… vulcão ativo! 🌋", suggestion: "Faça respiração 4-4-4." },
+                neutral: { text: "Campo neutro… equilíbrio! ⚖️", suggestion: "Alongue-se ou medite." },
+                fear: { text: "Mente em órbita… desacelere! 🏎️", suggestion: "Ouça sons relaxantes." }
             };
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'estável' : bpm > 100 ? 'alta, relaxe' : 'baixa, consulte um médico';
@@ -189,33 +199,53 @@
             dailyData.push({ time: new Date().toLocaleTimeString(), emotion, bpm });
             if (dailyData.length > 5) dailyData.shift();
             const suggestions = {
-                happiness: "Continue brilhando às 16h!",
-                sadness: "Meditação suave às 18h.",
-                anger: "Pausa para respirar às 15h.",
-                neutral: bpm > 90 ? "Relaxe às 17h." : "Caminhada às 16h.",
-                fear: "Sessão de calma às 16h."
+                happiness: "Mantenha o ânimo às 16h!",
+                sadness: "Medite às 18h.",
+                anger: "Respire às 15h.",
+                neutral: bpm > 90 ? "Relaxe às 17h." : "Caminhe às 16h.",
+                fear: "Calma às 16h."
             };
             dailySuggestions.innerHTML = `<p class="text-gray-300">${suggestions[emotion] || 'Monitore mais!'}</p>`;
         }
 
         function logHabit() {
             const habit = prompt('Digite um hábito (ex.: 30 min de exercício):');
-            if (habit) alert(`Hábito "${habit}" registrado às ${new Date().toLocaleTimeString()}!`);
+            if (habit) {
+                habitCount++;
+                progressDisplay.classList.remove('hidden');
+                progressDisplay.textContent = `Progresso: ${habitCount} hábitos`;
+                alert(`Hábito "${habit}" registrado às ${new Date().toLocaleTimeString()}!`);
+            }
         }
 
         function startMeditation() {
-            const meditations = ['5 min de respiração profunda', '10 min de mindfulness', '15 min de relaxamento'];
-            const selected = meditations[Math.floor(Math.random() * meditations.length)];
-            alert(`Iniciando ${selected}. Feche os olhos, respire fundo e siga o guia interno...`);
+            const type = meditationType.value;
+            const meditations = {
+                anxiety: '5 min de respiração para ansiedade',
+                insomnia: '10 min de relaxamento para insônia',
+                focus: '15 min de mindfulness para foco'
+            };
+            alert(`Iniciando ${meditations[type]}. Feche os olhos e respire...`);
         }
 
-        function showJournalTips() {
-            const tips = [
-                'Escreva 3 coisas boas do seu dia.',
-                'Desabafe sobre o que te estressou.',
-                'Defina uma intenção para amanhã.'
-            ];
-            alert('Dicas de Diário:\n- ' + tips.join('\n- '));
+        function playSleepStory() {
+            const stories = ['História da Floresta Tranquila', 'Viagem às Estrelas'];
+            const selected = stories[Math.floor(Math.random() * stories.length)];
+            alert(`Iniciando ${selected}. Relaxe e durma...`);
+        }
+
+        function startStretch() {
+            alert('Iniciando alongamento de 5 min. Estique braços e pernas lentamente...');
+        }
+
+        function startBreathing() {
+            alert('Técnica 4-4-4: Inspire por 4s, segure por 4s, expire por 4s. Repita 5x.');
+        }
+
+        function playSounds() {
+            const sounds = ['Chuva', 'Ondas do Mar', 'Ruído Branco'];
+            const selected = sounds[Math.floor(Math.random() * sounds.length)];
+            alert(`Tocando ${selected}. Aproveite para relaxar...`);
         }
     </script>
 </body>
