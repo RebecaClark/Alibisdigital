@@ -8,7 +8,6 @@
     <meta name="author" content="Álibis Digital">
     <title>ÓRBITA Quântica</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
         body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; color: #e5e7eb; background: linear-gradient(135deg, #0b1120, #1e1b4b); overflow-x: hidden; }
@@ -19,7 +18,7 @@
         .header img { height: 25px; width: auto; }
         .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; }
         .nav-btn:hover { color: #22d3ee; }
-        .content { margin-top: 50px; padding: 10px; } /* Ajustado para o novo tamanho do cabeçalho */
+        .content { margin-top: 50px; padding: 10px; }
         .card { background: linear-gradient(45deg, #0a1f2e, #00ccff); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); backdrop-filter: blur(5px); }
         .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); color: #fff; padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 5px #22d3ee; transition: transform 0.3s; }
         .futuristic-btn:hover { transform: translateY(-2px); }
@@ -29,7 +28,6 @@
         .progress { height: 6px; background: #22d3ee; width: 0; transition: width 0.3s ease; }
         .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
-        #avatar-container { width: 100%; height: 200px; position: relative; }
         video { width: 100%; max-width: 320px; border: 2px solid #22d3ee; border-radius: 10px; }
         @media (max-width: 768px) { .header { height: 35px; padding: 3px 8px; } .header img { height: 20px; } .content { margin-top: 45px; } }
     </style>
@@ -47,8 +45,7 @@
     <div class="content">
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Espelho Quântico</h2>
-            <p class="text-gray-300 mb-4">Seu avatar emocional em 3D.</p>
-            <div id="avatar-container"></div>
+            <p class="text-gray-300 mb-4">Monitoramento emocional em tempo real.</p>
             <video id="video" autoplay muted class="mt-2 hidden"></video>
             <button id="scan-btn" class="futuristic-btn mt-4 w-full" disabled>Escanear Agora</button>
             <div id="scan-result" class="mt-4 hidden"></div>
@@ -83,21 +80,6 @@
 
         // Configurações
         let dailyData = [];
-
-        // Avatar 3D com Three.js
-        const avatarContainer = document.getElementById('avatar-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, avatarContainer.offsetWidth / 200, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(avatarContainer.offsetWidth, 200);
-        avatarContainer.appendChild(renderer.domElement);
-        const geometry = new THREE.SphereGeometry(50, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: 0x9ca3af, transparent: true, opacity: 0.7 });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-        camera.position.z = 100;
-        function animate() { requestAnimationFrame(animate); sphere.rotation.y += 0.01; renderer.render(scene, camera); }
-        animate();
 
         // Elementos DOM
         const video = document.getElementById('video');
@@ -154,7 +136,6 @@
                 const bpm = simulateHeartRate();
                 displayScanResult(emotion, bpm);
                 updateDaily(emotion, bpm);
-                updateAvatar(emotion);
             } catch (error) {
                 console.error('Erro:', error.message);
                 scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Erro: ' + error.message + '</p>';
@@ -194,12 +175,6 @@
                 <button id="retry-btn" class="futuristic-btn mt-2 w-full">🔄 Reiniciar</button>
             `;
             document.getElementById('retry-btn').addEventListener('click', startScan);
-        }
-
-        function updateAvatar(emotion) {
-            const colors = { happiness: 0x22c55e, sadness: 0x1e40af, anger: 0xb91c1c, neutral: 0x9ca3af, fear: 0xf59e0b };
-            material.color.set(colors[emotion] || 0x9ca3af);
-            sphere.scale.set(emotion === 'happiness' ? 1.2 : 1, emotion === 'happiness' ? 1.2 : 1, 1);
         }
 
         function updateDaily(emotion, bpm) {
