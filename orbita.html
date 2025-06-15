@@ -48,6 +48,7 @@
             <h2 class="text-xl font-semibold mb-2">Espelho Quântico</h2>
             <p class="text-gray-300 mb-4">Seu avatar emocional em 3D.</p>
             <div id="avatar-container"></div>
+            <video id="video" width="100%" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse mt-2 hidden"></video>
             <button id="scan-btn" class="futuristic-btn mt-4 w-full" aria-label="Escanear Agora">Escanear Agora</button>
             <div id="scan-result" class="mt-4 hidden"></div>
         </div>
@@ -91,7 +92,7 @@
         renderer.setSize(avatarContainer.offsetWidth, 200);
         avatarContainer.appendChild(renderer.domElement);
         const geometry = new THREE.SphereGeometry(50, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.7 });
+        const material = new THREE.MeshBasicMaterial({ color: 0x9ca3af, transparent: true, opacity: 0.7 });
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
         camera.position.z = 100;
@@ -111,11 +112,29 @@
             const menuBtn = document.getElementById('menu-btn');
 
             let cameraInitialized = false;
+
+            // Inicializar câmera
             if (video) {
-                navigator.mediaDevices.getUserMedia({ video: true }).then(stream => { video.srcObject = stream; cameraInitialized = true; video.classList.remove('hidden'); }).catch(err => { console.error('Camera error:', err.message); scanResult.classList.remove('hidden'); scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não acessada. Verifique permissões.</p>'; scanBtn.disabled = true; });
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        cameraInitialized = true;
+                        video.classList.remove('hidden'); // Mostra o vídeo apenas após permissão
+                    })
+                    .catch(err => {
+                        console.error('Camera error:', err.message);
+                        scanResult.classList.remove('hidden');
+                        scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não acessada. Verifique permissões.</p>';
+                        scanBtn.disabled = true;
+                    });
             }
 
-            scanBtn.addEventListener('click', () => startScan());
+            // Evento do botão "Escanear Agora"
+            scanBtn.addEventListener('click', () => {
+                if (!cameraInitialized || scanBtn.disabled) return;
+                startScan();
+            });
+
             menuBtn.addEventListener('click', () => alert('Menu aberto (simulação para navegação)'));
             communityBtn.addEventListener('click', () => alert('Conectando à Comunidade Órbita (simulação)'));
 
@@ -127,21 +146,42 @@
             }
 
             async function startScan() {
-                if (!cameraInitialized) return;
+                scanBtn.disabled = true; // Desativa o botão durante o escaneamento
                 scanResult.classList.remove('hidden');
                 scanResult.innerHTML = '<p class="fade-in text-white">Escanando...<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>';
 
                 const canvas = document.getElementById('canvas');
                 const context = canvas.getContext('2d');
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const faceAnalysis = await analyzeFace(canvas, video);
-                const voiceData = await analyzeVoice();
-                const bpm = await calculateHeartRate(video, canvas);
+                const progress = document.getElementById('progress');
 
-                const emotion = unifyDiagnosis(faceAnalysis.emotion, voiceData, bpm);
-                displayScanResult(emotion, bpm, faceAnalysis.emotion, voiceData, scanResult);
-                updateDaily(emotion, bpm);
-                updateAvatar(emotion);
+                // Simula progresso
+                let progressWidth = 0;
+                const interval = setInterval(() => {
+                    progressWidth += 10;
+                    progress.style.width = `${progressWidth}%`;
+                    if (progressWidth >= 100) clearInterval(interval);
+                }, 300);
+
+                // Aguarda um momento para simular análise
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                try {
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const faceAnalysis = await analyzeFace(canvas, video);
+                    const voiceData = await analyzeVoice();
+                    const bpm = await calculateHeartRate(video, canvas);
+
+                    const emotion = unifyDiagnosis(faceAnalysis.emotion, voiceData, bpm);
+                    displayScanResult(emotion, bpm, faceAnalysis.emotion, voiceData, scanResult);
+                    updateDaily(emotion, bpm);
+                    updateAvatar(emotion);
+                } catch (error) {
+                    console.error('Scan error:', error.message);
+                    scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Erro no escaneamento. Tente novamente.</p>';
+                } finally {
+                    scanBtn.disabled = false; // Reativa o botão
+                    progress.style.width = '0'; // Reseta a barra de progresso
+                }
             }
         });
 
@@ -232,24 +272,18 @@
             const facialScores = facialData || defaultScores;
             const totalFacial = Object.values(facialScores).reduce((sum, val) => sum + val, 0);
             const normFacial = {};
-            for (let emo in facialScores) {
-                normFacial[emo] = totalFacial ? facialScores[emo] / totalFacial : 0;
-            }
+            for (let emo in facialScores) normFacial[emo] = totalFacial ? facialScores[emo] / totalFacial : 0;
             const voiceScores = voiceData || defaultScores;
             const totalVoice = Object.values(voiceScores).reduce((sum, val) => sum + val, 0);
             const normVoice = {};
-            for (let emo in voiceScores) {
-                normVoice[emo] = totalVoice ? voiceScores[emo] / totalVoice : 0;
-            }
+            for (let emo in voiceScores) normVoice[emo] = totalVoice ? voiceScores[emo] / totalVoice : 0;
             const hrWeight = bpm > 90 ? 0.2 : 0;
             const hrScores = bpm > 90 ? { anger: 0.5, fear: 0.3, sadness: 0.2 } : defaultScores;
             const voiceFailed = voiceData && voiceData.neutral === 1 && totalVoice === 1;
             const facialWeight = voiceFailed ? 0.8 : 0.5;
             const voiceWeight = voiceFailed ? 0.0 : 0.3;
             const finalScores = {};
-            for (let emo in defaultScores) {
-                finalScores[emo] = facialWeight * (normFacial[emo] || 0) + voiceWeight * (normVoice[emo] || 0) + hrWeight * (hrScores[emo] || 0);
-            }
+            for (let emo in defaultScores) finalScores[emo] = facialWeight * (normFacial[emo] || 0) + voiceWeight * (normVoice[emo] || 0) + hrWeight * (hrScores[emo] || 0);
             return finalScores;
         }
 
@@ -259,36 +293,10 @@
         }
 
         const diagnosisMap = {
-            sadness: {
-                emotionalText: ["Expressão vazia… algo pesa! ☕", "Energia baixa… reabasteça! ✈️"],
-                physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Busque calma.",
-                suggestion: "Tente música ou escrita para liberar.",
-                link: "apoio-emocional.html"
-            },
-            anger: {
-                emotionalText: ["Tensão… vulcão ativo! 🌋", "Energia intensa… controle! ⚡"],
-                physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Alivie.",
-                suggestion: "Respire fundo.",
-                link: "apoio-emocional.html"
-            },
-            neutral: {
-                emotionalText: {
-                    cansaço: ["Energia esgotada… sono chama! 💤", "Círculos… panda? 🐼"],
-                    apatia: ["Campo neutro… ativação pendente! 🧟", "Mente flutuante… ancorar? ✈️"]
-                },
-                physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Respire.",
-                suggestion: {
-                    cansaço: "5 min de pausa.",
-                    apatia: "Foco na respiração."
-                },
-                link: "apoio-emocional.html"
-            },
-            fear: {
-                emotionalText: ["Vibração rápida… ansiedade alta! 📶", "Mente em órbita… desacelere! 🏎️"],
-                physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Paz agora.",
-                suggestion: "Inspira 4, segura 4, solta 4.",
-                link: "apoio-emocional.html"
-            }
+            sadness: { emotionalText: ["Expressão vazia… algo pesa! ☕", "Energia baixa… reabasteça! ✈️"], physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Busque calma.", suggestion: "Tente música ou escrita para liberar.", link: "apoio-emocional.html" },
+            anger: { emotionalText: ["Tensão… vulcão ativo! 🌋", "Energia intensa… controle! ⚡"], physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Alivie.", suggestion: "Respire fundo.", link: "apoio-emocional.html" },
+            neutral: { emotionalText: { cansaço: ["Energia esgotada… sono chama! 💤", "Círculos… panda? 🐼"], apatia: ["Campo neutro… ativação pendente! 🧟", "Mente flutuante… ancorar? ✈️"] }, physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Respire.", suggestion: { cansaço: "5 min de pausa.", apatia: "Foco na respiração." }, link: "apoio-emocional.html" },
+            fear: { emotionalText: ["Vibração rápida… ansiedade alta! 📶", "Mente em órbita… desacelere! 🏎️"], physicalText: "Frequência: ${bpm} bpm, ${bpmContext}. Paz agora.", suggestion: "Inspira 4, segura 4, solta 4.", link: "apoio-emocional.html" }
         };
 
         function displayScanResult(emotion, bpm, facialData, voiceData, resultDiv) {
