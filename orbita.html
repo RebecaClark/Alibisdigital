@@ -22,8 +22,8 @@
         .card { background: linear-gradient(45deg, #0a1f2e, #00ccff); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); backdrop-filter: blur(8px); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; }
         @keyframes pulse { 0% { transform: scale(0); } 100% { transform: scale(1.5); } }
-        .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #00ffcc); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #00ffcc; transition: all 0.3s; width: auto; }
-        .futuristic-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 12px #00ffcc; }
+        .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #00ffcc); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #00ffcc; transition: all 0.2s ease; width: auto; }
+        .futuristic-btn:hover { transform: translateY(-3px) scale(1.1); box-shadow: 0 0 15px #00ffcc; }
         .futuristic-btn:active { transform: scale(0.9); }
         .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
@@ -114,6 +114,7 @@
         let dailyData = [];
         let habitCount = 0;
         let habitHistory = [];
+        let soundPlaying = false;
         const popup = document.getElementById('popup');
         const overlay = document.getElementById('overlay');
         const popupTitle = document.getElementById('popup-title');
@@ -246,7 +247,7 @@
             dailyData.push({ time: new Date().toLocaleTimeString(), emotion, bpm });
             if (dailyData.length > 5) dailyData.shift();
             const suggestions = {
-                happiness: "Mantenha o ânimo às 16h!",
+                happiness: "Mantenha o ânimo às 17h!",
                 sadness: "Medite às 18h.",
                 anger: "Respire às 15h.",
                 neutral: bpm > 90 ? "Relaxe às 17h." : "Caminhe às 16h.",
@@ -277,27 +278,79 @@
         }
 
         function playSleepStory() {
-            const stories = ['História da Floresta Tranquila', 'Viagem às Estrelas'];
-            const selected = stories[Math.floor(Math.random() * stories.length)];
-            popupContent.innerHTML = `<p class="fade-in">Iniciando ${selected}. Relaxe e durma...</p>`;
-            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Boa noite.</p>', 5000);
+            const stories = {
+                'Floresta Tranquila': 'Imagine-se em uma floresta serena. A luz da lua brilha através das árvores, e você ouve o suave murmúrio de um riacho. Sinta a brisa fresca em sua pele enquanto caminha por um caminho coberto de musgo. Deite-se sobre uma cama de folhas macias, deixando os sons da natureza guiá-lo para um sono profundo...',
+                'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial até adormecer...'
+            };
+            const selected = Object.keys(stories)[Math.floor(Math.random() * 2)];
+            popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
+            let progressWidth = 0;
+            const interval = setInterval(() => {
+                progressWidth += 0.83; // 120s total
+                document.getElementById('story-progress').style.width = `${progressWidth}%`;
+                if (progressWidth >= 100) {
+                    clearInterval(interval);
+                    popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Durma bem.</p>';
+                }
+            }, 1000);
         }
 
         function startStretch() {
-            popupContent.innerHTML = '<p class="fade-in">Iniciando alongamento de 5 min. Estique braços e pernas...</p>';
-            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>', 5000);
+            popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 5 min. Siga os passos:</p>
+                <ol class="mt-2 text-gray-300">
+                    <li>1 min: Estique os braços acima da cabeça, respire fundo.</li>
+                    <li>2 min: Incline-se para os lados, mantendo as pernas firmes.</li>
+                    <li>2 min: Toque os pés com as mãos, relaxando o tronco.</li>
+                </ol><div class="progress-bar"><div id="stretch-progress" class="progress"></div></div>`;
+            let progressWidth = 0;
+            const interval = setInterval(() => {
+                progressWidth += 0.33; // 300s total
+                document.getElementById('stretch-progress').style.width = `${progressWidth}%`;
+                if (progressWidth >= 100) {
+                    clearInterval(interval);
+                    popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>';
+                }
+            }, 3000);
         }
 
         function startBreathing() {
-            popupContent.innerHTML = '<p class="fade-in">Técnica 4-4-4: Inspire por 4s, segure por 4s, expire por 4s. Repita 5x...</p>';
-            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Respiração concluída! Relaxe.</p>', 60000); // 1 min simulado
+            popupContent.innerHTML = '<p class="fade-in">Técnica 4-4-4: Siga a contagem (5 ciclos):</p>';
+            let cycle = 0;
+            const interval = setInterval(() => {
+                if (cycle < 5) {
+                    popupContent.innerHTML += `<p class="fade-in">Ciclo ${cycle + 1}: Inspire por 4s, segure por 4s, expire por 4s...</p>`;
+                    cycle++;
+                } else {
+                    clearInterval(interval);
+                    popupContent.innerHTML += '<p class="fade-in mt-2">Respiração concluída! Tente novamente ou relaxe.</p>';
+                }
+            }, 12000); // 12s por ciclo (4+4+4)
         }
 
         function playSounds() {
-            const sounds = ['Chuva', 'Ondas do Mar', 'Ruído Branco'];
-            const selected = sounds[Math.floor(Math.random() * sounds.length)];
-            popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}. Aproveite para relaxar...</p>`;
-            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Volte quando quiser.</p>', 10000); // 10s simulado
+            if (!soundPlaying) {
+                const sounds = ['Chuva', 'Ondas do Mar', 'Ruído Branco'];
+                const selected = sounds[Math.floor(Math.random() * sounds.length)];
+                popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}.<button id="pause-btn" class="futuristic-btn mt-2">⏸ Pausar</button></p><div class="progress-bar"><div id="sound-progress" class="progress"></div></div>`;
+                let progressWidth = 0;
+                const interval = setInterval(() => {
+                    progressWidth += 3.33; // 30s total
+                    document.getElementById('sound-progress').style.width = `${progressWidth}%`;
+                    if (progressWidth >= 100) {
+                        clearInterval(interval);
+                        popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
+                        soundPlaying = false;
+                    }
+                }, 1000);
+                soundPlaying = true;
+                document.getElementById('pause-btn').addEventListener('click', () => {
+                    clearInterval(interval);
+                    popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
+                    soundPlaying = false;
+                });
+            } else {
+                popupContent.innerHTML = '<p class="fade-in text-red-500">Som já em execução. Pause primeiro.</p>';
+            }
         }
 
         function joinCommunity() {
