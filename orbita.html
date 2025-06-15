@@ -25,7 +25,7 @@
         .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #00ffcc); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #00ffcc; transition: all 0.3s; width: auto; }
         .futuristic-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 12px #00ffcc; }
         .futuristic-btn:active { transform: scale(0.9); }
-        .futuristic-btn:disabled { background: #444; cursor: not-allowed; }
+        .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         .progress { height: 6px; background: #00ffcc; width: 0; transition: width 0.3s ease; }
         .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
@@ -113,6 +113,7 @@
 
         let dailyData = [];
         let habitCount = 0;
+        let habitHistory = [];
         const popup = document.getElementById('popup');
         const overlay = document.getElementById('overlay');
         const popupTitle = document.getElementById('popup-title');
@@ -151,7 +152,7 @@
 
         scanBtn.addEventListener('click', () => showPopup('Escanear', startScan));
         menuBtn.addEventListener('click', () => alert('Menu (simulação)'));
-        communityBtn.addEventListener('click', () => showPopup('Comunidade', () => alert('Conectando à comunidade...')));
+        communityBtn.addEventListener('click', () => showPopup('Comunidade', joinCommunity));
         habitLogBtn.addEventListener('click', () => showPopup('Hábito', logHabit));
         meditationBtn.addEventListener('click', () => showPopup('Meditação', startMeditation));
         sleepStoryBtn.addEventListener('click', () => showPopup('História', playSleepStory));
@@ -165,22 +166,30 @@
             popupTitle.textContent = title;
             popup.style.display = 'block';
             overlay.style.display = 'block';
+            popupContent.innerHTML = '';
             action();
+            disableButtons(true);
         }
 
         function hidePopup() {
             popup.style.display = 'none';
             overlay.style.display = 'none';
             popupContent.innerHTML = '';
+            disableButtons(false);
         }
 
         function minimizePopup() {
             popup.style.display = 'none';
             alert(`Janela "${popupTitle.textContent}" minimizada.`);
+            disableButtons(false);
+        }
+
+        function disableButtons(disable) {
+            const buttons = [scanBtn, habitLogBtn, meditationBtn, sleepStoryBtn, stretchBtn, breathBtn, soundBtn, communityBtn];
+            buttons.forEach(btn => btn.disabled = disable);
         }
 
         async function startScan() {
-            scanResult.classList.add('hidden');
             popupContent.innerHTML = '<p class="fade-in text-white">Escanando...<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>';
 
             const canvas = document.getElementById('canvas');
@@ -191,21 +200,14 @@
             const interval = setInterval(() => {
                 progressWidth += 20;
                 progress.style.width = `${progressWidth}%`;
-                if (progressWidth >= 100) clearInterval(interval);
+                if (progressWidth >= 100) {
+                    clearInterval(interval);
+                    const emotion = simulateEmotion();
+                    const bpm = simulateHeartRate();
+                    displayScanResult(emotion, bpm);
+                    updateDaily(emotion, bpm);
+                }
             }, 400);
-
-            try {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const emotion = simulateEmotion();
-                const bpm = simulateHeartRate();
-                displayScanResult(emotion, bpm);
-                updateDaily(emotion, bpm);
-            } catch (error) {
-                console.error('Erro:', error.message);
-                popupContent.innerHTML = '<p class="fade-in text-red-500">❌ Erro: ' + error.message + '</p>';
-            } finally {
-                progress.style.width = '0';
-            }
         }
 
         function simulateEmotion() {
@@ -235,7 +237,7 @@
                 <p class="fade-in">Frequência: ${bpm} bpm, ${bpmContext}.</p>
                 <h3 class="text-lg font-semibold mt-2 mb-2">🌌 Sugestão</h3>
                 <p class="fade-in text-gray-300">${diag.suggestion}</p>
-                <button id="retry-btn" class="futuristic-btn mt-2 w-full">🔄 Reiniciar</button>
+                <button id="retry-btn" class="futuristic-btn mt-2">🔄 Reiniciar</button>
             `;
             document.getElementById('retry-btn').addEventListener('click', () => showPopup('Escanear', startScan));
         }
@@ -255,42 +257,56 @@
 
         function logHabit() {
             const habit = prompt('Digite um hábito (ex.: 30 min de exercício):');
-            if (habit) {
+            if (habit && habit.trim()) {
                 habitCount++;
+                habitHistory.push({ habit, time: new Date().toLocaleTimeString() });
                 progressDisplay.classList.remove('hidden');
                 progressDisplay.textContent = `Progresso: ${habitCount} hábitos`;
-                popupContent.innerHTML = `<p class="fade-in">Hábito "${habit}" registrado às ${new Date().toLocaleTimeString()}!</p>`;
+                popupContent.innerHTML = `<p class="fade-in">Hábito "${habit}" registrado às ${new Date().toLocaleTimeString()}!</p><p class="mt-2">Histórico: ${habitHistory.map(h => `${h.habit} às ${h.time}`).join(', ')}</p>`;
+            } else {
+                popupContent.innerHTML = '<p class="fade-in text-red-500">Por favor, insira um hábito válido.</p>';
             }
         }
 
         function startMeditation() {
             const type = meditationType.value;
-            const meditations = {
-                anxiety: '5 min de respiração para ansiedade',
-                insomnia: '10 min de relaxamento para insônia',
-                focus: '15 min de mindfulness para foco'
-            };
-            popupContent.innerHTML = `<p class="fade-in">Iniciando ${meditations[type]}. Feche os olhos e respire...</p>`;
+            const durations = { anxiety: 5, insomnia: 10, focus: 15 };
+            const duration = durations[type];
+            popupContent.innerHTML = `<p class="fade-in">Iniciando ${duration} min de ${type === 'anxiety' ? 'respiração para ansiedade' : type === 'insomnia' ? 'relaxamento para insônia' : 'mindfulness para foco'}. Feche os olhos...</p>`;
+            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Meditação concluída! Relaxe.</p>', duration * 1000);
         }
 
         function playSleepStory() {
             const stories = ['História da Floresta Tranquila', 'Viagem às Estrelas'];
             const selected = stories[Math.floor(Math.random() * stories.length)];
             popupContent.innerHTML = `<p class="fade-in">Iniciando ${selected}. Relaxe e durma...</p>`;
+            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Boa noite.</p>', 5000);
         }
 
         function startStretch() {
-            popupContent.innerHTML = '<p class="fade-in">Iniciando alongamento de 5 min. Estique braços e pernas lentamente...</p>';
+            popupContent.innerHTML = '<p class="fade-in">Iniciando alongamento de 5 min. Estique braços e pernas...</p>';
+            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>', 5000);
         }
 
         function startBreathing() {
-            popupContent.innerHTML = '<p class="fade-in">Técnica 4-4-4: Inspire por 4s, segure por 4s, expire por 4s. Repita 5x.</p>';
+            popupContent.innerHTML = '<p class="fade-in">Técnica 4-4-4: Inspire por 4s, segure por 4s, expire por 4s. Repita 5x...</p>';
+            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Respiração concluída! Relaxe.</p>', 60000); // 1 min simulado
         }
 
         function playSounds() {
             const sounds = ['Chuva', 'Ondas do Mar', 'Ruído Branco'];
             const selected = sounds[Math.floor(Math.random() * sounds.length)];
             popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}. Aproveite para relaxar...</p>`;
+            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Volte quando quiser.</p>', 10000); // 10s simulado
+        }
+
+        function joinCommunity() {
+            const username = prompt('Digite seu nome de usuário:');
+            if (username) {
+                popupContent.innerHTML = `<p class="fade-in">Bem-vindo, ${username}! Conectado à Comunidade Órbita.</p>`;
+            } else {
+                popupContent.innerHTML = '<p class="fade-in text-red-500">Nome de usuário necessário.</p>';
+            }
         }
     </script>
 </body>
