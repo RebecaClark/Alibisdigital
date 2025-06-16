@@ -71,16 +71,24 @@
         </div>
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Bem-Estar e Relaxamento</h2>
-            <p class="text-gray-300 mb-4">Ferramentas para estresse e sono.</p>
+            <p class="text-gray-300 mb-4">Ferramentas para estresse, sono e físico.</p>
             <select id="meditation-type" class="futuristic-btn mb-2 text-left p-2 bg-transparent border-none">
                 <option value="stress">Meditação para Estresse</option>
+                <option value="anxiety">Meditação para Ansiedade</option>
+                <option value="focus">Meditação para Foco</option>
                 <option value="relaxation">Meditação para Relaxamento</option>
                 <option value="nervousness">Meditação para Nervosismo</option>
                 <option value="anger">Meditação para Raiva</option>
+                <option value="gratitude">Meditação de Gratidão</option>
             </select>
             <button id="meditation-btn" class="futuristic-btn">🧘 Iniciar Meditação</button>
             <button id="sleep-story-btn" class="futuristic-btn mt-2">🌙 História para Dormir</button>
+            <select id="sleep-sound" class="futuristic-btn mb-2 text-left p-2 bg-transparent border-none mt-2">
+                <option value="rain">Chuva</option>
+                <option value="waves">Ondas do Mar</option>
+            </select>
             <button id="stretch-btn" class="futuristic-btn mt-2">🤸 Alongamento</button>
+            <button id="yoga-btn" class="futuristic-btn mt-2">🧘 Yoga Leve</button>
             <button id="breath-btn" class="futuristic-btn mt-2">🌬 Respiração</button>
             <button id="sound-btn" class="futuristic-btn mt-2">🎶 Sons Relaxantes</button>
         </div>
@@ -134,7 +142,9 @@
         const progressDisplay = document.getElementById('progress-display');
         const meditationBtn = document.getElementById('meditation-btn');
         const sleepStoryBtn = document.getElementById('sleep-story-btn');
+        const sleepSound = document.getElementById('sleep-sound');
         const stretchBtn = document.getElementById('stretch-btn');
+        const yogaBtn = document.getElementById('yoga-btn');
         const breathBtn = document.getElementById('breath-btn');
         const soundBtn = document.getElementById('sound-btn');
         const communityBtn = document.getElementById('community-btn');
@@ -163,6 +173,7 @@
         meditationBtn.addEventListener('click', () => showPopup('Meditação', startMeditation));
         sleepStoryBtn.addEventListener('click', () => showPopup('História', playSleepStory));
         stretchBtn.addEventListener('click', () => showPopup('Alongamento', startStretch));
+        yogaBtn.addEventListener('click', () => showPopup('Yoga', startYoga));
         breathBtn.addEventListener('click', () => showPopup('Respiração', startBreathing));
         soundBtn.addEventListener('click', () => showPopup('Sons', playSounds));
         reflectionBtn.addEventListener('click', () => showPopup('Reflexão', dailyReflection));
@@ -196,7 +207,7 @@
         }
 
         function disableButtons(disable) {
-            const buttons = [scanBtn, habitLogBtn, meditationBtn, sleepStoryBtn, stretchBtn, breathBtn, soundBtn, communityBtn, reflectionBtn];
+            const buttons = [scanBtn, habitLogBtn, meditationBtn, sleepStoryBtn, stretchBtn, yogaBtn, breathBtn, soundBtn, communityBtn, reflectionBtn];
             buttons.forEach(btn => btn.disabled = disable);
         }
 
@@ -238,7 +249,7 @@
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'normal' : bpm > 100 ? 'acelerado, respire fundo' : 'baixo, consulte um médico';
             const diagnosisText = `Diagnóstico: ${diag.text}. Frequência cardíaca: ${bpm} bpm, ${bpmContext}. Conselho: ${diag.advice}. Sugestão: ${diag.suggestion}.`;
-            narratorAudio.src = `/assets/narrator-scan.mp3`; // Arquivo único para scanner
+            narratorAudio.src = `/assets/narrador-scan.mp3`;
             narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `
                 <h3 class="text-lg font-semibold mb-2">🧠 Diagnóstico Quântico</h3>
@@ -284,13 +295,16 @@
 
         function startMeditation() {
             const type = meditationType.value;
-            const durations = { stress: 5, relaxation: 10, nervousness: 5, anger: 5 };
+            const durations = { stress: 5, anxiety: 5, focus: 10, relaxation: 10, nervousness: 5, anger: 5, gratitude: 5 };
             const duration = durations[type];
             const audioFiles = {
                 stress: '/assets/meditacao-estresse.mp3',
+                anxiety: '/assets/meditacao-ansiedade.mp3',
+                focus: '/assets/meditacao-foco.mp3',
                 relaxation: '/assets/meditacao-relaxamento.mp3',
                 nervousness: '/assets/meditacao-nervosismo.mp3',
-                anger: '/assets/meditacao-raiva.mp3'
+                anger: '/assets/meditacao-raiva.mp3',
+                gratitude: '/assets/meditacao-gratidao.mp3'
             };
             narratorAudio.src = audioFiles[type];
             narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
@@ -310,16 +324,17 @@
 
         function playSleepStory() {
             const stories = {
-                'Floresta Tranquila': 'Imagine-se em uma floresta serena. A luz da lua brilha através das árvores, e você ouve o suave murmúrio de um riacho. Sinta a brisa fresca em sua pele enquanto caminha por um caminho coberto de musgo. Deite-se sobre uma cama de folhas macias, deixando os sons da natureza guiá-lo para um sono profundo...',
-                'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial até adormecer...'
+                'Floresta Tranquila': 'Imagine-se em uma floresta serena. A luz da lua brilha através das árvores, e você ouve o suave murmúrio de um riacho. Sinta a brisa fresca em sua pele enquanto caminha por um caminho coberto de musgo. Deite-se sobre uma cama de folhas macias, deixando os sons da natureza guiá-lo para um sono profundo. Respire lentamente enquanto a tranquilidade o envolve por mais 10 minutos...',
+                'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial por mais 10 minutos até adormecer completamente...'
             };
             const selected = Object.keys(stories)[Math.floor(Math.random() * 2)];
-            narratorAudio.src = `/assets/narrador-historia-${selected.toLowerCase().replace(' ', '-')}.mp3`; // Narrador específico
+            const sound = sleepSound.value;
+            narratorAudio.src = `/assets/narrador-historia-${selected.toLowerCase().replace(' ', '-')}.mp3`;
             narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.83;
+                progressWidth += 0.67; // 150s (15 min)
                 document.getElementById('story-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
@@ -327,21 +342,22 @@
                     narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Durma bem.</p>';
                 }
-            }, 1000);
+            }, 1500); // Ajustado para 15 min
         }
 
         function startStretch() {
-            narratorAudio.src = '/assets/narrador-alongamento.mp3'; // Narrador para alongamento
+            narratorAudio.src = '/assets/narrador-alongamento.mp3';
             narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
-            popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 5 min. Siga os passos:</p>
+            popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 10 min. Siga os passos:</p>
                 <ol class="mt-2 text-gray-300">
-                    <li>1 min: Estique os braços acima da cabeça, respire fundo.</li>
-                    <li>2 min: Incline-se para os lados, mantendo as pernas firmes.</li>
-                    <li>2 min: Toque os pés com as mãos, relaxando o tronco.</li>
+                    <li>2 min: Estique os braços acima da cabeça, respire fundo.</li>
+                    <li>3 min: Incline-se para os lados, mantendo as pernas firmes.</li>
+                    <li>3 min: Toque os pés com as mãos, relaxando o tronco.</li>
+                    <li>2 min: Alongue as pernas, sentado, com respiração lenta.</li>
                 </ol><div class="progress-bar"><div id="stretch-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.33;
+                progressWidth += 0.17; // 600s (10 min)
                 document.getElementById('stretch-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
@@ -349,7 +365,30 @@
                     narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>';
                 }
-            }, 3000);
+            }, 6000); // Ajustado para 10 min
+        }
+
+        function startYoga() {
+            narratorAudio.src = '/assets/narrador-yoga.mp3';
+            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
+            popupContent.innerHTML = `<p class="fade-in">Iniciando yoga leve de 10 min. Siga os passos:</p>
+                <ol class="mt-2 text-gray-300">
+                    <li>2 min: Postura da montanha, respire fundo.</li>
+                    <li>3 min: Postura do gato-vaca, mova-se suavemente.</li>
+                    <li>3 min: Postura da criança, relaxe o corpo.</li>
+                    <li>2 min: Alongamento lateral, inspire e expire.</li>
+                </ol><div class="progress-bar"><div id="yoga-progress" class="progress"></div></div>`;
+            let progressWidth = 0;
+            const interval = setInterval(() => {
+                progressWidth += 0.17; // 600s (10 min)
+                document.getElementById('yoga-progress').style.width = `${progressWidth}%`;
+                if (progressWidth >= 100) {
+                    clearInterval(interval);
+                    narratorAudio.pause();
+                    narratorAudio.currentTime = 0;
+                    popupContent.innerHTML += '<p class="fade-in mt-2">Yoga concluído! Sinta-se renovado.</p>';
+                }
+            }, 6000); // Ajustado para 10 min
         }
 
         function startBreathing() {
@@ -406,10 +445,13 @@
             const questions = [
                 "O que te fez sorrir hoje?",
                 "Qual foi seu maior aprendizado hoje?",
-                "Pelo que você é grato agora?"
+                "Pelo que você é grato agora?",
+                "Como você lidou com um desafio hoje?",
+                "O que te trouxe paz hoje?"
             ];
             const selected = questions[Math.floor(Math.random() * questions.length)];
-            popupContent.innerHTML = `<p class="fade-in">Pergunta do Dia: <strong>${selected}</strong></p><p class="mt-2">Reflita por um momento e anote sua resposta.</p>`;
+            const response = prompt(`Pergunta do Dia: ${selected}\nAnote sua resposta:`);
+            popupContent.innerHTML = `<p class="fade-in">Pergunta do Dia: <strong>${selected}</strong></p><p class="mt-2">Sua resposta: ${response || 'Nenhuma resposta registrada.'}</p>`;
         }
 
         function joinCommunity() {
