@@ -16,25 +16,25 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .header { position: sticky; top: 0; width: 100%; height: 40px; background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(10px); padding: 5px 10px; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
         .header img { height: 25px; width: auto; }
-        .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; transition: color 0.3s; }
-        .nav-btn:hover { color: #00ffcc; }
+        .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; transition: color 0.1s; }
+        .nav-btn:hover { color: #2980b9; }
         .content { margin-top: 50px; padding: 10px; }
-        .card { background: linear-gradient(45deg, #0a1f2e, #00ccff); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); backdrop-filter: blur(8px); position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 255, 204, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; }
+        .card { background: linear-gradient(45deg, #0a1f2e, #27ae60); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(39, 174, 96, 0.5); backdrop-filter: blur(8px); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(41, 128, 185, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; }
         @keyframes pulse { 0% { transform: scale(0); } 100% { transform: scale(1.5); } }
-        .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #00ffcc); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #00ffcc; transition: all 0.2s ease; width: auto; }
-        .futuristic-btn:hover { transform: translateY(-3px) scale(1.1); box-shadow: 0 0 15px #00ffcc; }
+        .futuristic-btn { background: linear-gradient(45deg, #27ae60, #2980b9); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #2980b9; transition: all 0.1s ease; width: auto; cursor: pointer; }
+        .futuristic-btn:hover { transform: translateY(-3px) scale(1.15); box-shadow: 0 0 20px #2980b9; cursor: pointer; }
         .futuristic-btn:active { transform: scale(0.9); }
         .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress { height: 6px; background: #00ffcc; width: 0; transition: width 0.3s ease; }
+        .progress { height: 6px; background: #2980b9; width: 0; transition: width 0.3s ease; }
         .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
-        video { width: 100%; max-width: 320px; border: 2px solid #00ffcc; border-radius: 10px; }
-        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: linear-gradient(135deg, #0a1f2e, #00ccff); border: 2px solid #00ffcc; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #00ffcc; z-index: 30; }
+        video { width: 100%; max-width: 320px; border: 2px solid #2980b9; border-radius: 10px; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: linear-gradient(135deg, #0a1f2e, #27ae60); border: 2px solid #2980b9; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #2980b9; z-index: 30; }
         .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .popup-header h3 { font-size: 1.2rem; color: #00ffcc; }
-        .popup-controls button { background: none; border: none; color: #00ffcc; font-size: 1.2rem; cursor: pointer; transition: color 0.3s; }
+        .popup-header h3 { font-size: 1.2rem; color: #2980b9; }
+        .popup-controls button { background: none; border: none; color: #2980b9; font-size: 1.2rem; cursor: pointer; transition: color 0.1s; }
         .popup-controls button:hover { color: #fff; }
         .popup-content { color: #e5e7eb; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 25; }
@@ -63,18 +63,20 @@
             <h2 class="text-xl font-semibold mb-2">Ciclo Diário</h2>
             <p class="text-gray-300 mb-4">Monitore hábitos e progresso.</p>
             <div id="daily-suggestions" class="mt-2">
-                <p class="text-gray-400">Escanear para sugestões!</p>
+                <p class="text-gray-400">Escanear para sugestões! Reflexão: Conecte-se consigo mesmo.</p>
             </div>
             <button id="habit-log-btn" class="futuristic-btn mt-2">Registrar Hábito</button>
             <div id="progress-display" class="mt-2 text-gray-300 hidden">Progresso: 0 hábitos</div>
+            <button id="reflection-btn" class="futuristic-btn mt-2">Pergunta do Dia</button>
         </div>
         <div class="card fade-in">
             <h2 class="text-xl font-semibold mb-2">Bem-Estar e Relaxamento</h2>
             <p class="text-gray-300 mb-4">Ferramentas para estresse e sono.</p>
             <select id="meditation-type" class="futuristic-btn mb-2 text-left p-2 bg-transparent border-none">
-                <option value="anxiety">Meditação para Ansiedade</option>
-                <option value="insomnia">Meditação para Insônia</option>
-                <option value="focus">Meditação para Foco</option>
+                <option value="stress">Meditação para Estresse</option>
+                <option value="relaxation">Meditação para Relaxamento</option>
+                <option value="nervousness">Meditação para Nervosismo</option>
+                <option value="anger">Meditação para Raiva</option>
             </select>
             <button id="meditation-btn" class="futuristic-btn">🧘 Iniciar Meditação</button>
             <button id="sleep-story-btn" class="futuristic-btn mt-2">🌙 História para Dormir</button>
@@ -103,11 +105,12 @@
     </div>
 
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+    <audio id="narrator-audio" style="display:none;"></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
         particlesJS('particles-js', {
-            particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: '#00ffcc' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#00ffcc', opacity: 0.2, width: 0.8 }, move: { enable: true, speed: 1.2 } },
+            particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: '#2980b9' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#2980b9', opacity: 0.2, width: 0.8 }, move: { enable: true, speed: 1.2 } },
             interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
         });
 
@@ -121,6 +124,7 @@
         const popupContent = document.getElementById('popup-content');
         const closeBtn = document.getElementById('close-btn');
         const minimizeBtn = document.getElementById('minimize-btn');
+        const narratorAudio = document.getElementById('narrator-audio');
 
         const video = document.getElementById('video');
         const scanBtn = document.getElementById('scan-btn');
@@ -136,6 +140,7 @@
         const communityBtn = document.getElementById('community-btn');
         const menuBtn = document.getElementById('menu-btn');
         const meditationType = document.getElementById('meditation-type');
+        const reflectionBtn = document.getElementById('reflection-btn');
         let cameraInitialized = false;
 
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -160,6 +165,7 @@
         stretchBtn.addEventListener('click', () => showPopup('Alongamento', startStretch));
         breathBtn.addEventListener('click', () => showPopup('Respiração', startBreathing));
         soundBtn.addEventListener('click', () => showPopup('Sons', playSounds));
+        reflectionBtn.addEventListener('click', () => showPopup('Reflexão', dailyReflection));
         closeBtn.addEventListener('click', hidePopup);
         minimizeBtn.addEventListener('click', minimizePopup);
 
@@ -176,27 +182,27 @@
             popup.style.display = 'none';
             overlay.style.display = 'none';
             popupContent.innerHTML = '';
+            narratorAudio.pause();
+            narratorAudio.currentTime = 0;
             disableButtons(false);
         }
 
         function minimizePopup() {
             popup.style.display = 'none';
             alert(`Janela "${popupTitle.textContent}" minimizada.`);
+            narratorAudio.pause();
+            narratorAudio.currentTime = 0;
             disableButtons(false);
         }
 
         function disableButtons(disable) {
-            const buttons = [scanBtn, habitLogBtn, meditationBtn, sleepStoryBtn, stretchBtn, breathBtn, soundBtn, communityBtn];
+            const buttons = [scanBtn, habitLogBtn, meditationBtn, sleepStoryBtn, stretchBtn, breathBtn, soundBtn, communityBtn, reflectionBtn];
             buttons.forEach(btn => btn.disabled = disable);
         }
 
         async function startScan() {
             popupContent.innerHTML = '<p class="fade-in text-white">Escanando...<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>';
-
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
             const progress = document.getElementById('progress');
-
             let progressWidth = 0;
             const interval = setInterval(() => {
                 progressWidth += 20;
@@ -206,13 +212,12 @@
                     const emotion = simulateEmotion();
                     const bpm = simulateHeartRate();
                     displayScanResult(emotion, bpm);
-                    updateDaily(emotion, bpm);
                 }
             }, 400);
         }
 
         function simulateEmotion() {
-            const emotions = ['happiness', 'sadness', 'anger', 'neutral', 'fear'];
+            const emotions = ['happiness', 'sadness', 'anger', 'neutral', 'fear', 'stress', 'nervousness'];
             return emotions[Math.floor(Math.random() * emotions.length)];
         }
 
@@ -222,20 +227,25 @@
 
         function displayScanResult(emotion, bpm) {
             const diagnosisMap = {
-                happiness: { text: "Energia positiva! 🌟", suggestion: "Respire fundo e caminhe." },
-                sadness: { text: "Energia baixa… reabasteça! ✈️", suggestion: "Tente meditação ou diário." },
-                anger: { text: "Tensão… vulcão ativo! 🌋", suggestion: "Faça respiração 4-4-4." },
-                neutral: { text: "Campo neutro… equilíbrio! ⚖️", suggestion: "Alongue-se ou medite." },
-                fear: { text: "Mente em órbita… desacelere! 🏎️", suggestion: "Ouça sons relaxantes." }
+                happiness: { text: "Energia alta e positiva! 🌟", advice: "Continue cultivando alegria com atividades leves.", suggestion: "Caminhada ou meditação de gratidão." },
+                sadness: { text: "Energia baixa detectada… 🌧️", advice: "Procure um momento de introspecção.", suggestion: "Diário ou meditação para relaxamento." },
+                anger: { text: "Tensão elevada! 🌋", advice: "Respire profundamente para se acalmar.", suggestion: "Técnica 4-4-4 ou sons relaxantes." },
+                neutral: { text: "Equilíbrio emocional! ⚖️", advice: "Mantenha o ritmo com cuidado.", suggestion: "Alongamento ou respiração." },
+                fear: { text: "Ansiedade presente… 🏎️", advice: "Desacelere e foque no presente.", suggestion: "Meditação para nervosismo." },
+                stress: { text: "Estresse elevado! 📈", advice: "Relaxe para restaurar o equilíbrio.", suggestion: "Meditação para estresse." },
+                nervousness: { text: "Nervosismo detectado! 😰", advice: "Centre-se com exercícios de respiração.", suggestion: "Meditação para nervosismo." }
             };
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
-            const bpmContext = bpm >= 60 && bpm <= 100 ? 'estável' : bpm > 100 ? 'alta, relaxe' : 'baixa, consulte um médico';
-
+            const bpmContext = bpm >= 60 && bpm <= 100 ? 'normal' : bpm > 100 ? 'acelerado, respire fundo' : 'baixo, consulte um médico';
+            narratorAudio.src = `/assets/narrator-scan-${emotion}.mp3`; // Narrador específico por emoção
+            narratorAudio.play();
             popupContent.innerHTML = `
-                <h3 class="text-lg font-semibold mb-2">🧠 Estado Quântico</h3>
+                <h3 class="text-lg font-semibold mb-2">🧠 Diagnóstico Quântico</h3>
                 <p class="fade-in">${diag.text}</p>
-                <h3 class="text-lg font-semibold mt-2 mb-2">💓 Frequência</h3>
+                <h3 class="text-lg font-semibold mt-2 mb-2">💓 Frequência Cardíaca</h3>
                 <p class="fade-in">Frequência: ${bpm} bpm, ${bpmContext}.</p>
+                <h3 class="text-lg font-semibold mt-2 mb-2">🩺 Conselho</h3>
+                <p class="fade-in text-gray-300">${diag.advice}</p>
                 <h3 class="text-lg font-semibold mt-2 mb-2">🌌 Sugestão</h3>
                 <p class="fade-in text-gray-300">${diag.suggestion}</p>
                 <button id="retry-btn" class="futuristic-btn mt-2">🔄 Reiniciar</button>
@@ -251,7 +261,9 @@
                 sadness: "Medite às 18h.",
                 anger: "Respire às 15h.",
                 neutral: bpm > 90 ? "Relaxe às 17h." : "Caminhe às 16h.",
-                fear: "Calma às 16h."
+                fear: "Calma às 16h.",
+                stress: "Relaxe às 17h.",
+                nervousness: "Respire às 15h."
             };
             dailySuggestions.innerHTML = `<p class="text-gray-300">${suggestions[emotion] || 'Monitore mais!'}</p>`;
         }
@@ -271,10 +283,28 @@
 
         function startMeditation() {
             const type = meditationType.value;
-            const durations = { anxiety: 5, insomnia: 10, focus: 15 };
+            const durations = { stress: 5, relaxation: 10, nervousness: 5, anger: 5 };
             const duration = durations[type];
-            popupContent.innerHTML = `<p class="fade-in">Iniciando ${duration} min de ${type === 'anxiety' ? 'respiração para ansiedade' : type === 'insomnia' ? 'relaxamento para insônia' : 'mindfulness para foco'}. Feche os olhos...</p>`;
-            setTimeout(() => popupContent.innerHTML += '<p class="fade-in mt-2">Meditação concluída! Relaxe.</p>', duration * 1000);
+            const audioFiles = {
+                stress: '/assets/stress-meditation.mp3',
+                relaxation: '/assets/relaxamento.mp3',
+                nervousness: '/assets/nervousness-meditation.mp3',
+                anger: '/assets/anger-meditation.mp3'
+            };
+            narratorAudio.src = audioFiles[type];
+            narratorAudio.play();
+            popupContent.innerHTML = `<p class="fade-in">Iniciando ${duration} min de meditação para ${type}...</p><div class="progress-bar"><div id="meditation-progress" class="progress"></div></div>`;
+            let progressWidth = 0;
+            const interval = setInterval(() => {
+                progressWidth += 100 / (duration * 10); // 10s por 1%
+                document.getElementById('meditation-progress').style.width = `${progressWidth}%`;
+                if (progressWidth >= 100) {
+                    clearInterval(interval);
+                    narratorAudio.pause();
+                    narratorAudio.currentTime = 0;
+                    popupContent.innerHTML += '<p class="fade-in mt-2">Meditação concluída! Sinta a paz.</p>';
+                }
+            }, 1000);
         }
 
         function playSleepStory() {
@@ -283,6 +313,8 @@
                 'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial até adormecer...'
             };
             const selected = Object.keys(stories)[Math.floor(Math.random() * 2)];
+            narratorAudio.src = `/assets/narrator-story-${selected.toLowerCase().replace(' ', '-')}.mp3`; // Narrador para história
+            narratorAudio.play();
             popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
@@ -290,12 +322,16 @@
                 document.getElementById('story-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
+                    narratorAudio.pause();
+                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Durma bem.</p>';
                 }
             }, 1000);
         }
 
         function startStretch() {
+            narratorAudio.src = '/assets/narrator-stretch.mp3'; // Narrador para alongamento
+            narratorAudio.play();
             popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 5 min. Siga os passos:</p>
                 <ol class="mt-2 text-gray-300">
                     <li>1 min: Estique os braços acima da cabeça, respire fundo.</li>
@@ -308,6 +344,8 @@
                 document.getElementById('stretch-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
+                    narratorAudio.pause();
+                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>';
                 }
             }, 3000);
@@ -329,8 +367,14 @@
 
         function playSounds() {
             if (!soundPlaying) {
-                const sounds = ['Chuva', 'Ondas do Mar', 'Ruído Branco'];
-                const selected = sounds[Math.floor(Math.random() * sounds.length)];
+                const sounds = {
+                    'Chuva': '/assets/blackgraund-music.mp3',
+                    'Ondas do Mar': '/assets/relaxamento.mp3',
+                    'Ruído Branco': '/assets/stress-meditation.mp3'
+                };
+                const selected = Object.keys(sounds)[Math.floor(Math.random() * 3)];
+                narratorAudio.src = sounds[selected];
+                narratorAudio.play();
                 popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}.<button id="pause-btn" class="futuristic-btn mt-2">⏸ Pausar</button></p><div class="progress-bar"><div id="sound-progress" class="progress"></div></div>`;
                 let progressWidth = 0;
                 const interval = setInterval(() => {
@@ -338,6 +382,8 @@
                     document.getElementById('sound-progress').style.width = `${progressWidth}%`;
                     if (progressWidth >= 100) {
                         clearInterval(interval);
+                        narratorAudio.pause();
+                        narratorAudio.currentTime = 0;
                         popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
                         soundPlaying = false;
                     }
@@ -345,12 +391,24 @@
                 soundPlaying = true;
                 document.getElementById('pause-btn').addEventListener('click', () => {
                     clearInterval(interval);
+                    narratorAudio.pause();
+                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
                     soundPlaying = false;
                 });
             } else {
                 popupContent.innerHTML = '<p class="fade-in text-red-500">Som já em execução. Pause primeiro.</p>';
             }
+        }
+
+        function dailyReflection() {
+            const questions = [
+                "O que te fez sorrir hoje?",
+                "Qual foi seu maior aprendizado hoje?",
+                "Pelo que você é grato agora?"
+            ];
+            const selected = questions[Math.floor(Math.random() * questions.length)];
+            popupContent.innerHTML = `<p class="fade-in">Pergunta do Dia: <strong>${selected}</strong></p><p class="mt-2">Reflita por um momento e anote sua resposta.</p>`;
         }
 
         function joinCommunity() {
