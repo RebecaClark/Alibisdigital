@@ -17,24 +17,24 @@
         .header { position: sticky; top: 0; width: 100%; height: 40px; background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(10px); padding: 5px 10px; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
         .header img { height: 25px; width: auto; }
         .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; transition: color 0.1s; }
-        .nav-btn:hover { color: #2980b9; }
+        .nav-btn:hover { color: #3498db; }
         .content { margin-top: 50px; padding: 10px; }
-        .card { background: linear-gradient(45deg, #0a1f2e, #27ae60); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(39, 174, 96, 0.5); backdrop-filter: blur(8px); position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(41, 128, 185, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; }
+        .card { background: linear-gradient(45deg, #0a1f2e, #2ecc71); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 0 15px rgba(46, 204, 113, 0.5); backdrop-filter: blur(8px); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; }
         @keyframes pulse { 0% { transform: scale(0); } 100% { transform: scale(1.5); } }
-        .futuristic-btn { background: linear-gradient(45deg, #27ae60, #2980b9); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #2980b9; transition: all 0.1s ease; width: auto; cursor: pointer; }
-        .futuristic-btn:hover { transform: translateY(-3px) scale(1.15); box-shadow: 0 0 20px #2980b9; cursor: pointer; }
+        .futuristic-btn { background: linear-gradient(45deg, #2ecc71, #3498db); color: #fff; padding: 8px 15px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 0 8px #3498db; transition: all 0.1s ease; width: auto; cursor: pointer; }
+        .futuristic-btn:hover { transform: translateY(-3px) scale(1.15); box-shadow: 0 0 20px #3498db; cursor: pointer; }
         .futuristic-btn:active { transform: scale(0.9); }
         .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress { height: 6px; background: #2980b9; width: 0; transition: width 0.3s ease; }
+        .progress { height: 6px; background: #3498db; width: 0; transition: width 0.3s ease; }
         .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
-        video { width: 100%; max-width: 320px; border: 2px solid #2980b9; border-radius: 10px; }
-        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: linear-gradient(135deg, #0a1f2e, #27ae60); border: 2px solid #2980b9; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #2980b9; z-index: 30; }
+        video { width: 100%; max-width: 320px; border: 2px solid #3498db; border-radius: 10px; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; background: linear-gradient(135deg, #0a1f2e, #2ecc71); border: 2px solid #3498db; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #3498db; z-index: 30; }
         .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .popup-header h3 { font-size: 1.2rem; color: #2980b9; }
-        .popup-controls button { background: none; border: none; color: #2980b9; font-size: 1.2rem; cursor: pointer; transition: color 0.1s; }
+        .popup-header h3 { font-size: 1.2rem; color: #3498db; }
+        .popup-controls button { background: none; border: none; color: #3498db; font-size: 1.2rem; cursor: pointer; transition: color 0.1s; }
         .popup-controls button:hover { color: #fff; }
         .popup-content { color: #e5e7eb; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 25; }
@@ -110,7 +110,7 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
         particlesJS('particles-js', {
-            particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: '#2980b9' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#2980b9', opacity: 0.2, width: 0.8 }, move: { enable: true, speed: 1.2 } },
+            particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: '#3498db' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#3498db', opacity: 0.2, width: 0.8 }, move: { enable: true, speed: 1.2 } },
             interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
         });
 
@@ -237,8 +237,9 @@
             };
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'normal' : bpm > 100 ? 'acelerado, respire fundo' : 'baixo, consulte um médico';
-            narratorAudio.src = `/assets/narrator-scan-${emotion}.mp3`; // Narrador específico por emoção
-            narratorAudio.play();
+            const diagnosisText = `Diagnóstico: ${diag.text}. Frequência cardíaca: ${bpm} bpm, ${bpmContext}. Conselho: ${diag.advice}. Sugestão: ${diag.suggestion}.`;
+            narratorAudio.src = `/assets/narrator-scan.mp3`; // Arquivo único para scanner
+            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `
                 <h3 class="text-lg font-semibold mb-2">🧠 Diagnóstico Quântico</h3>
                 <p class="fade-in">${diag.text}</p>
@@ -286,17 +287,17 @@
             const durations = { stress: 5, relaxation: 10, nervousness: 5, anger: 5 };
             const duration = durations[type];
             const audioFiles = {
-                stress: '/assets/stress-meditation.mp3',
-                relaxation: '/assets/relaxamento.mp3',
-                nervousness: '/assets/nervousness-meditation.mp3',
-                anger: '/assets/anger-meditation.mp3'
+                stress: '/assets/meditacao-estresse.mp3',
+                relaxation: '/assets/meditacao-relaxamento.mp3',
+                nervousness: '/assets/meditacao-nervosismo.mp3',
+                anger: '/assets/meditacao-raiva.mp3'
             };
             narratorAudio.src = audioFiles[type];
-            narratorAudio.play();
+            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `<p class="fade-in">Iniciando ${duration} min de meditação para ${type}...</p><div class="progress-bar"><div id="meditation-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 100 / (duration * 10); // 10s por 1%
+                progressWidth += 100 / (duration * 10);
                 document.getElementById('meditation-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
@@ -313,12 +314,12 @@
                 'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial até adormecer...'
             };
             const selected = Object.keys(stories)[Math.floor(Math.random() * 2)];
-            narratorAudio.src = `/assets/narrator-story-${selected.toLowerCase().replace(' ', '-')}.mp3`; // Narrador para história
-            narratorAudio.play();
+            narratorAudio.src = `/assets/narrador-historia-${selected.toLowerCase().replace(' ', '-')}.mp3`; // Narrador específico
+            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.83; // 120s total
+                progressWidth += 0.83;
                 document.getElementById('story-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
@@ -330,8 +331,8 @@
         }
 
         function startStretch() {
-            narratorAudio.src = '/assets/narrator-stretch.mp3'; // Narrador para alongamento
-            narratorAudio.play();
+            narratorAudio.src = '/assets/narrador-alongamento.mp3'; // Narrador para alongamento
+            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 5 min. Siga os passos:</p>
                 <ol class="mt-2 text-gray-300">
                     <li>1 min: Estique os braços acima da cabeça, respire fundo.</li>
@@ -340,7 +341,7 @@
                 </ol><div class="progress-bar"><div id="stretch-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.33; // 300s total
+                progressWidth += 0.33;
                 document.getElementById('stretch-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
@@ -362,23 +363,23 @@
                     clearInterval(interval);
                     popupContent.innerHTML += '<p class="fade-in mt-2">Respiração concluída! Tente novamente ou relaxe.</p>';
                 }
-            }, 12000); // 12s por ciclo (4+4+4)
+            }, 12000);
         }
 
         function playSounds() {
             if (!soundPlaying) {
                 const sounds = {
-                    'Chuva': '/assets/blackgraund-music.mp3',
-                    'Ondas do Mar': '/assets/relaxamento.mp3',
-                    'Ruído Branco': '/assets/stress-meditation.mp3'
+                    'Chuva': '/assets/musica-fundo.mp3',
+                    'Ondas do Mar': '/assets/meditacao-relaxamento.mp3',
+                    'Ruído Branco': '/assets/meditacao-estresse.mp3'
                 };
                 const selected = Object.keys(sounds)[Math.floor(Math.random() * 3)];
                 narratorAudio.src = sounds[selected];
-                narratorAudio.play();
+                narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
                 popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}.<button id="pause-btn" class="futuristic-btn mt-2">⏸ Pausar</button></p><div class="progress-bar"><div id="sound-progress" class="progress"></div></div>`;
                 let progressWidth = 0;
                 const interval = setInterval(() => {
-                    progressWidth += 3.33; // 30s total
+                    progressWidth += 3.33;
                     document.getElementById('sound-progress').style.width = `${progressWidth}%`;
                     if (progressWidth >= 100) {
                         clearInterval(interval);
