@@ -38,6 +38,7 @@
         .popup-controls button:hover { color: #fff; }
         .popup-content { color: #e5e7eb; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 25; }
+        .narration-controls { display: flex; gap: 10px; margin-top: 10px; }
         @media (max-width: 768px) { .header { height: 35px; padding: 3px 8px; } .header img { height: 20px; } .content { margin-top: 45px; } .futuristic-btn { padding: 6px 12px; font-size: 0.7rem; } }
     </style>
 </head>
@@ -122,7 +123,6 @@
     </div>
 
     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
-    <audio id="narrator-audio" style="display:none;"></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
@@ -141,7 +141,6 @@
         const popupContent = document.getElementById('popup-content');
         const closeBtn = document.getElementById('close-btn');
         const minimizeBtn = document.getElementById('minimize-btn');
-        const narratorAudio = document.getElementById('narrator-audio');
 
         const video = document.getElementById('video');
         const scanBtn = document.getElementById('scan-btn');
@@ -162,6 +161,7 @@
         const reflectionBtn = document.getElementById('reflection-btn');
         let cameraInitialized = false;
 
+        // Inicialização da câmera
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
@@ -175,6 +175,7 @@
                 scanResult.innerHTML = '<p class="fade-in text-red-500">❌ Câmera não acessada. Verifique permissões.</p>';
             });
 
+        // Listeners de eventos
         scanBtn.addEventListener('click', () => showPopup('Escanear', startScan));
         menuBtn.addEventListener('click', () => alert('Menu (simulação)'));
         communityBtn.addEventListener('click', () => showPopup('Comunidade', joinCommunity));
@@ -189,6 +190,29 @@
         closeBtn.addEventListener('click', hidePopup);
         minimizeBtn.addEventListener('click', minimizePopup);
 
+        // Função para narrar texto com TTS
+        function narrateText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Narração não disponível neste navegador.');
+            }
+        }
+
+        // Função para limpar texto antes da narração
+        function cleanTextForNarration(text) {
+            return text
+                .replace(/🌟/g, 'sorriso')
+                .replace(/🌧️/g, 'chuva')
+                .replace(/🌋/g, 'vulcão')
+                .replace(/⚖️/g, 'balança')
+                .replace(/🏎️/g, 'carro de corrida')
+                .replace(/📈/g, 'gráfico subindo')
+                .replace(/😰/g, 'rosto ansioso');
+        }
+
+        // Funções de popup
         function showPopup(title, action) {
             popupTitle.textContent = title;
             popup.style.display = 'block';
@@ -202,16 +226,14 @@
             popup.style.display = 'none';
             overlay.style.display = 'none';
             popupContent.innerHTML = '';
-            narratorAudio.pause();
-            narratorAudio.currentTime = 0;
+            speechSynthesis.cancel(); // Para qualquer narração em andamento
             disableButtons(false);
         }
 
         function minimizePopup() {
             popup.style.display = 'none';
             alert(`Janela "${popupTitle.textContent}" minimizada.`);
-            narratorAudio.pause();
-            narratorAudio.currentTime = 0;
+            speechSynthesis.cancel();
             disableButtons(false);
         }
 
@@ -220,6 +242,7 @@
             buttons.forEach(btn => btn.disabled = disable);
         }
 
+        // Função de escaneamento
         async function startScan() {
             popupContent.innerHTML = '<p class="fade-in text-white">Escanando...<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>';
             const progress = document.getElementById('progress');
@@ -242,7 +265,7 @@
         }
 
         function simulateHeartRate() {
-            return Math.round(60 + Math.random() * 40);
+            return Math.round(60 + Math.random() * 40));
         }
 
         function displayScanResult(emotion, bpm) {
@@ -258,8 +281,8 @@
             const diag = diagnosisMap[emotion] || diagnosisMap.neutral;
             const bpmContext = bpm >= 60 && bpm <= 100 ? 'normal' : bpm > 100 ? 'acelerado, respire fundo' : 'baixo, consulte um médico';
             const diagnosisText = `Diagnóstico: ${diag.text}. Frequência cardíaca: ${bpm} bpm, ${bpmContext}. Conselho: ${diag.advice}. Sugestão: ${diag.suggestion}.`;
-            narratorAudio.src = `/assets/narrador-scan.mp3`;
-            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
+            const cleanText = cleanTextForNarration(diagnosisText);
+
             popupContent.innerHTML = `
                 <h3 class="text-lg font-semibold mb-2">🧠 Diagnóstico Quântico</h3>
                 <p class="fade-in">${diag.text}</p>
@@ -269,8 +292,24 @@
                 <p class="fade-in text-gray-300">${diag.advice}</p>
                 <h3 class="text-lg font-semibold mt-2 mb-2">🌌 Sugestão</h3>
                 <p class="fade-in text-gray-300">${diag.suggestion}</p>
-                <button id="retry-btn" class="futuristic-btn mt-2">🔄 Reiniciar</button>
+                <div class="narration-controls">
+                    <button id="play-narration" class="futuristic-btn">🔊 Ouvir Diagnóstico</button>
+                    <button id="pause-narration" class="futuristic-btn">⏸ Pausar</button>
+                    <button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button>
+                </div>
+                <button id="retry-btn" class="futuristic-btn mt-2">🔄 Reiniciar Scanner</button>
             `;
+
+            if (!('speechSynthesis' in window)) {
+                popupContent.innerHTML += '<p class="text-red-500">Narração não disponível neste navegador.</p>';
+            }
+
+            document.getElementById('play-narration').addEventListener('click', () => narrateText(cleanText));
+            document.getElementById('pause-narration').addEventListener('click', () => speechSynthesis.pause());
+            document.getElementById('restart-narration').addEventListener('click', () => {
+                speechSynthesis.cancel();
+                narrateText(cleanText);
+            });
             document.getElementById('retry-btn').addEventListener('click', () => showPopup('Escanear', startScan));
         }
 
@@ -306,17 +345,6 @@
             const type = meditationType.value;
             const durations = { stress: 5, anxiety: 5, focus: 10, relaxation: 10, nervousness: 5, anger: 5, gratitude: 5 };
             const duration = durations[type];
-            const audioFiles = {
-                stress: '/assets/meditacao-estresse.mp3',
-                anxiety: '/assets/meditacao-ansiedade.mp3',
-                focus: '/assets/meditacao-foco.mp3',
-                relaxation: '/assets/meditacao-relaxamento.mp3',
-                nervousness: '/assets/meditacao-nervosismo.mp3',
-                anger: '/assets/meditacao-raiva.mp3',
-                gratitude: '/assets/meditacao-gratidao.mp3'
-            };
-            narratorAudio.src = audioFiles[type];
-            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
             popupContent.innerHTML = `<p class="fade-in">Iniciando ${duration} min de meditação para ${type}...</p><div class="progress-bar"><div id="meditation-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
@@ -324,8 +352,6 @@
                 document.getElementById('meditation-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
-                    narratorAudio.pause();
-                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Meditação concluída! Sinta a paz.</p>';
                 }
             }, 1000);
@@ -337,67 +363,77 @@
                 'Viagem às Estrelas': 'Você está em uma nave espacial, flutuando entre estrelas cintilantes. O silêncio do espaço é quebrado apenas pelo zumbido suave dos motores. Veja galáxias girando ao seu redor, e sinta-se leve enquanto a gravidade desaparece. Deixe-se levar por essa jornada celestial por mais 10 minutos até adormecer completamente...'
             };
             const selected = Object.keys(stories)[Math.floor(Math.random() * 2)];
-            const sound = sleepSound.value;
-            narratorAudio.src = `/assets/narrador-historia-${selected.toLowerCase().replace(' ', '-')}.mp3`;
-            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
-            popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
+            const cleanText = cleanTextForNarration(stories[selected]);
+            popupContent.innerHTML = `<h3 class="text-lg font-semibold mb-2">${selected}</h3><p class="fade-in">${stories[selected]}</p><div class="narration-controls"><button id="play-narration" class="futuristic-btn">🔊 Ouvir História</button><button id="pause-narration" class="futuristic-btn">⏸ Pausar</button><button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button></div><div class="progress-bar"><div id="story-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.67; // 150s (15 min)
+                progressWidth += 0.67;
                 document.getElementById('story-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
-                    narratorAudio.pause();
-                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">História concluída! Durma bem.</p>';
                 }
-            }, 1500); // Ajustado para 15 min
+            }, 1500);
+            document.getElementById('play-narration').addEventListener('click', () => narrateText(cleanText));
+            document.getElementById('pause-narration').addEventListener('click', () => speechSynthesis.pause());
+            document.getElementById('restart-narration').addEventListener('click', () => {
+                speechSynthesis.cancel();
+                narrateText(cleanText);
+            });
         }
 
         function startStretch() {
-            narratorAudio.src = '/assets/narrador-alongamento.mp3';
-            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
+            const stretchText = "Iniciando alongamento de 10 minutos. Siga os passos: 2 minutos - Estique os braços acima da cabeça, respire fundo. 3 minutos - Incline-se para os lados, mantendo as pernas firmes. 3 minutos - Toque os pés com as mãos, relaxando o tronco. 2 minutos - Alongue as pernas, sentado, com respiração lenta.";
+            const cleanText = cleanTextForNarration(stretchText);
             popupContent.innerHTML = `<p class="fade-in">Iniciando alongamento de 10 min. Siga os passos:</p>
                 <ol class="mt-2 text-gray-300">
                     <li>2 min: Estique os braços acima da cabeça, respire fundo.</li>
                     <li>3 min: Incline-se para os lados, mantendo as pernas firmes.</li>
                     <li>3 min: Toque os pés com as mãos, relaxando o tronco.</li>
                     <li>2 min: Alongue as pernas, sentado, com respiração lenta.</li>
-                </ol><div class="progress-bar"><div id="stretch-progress" class="progress"></div></div>`;
+                </ol><div class="narration-controls"><button id="play-narration" class="futuristic-btn">🔊 Ouvir Instruções</button><button id="pause-narration" class="futuristic-btn">⏸ Pausar</button><button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button></div><div class="progress-bar"><div id="stretch-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.17; // 600s (10 min)
+                progressWidth += 0.17;
                 document.getElementById('stretch-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
-                    narratorAudio.pause();
-                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Alongamento concluído! Sinta-se leve.</p>';
                 }
-            }, 6000); // Ajustado para 10 min
+            }, 6000);
+            document.getElementById('play-narration').addEventListener('click', () => narrateText(cleanText));
+            document.getElementById('pause-narration').addEventListener('click', () => speechSynthesis.pause());
+            document.getElementById('restart-narration').addEventListener('click', () => {
+                speechSynthesis.cancel();
+                narrateText(cleanText);
+            });
         }
 
         function startYoga() {
-            narratorAudio.src = '/assets/narrador-yoga.mp3';
-            narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
+            const yogaText = "Iniciando yoga leve de 10 minutos. Siga os passos: 2 minutos - Postura da montanha, respire fundo. 3 minutos - Postura do gato-vaca, mova-se suavemente. 3 minutos - Postura da criança, relaxe o corpo. 2 minutos - Alongamento lateral, inspire e expire.";
+            const cleanText = cleanTextForNarration(yogaText);
             popupContent.innerHTML = `<p class="fade-in">Iniciando yoga leve de 10 min. Siga os passos:</p>
                 <ol class="mt-2 text-gray-300">
                     <li>2 min: Postura da montanha, respire fundo.</li>
                     <li>3 min: Postura do gato-vaca, mova-se suavemente.</li>
                     <li>3 min: Postura da criança, relaxe o corpo.</li>
                     <li>2 min: Alongamento lateral, inspire e expire.</li>
-                </ol><div class="progress-bar"><div id="yoga-progress" class="progress"></div></div>`;
+                </ol><div class="narration-controls"><button id="play-narration" class="futuristic-btn">🔊 Ouvir Instruções</button><button id="pause-narration" class="futuristic-btn">⏸ Pausar</button><button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button></div><div class="progress-bar"><div id="yoga-progress" class="progress"></div></div>`;
             let progressWidth = 0;
             const interval = setInterval(() => {
-                progressWidth += 0.17; // 600s (10 min)
+                progressWidth += 0.17;
                 document.getElementById('yoga-progress').style.width = `${progressWidth}%`;
                 if (progressWidth >= 100) {
                     clearInterval(interval);
-                    narratorAudio.pause();
-                    narratorAudio.currentTime = 0;
                     popupContent.innerHTML += '<p class="fade-in mt-2">Yoga concluído! Sinta-se renovado.</p>';
                 }
-            }, 6000); // Ajustado para 10 min
+            }, 6000);
+            document.getElementById('play-narration').addEventListener('click', () => narrateText(cleanText));
+            document.getElementById('pause-narration').addEventListener('click', () => speechSynthesis.pause());
+            document.getElementById('restart-narration').addEventListener('click', () => {
+                speechSynthesis.cancel();
+                narrateText(cleanText);
+            });
         }
 
         function startBreathing() {
@@ -417,33 +453,29 @@
         function playSounds() {
             if (!soundPlaying) {
                 const sounds = {
-                    'Chuva': '/assets/musica-fundo.mp3',
-                    'Ondas do Mar': '/assets/meditacao-relaxamento.mp3',
-                    'Ruído Branco': '/assets/meditacao-estresse.mp3'
+                    'Chuva': 'Som relaxante de chuva caindo suavemente.',
+                    'Ondas do Mar': 'Som calmo das ondas do mar quebrando na praia.',
+                    'Ruído Branco': 'Som contínuo de ruído branco para relaxamento.'
                 };
                 const selected = Object.keys(sounds)[Math.floor(Math.random() * 3)];
-                narratorAudio.src = sounds[selected];
-                narratorAudio.play().catch(err => console.error('Erro no áudio:', err));
-                popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}.<button id="pause-btn" class="futuristic-btn mt-2">⏸ Pausar</button></p><div class="progress-bar"><div id="sound-progress" class="progress"></div></div>`;
+                const cleanText = cleanTextForNarration(sounds[selected]);
+                popupContent.innerHTML = `<p class="fade-in">Tocando ${selected}.</p><div class="narration-controls"><button id="play-narration" class="futuristic-btn">🔊 Ouvir Som</button><button id="pause-narration" class="futuristic-btn">⏸ Pausar</button><button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button></div><div class="progress-bar"><div id="sound-progress" class="progress"></div></div>`;
                 let progressWidth = 0;
                 const interval = setInterval(() => {
                     progressWidth += 3.33;
                     document.getElementById('sound-progress').style.width = `${progressWidth}%`;
                     if (progressWidth >= 100) {
                         clearInterval(interval);
-                        narratorAudio.pause();
-                        narratorAudio.currentTime = 0;
                         popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
                         soundPlaying = false;
                     }
                 }, 1000);
                 soundPlaying = true;
-                document.getElementById('pause-btn').addEventListener('click', () => {
-                    clearInterval(interval);
-                    narratorAudio.pause();
-                    narratorAudio.currentTime = 0;
-                    popupContent.innerHTML += '<p class="fade-in mt-2">Sons pausados. Reinicie para continuar.</p>';
-                    soundPlaying = false;
+                document.getElementById('play-narration').addEventListener('click', () => narrateText(cleanText));
+                document.getElementById('pause-narration').addEventListener('click', () => speechSynthesis.pause());
+                document.getElementById('restart-narration').addEventListener('click', () => {
+                    speechSynthesis.cancel();
+                    narrateText(cleanText);
                 });
             } else {
                 popupContent.innerHTML = '<p class="fade-in text-red-500">Som já em execução. Pause primeiro.</p>';
