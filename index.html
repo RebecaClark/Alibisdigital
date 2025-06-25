@@ -23,20 +23,40 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0); } }
-        .holo-nav { background: rgba(17,24,39,0.9); backdrop-filter: blur(10px); position: fixed; top: 0; width: 100%; z-index: 50; }
+        @keyframes slideInLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .holo-nav { background: rgba(17,24,39,0.9); backdrop-filter: blur(10px); position: fixed; top: 60px; width: 100%; z-index: 50; }
+        .urgency-top-bar { background: linear-gradient(90deg, #ef4444, #dc2626); color: white; text-align: center; padding: 8px; font-weight: bold; animation: urgencyPulse 2s infinite; position: fixed; top: 0; width: 100%; z-index: 60; }
+        @keyframes urgencyPulse { 0%, 100% { background: #ef4444; } 50% { background: #dc2626; } }
         .futuristic-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); box-shadow: 0 0 15px #22d3ee; transition: transform 0.3s ease; }
         .futuristic-btn:hover { transform: translateY(-5px); box-shadow: 0 0 25px #22d3ee; }
-        #chat-container { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
-        #chat-bubble { border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 15px #22d3ee; animation: pulse 2s infinite; }
-        #chat-window { display: none; background: rgba(17,24,39,0.95); border: 1px solid #22d3ee; border-radius: 15px; width: 300px; height: 400px; position: absolute; bottom: 80px; right: 0; padding: 15px; }
-        #chat-messages { height: 300px; overflow-y: auto; padding: 10px; color: #e5e7eb; }
-        #chat-input { background: rgba(55,65,81,0.8); border: 1px solid #22d3ee; border-radius: 20px; padding: 8px; width: 100%; color: white; }
-        .urgency-bar { background: #ff4444; color: #fff; text-align: center; padding: 10px; animation: slide 10s infinite linear; }
-        @keyframes slide { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        @media (max-width: 768px) { h1 { font-size: 2rem; } .max-w-4xl { padding: 0 1rem; } #chat-window { width: 90%; right: 5%; } }
+        .demo-btn { background: linear-gradient(45deg, #7C3AED, #22d3ee); color: white; padding: 10px 20px; border-radius: 25px; font-weight: bold; }
+        .demo-btn:hover { transform: scale(1.05); }
+        .meter-fill { height: 20px; background: #22d3ee; transition: width 2s ease; }
+        .comparison-table { overflow-x: auto; margin: 20px 0; }
+        .comparison-table table { width: 100%; border-collapse: collapse; background: rgba(45,55,72,0.9); border-radius: 15px; overflow: hidden; }
+        .comparison-table th, .comparison-table td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(34,211,238,0.2); }
+        .comparison-table .highlight { background: linear-gradient(45deg, #7C3AED, #22d3ee); color: white; font-weight: bold; }
+        .bonus-item { display: flex; align-items: center; background: rgba(45,55,72,0.9); margin: 10px 0; padding: 20px; border-radius: 15px; border-left: 4px solid #22d3ee; }
+        .bonus-highlight { background: linear-gradient(45deg, rgba(124,58,237,0.2), rgba(34,211,238,0.2)); border-left-color: #fbbf24; animation: bonusGlow 3s infinite; }
+        @keyframes bonusGlow { 0%, 100% { box-shadow: 0 0 10px rgba(251,191,36,0.3); } 50% { box-shadow: 0 0 25px rgba(251,191,36,0.6); } }
+        .live-stats { display: flex; justify-content: center; gap: 40px; margin: 30px 0; flex-wrap: wrap; }
+        .stat-item { text-align: center; background: rgba(34,211,238,0.1); padding: 20px; border-radius: 15px; border: 1px solid rgba(34,211,238,0.3); }
+        .stat-number { display: block; font-size: 2rem; font-weight: bold; color: #22d3ee; animation: countUp 2s ease-out; }
+        @keyframes countUp { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .exit-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; }
+        .popup-content { background: linear-gradient(135deg, #1e1b4b, #2e1065); padding: 40px; border-radius: 20px; border: 2px solid #22d3ee; max-width: 500px; text-align: center; position: relative; }
+        .popup-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        #social-notifications { position: fixed; bottom: 100px; left: 20px; z-index: 1000; }
+        .social-notification { background: rgba(16,185,129,0.9); color: white; padding: 12px 20px; border-radius: 25px; margin: 10px 0; animation: slideInLeft 0.5s ease-out; box-shadow: 0 4px 15px rgba(16,185,129,0.3); }
+        @media (max-width: 768px) { .urgency-top-bar { font-size: 12px; padding: 6px; } .live-stats { gap: 20px; } .bonus-item { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
+    <!-- Barra de Urgência no Topo -->
+    <div class="urgency-top-bar">
+        🔥 OFERTA ESPECIAL: 7 dias GRÁTIS expira em: <span id="countdown">23:47:12</span> | Restam <span id="spots">73</span> vagas hoje!
+    </div>
+
     <!-- Fundo com Partículas -->
     <div id="particles-js"></div>
 
@@ -58,11 +78,6 @@
     </header>
     <div class="h-16"></div>
 
-    <!-- Barra de Urgência Móvel -->
-    <div class="urgency-bar">
-        🔥 ÚLTIMAS 24 HORAS: Oferta especial expira em: <span id="urgency-timer">23:45:12</span>
-    </div>
-
     <!-- Hero Devastador -->
     <section id="hero" class="text-center py-12 px-4">
         <div class="max-w-4xl mx-auto">
@@ -71,22 +86,32 @@
             <video autoplay muted loop class="w-full max-w-2xl mx-auto rounded-lg shadow-lg border-2 border-[#22d3ee]">
                 <source src="/assets/vsl.mp4" type="video/mp4">
             </video>
-            <p class="text-sm text-gray-300 mt-4">🟢 <span id="user-count">847</span> pessoas testaram hoje</p>
+            <div class="live-stats">
+                <div class="stat-item"><span class="stat-number" id="users-today">1.247</span><span class="stat-label">pessoas testaram hoje</span></div>
+                <div class="stat-item"><span class="stat-number" id="users-online">89</span><span class="stat-label">usuários online agora</span></div>
+                <div class="stat-item"><span class="stat-number">15.347</span><span class="stat-label">vidas transformadas</span></div>
+            </div>
             <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full mt-6 inline-block">🔍 TESTE O SCANNER GRÁTIS AGORA</a>
             <p class="text-xs text-gray-500 mt-2">✅ 7 dias grátis + Garantia total</p>
             <p class="text-xs text-red-400 mt-2">⏰ Oferta por tempo limitado</p>
         </div>
     </section>
 
-    <!-- Demonstração Interativa -->
-    <section id="demo" class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-center">
-        <h2 class="text-3xl font-bold mb-6 neon-glow">Veja Como Funciona em Tempo Real</h2>
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-[rgba(45,55,72,0.9)] p-6 rounded-lg shadow-md">
-                <p>Simulação de análise emocional em progresso...</p>
-                <p class="mt-4 text-green-400">Resultado: Estresse reduzido em 72%!</p>
+    <!-- Demonstração Interativa do Scanner -->
+    <section class="demo-section">
+        <h2 class="text-3xl font-bold mb-6 neon-glow">🎯 Teste o Scanner AGORA (Demonstração Gratuita)</h2>
+        <div class="scanner-demo">
+            <div class="webcam-placeholder">
+                <button id="start-demo" class="demo-btn">📷 INICIAR TESTE GRÁTIS</button>
             </div>
-            <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full mt-6 inline-block">Quero Meu Resultado Agora</a>
+            <div class="demo-results" style="display:none;">
+                <div class="emotion-meter">
+                    <div class="meter-bar">
+                        <div class="meter-fill" style="width: 0%"></div>
+                    </div>
+                    <p>Analisando suas emoções... <span id="demo-progress">0%</span></p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -118,6 +143,44 @@
         </div>
     </section>
 
+    <!-- Comparação Devastadora -->
+    <section class="comparison-section">
+        <h2 class="text-3xl font-bold mb-6 neon-glow">🏆 Por Que Álibis Digital vs. Concorrentes?</h2>
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recursos</th>
+                        <th>Outros Apps</th>
+                        <th class="highlight">Álibis Digital</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Scanner Emocional</td>
+                        <td>❌ Não tem</td>
+                        <td class="highlight">✅ 30 segundos</td>
+                    </tr>
+                    <tr>
+                        <td>Diagnóstico Médico</td>
+                        <td>❌ Básico</td>
+                        <td class="highlight">✅ IA Avançada</td>
+                    </tr>
+                    <tr>
+                        <td>Álibis Personalizados</td>
+                        <td>❌ Não existe</td>
+                        <td class="highlight">✅ Ilimitados</td>
+                    </tr>
+                    <tr>
+                        <td>Preço</td>
+                        <td>R$ 97/mês</td>
+                        <td class="highlight">R$ 9,90/mês</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <!-- Prova Social Massiva -->
     <section id="social-proof" class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-center">
         <h2 class="text-3xl font-bold mb-6 neon-glow">15.000+ Vidas Transformadas</h2>
@@ -133,36 +196,71 @@
                     <p class="font-semibold text-[#22d3ee] mt-2">- João, 32</p>
                 </div>
             </div>
-            <p class="mt-4">+<span id="user-total">15.000</span> usuários</p>
+            <p class="mt-4">+<span id="user-total">15.347</span> usuários</p>
         </div>
     </section>
 
-    <!-- Comparação Devastadora -->
-    <section id="comparison" class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-center">
-        <h2 class="text-3xl font-bold mb-6 neon-glow">Por Que Álibis Digital vs. Outros?</h2>
-        <table class="max-w-4xl mx-auto bg-[rgba(45,55,72,0.9)] p-4 rounded-lg">
-            <tr><th>Recurso</th><th>Outros</th><th>Álibis Digital</th></tr>
-            <tr><td>Scanner IA</td><td>❌</td><td>✅ 30 segundos</td></tr>
-            <tr><td>Diagnóstico</td><td>❌</td><td>✅ 94.7% precisão</td></tr>
-            <tr><td>Álibis</td><td>❌</td><td>✅ Ilimitados</td></tr>
-            <tr><td>Suporte 24/7</td><td>❌</td><td>✅ Sempre</td></tr>
-            <tr><td>Preço</td><td>R$ 97/mês</td><td>R$ 9,90/mês</td></tr>
-        </table>
-    </section>
-
-    <!-- Oferta Irresistível -->
-    <section id="offer" class="py-12 px-4 bg-[rgba(15,23,42,0.8)] text-center">
-        <h2 class="text-3xl font-bold mb-6 neon-glow">Oferta Especial: 7 Dias Grátis + Bônus Exclusivos</h2>
-        <ul class="max-w-2xl mx-auto text-left mb-6">
-            <li>✅ Acesso total por 7 dias GRÁTIS</li>
-            <li>✅ E-book: "Guia Completo do Bem-Estar Digital"</li>
-            <li>✅ Sessão de coaching emocional (R$ 297 valor)</li>
-            <li>✅ Acesso à comunidade VIP</li>
-            <li>✅ Garantia de 30 dias ou dinheiro de volta</li>
-        </ul>
-        <p class="text-xl mb-4"><s>De: R$ 97,00/mês</s> <span class="text-green-400">Por: R$ 9,90/mês (90% OFF)</span></p>
-        <p class="text-red-400 mb-4">Apenas hoje - 127 vagas restantes</p>
-        <a href="/planos.html" class="futuristic-btn text-white py-3 px-6 rounded-full">Garanta Sua Vaga Agora</a>
+    <!-- Oferta com Bônus Empilhados -->
+    <section class="mega-offer-section">
+        <div class="offer-container max-w-4xl mx-auto">
+            <h2 class="offer-title text-3xl font-bold neon-glow">🎁 OFERTA ESPECIAL: Tudo Isso por Apenas R$ 9,90/mês</h2>
+            <div class="bonus-stack">
+                <div class="bonus-item">
+                    <span class="bonus-check">✅</span>
+                    <div>
+                        <strong>Scanner Emocional Ilimitado</strong>
+                        <small>Valor: R$ 197/mês</small>
+                    </div>
+                </div>
+                <div class="bonus-item">
+                    <span class="bonus-check">✅</span>
+                    <div>
+                        <strong>Diagnóstico Médico com IA</strong>
+                        <small>Valor: R$ 297/mês</small>
+                    </div>
+                </div>
+                <div class="bonus-item bonus-highlight">
+                    <span class="bonus-check">🎁</span>
+                    <div>
+                        <strong>BÔNUS: E-book "Bem-Estar Digital"</strong>
+                        <small>Valor: R$ 97 - GRÁTIS HOJE!</small>
+                    </div>
+                </div>
+                <div class="bonus-item bonus-highlight">
+                    <span class="bonus-check">🎁</span>
+                    <div>
+                        <strong>BÔNUS: Sessão de Coaching Emocional</strong>
+                        <small>Valor: R$ 497 - GRÁTIS HOJE!</small>
+                    </div>
+                </div>
+                <div class="bonus-item bonus-highlight">
+                    <span class="bonus-check">🎁</span>
+                    <div>
+                        <strong>BÔNUS: Comunidade VIP Exclusiva</strong>
+                        <small>Valor: R$ 197/mês - GRÁTIS!</small>
+                    </div>
+                </div>
+            </div>
+            <div class="price-breakdown mt-6">
+                <div class="old-price text-xl"><s>Valor Total: R$ 1.285/mês</s></div>
+                <div class="new-price text-2xl font-bold text-green-400">Seu Preço Hoje: R$ 9,90/mês</div>
+                <div class="savings text-xl text-yellow-400">Você Economiza: R$ 1.275/mês (99% OFF!)</div>
+            </div>
+            <div class="guarantee-badge text-lg mt-4">🛡️ GARANTIA TOTAL DE 30 DIAS OU SEU DINHEIRO DE VOLTA</div>
+            <a href="/planos.html" class="mega-cta-btn futuristic-btn text-white py-3 px-6 rounded-full mt-6 inline-block">
+                🚀 GARANTIR MINHA OFERTA AGORA
+                <small>7 dias grátis + Todos os bônus</small>
+            </a>
+            <div class="scarcity-indicator text-red-400 mt-4">⚠️ Apenas <span id="remaining-spots">47</span> vagas restantes hoje!</div>
+            <div class="urgency-timer mt-4">
+                <span>⏰ Esta oferta expira em:</span>
+                <div class="countdown-display">
+                    <span id="hours">23</span>h
+                    <span id="minutes">47</span>m
+                    <span id="seconds">12</span>s
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- FAQ Estratégico -->
@@ -200,7 +298,7 @@
     <section id="last-call" class="py-12 px-4 bg-[rgba(15,23,42,0.8)] text-center">
         <h2 class="text-3xl font-bold mb-6 neon-glow">Última Chance: Não Perca Esta Oportunidade!</h2>
         <p id="vacancies" class="text-xl mb-4 text-red-400">⚠️ Restam apenas 47 vagas para hoje</p>
-        <div class="text-4xl font-bold mb-4" id="countdown">23:59:59</div>
+        <div class="text-4xl font-bold mb-4" id="countdown-final">23:47:12</div>
         <a href="/planos.html" class="futuristic-btn text-white py-4 px-8 rounded-full text-lg">GARANTIR MINHA VAGA AGORA</a>
         <ul class="max-w-2xl mx-auto text-left mt-4 text-sm">
             <li>✅ Scanner Emocional</li>
@@ -251,7 +349,7 @@
         </div>
     </footer>
 
-    <!-- Chat Bot Supremo -->
+    <!-- Chat Bot Aprimorado -->
     <div id="chat-container">
         <div id="chat-bubble" class="futuristic-btn">
             <i class="fas fa-comment"></i>
@@ -270,6 +368,28 @@
         </div>
     </div>
 
+    <!-- Notificações Push Sociais -->
+    <div id="social-notifications"></div>
+
+    <!-- Exit-Intent Popup -->
+    <div id="exit-intent-popup" class="exit-popup">
+        <div class="popup-content">
+            <button class="popup-close">×</button>
+            <h2 class="neon-glow">⚠️ ESPERE! Não Perca Esta Oportunidade Única!</h2>
+            <p>Você estava prestes a sair sem testar o Scanner Emocional GRÁTIS...</p>
+            <div class="special-offer mt-4">
+                <h3 class="neon-glow">🎁 OFERTA ESPECIAL SÓ PARA VOCÊ:</h3>
+                <ul class="text-left mt-2">
+                    <li>✅ 14 dias grátis (ao invés de 7)</li>
+                    <li>✅ E-book bônus GRÁTIS</li>
+                    <li>✅ Sessão de coaching GRÁTIS</li>
+                </ul>
+            </div>
+            <a href="/planos.html" class="exit-cta-btn futuristic-btn text-white py-2 px-4 rounded-full mt-4 inline-block">SIM! QUERO MINHA OFERTA ESPECIAL</a>
+            <p class="exit-disclaimer text-sm mt-2">Esta oferta expira em 10 minutos</p>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         particlesJS('particles-js', {
@@ -277,23 +397,54 @@
             interactivity: { events: { onclick: { enable: true, mode: 'push' } } }
         });
 
-        let count = 847;
-        setInterval(() => { count += 1; document.getElementById("user-count").textContent = count; }, 60000);
+        // Timers baseados no horário atual (06:36 PM -03, 25/06/2025)
+        const now = new Date('2025-06-25T18:36:00-03:00');
+        const endTime = new Date(now);
+        endTime.setHours(23, 59, 59, 0);
+        const timeLeft = endTime - now;
 
-        let userTotal = 15000;
-        setInterval(() => { userTotal += 1; document.getElementById("user-total").textContent = userTotal; }, 300000);
+        function updateTimer(elementId, time) {
+            const hours = Math.floor(time / (1000 * 60 * 60));
+            const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((time % (1000 * 60)) / 1000);
+            document.getElementById(elementId).textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            return time - 1000;
+        }
 
-        const deadline = new Date().setHours(23, 59, 59);
+        let timer = timeLeft;
         setInterval(() => {
-            const timeLeft = deadline - Date.now();
-            document.getElementById("urgency-timer").textContent = new Date(timeLeft).toISOString().substr(11, 8);
-            document.getElementById("countdown").textContent = new Date(timeLeft).toISOString().substr(11, 8);
+            timer = updateTimer('countdown', timer);
+            updateTimer('countdown-final', timer);
+            updateTimer('hours', Math.floor(timer / (1000 * 60 * 60)) * 3600000);
+            updateTimer('minutes', Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60)) * 60000);
+            updateTimer('seconds', Math.floor((timer % (1000 * 60)) / 1000) * 1000);
+            if (document.getElementById('spots')) document.getElementById('spots').textContent = Math.max(0, 73 - Math.floor((timeLeft - timer) / (1000 * 60)));
+            if (document.getElementById('remaining-spots')) document.getElementById('remaining-spots').textContent = Math.max(0, 47 - Math.floor((timeLeft - timer) / (1000 * 60)));
         }, 1000);
 
-        let vacancies = 47;
-        setInterval(() => { if (vacancies > 0) vacancies -= 1; document.getElementById("vacancies").textContent = `⚠️ Restam apenas ${vacancies} vagas para hoje`; }, 60000);
+        let usersToday = 1247, usersOnline = 89;
+        setInterval(() => { usersToday += 1; usersOnline += 1; document.getElementById('users-today').textContent = usersToday; document.getElementById('users-online').textContent = usersOnline; }, 60000);
 
-        // Chat Bot Supremo
+        // Demonstração Interativa
+        const startDemo = document.getElementById('start-demo');
+        const demoResults = document.querySelector('.demo-results');
+        const meterFill = document.querySelector('.meter-fill');
+        const demoProgress = document.getElementById('demo-progress');
+        startDemo.addEventListener('click', () => {
+            demoResults.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                meterFill.style.width = `${progress}%`;
+                demoProgress.textContent = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    demoProgress.textContent = '100% - Estresse reduzido em 72%!';
+                }
+            }, 200);
+        });
+
+        // Chat Bot Aprimorado
         const chatBubble = document.getElementById('chat-bubble');
         const chatWindow = document.getElementById('chat-window');
         const chatMessages = document.getElementById('chat-messages');
@@ -310,114 +461,43 @@
             recognition.interimResults = true;
             recognition.lang = 'pt-BR';
             recognition.maxAlternatives = 1;
-            recognition.continuous = false;
 
-            recognition.onstart = () => {
-                isListening = true;
-                micButton.classList.add('pulse');
-                listeningIndicator.classList.add('active');
-                chatInput.placeholder = 'Fale claramente enquanto segura...';
-                addMessage('Microfone ativado. Fale!', false);
-            };
+            recognition.onstart = () => { isListening = true; micButton.classList.add('pulse'); listeningIndicator.classList.add('active'); chatInput.placeholder = 'Fale...'; addMessage('Fale sua dificuldade!', false); };
+            recognition.onend = () => { isListening = false; micButton.classList.remove('pulse'); listeningIndicator.classList.remove('active'); chatInput.placeholder = 'Digite ou clique no microfone...'; if (chatInput.value.trim()) handleMessage(chatInput.value.trim().toLowerCase()); };
+            recognition.onresult = (event) => { chatInput.value = Array.from(event.results).map(result => result[0].transcript).join(''); };
+            recognition.onerror = (event) => { isListening = false; micButton.classList.remove('pulse'); listeningIndicator.classList.remove('active'); addMessage(`Erro: ${event.error}`, false); };
 
-            recognition.onend = () => {
-                isListening = false;
-                micButton.classList.remove('pulse');
-                listeningIndicator.classList.remove('active');
-                chatInput.placeholder = 'Digite ou clique no microfone para falar...';
-                if (chatInput.value.trim()) {
-                    const message = chatInput.value.trim().toLowerCase();
-                    addMessage(message, true);
-                    respondToMessage(message);
-                    chatInput.value = '';
-                }
-            };
+            micButton.addEventListener('mousedown', () => { if (!isListening) recognition.start(); });
+            micButton.addEventListener('mouseup', () => { if (isListening) recognition.stop(); });
+            micButton.addEventListener('mouseleave', () => { if (isListening) recognition.stop(); });
+        } else { micButton.style.display = 'none'; addMessage('Voz não suportada. Use o teclado.', false); }
 
-            recognition.onresult = (event) => {
-                let transcript = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
-                }
-                chatInput.value = transcript;
-            };
+        function addMessage(message, isUser) { const div = document.createElement('div'); div.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[70%] fade-in`; div.textContent = message; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+        chatBubble.addEventListener('click', () => { chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block'; if (chatWindow.style.display === 'block') { addMessage('Olá! Diga sua dificuldade ou "ajuda".', false); speak('Olá! Diga sua dificuldade ou ajuda.'); } });
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && chatInput.value.trim()) { addMessage(chatInput.value.trim(), true); handleMessage(chatInput.value.trim().toLowerCase()); chatInput.value = ''; } });
 
-            recognition.onerror = (event) => {
-                isListening = false;
-                micButton.classList.remove('pulse');
-                listeningIndicator.classList.remove('active');
-                addMessage(`Erro: ${event.error}. Tente novamente.`, false);
-            };
-
-            micButton.addEventListener('mousedown', () => {
-                if (!isListening) recognition.start();
-            });
-
-            micButton.addEventListener('mouseup', () => {
-                if (isListening) recognition.stop();
-            });
-
-            micButton.addEventListener('mouseleave', () => {
-                if (isListening) recognition.stop();
-            });
-        } else {
-            micButton.style.display = 'none';
-            addMessage('Voz não suportada. Use o teclado.', false);
+        function speak(text) { if (synth && 'speechSynthesis' in window) { const utter = new SpeechSynthesisUtterance(text); utter.lang = 'pt-BR'; synth.speak(utter); } }
+        function handleMessage(message) {
+            const redirects = { 'scanner': '/scanner.html', 'diagnóstico': '/medical-ia.html', 'apoio': '/apoio-emocional.html', 'álibis': '/alibi.html', 'planos': '/planos.html', 'blog': '/blog.html', 'suporte': '/suporte.html', 'ajuda': '/suporte.html' };
+            for (let key in redirects) if (message.includes(key)) { addMessage(`Redirecionando para ${key}...`, false); speak(`Redirecionando para ${key}...`); setTimeout(() => window.location.href = redirects[key], 1000); return; }
+            addMessage('Não entendi. Diga "scanner", "diagnóstico", "apoio", "álibis", "planos", "blog" ou "suporte".', false); speak('Não entendi. Diga scanner, diagnóstico, apoio, álibis, planos, blog ou suporte.');
         }
 
-        const addMessage = (message, isUser) => {
-            const div = document.createElement('div');
-            div.className = `p-2 mb-2 rounded-lg ${isUser ? 'bg-[#22d3ee] text-white ml-auto' : 'bg-gray-700 text-gray-200'} max-w-[70%] fade-in`;
-            div.textContent = message;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        };
+        // Notificações Push Sociais
+        const notifications = [
+            "🎉 Ana S. acabou de testar o Scanner - São Paulo/SP",
+            "✅ João M. se cadastrou para 7 dias grátis - Rio de Janeiro/RJ",
+            "🔥 Maria L. desbloqueou todos os bônus - Belo Horizonte/MG",
+            "⭐ Carlos R. deu 5 estrelas para o app - Salvador/BA"
+        ];
+        function showNotification() { const notif = document.createElement('div'); notif.className = 'social-notification'; notif.textContent = notifications[Math.floor(Math.random() * notifications.length)]; document.getElementById('social-notifications').appendChild(notif); setTimeout(() => notif.remove(), 5000); }
+        setInterval(showNotification, 10000);
 
-        chatBubble.addEventListener('click', () => {
-            chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
-            if (chatWindow.style.display === 'block') {
-                addMessage('Olá! Diga "scanner", "diagnóstico", "apoio", "álibis", "planos", "blog" ou "suporte".', false);
-                speak('Olá! Diga scanner, diagnóstico, apoio, álibis, planos, blog ou suporte.');
-            }
-        });
-
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && chatInput.value.trim()) {
-                const message = chatInput.value.trim().toLowerCase();
-                addMessage(message, true);
-                chatInput.value = '';
-                respondToMessage(message);
-            }
-        });
-
-        const speak = (text) => {
-            if (synth && 'speechSynthesis' in window) {
-                const utter = new SpeechSynthesisUtterance(text);
-                utter.lang = 'pt-BR';
-                synth.speak(utter);
-            }
-        };
-
-        function respondToMessage(message) {
-            const redirects = {
-                'scanner': '/scanner.html',
-                'diagnóstico': '/medical-ia.html',
-                'apoio': '/apoio-emocional.html',
-                'álibis': '/alibi.html',
-                'planos': '/planos.html',
-                'blog': '/blog.html',
-                'suporte': '/suporte.html'
-            };
-            for (let key in redirects) {
-                if (message.includes(key)) {
-                    addMessage(`Redirecionando para ${key}...`, false);
-                    speak(`Redirecionando para ${key}...`);
-                    setTimeout(() => window.location.href = redirects[key], 1000);
-                    return;
-                }
-            }
-            addMessage('Não entendi. Tente "scanner", "diagnóstico", "apoio", "álibis", "planos", "blog" ou "suporte".', false);
-            speak('Não entendi. Tente scanner, diagnóstico, apoio, álibis, planos, blog ou suporte.');
-        }
+        // Exit-Intent Popup
+        let mouseY = 0;
+        document.addEventListener('mousemove', (e) => { mouseY = e.clientY; });
+        setInterval(() => { if (mouseY < 50 && document.getElementById('exit-intent-popup').style.display === 'none') { document.getElementById('exit-intent-popup').style.display = 'flex'; } }, 500);
+        document.querySelector('.popup-close').addEventListener('click', () => document.getElementById('exit-intent-popup').style.display = 'none');
     </script>
 </body>
 </html>
