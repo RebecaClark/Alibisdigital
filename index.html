@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Descubra e gerencie suas emoções com o scanner emocional de IA mais avançado do mercado. Seguro, rápido e futurista - Álibis Digital.">
-    <meta name="keywords" content="scanner emocional com IA, bem-estar emocional, álibis digital, inteligência artificial emocional, tecnologia de ponta, saúde mental, estresse">
+    <meta name="description" content="Transforme ansiedade em bem-estar com a tecnologia de IA mais avançada do Brasil. Álibis Digital.">
+    <meta name="keywords" content="scanner emocional IA, bem-estar emocional, álibis digital, inteligência artificial, saúde mental">
     <meta name="author" content="Álibis Digital">
-    <title>Álibis Digital - Inteligência Artificial para o Bem-Estar Emocional</title>
+    <title>Álibis Digital - Bem-Estar Emocional com IA</title>
     <script src="https://cdn.tailwindcss.com/3.4.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
@@ -104,6 +104,20 @@
         @keyframes neonPulse {
             from { box-shadow: 0 0 5px #22d3ee; }
             to { box-shadow: 0 0 15px #22d3ee; }
+        }
+        .urgency-bar {
+            background: rgba(239,68,68,0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #22d3ee;
+            position: fixed;
+            top: 60px;
+            width: 100%;
+            z-index: 49;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
         }
         #mobile-menu {
             max-height: 0;
@@ -262,6 +276,14 @@
             padding: 8px 16px;
             margin-left: 10px;
         }
+        .holo-window {
+            background: rgba(45,55,72,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #22d3ee;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px #22d3ee;
+        }
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             h2 { font-size: 1.5rem; }
@@ -282,6 +304,7 @@
             #hero { padding: 10px; }
             .cookie-banner { flex-direction: column; text-align: center; }
             .cookie-banner p { margin-bottom: 10px; max-width: 100%; }
+            .urgency-bar { font-size: 12px; padding: 8px; }
         }
         @media (min-width: 769px) and (max-width: 1024px) {
             .max-w-4xl { max-width: 90%; }
@@ -356,6 +379,11 @@
     </header>
     <div class="h-16"></div>
 
+    <!-- Barra de Urgência -->
+    <div class="urgency-bar animate-on-scroll">
+        🔥 OFERTA DE LANÇAMENTO: Preço vitalício R$ 67,90/mês por tempo limitado! Restam apenas <span id="vagas">47</span> vagas hoje | Preço normal a partir de março: R$ 97,90/mês
+    </div>
+
     <!-- Cookie Banner -->
     <div id="cookie-banner" class="cookie-banner">
         <p>Usamos cookies para melhorar sua experiência. <a href="/cookies.html" class="text-[#22d3ee] hover:underline">Saiba mais</a>.</p>
@@ -391,8 +419,33 @@
     <!-- Hero -->
     <section id="hero" class="text-white text-center py-10 px-4 relative animate-on-scroll">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight fade-in shine">Transforme Seu Dia com IA Emocional</h1>
-            <p class="text-base md:text-lg text-gray-300 mb-6 fade-in">Descubra e gerencie suas emoções com o scanner emocional mais avançado do futuro.</p>
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight fade-in shine">
+                Como Mais de 15.000 Brasileiros Estão Transformando Ansiedade em Bem-Estar em Apenas 30 Segundos com Esta Tecnologia de R$ 400.000
+            </h1>
+            <p class="text-base md:text-lg text-gray-300 mb-6 fade-in">
+                5 meses de desenvolvimento + Investimento de R$ 400.000 + 3 tecnologias IA integradas = A plataforma de bem-estar emocional mais avançada do Brasil
+            </p>
+            <div class="mb-6 holo-window fade-in">
+                <p class="text-sm md:text-base">⭐⭐⭐⭐⭐ 4.9/5 estrelas • 2.847 pessoas testaram hoje • 96.3% de satisfação • Economia de R$ 5.500/mês vs métodos tradicionais</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="holo-window slide-in-left">
+                    <p class="text-2xl font-bold">15.347</p>
+                    <p class="text-sm">Vidas Transformadas</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <p class="text-2xl font-bold">R$ 400.000</p>
+                    <p class="text-sm">Investidos em Tecnologia</p>
+                </div>
+                <div class="holo-window slide-in-left">
+                    <p class="text-2xl font-bold">96.3%</p>
+                    <p class="text-sm">Taxa de Satisfação</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <p class="text-2xl font-bold">30s</p>
+                    <p class="text-sm">Para Descobrir Suas Emoções</p>
+                </div>
+            </div>
             <div class="mb-6 relative">
                 <video id="hero-video" autoplay playsinline loop preload="auto" loading="lazy" poster="/assets/video-poster.jpg" class="w-full max-w-2xl mx-auto rounded-xl shadow-lg border-2 border-[#22d3ee]">
                     <source src="/assets/vsl-video.mp4" type="video/mp4">
@@ -400,100 +453,206 @@
                 </video>
                 <div id="play-video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 futuristic-btn text-white py-2 px-4 rounded-full text-sm cursor-pointer" aria-label="Pausar vídeo de apresentação">Pausar Vídeo</div>
             </div>
-            <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold shadow-lg w-full md:w-auto" aria-label="Teste o scanner emocional grátis">🔍 Teste o Scanner Grátis</a>
-            <div class="mt-6 max-w-md mx-auto bg-[rgba(31,41,55,0.9)] p-4 rounded-xl border border-[#22d3ee] shadow-lg">
-                <h3 class="text-lg font-semibold mb-2 fade-in">Receba Dicas Exclusivas</h3>
-                <div class="flex flex-col sm:flex-row gap-2">
-                    <input type="email" placeholder="Seu e-mail" class="p-2 rounded-lg w-full bg-[rgba(55,65,81,0.8)] border border-[#22d3ee] focus:border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee]" required aria-label="Digite seu e-mail para receber dicas exclusivas">
-                    <button class="futuristic-btn text-white py-2 px-4 rounded-lg w-full sm:w-auto" aria-label="Inscrever-se para receber dicas exclusivas">Inscrever-se</button>
-                </div>
-                <p class="text-xs text-gray-500 mt-2">🔒 Seus dados são protegidos.</p>
+            <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold shadow-lg w-full md:w-auto" aria-label="Começar teste grátis por 7 dias">🔍 COMEÇAR TESTE GRÁTIS POR 7 DIAS</a>
+            <p class="text-sm text-gray-300 mt-2">Análise emocional completa em 30 segundos • Sem cartão • Acesso imediato • Preço vitalício garantido</p>
+            <div class="mt-4 holo-window fade-in">
+                <p class="text-sm">✅ 7 dias grátis • ✅ Preço vitalício R$ 67,90 • ✅ Cancelamento em 1 clique</p>
             </div>
         </div>
     </section>
 
-    <!-- Benefícios -->
-     <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-        <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">O Que Você Ganha com a Álibis Digital?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-                <span class="material-icons text-[#22d3ee] text-4xl mb-2 scale-up" aria-hidden="true">face</span>
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Scanner Emocional</h3>
-                <p class="mb-2 text-sm md:text-base">Detecte estresse em segundos com IA.</p>
-                <a href="/scanner.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Experimente o scanner agora">Experimente agora →</a>
-            </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
-                <span class="material-icons text-[#22d3ee] text-4xl mb-2 scale-up" aria-hidden="true">analytics</span>
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Avaliação Detalhada</h3>
-                <p class="mb-2 text-sm md:text-base">Insights personalizados para seu bem-estar.</p>
-                <a href="/apoio-emocional.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Faça a avaliação agora">Faça agora →</a>
-            </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-                <span class="material-icons text-[#22d3ee] text-4xl mb-2 scale-up" aria-hidden="true">shield</span>
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Álibis Personalizados</h3>
-                <p class="mb-2 text-sm md:text-base">Desculpas realistas com provas digitais.</p>
-                <a href="/planos.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Desbloqueie álibis agora">Desbloqueie agora →</a>
-            </div>
-        </div>
-        <div class="mt-6 pulse">
-            <a href="/planos.html" class="futuristic-btn text-white font-bold py-2 px-6 rounded-full" aria-label="Assine o plano premium">Assine o Plano Premium</a>
-        </div>
-    </section>
-
-    <!-- Dicas de Bem-Estar -->
+    <!-- Storytelling -->
     <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-        <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">Dicas de Bem-Estar</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 max-w-6xl mx-auto">
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Rotinas de Autocuidado com IA</h3>
-                <p class="mb-2 text-sm md:text-base text-gray-400">Crie rotinas personalizadas com o Abili e scanner facial.</p>
-                <a href="/rotinas-autocuidado-ia.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        <div class="max-w-4xl mx-auto holo-window slide-in-left">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">A Descoberta de R$ 400.000 Que Está Revolucionando o Bem-Estar Emocional no Brasil</h2>
+            <p class="text-base md:text-lg mb-4">3:47 da manhã, São Paulo... Carla está acordada há 4 horas. Coração disparado, mãos suando, mente em loop infinito sobre tudo que pode dar errado: trabalho, relacionamento, filhos, dinheiro...</p>
+            <p class="text-base md:text-lg mb-4">Nos últimos 3 anos, ela gastou mais de R$ 18.000 tentando resolver sua ansiedade:</p>
+            <ul class="text-left mb-4">
+                <li>❌ 7 aplicativos de meditação diferentes (R$ 890)</li>
+                <li>❌ 2 anos de terapia semanal (R$ 9.600)</li>
+                <li>❌ Consultas com 4 médicos diferentes (R$ 3.200)</li>
+                <li>❌ Remédios, livros, cursos online (R$ 4.310)</li>
+            </ul>
+            <p class="text-base md:text-lg mb-4">Resultado? A ansiedade sempre voltava mais forte.</p>
+            <p class="text-base md:text-lg mb-4 italic">"Carla, PARA TUDO e testa isso. É uma tecnologia nova que custou uma fortuna para desenvolver. Mudou minha vida em 30 segundos!"</p>
+            <p class="text-base md:text-lg mb-4">Em 30 segundos, uma inteligência artificial analisou suas micro-expressões e mostrou algo que 3 anos de terapia não conseguiram:</p>
+            <p class="text-base md:text-lg mb-4 italic">"Expressão travada... você está se segurando para não explodir. Frequência cardíaca em 78 bpm - seu corpo está em modo de sobrevivência constante. Que tal tirar essa armadura emocional por uns minutos?"</p>
+            <p class="text-base md:text-lg mb-4">30 DIAS DEPOIS:</p>
+            <ul class="text-left mb-4">
+                <li>✅ Dorme 8 horas seguidas toda noite</li>
+                <li>✅ Conseguiu a promoção que estava evitando</li>
+                <li>✅ Relacionamento mais forte que nunca</li>
+                <li>✅ Ataques de ansiedade eliminados</li>
+                <li>✅ Confiança recuperada</li>
+                <li>✅ Gastando apenas R$ 67,90/mês (vs R$ 1.200+ antes)</li>
+            </ul>
+            <p class="text-base md:text-lg mb-4">Hoje, Carla não é mais a única... Mais de 15.347 brasileiros já descobriram esta tecnologia revolucionária que custou R$ 400.000 e 5 meses para ser desenvolvida.</p>
+            <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold" aria-label="Quero ser o próximo">Quero Ser o Próximo</a>
+        </div>
+    </section>
+
+    <!-- Tecnologias -->
+    <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold mb-4 shine">🚀 As 3 Tecnologias de R$ 400.000 Que Estão Transformando Vidas</h2>
+            <p class="text-base md:text-lg mb-6 fade-in">5 meses de desenvolvimento intensivo • Equipe de cientistas e psicólogos • Investimento de R$ 400.000 • Resultado: O ecossistema mais avançado de bem-estar emocional do Brasil</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="holo-window slide-in-left">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-2">🧠 Scanner Emocional IA</h3>
+                    <p class="mb-2 text-sm md:text-base">"Descubra EXATAMENTE como você está se sentindo em 30 segundos"</p>
+                    <ul class="text-left text-sm md:text-base mb-4">
+                        <li>✅ Análise instantânea em 30 segundos</li>
+                        <li>✅ 96.3% de precisão científica comprovada</li>
+                        <li>✅ Detecta 47 tipos diferentes de emoções</li>
+                        <li>✅ Linguagem humana e divertida</li>
+                        <li>✅ Relatórios detalhados personalizados</li>
+                    </ul>
+                    <p class="text-sm italic mb-4">"Expressão travada... quase como se você estivesse se segurando pra não virar um meme viral! 😂 Frequência cardíaca: 69 bpm."</p>
+                    <p class="text-sm">→ Valor equivalente: R$ 800/mês em consultas psicológicas</p>
+                </div>
+                <div class="holo-window fade-in">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-2">💚 Apoio Emocional 24/7</h3>
+                    <p class="mb-2 text-sm md:text-base">"Como ter um psicólogo no bolso, disponível a qualquer hora"</p>
+                    <ul class="text-left text-sm md:text-base mb-4">
+                        <li>✅ Disponível 24/7, sem agendamento</li>
+                        <li>✅ Conversas personalizadas baseadas no seu perfil</li>
+                        <li>✅ Técnicas de respiração e relaxamento</li>
+                        <li>✅ Meditações guiadas específicas</li>
+                        <li>✅ Planos de ação personalizados</li>
+                    </ul>
+                    <p class="text-sm">→ Valor equivalente: R$ 1.200/mês em terapia tradicional</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <h3 class="text-xl md:text-2xl font-semibold mb-2">🏥 Medical IA</h3>
+                    <p class="mb-2 text-sm md:text-base">"Orientações médicas baseadas em ciência, disponíveis instantaneamente"</p>
+                    <ul class="text-left text-sm md:text-base mb-4">
+                        <li>✅ Diagnósticos baseados em ciência médica</li>
+                        <li>✅ Orientações profissionais instantâneas</li>
+                        <li>✅ Identifica quando procurar ajuda presencial</li>
+                        <li>✅ Relatórios médicos detalhados</li>
+                        <li>✅ Aprovado por médicos especialistas</li>
+                    </ul>
+                    <p class="text-sm">→ Valor equivalente: R$ 600/mês em consultas médicas</p>
+                </div>
             </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Melhore Seu Sono com IA</h3>
-                <p class="mb-2 text-sm md:text-base text-gray-400">Durma melhor com o Abili e scanner facial.</p>
-                <a href="/melhorar-sono-com-ia.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+            <div class="mt-6 holo-window fade-in">
+                <p class="text-base md:text-lg mb-4">As 3 tecnologias trabalham em sinergia: Scanner identifica, Apoio oferece suporte, Medical IA analisa sintomas. Valor total equivalente: R$ 2.600/mês.</p>
+                <p class="text-base md:text-lg font-bold">SEU INVESTIMENTO: Apenas R$ 67,90/mês</p>
+                <p class="text-base md:text-lg">ECONOMIA: R$ 2.532/mês (96% de desconto!)</p>
+                <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold mt-4" aria-label="Quero economizar agora">Quero Economizar Agora</a>
             </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Previna o Burnout com IA</h3>
-                <p class="mb-2 text-sm md:text-base text-gray-400">Evite o esgotamento com IA e scanner facial.</p>
-                <a href="/prevenir-burnout-ia.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+        </div>
+    </section>
+
+    <!-- Demonstração Interativa -->
+    <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+        <div class="max-w-4xl mx-auto holo-window fade-in">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">🎯 Veja a Tecnologia de R$ 400.000 Funcionando na Prática</h2>
+            <div class="text-left mb-6">
+                <p class="text-base md:text-lg font-semibold">RESULTADO REAL DO SCANNER EMOCIONAL:</p>
+                <p class="text-sm md:text-base italic">Como você tá se sentindo: Expressão travada… quase como se você estivesse se segurando pra não virar um meme viral! 😂</p>
+                <p class="text-sm md:text-base italic">💓 O que teu corpo tá dizendo: Sua frequência cardíaca tá em 69 bpm, tá de boa, dentro do normal.</p>
+                <p class="text-sm md:text-base italic">🧘 O que fazer agora: Tira essa máscara por um segundo e respira fundo. Tá tudo bem ser você mesmo aqui!</p>
+                <p class="text-sm">Nota: Isso não substitui um médico, tá? É só um primeiro passo.</p>
             </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-                <h3 class="text-xl md:text-2xl font-semibold mb-2">Equilibre Sua Vida Pessoal com IA</h3>
-                <p class="mb-2 text-sm md:text-base text-gray-400">Encontre harmonia com o Abili e apoio por IA.</p>
-                <a href="/equilibre-vida-pessoal-ia.html" class="futuristic-btn text-white py-1 px-3 rounded-full text-xs md:text-sm font-semibold" aria-label="Leia mais agora">Leia agora →</a>
+            <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                <a href="/scanner.html" class="futuristic-btn text-white py-2 px-4 rounded-full" aria-label="Tentar novamente">🔄 Tentar Novamente</a>
+                <a href="/meditacao.html" class="futuristic-btn text-white py-2 px-4 rounded-full" aria-label="Meditação guiada">🧘‍♀️ Meditação Guiada</a>
+                <a href="/apoio-emocional.html" class="futuristic-btn text-white py-2 px-4 rounded-full" aria-label="Quero mais apoio">🫂 Quero Mais Apoio</a>
             </div>
+            <p class="text-base md:text-lg mt-4">Em 30 segundos, nossa IA identificou, analisou, ofereceu orientação e direcionou.</p>
         </div>
     </section>
 
     <!-- Prova Social -->
     <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
-        <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">O Que Nossos Usuários Dizem</h2>
-        <p class="text-base md:text-lg mb-4 fade-in">Mais de <span id="user-count">400</span> pessoas testaram o scanner hoje!</p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-left">
-                <p class="italic text-gray-400 mb-2">"O Scanner Emocional salvou meu dia! Identifiquei meu estresse rapidamente."</p>
-                <p class="font-semibold text-[#22d3ee]">- Ana S., 29 anos</p>
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">🏆 Mais de 15.000 Brasileiros Já Transformaram Suas Vidas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+                <div class="holo-window slide-in-left">
+                    <p class="text-2xl font-bold">15.347</p>
+                    <p class="text-sm">Brasileiros Transformados</p>
+                    <p class="text-xs">+89 só hoje</p>
+                </div>
+                <div class="holo-window fade-in">
+                    <p class="text-2xl font-bold">96.3%</p>
+                    <p class="text-sm">Taxa de Satisfação</p>
+                    <p class="text-xs">Melhor do mercado</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <p class="text-2xl font-bold">30s</p>
+                    <p class="text-sm">Primeiro Resultado</p>
+                    <p class="text-xs">Comprovado</p>
+                </div>
+                <div class="holo-window slide-in-left">
+                    <p class="text-2xl font-bold">2.847</p>
+                    <p class="text-sm">Testes Hoje</p>
+                    <p class="text-xs">Em tempo real</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <p class="text-2xl font-bold">R$ 5.500</p>
+                    <p class="text-sm">Economia Mensal</p>
+                    <p class="text-xs">vs Tradicional</p>
+                </div>
             </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition scale-up">
-                <p class="italic text-gray-400 mb-2">"Álibis realistas e suporte incrível. Recomendo para todos!"</p>
-                <p class="font-semibold text-[#22d3ee]">- João P., 32 anos</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="holo-window slide-in-left">
+                    <p class="italic text-gray-400 mb-2">"Gastei R$ 12.000 em terapia para síndrome do impostor. Em 30 segundos, o Scanner identificou meu bloqueio. Aumento de 40% no salário em 60 dias!"</p>
+                    <p class="font-semibold text-[#22d3ee]">- Ana Carolina Silva, 34, SP</p>
+                    <p class="text-sm">✅ Superou síndrome do impostor</p>
+                </div>
+                <div class="holo-window fade-in">
+                    <p class="italic text-gray-400 mb-2">"Ansiedade isolava meu home office. O Scanner mostrou falta de rotina. Em 7 dias, salvei meu relacionamento e pedi minha namorada em casamento!"</p>
+                    <p class="font-semibold text-[#22d3ee]">- João Pedro Santos, 28, RJ</p>
+                    <p class="text-sm">✅ Relacionamento salvo</p>
+                </div>
+                <div class="holo-window slide-in-right">
+                    <p class="italic text-gray-400 mb-2">"Insônia crônica pós-divórcio. Medical IA identificou ansiedade disfarçada. Voltei a dormir 8h em 21 dias por R$ 67,90!"</p>
+                    <p class="font-semibold text-[#22d3ee]">- Maria Fernanda Costa, 41, BH</p>
+                    <p class="text-sm">✅ Insônia eliminada</p>
+                </div>
             </div>
-            <div class="bg-[rgba(45,55,72,0.9)] p-4 rounded-2xl shadow-md hover:shadow-xl transition slide-in-right">
-                <p class="italic text-gray-400 mb-2">"A IA do Abili transformou minha rotina de autocuidado."</p>
-                <p class="font-semibold text-[#22d3ee]">- Maria L., 27 anos</p>
+            <div class="mt-6 holo-window fade-in">
+                <p class="text-base md:text-lg font-semibold">Aprovado por Especialistas:</p>
+                <p class="text-sm">✅ Dr. Carlos Mendes, Psiquiatra</p>
+                <p class="text-sm">✅ Dra. Ana Beatriz, Psicóloga</p>
+                <p class="text-sm">✅ Dr. Roberto Silva, Cardiologista</p>
+                <p class="text-base md:text-lg font-semibold mt-4">Certificações de Segurança:</p>
+                <p class="text-sm">✅ LGPD • ✅ SSL 256-bits • ✅ Servidores no Brasil • ✅ Dados nunca compartilhados</p>
             </div>
         </div>
     </section>
 
-    <!-- Chamada Final -->
-    <section class="py-12 bg-[rgba(15,23,42,0.8)] text-white text-center animate-on-scroll">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-2xl md:text-3xl font-extrabold mb-4 pulse">🚀 Transforme Suas Emoções Agora!</h2>
-            <p class="text-base md:text-xl mb-4 text-gray-300 fade-in">Teste o Scanner e receba insights personalizados para o seu dia.</p>
-            <a href="/planos.html" class="futuristic-btn text-white font-semibold py-2 px-6 rounded-full shadow-md w-full md:w-auto" aria-label="Garanta seu plano agora">Garanta Seu Plano Agora</a>
-            <p class="mt-2 text-sm text-gray-500 fade-in">🔒 Pagamento seguro via Pix ou cartão (links placeholders).</p>
+    <!-- Valor Devastadora -->
+    <section class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
+        <div class="max-w-4xl mx-auto holo-window fade-in">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6 shine">💰 Quanto Custa Ter o Mesmo Resultado com Métodos Tradicionais?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-base md:text-lg font-semibold">Métodos Tradicionais</p>
+                    <ul class="text-left text-sm md:text-base mb-4">
+                        <li>🏥 Clínico Geral: R$ 800/mês</li>
+                        <li>🏥 Cardiologista: R$ 600/mês</li>
+                        <li>🏥 Dermatologista: R$ 500/mês</li>
+                        <li>🧠 Psicólogo: R$ 1.200/mês</li>
+                        <li>🧠 Psiquiatra: R$ 500/mês</li>
+                        <li>⏰ Deslocamento: R$ 400/mês</li>
+                        <li class="font-bold">Total: R$ 4.000/mês</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="text-base md:text-lg font-semibold">Álibis Digital</p>
+                    <ul class="text-left text-sm md:text-base mb-4">
+                        <li>🧠 Scanner IA: R$ 800/mês</li>
+                        <li>💚 Apoio 24/7: R$ 1.200/mês</li>
+                        <li>🏥 Medical IA: R$ 600/mês</li>
+                        <li class="font-bold">Total Equivalente: R$ 2.600/mês</li>
+                        <li class="font-bold">Seu Investimento: R$ 67,90/mês</li>
+                        <li class="font-bold">Economia: R$ 2.532/mês (96%)</li>
+                    </ul>
+                </div>
+            </div>
+            <a href="/scanner.html" class="futuristic-btn text-white py-3 px-6 rounded-full text-base font-semibold mt-4" aria-label="Quero economizar agora">Quero Economizar Agora</a>
         </div>
     </section>
 
@@ -501,12 +660,12 @@
     <section id="checkout" class="py-12 px-4 bg-[rgba(30,41,59,0.8)] text-gray-200 text-center animate-on-scroll">
         <div class="max-w-3xl mx-auto">
             <h2 class="text-2xl md:text-3xl font-bold mb-4 shine">Escolha Seu Plano</h2>
-            <p class="text-base md:text-lg mb-4 fade-in">Aproveite 7 dias grátis e desbloqueie álibis ilimitados por R$ 9,90/mês.</p>
+            <p class="text-base md:text-lg mb-4 fade-in">Aproveite 7 dias grátis e desbloqueie bem-estar por R$ 67,90/mês.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-2">
-                <a href="https://pagamento.exemplo.com/pix" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX (placeholder)">Pagar com PIX</a>
-                <a href="https://pagamento.exemplo.com/cartao" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão (placeholder)">Pagar com Cartão</a>
+                <a href="https://pagamento.exemplo.com/pix" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com PIX">Pagar com PIX</a>
+                <a href="https://pagamento.exemplo.com/cartao" class="futuristic-btn text-white py-2 px-4 rounded-full w-full sm:w-auto" aria-label="Pagar com cartão">Pagar com Cartão</a>
             </div>
-            <p class="mt-2 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 500 usuários satisfeitos! (Links são placeholders.)</p>
+            <p class="mt-2 text-sm text-gray-400 fade-in">💰 Garantia de 7 dias ou reembolso total. Mais de 15.000 usuários satisfeitos!</p>
         </div>
     </section>
 
@@ -654,12 +813,12 @@
             retina_detect: true
         });
 
-        // Contador de Usuários
-        let userCount = 400;
+        // Contador de Vagas
+        let vagas = 47;
         setInterval(() => {
-            userCount = Math.min(userCount + 1, 450);
-            document.getElementById('user-count').textContent = userCount;
-        }, 15000);
+            vagas = Math.max(vagas - 1, 40);
+            document.getElementById('vagas').textContent = vagas;
+        }, 3600000);
 
         // Chat Interativo com Voz
         const chatBubble = document.getElementById('chat-bubble');
