@@ -739,8 +739,10 @@
         justify-content: center;
     }
 
+    /* Ajuste: Logotipo responsivo com margem relativa */
     .hero-section .logo img {
-        width: 180px;
+        width: 100%;
+        max-width: 180px;
         height: auto;
     }
 
@@ -750,14 +752,16 @@
         text-transform: uppercase;
     }
 
+    /* Ajuste: Alinhamento centralizado para toda a sub-headline */
     .sub-headline p {
         font-size: 16px;
-        text-align: left;
+        text-align: center;
         margin-bottom: 16px;
     }
 
+    /* Ajuste: Margem superior para o vídeo */
     .video-section {
-        margin: 24px auto;
+        margin: 40px auto;
         max-width: 90vw;
         text-align: center;
     }
@@ -847,19 +851,21 @@
         margin-bottom: 10px;
     }
 
-    .product-card p,
-    .method-card p {
+    /* Ajuste: Centralizar texto dos cartões de produtos */
+    .product-card p {
         font-size: 16px;
-        text-align: left;
+        text-align: center;
     }
 
+    /* Ajuste: Tamanho relativo para ícones de produtos */
     .product-icon {
-        font-size: 24px;
+        font-size: 1.5rem;
         margin-bottom: 10px;
     }
 
+    /* Ajuste: Tamanho relativo para ícones de métodos */
     .method-icon {
-        font-size: 24px;
+        font-size: 1.5rem;
         margin-bottom: 10px;
     }
 
@@ -880,10 +886,16 @@
         align-items: center;
     }
 
+    /* Ajuste: Imagens dos depoimentos com tamanho relativo */
     .testimonial-card .author img {
-        width: 50px;
-        height: 50px;
+        width: 3rem;
+        height: 3rem;
         border-radius: 50%;
+    }
+
+    /* Ajuste: Centralizar informações do autor nos depoimentos */
+    .testimonial-card .author-info {
+        text-align: center;
     }
 
     .credibility-section {
@@ -1046,8 +1058,10 @@
         text-align: center;
     }
 
+    /* Ajuste: Logotipo do footer com tamanho relativo */
     .footer-logo img {
-        max-width: 180px;
+        max-width: 100%;
+        width: 12rem;
         margin-bottom: 16px;
     }
 
@@ -1056,6 +1070,7 @@
         margin-bottom: 8px;
     }
 
+    /* Ajuste: Alinhamento dos links do footer */
     .footer-links {
         text-align: right;
     }
@@ -1113,19 +1128,20 @@
         background: none;
     }
 
+    /* Ajuste: Margem superior para imagem da interface */
     #i0v65x {
         width: 100%;
         border-radius: 16px;
+        margin-top: 24px;
     }
 
+    /* Ajuste: Logotipo Hero responsivo */
     #i7bv7 {
-        width: 221px;
-        height: 213px;
-        margin-top: -100px;
-        padding-top: 0px;
-        padding-left: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
+        width: 100%;
+        max-width: 221px;
+        height: auto;
+        margin-top: 0;
+        padding-top: 20px;
     }
 
     #i9p5o {
@@ -1136,22 +1152,7 @@
         background-image: url('https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/5caaf957-c769-4c09-8d17-8a85d6cfe45d');
     }
 
-    #i4hjy {
-        text-align: center;
-    }
-
-    #ilt9x {
-        text-align: center;
-    }
-
-    #inrnn {
-        text-align: center;
-    }
-
-    #iafli {
-        text-align: center;
-    }
-
+    /* Removido: Regras específicas para #i4hjy, #ilt9x, #inrnn, #iafli, pois agora estão cobertas por .sub-headline p */
     #iu44pz {
         background-position: center;
     }
@@ -1171,7 +1172,6 @@
     }
 
     @media (max-width: 768px) {
-
         .section,
         footer {
             padding: 48px 32px;
@@ -1190,12 +1190,11 @@
         }
 
         .hero-section .logo img {
-            width: 120px;
+            max-width: 120px;
         }
     }
 
     @media (max-width: 480px) {
-
         .section,
         footer {
             padding: 32px 16px;
@@ -1231,6 +1230,16 @@
             flex-direction: column;
         }
 
+        /* Ajuste: Centralizar texto dos benefícios em telas menores */
+        .benefit-text {
+            text-align: center;
+        }
+
+        /* Ajuste: Centralizar itens de benefício */
+        .benefit-item {
+            align-items: center;
+        }
+
         .footer-links {
             text-align: center;
         }
@@ -1239,8 +1248,10 @@
             margin-bottom: 16px;
         }
 
+        /* Ajuste: Logotipo Hero em telas menores */
         #i7bv7 {
-            margin-top: -100px !important;
+            max-width: 150px;
+            padding-top: 10px;
         }
     }
 </style>
