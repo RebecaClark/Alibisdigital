@@ -28,7 +28,9 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  max-width: 1280px; /* Centraliza com largura máxima */
   width: 100%;
+  margin: 0 auto; /* Centraliza horizontalmente */
   z-index: 50;
   transition: box-shadow 0.3s ease;
 }
@@ -38,8 +40,8 @@ body {
 }
 
 .header-container {
-  max-width: 1280px; /* Replaced max-width: 7xl with explicit value for clarity */
-  margin: 0 auto; /* Centered with auto margins */
+  max-width: 1280px; /* Consistente com max-width do holo-nav */
+  margin: 0 auto; /* Centraliza */
   padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -108,7 +110,7 @@ body {
   border-radius: 0.25rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   min-width: 10rem;
-  z-index: 10;
+  z-index: 60; /* Aumentado para ficar acima de .urgency */
 }
 
 .dropdown:hover .dropdown-menu {
@@ -128,6 +130,14 @@ body {
 
 #mobile-menu {
   display: none;
+  position: fixed;
+  top: 100%;
+  right: 0;
+  background: rgba(31, 41, 55, 0.9);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  z-index: 60; /* Aumentado para ficar acima de .urgency */
 }
 
 #mobile-menu.active {
@@ -149,32 +159,33 @@ body {
   text-decoration: none;
 }
 
-@media (max-width: 768px) {
-  .holo-nav .header-right {
-    flex-direction: column;
-    align-items: flex-end;
-  }
-  .language-switch {
-    margin-bottom: 0.5rem;
-  }
-  #navbar {
-    display: none;
-  }
-  #mobile-menu.active {
-    display: flex;
-  }
+.urgency {
+  max-width: 1280px; /* Consistente com outros contêineres */
+  margin: 0 auto; /* Centraliza */
+  color: #ff4444;
+  font-weight: 700;
+  margin-top: 5rem; /* Ajustado para evitar sobreposição com holo-nav */
+  padding: 1rem;
+  text-align: center;
+  position: fixed; /* Mantém fixo para visibilidade */
+  top: 0; /* Será ajustado dinamicamente via JavaScript */
+  width: 100%;
+  z-index: 40; /* Abaixo de holo-nav e menus */
+  background: rgba(31, 41, 55, 0.9); /* Adiciona fundo para legibilidade */
 }
 
 /* Seção Hero */
 #hero {
   background: linear-gradient(to right, #1a2526, #2c3e50);
   padding: 5rem 1.5rem;
-  margin-top: 5rem; /* Space for fixed header */
+  max-width: 1280px; /* Consistente com outros contêineres */
+  margin: 0 auto; /* Centraliza */
+  margin-top: 8rem; /* Ajustado para evitar sobreposição com holo-nav e urgency */
 }
 
 .hero-container {
-  max-width: 1280px; /* Match header-container */
-  margin: 0 auto; /* Center the content */
+  max-width: 1280px; /* Consistente com header-container */
+  margin: 0 auto; /* Centraliza */
 }
 
 #hero h1 {
@@ -193,8 +204,8 @@ body {
 video {
   width: 100%;
   max-width: 48rem;
-  margin: 0 auto; /* Center video */
-  display: block; /* Ensure block-level for centering */
+  margin: 0 auto; /* Centraliza vídeo */
+  display: block; /* Garante centralização */
   border-radius: 0.75rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   border: 0.125rem solid #22d3ee;
@@ -207,15 +218,9 @@ video {
   transform: translate(-50%, -50%);
 }
 
-.urgency {
-  color: #ff4444;
-  font-weight: 700;
-  margin-top: 1rem;
-}
-
 .newsletter {
   max-width: 48rem;
-  margin: 0 auto; /* Center newsletter */
+  margin: 0 auto; /* Centraliza newsletter */
   background: rgba(31, 41, 55, 0.9);
   padding: 1.5rem;
   border-radius: 0.75rem;
@@ -258,8 +263,8 @@ video {
 }
 
 .section-container {
-  max-width: 1280px; /* Consistent with other containers */
-  margin: 0 auto; /* Center all sections */
+  max-width: 1280px; /* Consistente com outros contêineres */
+  margin: 0 auto; /* Centraliza todas as seções */
 }
 
 .features h2, .testimonials h2, .cta h2, .plans h2, .support h2 {
@@ -279,4 +284,27 @@ video {
 
 .fade-in {
   animation: fadeIn 1s ease-in;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .holo-nav .header-right {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .language-switch {
+    margin-bottom: 0.5rem;
+  }
+  #navbar {
+    display: none;
+  }
+  #mobile-menu.active {
+    display: flex;
+  }
+  .urgency {
+    margin-top: 4rem; /* Ajusta espaço para dispositivos menores */
+  }
+  #hero {
+    margin-top: 7rem; /* Ajusta para evitar sobreposição */
+  }
 }
