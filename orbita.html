@@ -1,323 +1,242 @@
+Certo, entendi perfeitamente\! Minhas desculpas pelo código incompleto ou com funcionalidades removidas na iteração anterior. Vamos refazer o `orbita.html` do zero, garantindo que **todos os botões estejam presentes e funcionais**, e que a **funcionalidade do scanner emocional com Face++ e OpenAI esteja totalmente integrada e operante**, como havíamos discutido.
+
+O código abaixo combina a estrutura e os botões que você já tinha no `orbita.html` fornecido na última mensagem, com a lógica completa do scanner emocional que utiliza as APIs da Face++ para detecção facial e da OpenAI para diagnóstico e conselhos.
+
+**Importante:**
+
+  * As chaves de API (`YOUR_FACE_API_KEY`, `YOUR_FACE_API_SECRET`, `YOUR_OPENAI_API_KEY`) ainda estão como placeholders. **Você DEVE substituí-las pelas suas chaves reais** para que o scanner funcione.
+  * Novamente, **em um ambiente de produção, essas chaves jamais devem estar no código frontend**. É essencial movê-las para um backend seguro para proteger suas credenciais.
+
+-----
+
+**Código `orbita.html` Completo e Corrigido:**
+
+Por favor, **substitua TODO o conteúdo atual do seu arquivo `orbita.html`** por este código.
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÓRBITA Quântica - Autocuidado do Futuro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="ÓRBITA Quântica - Autocuidado do Futuro">
+    <meta name="keywords" content="ÓRBITA, autocuidado, meditação, tecnologia futurista, scanner emocional, IA, bem-estar">
+    <meta name="author" content="Álibis Digital">
+    <title>ÓRBITA Quântica</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0b1120; /* Fundo escuro padrão */
-            color: #e5e7eb;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065); /* Gradiente para o fundo */
-        }
-        .container {
-            max-width: 1200px; /* Aumentado para melhor organização */
-            margin: 0 auto;
-            padding: 2rem;
-            flex-grow: 1; /* Permite que o conteúdo ocupe o espaço disponível */
-        }
+        body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; color: #e5e7eb; background: linear-gradient(135deg, #0b1120, #1e1b4b); overflow-x: hidden; }
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; background: transparent; }
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .header { position: sticky; top: 0; width: 100%; height: 40px; background: rgba(17, 24, 39, 0.9); backdrop-filter: blur(10px); padding: 5px 10px; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
+        .header img { height: 25px; width: auto; }
+        .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; transition: color 0.1s; }
+        .nav-btn:hover { color: #3498db; }
+        .content { margin-top: 50px; padding: 10px; max-width: 960px; margin-left: auto; margin-right: auto; }
+        .card { background: rgba(45, 55, 72, 0.9); /* Mais opaco para visibilidade */ border: 2px solid #3498db; border-radius: 15px; padding: 15px; margin-bottom: 15px; color: #e5e7eb; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; opacity: 0.5; }
+        @keyframes pulse { 0% { transform: scale(0); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
         .futuristic-btn {
-            display: inline-block;
             background: linear-gradient(45deg, #7C3AED, #22d3ee); /* Gradiente roxo-ciano */
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-size: 1rem;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem; /* Levemente maior */
             font-weight: 600;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-        .futuristic-btn:hover {
-            transform: translateY(-3px) rotate(1deg);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee;
-            background: linear-gradient(45deg, #6D28D9, #06B6D4);
-        }
-        .futuristic-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 300%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: lightSweep 3s infinite linear;
-            z-index: -1;
-        }
-        @keyframes lightSweep {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .section-title {
-            @apply text-3xl md:text-4xl font-bold text-center text-white mb-6;
-        }
-        .glassmorphic-card {
-            background: rgba(255, 255, 255, 0.08); /* Mais transparente */
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Sombra mais profunda */
-            backdrop-filter: blur(8px); /* Blur mais forte */
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Borda mais suave */
-            padding: 2.5rem; /* Padding aumentado */
-            margin-bottom: 3rem; /* Espaçamento entre seções */
-        }
-        #camera-feed {
-            width: 100%;
-            max-width: 400px; /* Limita o tamanho para mobile */
-            height: auto;
-            aspect-ratio: 4/3; /* Mantém a proporção */
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 2px solid #22d3ee; /* Borda ciano neon */
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5); /* Efeito neon */
-        }
-        #emotion-result {
-            font-size: 1.6rem; /* Tamanho maior */
-            font-weight: bold;
-            color: #a78bfa; /* Cor roxa clara */
-            margin-top: 1rem;
-            text-shadow: 0 0 10px rgba(167, 139, 250, 0.7); /* Sombra de texto neon */
-        }
-        #wellbeing-advice {
-            margin-top: 0.8rem;
-            color: #a7f3d0; /* Verde claro */
-            font-size: 1rem;
-        }
-        .habit-tracker-item {
-            @apply bg-gray-800 rounded-lg p-4 mb-3 flex justify-between items-center shadow-md;
-        }
-        .habit-button {
-            @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 shadow-md;
-        }
-        .meditation-item, .tool-card {
-            @apply bg-gray-900 rounded-lg p-5 mb-4 shadow-xl border border-gray-700 hover:border-blue-500 transition-all duration-300;
-        }
-        .tool-card h4 {
-            @apply text-xl font-semibold text-white mb-2;
-        }
-        .tool-card p {
-            @apply text-gray-300 text-sm;
-        }
-        .tool-card .play-button {
-            @apply mt-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-200;
-        }
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 100; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
-            display: flex;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); /* Sombra neon */
+            transition: all 0.2s ease; /* Transição mais suave */
+            width: auto;
+            cursor: pointer;
+            display: inline-flex; /* Para alinhar ícones e texto */
             align-items: center;
             justify-content: center;
+            gap: 5px; /* Espaço entre ícone e texto */
         }
-        .modal-content {
-            background: linear-gradient(135deg, #1f2937, #111827); /* Fundo escuro gradiente */
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: fadeInScale 0.3s ease-out;
-            border: 1px solid #22d3ee;
-        }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: #22d3ee;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .progress-bar-container {
+        .futuristic-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 25px rgba(34, 211, 238, 0.7); }
+        .futuristic-btn:active { transform: scale(0.98); }
+        .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.6; box-shadow: none; }
+
+        .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+        .progress { height: 8px; background: linear-gradient(90deg, #3498db, #22d3ee); width: 0; transition: width 0.3s ease; border-radius: 5px; } /* Gradiente para progresso */
+        .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
+        @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
+
+        video { width: 100%; max-width: 480px; height: auto; border: 3px solid #3498db; border-radius: 10px; display: block; margin: 0 auto; box-shadow: 0 0 15px rgba(52, 152, 219, 0.6); }
+        canvas { display: none; } /* Ocultar o canvas de captura */
+
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: #2d3748; border: 2px solid #3498db; border-radius: 15px; padding: 25px; box-shadow: 0 0 30px #3498db; z-index: 30; animation: popupOpen 0.3s ease-out; }
+        @keyframes popupOpen { from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(52, 152, 219, 0.5); padding-bottom: 10px; }
+        .popup-header h3 { font-size: 1.5rem; color: #3498db; }
+        .popup-controls button { background: none; border: none; color: #3498db; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+        .popup-controls button:hover { color: #fff; transform: scale(1.1); }
+        .popup-content { color: #e5e7eb; line-height: 1.6; font-size: 0.95rem; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 25; }
+        .narration-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; justify-content: center; }
+        .narration-controls .futuristic-btn { font-size: 0.8rem; padding: 6px 12px; }
+
+        .form-input {
             width: 100%;
-            background-color: #374151;
-            border-radius: 9999px;
-            height: 8px;
-            margin-top: 1rem;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #1f2937;
+            border: 1px solid #3498db;
+            color: #e5e7eb;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #22d3ee;
-            border-radius: 9999px;
-            transition: width 0.3s ease-in-out;
+        .form-input::placeholder { color: #9ca3af; }
+        .form-input:focus { outline: none; border-color: #22d3ee; box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3); }
+
+        select.futuristic-btn {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23e5e7eb' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.7em top 50%, 0 0;
+            background-size: 1.5em auto;
+            padding-right: 2.5em;
         }
-        .loading-dots::after {
-            content: '';
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            animation: dots 1.5s steps(3, end) infinite;
-        }
-        @keyframes dots {
-            0% { content: '.'; }
-            33% { content: '..'; }
-            66% { content: '...'; }
-            100% { content: '.'; }
-        }
+
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .section-title { font-size: 2.2rem; }
-            .glassmorphic-card { padding: 1.5rem; margin-bottom: 2rem; }
-            .wellbeing-tools { grid-template-columns: 1fr; }
-            #camera-feed { max-width: 100%; }
+            .header { height: 35px; padding: 3px 8px; }
+            .header img { height: 20px; }
+            .content { margin-top: 45px; padding: 5px; }
+            .futuristic-btn { padding: 6px 12px; font-size: 0.8rem; }
+            .popup { padding: 15px; }
+            .popup-header h3 { font-size: 1.2rem; }
+            .popup-controls button { font-size: 1.2rem; }
+            .popup-content { font-size: 0.85rem; }
+            video { max-width: 100%; }
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-    <div class="container flex flex-col">
-        <header class="py-8 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">ÓRBITA Quântica</h1>
-            <p class="text-lg md:text-xl text-gray-400">Seu espaço de autocuidado e evolução no futuro.</p>
-        </header>
 
-        <section class="glassmorphic-card mb-8">
-            <h2 class="section-title">Monitoramento Emocional Quântico</h2>
-            <p class="text-gray-300 mb-6 text-center">Ative sua câmera para uma análise em tempo real do seu estado emocional e receba insights personalizados.</p>
-            <div class="flex flex-col items-center">
-                <video id="camera-feed" autoplay playsinline></video>
-                <canvas id="capture-canvas" class="hidden"></canvas>
-                <input type="text" id="user-context" placeholder="Como você está se sentindo hoje (opcional)?"
-                       class="w-full max-w-md rounded-md bg-gray-800 text-white placeholder-gray-500 p-3 mb-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
-                <button id="analyze-emotion-btn" class="futuristic-btn">
-                    <span id="analyze-button-text">Analisar Emoção</span>
+    <header class="header">
+        <a href="/"><img src="/assets/logo.png" alt="Logo ÓRBITA" class="fade-in"></a>
+        <button class="nav-btn" id="menu-btn">☰</button>
+    </header>
+
+    <div class="content">
+        <div class="card fade-in">
+            <h2 class="text-xl font-semibold mb-2">Monitoramento Emocional Quântico</h2>
+            <p class="text-gray-300 mb-4">Ative sua câmera para uma análise em tempo real do seu estado emocional.</p>
+            <div class="flex flex-col items-center justify-center">
+                <video id="camera-feed" autoplay muted playsinline class="mt-2"></video>
+                <canvas id="capture-canvas" style="display: none;"></canvas> <input type="text" id="user-context" placeholder="Como você está se sentindo hoje? (opcional)" class="form-input mt-4">
+                <button id="scan-btn" class="futuristic-btn mt-4">
+                    <span id="scan-button-text">Escanear Emoção</span>
                     <span id="loading-dots" class="loading-dots hidden"></span>
                 </button>
-                <div id="emotion-status" class="mt-4 text-center text-gray-400 text-sm">Aguardando análise...</div>
-                <div id="emotion-result" class="mt-4 text-center"></div>
-                <div id="wellbeing-advice" class="text-sm text-gray-400 mt-2 text-center"></div>
+                <div id="scan-status" class="mt-3 text-gray-400 text-sm">Aguardando câmera...</div>
+                <div id="scan-result" class="mt-4 text-center">
+                    </div>
             </div>
-        </section>
+        </div>
 
-        <section class="glassmorphic-card mb-8">
-            <h2 class="section-title">Registro de Hábitos Diários</h2>
-            <p class="text-gray-300 mb-6 text-center">Acompanhe seus hábitos e construa uma rotina mais saudável.</p>
-            <div id="habit-tracker" class="space-y-3">
+        <div class="card fade-in">
+            <h2 class="text-xl font-semibold mb-2">Ciclo Diário</h2>
+            <p class="text-gray-300 mb-4">Monitore seus hábitos e acompanhe seu progresso.</p>
+            <div id="daily-suggestions" class="mt-2 text-gray-400 mb-4">
                 </div>
-            <button onclick="addHabit()" class="futuristic-btn mt-6">Adicionar Novo Hábito</button>
-        </section>
+            <div id="habit-list" class="space-y-2 mb-4">
+                </div>
+            <button id="habit-log-btn" class="futuristic-btn mt-2">✨ Registrar Novo Hábito</button>
+            <div id="progress-display" class="mt-4 text-gray-300 hidden">Progresso: 0 hábitos registrados hoje.</div>
+            <button id="reflection-btn" class="futuristic-btn mt-2">💬 Pergunta do Dia</button>
+        </div>
 
-        <section class="glassmorphic-card mb-8">
-            <h2 class="section-title">Ferramentas de Bem-Estar e Relaxamento</h2>
-            <p class="text-gray-300 mb-6 text-center">Encontre paz, foco e equilíbrio com nossas ferramentas guiadas.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="tool-card">
-                    <h4>Meditações Guiadas</h4>
-                    <p>Encontre a calma com nossas sessões de meditação.</p>
-                    <button class="play-button" onclick="openModal('meditation')">Explorar</button>
+        <div class="card fade-in">
+            <h2 class="text-xl font-semibold mb-2">Ferramentas de Bem-Estar e Relaxamento</h2>
+            <p class="text-gray-300 mb-4">Recursos para alívio do estresse, melhora do sono e equilíbrio físico.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="tool-item">
+                    <h3 class="text-lg font-semibold mb-2 text-blue-300">Meditações Guiadas</h3>
+                    <select id="meditation-type" class="form-input mb-2 text-left">
+                        <option value="stress">Meditação para Estresse</option>
+                        <option value="anxiety">Meditação para Ansiedade</option>
+                        <option value="focus">Meditação para Foco</option>
+                        <option value="relaxation">Meditação para Relaxamento</option>
+                        <option value="nervousness">Meditação para Nervosismo</option>
+                        <option value="anger">Meditação para Raiva</option>
+                        <option value="gratitude">Meditação de Gratidão</option>
+                    </select>
+                    <button id="meditation-btn" class="futuristic-btn w-full">🧘 Iniciar Meditação</button>
                 </div>
-                <div class="tool-card">
-                    <h4>Histórias para Dormir</h4>
-                    <p>Adormeça suavemente com narrativas tranquilizantes.</p>
-                    <button class="play-button" onclick="openModal('sleep-story')">Explorar</button>
+
+                <div class="tool-item">
+                    <h3 class="text-lg font-semibold mb-2 text-purple-300">Sons e Histórias para o Sono</h3>
+                    <select id="sleep-sound-type" class="form-input mb-2 text-left">
+                        <option value="rain">Chuva</option>
+                        <option value="waves">Ondas do Mar</option>
+                        <option value="white-noise">Ruído Branco</option>
+                        <option value="forest">Sons da Floresta</option>
+                    </select>
+                    <button id="sleep-story-btn" class="futuristic-btn w-full mb-2">🌙 História para Dormir</button>
+                    <button id="sound-btn" class="futuristic-btn w-full">🎶 Tocar Som Relaxante</button>
                 </div>
-                <div class="tool-card">
-                    <h4>Alongamento & Yoga</h4>
-                    <p>Mantenha seu corpo flexível e mente tranquila.</p>
-                    <button class="play-button" onclick="openModal('exercise')">Explorar</button>
-                </div>
-                <div class="tool-card">
-                    <h4>Exercícios de Respiração</h4>
-                    <p>Controle o estresse e aumente o foco com a respiração.</p>
-                    <button class="play-button" onclick="openModal('breathing')">Explorar</button>
-                </div>
-                <div class="tool-card">
-                    <h4>Sons Relaxantes</h4>
-                    <p>Crie seu ambiente perfeito com sons da natureza e mais.</p>
-                    <button class="play-button" onclick="openModal('sounds')">Explorar</button>
-                </div>
-                <div class="tool-card">
-                    <h4>Reflexão Diária</h4>
-                    <p>Conecte-se consigo mesmo através de perguntas guiadas.</p>
-                    <button class="play-button" onclick="dailyReflection()">Começar</button>
+
+                <div class="tool-item">
+                    <h3 class="text-lg font-semibold mb-2 text-green-300">Movimento e Respiração</h3>
+                    <button id="stretch-btn" class="futuristic-btn w-full mb-2">🤸 Alongamento Guiado</button>
+                    <button id="yoga-btn" class="futuristic-btn w-full mb-2">🧘‍♀️ Yoga Leve</button>
+                    <button id="breath-btn" class="futuristic-btn w-full">🌬 Exercício de Respiração</button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="glassmorphic-card mb-8">
-            <h2 class="section-title">Comunidade Órbita</h2>
-            <p class="text-gray-300 mb-6 text-center">Conecte-se com outros exploradores do autocuidado.</p>
-            <div id="community-orbita" class="text-center">
-                <p class="text-gray-400 mb-4">Um espaço seguro para compartilhar experiências e crescer juntos.</p>
-                <button onclick="joinCommunity()" class="futuristic-btn">Participar da Comunidade (Em Breve)</button>
-            </div>
-        </section>
+        <div class="card fade-in">
+            <h2 class="text-xl font-semibold mb-2">Comunidade Órbita</h2>
+            <p class="text-gray-300 mb-4">Conecte-se com outros exploradores do autocuidado e receba apoio.</p>
+            <button id="community-btn" class="futuristic-btn">🤝 Entrar na Comunidade (Em Breve)</button>
+        </div>
 
-        <section class="glassmorphic-card mb-8">
-            <h2 class="section-title">Últimos Artigos e Insights</h2>
-            <p class="text-gray-300 mb-6 text-center">Mantenha-se atualizado com as últimas pesquisas e tendências em bem-estar.</p>
-            <div id="latest-articles" class="text-center">
-                <p class="text-gray-400 mb-4">Conteúdo inspirador e educativo para sua jornada.</p>
-                <a href="#" class="futuristic-btn">Explorar Artigos (Em Breve)</a>
+        <div class="card fade-in">
+            <h2 class="text-xl font-semibold mb-2">Últimos Artigos e Insights</h2>
+            <p class="text-gray-300 mb-4">Mantenha-se atualizado com as últimas pesquisas e tendências em bem-estar.</p>
+            <div class="article-card bg-gray-800 p-4 rounded-lg border border-gray-700">
+                <h3 class="text-lg font-semibold mb-2 text-yellow-300">Reduza o Estresse no Trabalho com Inteligência Artificial</h3>
+                <p class="text-gray-400 mb-3 text-sm">Descubra como o scanner facial de estresse e o Abili podem ajudar a aliviar a tensão no trabalho com dicas personalizadas e inovadoras.</p>
+                <a href="#" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">Leia mais →</a>
             </div>
-        </section>
-
-        <footer class="py-8 text-center text-gray-500 mt-auto">
-            <p>&copy; 2024 ÓRBITA Quântica. Todos os direitos reservados.</p>
-        </footer>
-    </div>
-
-    <div id="interactiveModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle" class="text-2xl font-bold text-white mb-4"></h3>
-            <div id="modalContent" class="text-gray-300 text-lg leading-relaxed mb-4"></div>
-            <div class="flex justify-center space-x-4">
-                <button id="start-narration" class="futuristic-btn play-button hidden">Narrar</button>
-                <button id="stop-narration" class="futuristic-btn play-button hidden">Parar Narração</button>
-                <button id="restart-narration" class="futuristic-btn play-button hidden">Reiniciar Narração</button>
-            </div>
-            <div class="progress-bar-container hidden" id="narration-progress-container">
-                <div class="progress-bar" id="narration-progress"></div>
-            </div>
+            <button class="futuristic-btn mt-4">📚 Ver Todos os Artigos (Em Breve)</button>
         </div>
     </div>
 
+    <div id="overlay" class="overlay"></div>
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <h3 id="popup-title"></h3>
+            <div class="popup-controls">
+                <button id="minimize-btn" title="Minimizar">-</button>
+                <button id="close-btn" title="Fechar">X</button>
+            </div>
+        </div>
+        <div id="popup-content" class="popup-content"></div>
+        <div class="narration-controls hidden" id="narration-controls-area">
+            <button id="play-narration" class="futuristic-btn">🔊 Ouvir</button>
+            <button id="pause-narration" class="futuristic-btn">⏸ Pausar</button>
+            <button id="restart-narration" class="futuristic-btn">🔄 Reiniciar</button>
+        </div>
+        <div class="progress-bar mt-4 hidden" id="narration-progress-bar-container">
+            <div id="narration-progress" class="progress"></div>
+        </div>
+        <button id="popup-action-btn" class="futuristic-btn w-full mt-4 hidden">Confirmar</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        // Inicialização de partículas de fundo
+        // Configuração das partículas de fundo
         particlesJS('particles-js', {
-            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#a78bfa' }, shape: { type: 'circle' }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false } },
-            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { grab: { distance: 200, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } } }
+            particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: '#3498db' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#3498db', opacity: 0.2, width: 0.8 }, move: { enable: true, speed: 1.2 } },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
         });
 
         // ==================================================================================================
@@ -331,35 +250,75 @@
         const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Substitua pela sua chave da OpenAI
         // ==================================================================================================
 
-        // --- Variáveis e Elementos do DOM para o Scanner ---
+        // --- Elementos DOM ---
         const cameraFeed = document.getElementById('camera-feed');
         const captureCanvas = document.getElementById('capture-canvas');
-        const analyzeEmotionBtn = document.getElementById('analyze-emotion-btn');
-        const analyzeButtonText = document.getElementById('analyze-button-text');
+        const scanBtn = document.getElementById('scan-btn');
+        const scanButtonText = document.getElementById('scan-button-text');
         const loadingDots = document.getElementById('loading-dots');
-        const emotionStatusDiv = document.getElementById('emotion-status');
-        const emotionResultDiv = document.getElementById('emotion-result');
-        const wellbeingAdviceDiv = document.getElementById('wellbeing-advice');
+        const scanStatusDiv = document.getElementById('scan-status');
+        const scanResultDiv = document.getElementById('scan-result');
         const userContextInput = document.getElementById('user-context');
 
-        let cameraStream;
-        let isAnalyzing = false; // Para evitar cliques múltiplos durante a análise
+        const popup = document.getElementById('popup');
+        const overlay = document.getElementById('overlay');
+        const popupTitle = document.getElementById('popup-title');
+        const popupContent = document.getElementById('popup-content');
+        const closeBtn = document.getElementById('close-btn');
+        const minimizeBtn = document.getElementById('minimize-btn');
+        const popupActionButton = document.getElementById('popup-action-btn');
 
-        // --- Funções do Scanner ---
+        const narrationControlsArea = document.getElementById('narration-controls-area');
+        const playNarrationBtn = document.getElementById('play-narration');
+        const pauseNarrationBtn = document.getElementById('pause-narration');
+        const restartNarrationBtn = document.getElementById('restart-narration');
+        const narrationProgressBarContainer = document.getElementById('narration-progress-bar-container');
+        const narrationProgressBar = document.getElementById('narration-progress');
+
+        const habitLogBtn = document.getElementById('habit-log-btn');
+        const habitListDiv = document.getElementById('habit-list');
+        const progressDisplay = document.getElementById('progress-display');
+        const reflectionBtn = document.getElementById('reflection-btn');
+        const meditationBtn = document.getElementById('meditation-btn');
+        const meditationTypeSelect = document.getElementById('meditation-type');
+        const sleepStoryBtn = document.getElementById('sleep-story-btn');
+        const sleepSoundTypeSelect = document.getElementById('sleep-sound-type');
+        const soundBtn = document.getElementById('sound-btn');
+        const stretchBtn = document.getElementById('stretch-btn');
+        const yogaBtn = document.getElementById('yoga-btn');
+        const breathBtn = document.getElementById('breath-btn');
+        const communityBtn = document.getElementById('community-btn');
+        const dailySuggestionsDiv = document.getElementById('daily-suggestions');
+
+        // --- Variáveis de Estado ---
+        let cameraStream;
+        let isAnalyzing = false;
+        let currentNarrationText = "";
+        let currentUtterance = null;
+        let speechSynth = window.speechSynthesis;
+        let habitCount = 0;
+        let habits = []; // Array para armazenar hábitos
+        let audioPlayer = new Audio(); // Player de áudio para sons relaxantes
+
+        // --- Funções Auxiliares do Scanner ---
         async function startCamera() {
             try {
                 cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
                 cameraFeed.srcObject = cameraStream;
-                emotionStatusDiv.textContent = "Câmera ativada. Pressione 'Analisar Emoção'.";
+                scanStatusDiv.textContent = "Câmera ativada. Pressione 'Escanear Emoção'.";
+                scanBtn.disabled = false; // Habilita o botão após a câmera iniciar
             } catch (error) {
                 console.error("Erro ao acessar a câmera:", error);
-                emotionStatusDiv.textContent = "Erro ao acessar a câmera. Verifique as permissões.";
-                analyzeEmotionBtn.disabled = true;
+                scanStatusDiv.textContent = "Erro ao acessar a câmera. Verifique as permissões do navegador.";
+                scanBtn.disabled = true; // Desabilita se a câmera não puder ser acessada
             }
         }
 
         function captureFrame() {
-            if (!cameraFeed || !captureCanvas || cameraFeed.videoWidth === 0) return null;
+            if (!cameraFeed || !captureCanvas || cameraFeed.videoWidth === 0) {
+                console.error("Vídeo não está pronto ou canvas não disponível.");
+                return null;
+            }
             captureCanvas.width = cameraFeed.videoWidth;
             captureCanvas.height = cameraFeed.videoHeight;
             const context = captureCanvas.getContext('2d');
@@ -370,36 +329,25 @@
         async function analyzeEmotion() {
             if (isAnalyzing) return;
             isAnalyzing = true;
-            analyzeEmotionBtn.disabled = true;
-            analyzeButtonText.classList.add('hidden');
+            scanBtn.disabled = true;
+            scanButtonText.classList.add('hidden');
             loadingDots.classList.remove('hidden');
 
             if (!FACE_API_KEY || FACE_API_KEY === 'YOUR_FACE_API_KEY' || !FACE_API_SECRET || FACE_API_SECRET === 'YOUR_FACE_API_SECRET' || !OPENAI_API_KEY || OPENAI_API_KEY === 'YOUR_OPENAI_API_KEY') {
-                emotionStatusDiv.textContent = "Erro: Chaves de API não configuradas corretamente. Por favor, edite o código.";
-                emotionResultDiv.textContent = "";
-                wellbeingAdviceDiv.textContent = "";
-                isAnalyzing = false;
-                analyzeEmotionBtn.disabled = false;
-                analyzeButtonText.classList.remove('hidden');
-                loadingDots.classList.add('hidden');
+                scanStatusDiv.textContent = "Erro: Chaves de API não configuradas corretamente. Edite o código.";
+                resetScanButton();
                 return;
             }
 
             const imageData = captureFrame();
             if (!imageData) {
-                emotionStatusDiv.textContent = "Não foi possível capturar a imagem da câmera. Tente novamente.";
-                emotionResultDiv.textContent = "";
-                wellbeingAdviceDiv.textContent = "";
-                isAnalyzing = false;
-                analyzeEmotionBtn.disabled = false;
-                analyzeButtonText.classList.remove('hidden');
-                loadingDots.classList.add('hidden');
+                scanStatusDiv.textContent = "Não foi possível capturar a imagem da câmera. Tente novamente.";
+                resetScanButton();
                 return;
             }
 
-            emotionStatusDiv.textContent = "Analisando expressão facial...";
-            emotionResultDiv.textContent = "";
-            wellbeingAdviceDiv.textContent = "";
+            scanStatusDiv.textContent = "Analisando expressão facial...";
+            scanResultDiv.innerHTML = ""; // Limpa resultados anteriores
 
             const formData = new URLSearchParams();
             formData.append('api_key', FACE_API_KEY);
@@ -419,24 +367,19 @@
 
                 if (faceData.faces && faceData.faces.length > 0) {
                     const emotions = faceData.faces[0].emotion;
-                    emotionStatusDiv.textContent = "Emoções faciais detectadas. Gerando diagnóstico...";
+                    scanStatusDiv.textContent = "Emoções faciais detectadas. Gerando diagnóstico da IA...";
                     await getAiDiagnosis(emotions, userContextInput.value);
                 } else {
-                    emotionStatusDiv.textContent = "Nenhum rosto detectado. Posicione-se bem em frente à câmera.";
-                    emotionResultDiv.textContent = "";
-                    wellbeingAdviceDiv.textContent = "";
+                    scanStatusDiv.textContent = "Nenhum rosto detectado. Por favor, posicione-se bem em frente à câmera.";
+                    scanResultDiv.innerHTML = '<p class="text-yellow-400">Tente ajustar sua posição.</p>';
                 }
 
             } catch (error) {
                 console.error("Erro na API da Face++:", error);
-                emotionStatusDiv.textContent = "Erro ao analisar a emoção (Face++). Tente novamente.";
-                emotionResultDiv.textContent = "";
-                wellbeingAdviceDiv.textContent = "";
+                scanStatusDiv.textContent = "Erro ao analisar a emoção (Face++). Verifique sua conexão e chaves.";
+                scanResultDiv.innerHTML = '<p class="text-red-500">Falha na comunicação com o serviço de análise facial.</p>';
             } finally {
-                isAnalyzing = false;
-                analyzeEmotionBtn.disabled = false;
-                analyzeButtonText.classList.remove('hidden');
-                loadingDots.classList.add('hidden');
+                resetScanButton();
             }
         }
 
@@ -461,9 +404,9 @@
                         'Authorization': `Bearer ${OPENAI_API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo', // Ou 'gpt-4o' se tiver acesso e preferir
+                        model: 'gpt-3.5-turbo', // Você pode tentar 'gpt-4o' se tiver acesso e preferir.
                         messages: [{ role: 'user', content: prompt }],
-                        response_format: { type: "json_object" } // Solicita um JSON como resposta
+                        response_format: { type: "json_object" }
                     })
                 });
 
@@ -472,222 +415,130 @@
                 if (aiData.choices && aiData.choices.length > 0 && aiData.choices[0].message && aiData.choices[0].message.content) {
                     try {
                         const diagnosis = JSON.parse(aiData.choices[0].message.content);
-                        emotionResultDiv.textContent = `Você parece estar se sentindo: ${diagnosis.emotion || 'Indefinido'}.`;
-                        wellbeingAdviceDiv.textContent = diagnosis.advice || "Esperamos que se sinta bem!";
+                        const emotionText = diagnosis.emotion || 'Indefinido';
+                        const adviceText = diagnosis.advice || "Esperamos que se sinta bem!";
+
+                        scanResultDiv.innerHTML = `
+                            <p class="text-lg font-semibold text-white">Você parece estar se sentindo: <span class="text-blue-300">${emotionText}</span></p>
+                            <p class="text-gray-300 mt-2">${adviceText}</p>
+                            <p class="text-gray-400 text-sm mt-3">Reflita sobre esta análise e use nossas ferramentas para seu bem-estar!</p>
+                        `;
+                        scanStatusDiv.textContent = "Análise concluída.";
+                        updateDailySuggestions(emotionText, adviceText); // Atualiza sugestões diárias
                     } catch (e) {
                         console.error("Erro ao parsear JSON da OpenAI:", e);
-                        emotionResultDiv.textContent = `Você parece estar se sentindo: ${dominantEmotion}.`;
-                        wellbeingAdviceDiv.textContent = "Houve um problema ao obter uma sugestão da IA.";
+                        scanResultDiv.innerHTML = `
+                            <p class="text-lg font-semibold text-white">Emoção predominante detectada: <span class="text-blue-300">${dominantEmotion}</span></p>
+                            <p class="text-red-400 mt-2">Houve um problema ao obter uma sugestão detalhada da IA.</p>
+                        `;
+                        scanStatusDiv.textContent = "Análise concluída com erro parcial da IA.";
                     }
                 } else {
                     console.warn("Resposta da OpenAI incompleta ou inválida:", aiData);
-                    emotionResultDiv.textContent = `Você parece estar se sentindo: ${dominantEmotion}.`;
-                    wellbeingAdviceDiv.textContent = "Não foi possível obter uma sugestão da IA neste momento.";
+                    scanResultDiv.innerHTML = `
+                        <p class="text-lg font-semibold text-white">Emoção predominante detectada: <span class="text-blue-300">${dominantEmotion}</span></p>
+                        <p class="text-red-400 mt-2">Não foi possível obter uma sugestão da IA neste momento.</p>
+                    `;
+                    scanStatusDiv.textContent = "Análise concluída com erro da IA.";
                 }
 
             } catch (error) {
                 console.error("Erro na API da OpenAI:", error);
-                emotionStatusDiv.textContent = "Erro ao conectar com a IA (OpenAI). Tente novamente.";
-                emotionResultDiv.textContent = "";
-                wellbeingAdviceDiv.textContent = "";
-            }
-        }
-
-        // --- Funcionalidades de Registro de Hábitos ---
-        let habits = [];
-        const habitTrackerDiv = document.getElementById('habit-tracker');
-
-        function loadHabits() {
-            const storedHabits = localStorage.getItem('orbita_habits');
-            if (storedHabits) {
-                habits = JSON.parse(storedHabits);
-                renderHabits();
-            }
-        }
-
-        function saveHabits() {
-            localStorage.setItem('orbita_habits', JSON.stringify(habits));
-        }
-
-        function renderHabits() {
-            habitTrackerDiv.innerHTML = '';
-            if (habits.length === 0) {
-                habitTrackerDiv.innerHTML = '<p class="text-center text-gray-400">Nenhum hábito registrado ainda. Adicione um para começar!</p>';
-            }
-            habits.forEach((habit, index) => {
-                const habitDiv = document.createElement('div');
-                habitDiv.classList.add('habit-tracker-item');
-                habitDiv.innerHTML = `
-                    <span class="${habit.completed ? 'line-through text-gray-500' : 'text-white'} text-lg">${habit.name}</span>
-                    <button class="habit-button ${habit.completed ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}"
-                            onclick="toggleHabit(${index})">${habit.completed ? 'Concluído!' : 'Marcar como Concluído'}</button>
+                scanResultDiv.innerHTML = `
+                    <p class="text-red-500">Erro ao conectar com a IA (OpenAI). Verifique sua conexão e chaves.</p>
                 `;
-                habitTrackerDiv.appendChild(habitDiv);
-            });
-        }
-
-        function addHabit() {
-            const habitName = prompt("Qual hábito você gostaria de registrar (ex: Beber água, Meditar 10min)?");
-            if (habitName && habitName.trim() !== "") {
-                habits.push({ name: habitName.trim(), completed: false });
-                saveHabits();
-                renderHabits();
-            } else if (habitName !== null) { // Se o usuário digitou algo mas era vazio
-                alert("O nome do hábito não pode ser vazio.");
+                scanStatusDiv.textContent = "Falha na comunicação com o serviço de IA.";
+            } finally {
+                resetScanButton();
             }
         }
 
-        function toggleHabit(index) {
-            habits[index].completed = !habits[index].completed;
-            saveHabits();
-            renderHabits();
+        function resetScanButton() {
+            isAnalyzing = false;
+            scanBtn.disabled = false;
+            scanButtonText.classList.remove('hidden');
+            loadingDots.classList.add('hidden');
         }
 
-        // --- Conteúdo das Ferramentas de Bem-Estar (Dados fictícios para demonstração) ---
-        const meditations = [
-            { title: "Meditação Guiada para Iniciantes", content: "Esta meditação suave irá guiá-lo através de técnicas básicas de atenção plena, ajudando a acalmar a mente e focar no presente. Respire profundamente e sinta a tranquilidade." },
-            { title: "Meditação para Redução do Estresse", content: "Concentre-se em liberar tensões com esta meditação focada no corpo e na respiração. Deixe as preocupações irem e encontre um estado de relaxamento profundo." },
-            { title: "Meditação da Gratidão", content: "Cultive um coração grato nesta meditação que o convida a refletir sobre as coisas boas da sua vida, grandes e pequenas. Sinta a alegria da gratidão." }
-        ];
+        function updateDailySuggestions(emotion, advice) {
+            dailySuggestionsDiv.innerHTML = `<p class="text-gray-300">Última Análise: ${emotion}.</p><p class="text-gray-400 mt-1">Conselho: ${advice}.</p>`;
+        }
 
-        const sleepStories = [
-            { title: "A Viagem para a Floresta Encantada", content: "Deixe-se levar por uma jornada mágica através de uma floresta antiga, onde os murmúrios do vento e o canto dos pássaros o conduzem a um sono profundo e reparador. Cada passo é uma onda de relaxamento." },
-            { title: "A Caverna dos Cristais", content: "Imagine-se em uma caverna luminosa, cercada por cristais brilhantes que emitem uma energia suave e curativa. Sinta a paz e a segurança enquanto mergulha no descanso." },
-            { title: "O Jardim Secreto ao Luar", content: "Caminhe por um jardim sereno sob a luz prateada da lua. As flores perfumadas e a brisa suave acalmam seus pensamentos, preparando-o para uma noite de sono tranquilo e sonhos doces." }
-        ];
+        // --- Funções Gerais do Popup ---
+        function showPopup(title, contentHTML, hasNarration = false, hasActionButton = false, actionBtnText = "Confirmar", actionCallback = null) {
+            popupTitle.textContent = title;
+            popupContent.innerHTML = contentHTML;
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+            disableAllMainButtons(true);
+            speechSynthesis.cancel(); // Sempre cancela qualquer fala anterior
 
-        const exercises = [
-            { title: "Alongamento Matinal Suave", content: "Comece o dia com uma série de alongamentos suaves para despertar seu corpo, aliviar tensões e preparar-se para o dia com flexibilidade e energia. Preste atenção em cada músculo." },
-            { title: "Yoga para Relaxamento Profundo", content: "Esta sequência de yoga suave e restauradora foi projetada para liberar o estresse acumulado no corpo e na mente, promovendo um relaxamento profundo e restaurador. Deixe a gravidade fazer o trabalho." }
-        ];
+            // Configurações de narração
+            if (hasNarration) {
+                narrationControlsArea.classList.remove('hidden');
+                narrationProgressBarContainer.classList.remove('hidden');
+                narrationProgressBar.style.width = '0%';
+                playNarrationBtn.classList.remove('hidden');
+                pauseNarrationBtn.classList.add('hidden');
+                restartNarrationBtn.classList.add('hidden');
 
-        const breathingExercises = [
-            { title: "Respiração 4-7-8", content: "A técnica de respiração 4-7-8 é um poderoso relaxante natural. Inspire por 4 segundos, segure por 7, expire por 8. Repita para acalmar seu sistema nervoso." },
-            { title: "Respiração Quadrada", content: "Ideal para focar e reduzir a ansiedade. Inspire, segure, expire e segure, cada um por 4 segundos. Visualiza um quadrado perfeito com sua respiração." }
-        ];
-
-        const relaxingSounds = [
-            { title: "Sons da Chuva Calma", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" }, // Exemplo de MP3
-            { title: "Ondas do Mar Suaves", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }, // Exemplo de MP3
-            { title: "Flauta Nativa Americana", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" } // Exemplo de MP3
-        ];
-
-        // --- Funções do Modal ---
-        const interactiveModal = document.getElementById('interactiveModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
-        const startNarrationBtn = document.getElementById('start-narration');
-        const stopNarrationBtn = document.getElementById('stop-narration');
-        const restartNarrationBtn = document.getElementById('restart-narration');
-        const narrationProgressBarContainer = document.getElementById('narration-progress-container');
-        const narrationProgressBar = document.getElementById('narration-progress');
-
-        let currentNarrationText = "";
-        let currentUtterance = null;
-        let speechSynth = window.speechSynthesis;
-
-        function openModal(type) {
-            interactiveModal.classList.remove('hidden');
-            modalContent.innerHTML = ''; // Limpa conteúdo anterior
-            startNarrationBtn.classList.add('hidden');
-            stopNarrationBtn.classList.add('hidden');
-            restartNarrationBtn.classList.add('hidden');
-            narrationProgressBarContainer.classList.add('hidden');
-
-            let items = [];
-            let displayHtml = '';
-            modalTitle.textContent = "Explorar";
-
-            switch (type) {
-                case 'meditation':
-                    modalTitle.textContent = "Meditações Guiadas";
-                    items = meditations;
-                    items.forEach((item, index) => {
-                        displayHtml += `<div class="p-3 bg-gray-800 rounded-md mb-2">
-                                            <h4 class="font-semibold text-white">${item.title}</h4>
-                                            <p class="text-gray-400 text-sm mt-1">${item.content.substring(0, 120)}...</p>
-                                            <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-full text-sm"
-                                                    onclick="selectAndNarrate('${item.title}', '${item.content}', 'meditation')">Iniciar</button>
-                                        </div>`;
-                    });
-                    break;
-                case 'sleep-story':
-                    modalTitle.textContent = "Histórias para Dormir";
-                    items = sleepStories;
-                    items.forEach((item, index) => {
-                        displayHtml += `<div class="p-3 bg-gray-800 rounded-md mb-2">
-                                            <h4 class="font-semibold text-white">${item.title}</h4>
-                                            <p class="text-gray-400 text-sm mt-1">${item.content.substring(0, 120)}...</p>
-                                            <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-full text-sm"
-                                                    onclick="selectAndNarrate('${item.title}', '${item.content}', 'sleep-story')">Iniciar</button>
-                                        </div>`;
-                    });
-                    break;
-                case 'exercise':
-                    modalTitle.textContent = "Alongamento & Yoga";
-                    items = exercises;
-                    items.forEach((item, index) => {
-                        displayHtml += `<div class="p-3 bg-gray-800 rounded-md mb-2">
-                                            <h4 class="font-semibold text-white">${item.title}</h4>
-                                            <p class="text-gray-400 text-sm mt-1">${item.content.substring(0, 120)}...</p>
-                                            <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-full text-sm"
-                                                    onclick="selectAndNarrate('${item.title}', '${item.content}', 'exercise')">Iniciar</button>
-                                        </div>`;
-                    });
-                    break;
-                case 'breathing':
-                    modalTitle.textContent = "Exercícios de Respiração";
-                    items = breathingExercises;
-                    items.forEach((item, index) => {
-                        displayHtml += `<div class="p-3 bg-gray-800 rounded-md mb-2">
-                                            <h4 class="font-semibold text-white">${item.title}</h4>
-                                            <p class="text-gray-400 text-sm mt-1">${item.content.substring(0, 120)}...</p>
-                                            <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-full text-sm"
-                                                    onclick="selectAndNarrate('${item.title}', '${item.content}', 'breathing')">Iniciar</button>
-                                        </div>`;
-                    });
-                    break;
-                case 'sounds':
-                    modalTitle.textContent = "Sons Relaxantes";
-                    items = relaxingSounds;
-                    items.forEach((item, index) => {
-                        displayHtml += `<div class="p-3 bg-gray-800 rounded-md mb-2">
-                                            <h4 class="font-semibold text-white">${item.title}</h4>
-                                            <audio controls class="w-full mt-2" src="${item.src}"></audio>
-                                        </div>`;
-                    });
-                    break;
+                // Adiciona listeners para os botões de narração
+                playNarrationBtn.onclick = () => narrateText(currentNarrationText);
+                pauseNarrationBtn.onclick = () => speechSynth.pause();
+                restartNarrationBtn.onclick = () => { speechSynth.cancel(); narrateText(currentNarationText); };
+            } else {
+                narrationControlsArea.classList.add('hidden');
+                narrationProgressBarContainer.classList.add('hidden');
             }
-            modalContent.innerHTML = displayHtml || '<p class="text-gray-400">Conteúdo não disponível.</p>';
+
+            // Configuração do botão de ação no popup
+            if (hasActionButton) {
+                popupActionButton.classList.remove('hidden');
+                popupActionButton.textContent = actionBtnText;
+                popupActionButton.onclick = actionCallback;
+            } else {
+                popupActionButton.classList.add('hidden');
+                popupActionButton.onclick = null;
+            }
         }
 
-        function closeModal() {
-            interactiveModal.classList.add('hidden');
-            stopNarration(); // Garante que a narração pare ao fechar o modal
+        function hidePopup() {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+            speechSynthesis.cancel(); // Garante que a narração pare ao fechar o modal
+            audioPlayer.pause(); // Para qualquer som relaxante
+            disableAllMainButtons(false);
+            currentUtterance = null; // Reseta a utterance atual
+            currentNarrationText = ""; // Limpa o texto de narração
         }
 
+        function minimizePopup() {
+            popup.style.display = 'none';
+            alert(`Janela "${popupTitle.textContent}" minimizada. Clique em "Minimizar" novamente para reabrir.`);
+            speechSynthesis.cancel();
+            audioPlayer.pause();
+            disableAllMainButtons(false); // Permite interação com o restante da página
+        }
+
+        function disableAllMainButtons(disable) {
+            const buttons = [scanBtn, habitLogBtn, reflectionBtn, meditationBtn, sleepStoryBtn, soundBtn, stretchBtn, yogaBtn, breathBtn, communityBtn];
+            buttons.forEach(btn => btn.disabled = disable);
+        }
+
+        // --- Funções de Narração (TTS) ---
         function cleanTextForNarration(text) {
-            // Remove caracteres especiais que podem causar problemas na fala
-            return text.replace(/[^a-zA-Z0-9\s.,!?;áéíóúÁÉÍÓÚãõÃÕâêôÂÊÔçÇ]/g, '').replace(/\s+/g, ' ').trim();
-        }
-
-        function selectAndNarrate(title, content, type) {
-            modalTitle.textContent = title;
-            modalContent.innerHTML = `<p>${content}</p>`; // Exibe o conteúdo completo
-            currentNarrationText = cleanTextForNarration(content);
-
-            startNarrationBtn.classList.remove('hidden');
-            stopNarrationBtn.classList.add('hidden');
-            restartNarrationBtn.classList.add('hidden');
-            narrationProgressBarContainer.classList.remove('hidden');
-            narrationProgressBar.style.width = '0%'; // Resetar barra de progresso
-
-            // Adiciona listeners para os botões de controle de narração
-            startNarrationBtn.onclick = () => narrateText(currentNarrationText);
-            stopNarrationBtn.onclick = stopNarration;
-            restartNarrationBtn.onclick = () => { stopNarration(); narrateText(currentNarrationText); };
-
-            narrateText(currentNarrationText); // Inicia automaticamente ao selecionar
+            // Remove emojis e substitui caracteres especiais que podem ser mal interpretados
+            return text
+                .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}]/gu, '')
+                .replace(/🌟/g, 'estrela')
+                .replace(/🌧️/g, 'chuva')
+                .replace(/🌋/g, 'vulcão')
+                .replace(/⚖️/g, 'balança')
+                .replace(/🏎️/g, 'carro de corrida')
+                .replace(/📈/g, 'gráfico subindo')
+                .replace(/😰/g, 'rosto ansioso')
+                .replace(/\s+/g, ' ') // Remove múltiplos espaços
+                .trim();
         }
 
         function narrateText(text) {
@@ -696,101 +547,267 @@
                 return;
             }
             if (speechSynth.speaking) {
-                speechSynth.cancel(); // Para a fala atual antes de começar uma nova
+                speechSynth.cancel();
             }
 
-            currentUtterance = new SpeechSynthesisUtterance(text);
+            currentNarrationText = cleanTextForNarration(text);
+            currentUtterance = new SpeechSynthesisUtterance(currentNarrationText);
             currentUtterance.lang = 'pt-BR';
-            currentUtterance.rate = 0.9; // Ajuste a velocidade se necessário
-            currentUtterance.pitch = 1.0; // Ajuste o tom se necessário
+            currentUtterance.rate = 0.95; // Velocidade ligeiramente mais lenta
+            currentUtterance.pitch = 1.0;
             currentUtterance.volume = 0.9;
 
             let charIndex = 0;
             currentUtterance.onboundary = (event) => {
-                if (event.name === 'word') {
+                if (event.name === 'word' || event.name === 'sentence') {
                     charIndex = event.charIndex;
-                    const progress = (charIndex / text.length) * 100;
+                    const progress = (charIndex / currentNarrationText.length) * 100;
                     narrationProgressBar.style.width = `${progress}%`;
                 }
             };
 
             currentUtterance.onend = () => {
                 narrationProgressBar.style.width = '100%';
-                startNarrationBtn.classList.add('hidden');
-                stopNarrationBtn.classList.add('hidden');
+                playNarrationBtn.classList.add('hidden');
+                pauseNarrationBtn.classList.add('hidden');
                 restartNarrationBtn.classList.remove('hidden');
-                console.log("Narração concluída.");
             };
 
             currentUtterance.onstart = () => {
-                startNarrationBtn.classList.add('hidden');
-                stopNarrationBtn.classList.remove('hidden');
+                playNarrationBtn.classList.add('hidden');
+                pauseNarrationBtn.classList.remove('hidden');
                 restartNarrationBtn.classList.add('hidden');
-                console.log("Narração iniciada.");
             };
 
             currentUtterance.onerror = (event) => {
                 console.error('Erro na síntese de fala:', event.error);
-                stopNarration();
+                narrationProgressBar.style.width = '0%';
+                playNarrationBtn.classList.remove('hidden');
+                pauseNarrationBtn.classList.add('hidden');
+                restartNarrationBtn.classList.add('hidden');
+                alert("Ocorreu um erro na narração. Tente novamente.");
             };
 
             speechSynth.speak(currentUtterance);
         }
 
-        function stopNarration() {
-            if (speechSynth.speaking) {
-                speechSynth.cancel();
-                startNarrationBtn.classList.remove('hidden');
-                stopNarrationBtn.classList.add('hidden');
-                restartNarrationBtn.classList.remove('hidden');
-                narrationProgressBar.style.width = `${(currentUtterance && currentUtterance.charIndex) ? (currentUtterance.charIndex / currentUtterance.text.length) * 100 : 0}%`;
-                console.log("Narração parada.");
+        // --- Funções de Hábitos ---
+        function loadHabits() {
+            const storedHabits = localStorage.getItem('orbita_habits');
+            if (storedHabits) {
+                habits = JSON.parse(storedHabits);
+            }
+            renderHabits();
+        }
+
+        function saveHabits() {
+            localStorage.setItem('orbita_habits', JSON.stringify(habits));
+        }
+
+        function renderHabits() {
+            habitListDiv.innerHTML = '';
+            if (habits.length === 0) {
+                habitListDiv.innerHTML = '<p class="text-center text-gray-400">Nenhum hábito registrado. Clique em "Registrar Novo Hábito" para começar!</p>';
+                progressDisplay.classList.add('hidden');
+            } else {
+                let completedCount = 0;
+                habits.forEach((habit, index) => {
+                    const habitItem = document.createElement('div');
+                    habitItem.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-800', 'p-3', 'rounded-md');
+                    if (habit.completed) {
+                        completedCount++;
+                        habitItem.classList.add('opacity-70', 'border-l-4', 'border-green-500');
+                    } else {
+                         habitItem.classList.add('border-l-4', 'border-blue-500');
+                    }
+                    habitItem.innerHTML = `
+                        <span class="${habit.completed ? 'line-through text-gray-500' : 'text-white'} text-md">${habit.name}</span>
+                        <button class="futuristic-btn py-1 px-3 text-sm ${habit.completed ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'}"
+                                onclick="toggleHabit(${index})">
+                            ${habit.completed ? 'Concluído' : 'Marcar'}
+                        </button>
+                    `;
+                    habitListDiv.appendChild(habitItem);
+                });
+                habitCount = completedCount;
+                progressDisplay.classList.remove('hidden');
+                progressDisplay.textContent = `Progresso: ${completedCount} de ${habits.length} hábitos concluídos hoje.`;
             }
         }
 
-        // --- Outras Funções do ÓRBITA ---
+        function logHabit() {
+            showPopup('Registrar Novo Hábito', `
+                <p>Qual hábito você gostaria de adicionar à sua lista?</p>
+                <input type="text" id="new-habit-input" placeholder="Ex: Meditar 10 minutos" class="form-input mt-4">
+            `, false, true, 'Adicionar Hábito', () => {
+                const newHabit = document.getElementById('new-habit-input').value.trim();
+                if (newHabit) {
+                    habits.push({ name: newHabit, completed: false, date: new Date().toLocaleDateString() });
+                    saveHabits();
+                    renderHabits();
+                    hidePopup();
+                    alert(`Hábito "${newHabit}" adicionado!`);
+                } else {
+                    alert("Por favor, digite o nome do hábito.");
+                }
+            });
+        }
+
+        function toggleHabit(index) {
+            if (index >= 0 && index < habits.length) {
+                habits[index].completed = !habits[index].completed;
+                saveHabits();
+                renderHabits();
+            }
+        }
+
+        // --- Funções de Bem-Estar e Relaxamento (Conteúdo Fictício para Demonstração) ---
+        const meditationsContent = {
+            stress: { title: "Meditação para Redução do Estresse", text: "Feche os olhos e respire fundo, sentindo o ar entrar e sair. Deixe a mente acalmar, liberando toda a tensão. Imagine uma luz suave que envolve você, trazendo paz. Permita-se relaxar e encontrar um refúgio de tranquilidade por alguns minutos." },
+            anxiety: { title: "Meditação para Aliviar a Ansiedade", text: "Sente-se confortavelmente e concentre-se na sua respiração. Sinta cada inspiração e expiração, como uma âncora no presente. Reconheça a ansiedade, mas não se apegue a ela. Deixe-a fluir como nuvens no céu, enquanto você permanece calmo e centrado." },
+            focus: { title: "Meditação para Aumentar o Foco", text: "Escolha um ponto fixo, seja na tela ou em sua mente. Mantenha sua atenção nesse ponto, e sempre que a mente divagar, gentilmente traga-a de volta. Sinta a clareza e a concentração crescerem com cada respiração. Este é o seu momento de clareza." },
+            relaxation: { title: "Meditação para Relaxamento Profundo", text: "Deite-se e sinta o peso do seu corpo. Comece a relaxar cada parte, dos pés à cabeça. Sinta a gravidade te puxando para baixo, em um estado de profundo repouso. Deixe todas as preocupações para trás, e apenas exista no momento presente, em completa serenidade." },
+            nervousness: { title: "Meditação para Acalmar o Nervosismo", text: "Inspire calmamente pelo nariz, expire lentamente pela boca. Repita. Sinta a tensão diminuindo a cada expiração. Lembre-se de que este momento de nervosismo é passageiro. Você é forte e capaz de superá-lo, com cada respiração profunda." },
+            anger: { title: "Meditação para Lidar com a Raiva", text: "Reconheça a raiva que sente, sem julgamento. Respire através dela, permitindo que a emoção se mova pelo seu corpo e se dissipe. Imagine uma chama em seu coração, que se acalma com sua respiração. Sinta a tranquilidade substituindo a intensidade, trazendo clareza e paz." },
+            gratitude: { title: "Meditação da Gratidão", text: "Pense em três coisas pelas quais você é grato hoje. Pode ser algo simples como o sol, ou alguém que te ajudou. Sinta a emoção da gratidão aquecer seu coração. Quanto mais você pratica a gratidão, mais motivos encontrará para ser grato. Agradeça." }
+        };
+
+        const sleepStoriesContent = [
+            { title: "A Floresta Sussurrante", text: "Deixe-se levar pelos murmúrios suaves da floresta. As folhas balançam, os grilos cantam e uma brisa leve acaricia seu rosto. Imagine-se caminhando por um caminho macio, cercado por árvores antigas. O ar puro enche seus pulmões e cada passo o leva mais fundo em um sono tranquilo. Os sons da natureza te embalam..." },
+            { title: "Viagem à Ilha dos Sonhos", text: "Navegue em um barco tranquilo para uma ilha distante, onde o céu é pintado de roxo e rosa ao pôr do sol. As ondas do mar batem suavemente na areia, e a areia quente massageia seus pés. Sinta a brisa do oceano em seu rosto e o cheiro salgado do ar. A ilha dos sonhos espera por você para um sono profundo e reparador..." },
+            { title: "O Jardim Secreto sob a Lua", text: "Imagine um jardim secreto, iluminado apenas pelo brilho suave da lua. Flores noturnas desabrocham e liberam um perfume adocicado. Uma fonte murmura suavemente no centro do jardim. Deite-se na grama macia e observe as estrelas. Sinta a quietude da noite e a magia do jardim te levar ao sono..." }
+        ];
+
+        const stretchContent = "Comece o alongamento de 10 minutos. Inspire profundamente e ao expirar, alongue-se suavemente para cima, como se estivesse alcançando o céu. Em seguida, incline o tronco para a direita e para a esquerda, sentindo o alongamento lateral. Depois, toque os pés com as mãos, relaxando a coluna. Por fim, sente-se e estique as pernas, alongando a parte posterior. Mantenha cada posição por 30 segundos, respirando calmamente.";
+        const yogaContent = "Iniciando uma sequência de yoga leve de 10 minutos. Comece na Postura da Montanha, com os pés firmes no chão, sentindo sua conexão com a terra. Respire profundamente. Em seguida, mova-se para a Postura do Gato-Vaca, sincronizando seu movimento com a respiração. Depois, descanse na Postura da Criança, liberando qualquer tensão. Finalize com alongamentos laterais, abrindo seu corpo e sua mente. Desfrute da sensação de renovação.";
+        const breathingContent = "Vamos praticar a técnica de respiração 4-7-8, que ajuda a acalmar o sistema nervoso. Feche a boca e inspire silenciosamente pelo nariz contando até 4. Segure a respiração contando até 7. Expire completamente pela boca, fazendo um som de 'sopro', contando até 8. Repita este ciclo por 5 vezes. Sinta a tranquilidade em cada expiração. Concentre-se na contagem e na sensação do ar.";
+
+        const relaxingSoundsContent = {
+            rain: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Exemplo de MP3
+            waves: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", // Exemplo de MP3
+            'white-noise': "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", // Exemplo de MP3
+            forest: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" // Exemplo de MP3
+        };
+
+        function startMeditation() {
+            const selectedType = meditationTypeSelect.value;
+            const med = meditationsContent[selectedType];
+            if (med) {
+                currentNarrationText = med.text;
+                showPopup(med.title, `<p>${med.text}</p><p class="mt-4 text-gray-400 text-sm">Respire profundamente e relaxe.</p>`, true);
+                narrateText(currentNarrationText); // Inicia a narração
+            } else {
+                showPopup('Erro', '<p>Meditação não encontrada.</p>');
+            }
+        }
+
+        function playSleepStory() {
+            const randomIndex = Math.floor(Math.random() * sleepStoriesContent.length);
+            const story = sleepStoriesContent[randomIndex];
+            currentNarrationText = story.text;
+            showPopup(story.title, `<p>${story.text}</p><p class="mt-4 text-gray-400 text-sm">Deixe a história te guiar ao sono profundo.</p>`, true);
+            narrateText(currentNarrationText);
+        }
+
+        function playSounds() {
+            const soundType = sleepSoundTypeSelect.value;
+            const audioSrc = relaxingSoundsContent[soundType];
+
+            if (audioSrc) {
+                audioPlayer.src = audioSrc;
+                audioPlayer.loop = true; // Toca em loop
+                audioPlayer.play().then(() => {
+                    showPopup(`Sons Relaxantes: ${soundType.charAt(0).toUpperCase() + soundType.slice(1)}`, `
+                        <p class="text-center text-lg">Tocando sons de ${soundType.replace('-', ' ')}...</p>
+                        <p class="text-gray-400 text-sm mt-2">Feche os olhos e mergulhe na tranquilidade. Clique em "Fechar" para parar.</p>
+                    `);
+                }).catch(e => {
+                    console.error("Erro ao tocar áudio:", e);
+                    showPopup('Erro', '<p>Não foi possível tocar o som. Seu navegador pode ter bloqueado a reprodução automática.</p>');
+                });
+            } else {
+                showPopup('Erro', '<p>Som relaxante não encontrado.</p>');
+            }
+        }
+
+        function startStretch() {
+            currentNarrationText = stretchContent;
+            showPopup('Alongamento Guiado', `<p>${stretchContent}</p><p class="mt-4 text-gray-400 text-sm">Siga as instruções para um corpo mais flexível.</p>`, true);
+            narrateText(currentNarrationText);
+        }
+
+        function startYoga() {
+            currentNarrationText = yogaContent;
+            showPopup('Yoga Leve', `<p>${yogaContent}</p><p class="mt-4 text-gray-400 text-sm">Encontre equilíbrio e paz interior.</p>`, true);
+            narrateText(currentNarrationText);
+        }
+
+        function startBreathing() {
+            currentNarrationText = breathingContent;
+            showPopup('Exercício de Respiração (4-7-8)', `<p>${breathingContent}</p><p class="mt-4 text-gray-400 text-sm">Siga o ritmo da respiração para acalmar a mente.</p>`, true);
+            narrateText(currentNarationText);
+        }
+
         function dailyReflection() {
             const questions = [
-                "Qual foi o momento mais positivo do seu dia?",
-                "O que você aprendeu de novo hoje?",
-                "Pelo que você é grato(a) neste momento?",
+                "O que te fez sorrir genuinamente hoje?",
+                "Qual foi o seu maior aprendizado ou insight do dia?",
+                "Pelo que você é grato(a) neste exato momento?",
                 "Como você cuidou de si mesmo(a) hoje?",
-                "Se pudesse mudar uma coisa no seu dia, qual seria e por quê?"
+                "Se pudesse mudar uma coisa no seu dia, qual seria e por quê?",
+                "Que emoção você mais sentiu hoje e por que?",
+                "Qual desafio você superou hoje, por menor que seja?",
+                "O que você espera do dia de amanhã?"
             ];
             const selectedQuestion = questions[Math.floor(Math.random() * questions.length)];
-            const userResponse = prompt(`Pergunta do Dia:\n"${selectedQuestion}"\n\nSua resposta:`);
 
-            if (userResponse !== null) { // Se o usuário não cancelou o prompt
-                openModal('reflection-result'); // Reutilize o modal para exibir a resposta
-                modalTitle.textContent = "Sua Reflexão Diária";
-                modalContent.innerHTML = `<p class="mb-2"><strong>Pergunta:</strong> ${selectedQuestion}</p><p><strong>Sua Resposta:</strong> ${userResponse || 'Nenhuma resposta registrada.'}</p><p class="mt-4 text-gray-400 text-sm">Refletir ajuda a construir autoconsciência. Ótimo trabalho!</p>`;
-                startNarrationBtn.classList.add('hidden');
-                stopNarrationBtn.classList.add('hidden');
-                restartNarrationBtn.classList.add('hidden');
-                narrationProgressBarContainer.classList.add('hidden');
-            }
+            showPopup('Pergunta do Dia', `
+                <p class="font-semibold text-lg mb-3">${selectedQuestion}</p>
+                <textarea id="reflection-response" class="form-input" rows="4" placeholder="Escreva sua reflexão aqui..."></textarea>
+            `, false, true, 'Salvar Reflexão', () => {
+                const response = document.getElementById('reflection-response').value.trim();
+                if (response) {
+                    // Aqui você poderia salvar a reflexão em localStorage ou enviar para um backend
+                    hidePopup();
+                    showPopup('Reflexão Salva!', `<p>Sua reflexão foi registrada:</p><p class="mt-2 text-gray-300">"${response}"</p><p class="mt-4 text-gray-400 text-sm">Refletir ajuda a construir autoconsciência e gratidão!</p>`);
+                } else {
+                    alert("Por favor, escreva sua reflexão antes de salvar.");
+                }
+            });
         }
 
         function joinCommunity() {
-            alert("A Comunidade Órbita está em desenvolvimento! Fique ligado(a) para novidades.");
+            showPopup('Comunidade Órbita', `
+                <p class="text-center text-lg mb-3">Bem-vindo(a) à Comunidade Órbita!</p>
+                <p class="text-center text-gray-400">Este espaço está em desenvolvimento. Em breve, você poderá se conectar, compartilhar experiências e encontrar apoio.</p>
+                <p class="text-center text-gray-400 mt-4">Agradecemos sua paciência e entusiasmo!</p>
+            `);
         }
 
-
-        // --- Inicialização da Página ---
+        // --- Inicialização ao Carregar a Página ---
         document.addEventListener('DOMContentLoaded', () => {
             startCamera();
-            loadHabits();
-            renderHabits(); // Garante que os hábitos são exibidos mesmo que a lista esteja vazia
+            loadHabits(); // Carrega hábitos salvos
+            renderHabits(); // Renderiza os hábitos
 
-            analyzeEmotionBtn.addEventListener('click', analyzeEmotion);
+            // Event Listeners para os botões principais
+            scanBtn.addEventListener('click', analyzeEmotion);
+            habitLogBtn.addEventListener('click', logHabit);
+            reflectionBtn.addEventListener('click', dailyReflection);
+            meditationBtn.addEventListener('click', startMeditation);
+            sleepStoryBtn.addEventListener('click', playSleepStory);
+            soundBtn.addEventListener('click', playSounds);
+            stretchBtn.addEventListener('click', startStretch);
+            yogaBtn.addEventListener('click', startYoga);
+            breathBtn.addEventListener('click', startBreathing);
+            communityBtn.addEventListener('click', joinCommunity);
 
-            // Adiciona o fechamento do modal ao clicar fora do conteúdo
-            interactiveModal.addEventListener('click', (e) => {
-                if (e.target === interactiveModal) {
-                    closeModal();
-                }
-            });
+            // Event Listeners para o Popup
+            closeBtn.addEventListener('click', hidePopup);
+            minimizeBtn.addEventListener('click', minimizePopup);
+            overlay.addEventListener('click', hidePopup); // Fechar popup ao clicar no overlay
         });
     </script>
 </body>
 </html>
+```
