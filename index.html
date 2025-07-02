@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -233,7 +234,7 @@
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
         }
         .credibility-item i {
-            font-size: 2.5rem;
+            font-size: 2.5rem; /* Increased size for emphasis */
             color: var(--primary-color);
             margin-bottom: 15px;
         }
@@ -299,6 +300,13 @@
             font-size: 1.5rem;
             margin-bottom: 15px;
             color: var(--primary-color);
+            display: flex; /* Allow icon next to text */
+            align-items: center; /* Vertically align icon with text */
+        }
+        .feature-item h3 i {
+            margin-left: 10px; /* Space between text and icon */
+            font-size: 1.2em; /* Relative to h3 font size */
+            color: var(--primary-color);
         }
         .feature-item p {
             font-size: 1rem;
@@ -322,6 +330,14 @@
             width: 1em;
             margin-left: -1em;
         }
+        .feature-disclaimer {
+            font-size: 0.85rem;
+            color: var(--accent-red); /* Highlight disclaimers */
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
 
         /* Offer Section */
         .offer-box {
@@ -542,7 +558,7 @@
                     <p>Certificação SSL e proteção LGPD para seus dados</p>
                 </div>
                 <div class="credibility-item">
-                    <i class="fas fa-globe"></i>
+                    <i class="fas fa-flag-checkered"></i>
                     <h3>EMPRESA BRASILEIRA</h3>
                     <p>Tecnologia nacional com suporte especializado em português</p>
                 </div>
@@ -636,7 +652,7 @@
             <p class="section-subtitle">Conheça cada tecnologia que vai apoiar seu bem-estar</p>
             <div class="features-grid">
                 <div class="feature-item">
-                    <h3>🔬 SCANNER DE BEM-ESTAR IA</h3>
+                    <h3>🔬 SCANNER DE BEM-ESTAR IA <i class="fas fa-shield-alt"></i></h3>
                     <p>Monitoramento inteligente personalizado</p>
                     <p>Nossa IA analisa padrões de bem-estar e oferece insights personalizados para ajudar você a manter uma rotina saudável e identificar quando buscar orientação profissional.</p>
                     <ul>
@@ -645,9 +661,10 @@
                         <li>Relatórios de acompanhamento</li>
                         <li>Orientações sobre quando buscar ajuda profissional</li>
                     </ul>
+                    <p class="feature-disclaimer">*Dados protegidos com criptografia e em conformidade com a LGPD.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>💭 APOIO EMOCIONAL IA</h3>
+                    <h3>💭 APOIO EMOCIONAL IA <i class="fas fa-hand-holding-heart"></i></h3>
                     <p>Seu companheiro de bem-estar mental 24/7</p>
                     <p>IA especializada em apoio emocional que oferece conversas empáticas, técnicas de relaxamento e acompanhamento do seu estado emocional para melhorar sua qualidade de vida.</p>
                     <ul>
@@ -659,7 +676,7 @@
                     </ul>
                 </div>
                 <div class="feature-item">
-                    <h3>🩺 ORIENTAÇÃO INTELIGENTE IA</h3>
+                    <h3>🩺 ORIENTAÇÃO INTELIGENTE IA <i class="fas fa-balance-scale"></i></h3>
                     <p>Apoio para decisões sobre bem-estar</p>
                     <p>IA que oferece orientações gerais sobre bem-estar, ajuda a organizar dúvidas sobre saúde e orienta quando e como buscar ajuda profissional adequada.</p>
                     <ul>
@@ -669,6 +686,7 @@
                         <li>Informações baseadas em conhecimento geral</li>
                         <li>Apoio na tomada de decisões sobre cuidados</li>
                     </ul>
+                    <p class="feature-disclaimer">*Não substitui o diagnóstico ou tratamento médico. Sempre consulte um profissional de saúde qualificado.</p>
                 </div>
                 <div class="feature-item">
                     <h3>🌐 ÓRBITA - PAINEL DE CONTROLE</h3>
@@ -774,7 +792,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: As ferramentas de IA realmente ajudam?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: Sim! Nossas ferramentas são baseadas em tecnologia de IA e já apoiaram mais de 75.000 pessoas em seu bem-estar.</p>
@@ -783,7 +801,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: É seguro usar a plataforma?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: Totalmente! Seguimos todas as normas de segurança de dados (LGPD) e temos certificação SSL.</p>
@@ -792,7 +810,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: As ferramentas substituem orientação médica?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: NÃO. Nossas ferramentas são para apoio ao bem-estar e sempre orientamos a buscar profissionais qualificados quando necessário.</p>
@@ -801,7 +819,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: Funciona no meu celular?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: Perfeitamente! Temos aplicativo mobile com todas as funcionalidades das ferramentas.</p>
@@ -810,7 +828,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: O que é o painel Órbita?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: É seu centro de controle pessoal onde você visualiza todos os dados das ferramentas integrados.</p>
@@ -819,7 +837,7 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <h3>P: E se eu não gostar?</h3>
-                    <span class="toggle-icon">&#9660;</span>
+                    <span class="toggle-icon">▼</span>
                 </div>
                 <div class="faq-answer">
                     <p>R: Oferecemos 30 dias de garantia. Não ficou satisfeito? Devolvemos seu investimento.</p>
