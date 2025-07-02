@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedAI Brasil - A Saúde do Futuro com IA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -33,11 +33,21 @@
         .header h1 { color: white; font-size: 36px; margin: 0; }
         .hero { background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 40px; }
         .testimonials, .method, .products, .offer, .bonus, .faq { margin: 40px 0; }
-        .testimonials h2, .method h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { 
+        .testimonials h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { 
             color: white; 
             background: #005670; 
             padding: 10px; 
             border-radius: 8px; 
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .method h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 30px;
+            color: white;
+            background: #005670;
+            padding: 10px;
+            border-radius: 8px;
             margin: 0 auto;
             max-width: 800px;
         }
@@ -53,7 +63,7 @@
             transition: transform 0.3s, background 0.3s;
         }
         .btn:hover { background: #005670; transform: scale(1.05); }
-        .product, .testimonial, .bonus-container, .faq-container {
+        .product, .testimonial, .bonus-container, .faq-container, .method-container {
             background: #fff;
             padding: 20px;
             margin: 20px auto;
@@ -61,7 +71,20 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             max-width: 800px;
             text-align: left;
+            animation: fadeIn 1s ease-in-out;
         }
+        .method-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 163, 183, 0.5);
+        }
+        .method-container ul li {
+            animation: slideIn 1s ease-in-out;
+            animation-fill-mode: both;
+        }
+        .method-container ul li:nth-child(1) { animation-delay: 0.2s; }
+        .method-container ul li:nth-child(2) { animation-delay: 0.4s; }
+        .method-container ul li:nth-child(3) { animation-delay: 0.6s; }
+        .method-container ul li:nth-child(4) { animation-delay: 0.8s; }
         .countdown { font-size: 32px; color: white; font-weight: bold; background: #ff4d4d; padding: 10px; border-radius: 8px; }
         .offer-container {
             background: #fff;
@@ -95,26 +118,55 @@
             font-size: 14px;
             border-radius: 10px 10px 0 0;
         }
+        .hero-logo, .footer-logo {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 200px;
+            height: auto;
+        }
+        .footer-logo { max-width: 150px; }
         h1 { 
-            font-size: 40px; 
+            font-size: 32px; 
             color: #005670; 
             font-weight: 700; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             gap: 10px; 
+            margin: 0; 
+            text-align: center;
         }
         h1 img { width: 40px; height: 40px; }
         h1 span { color: #ff4d4d; }
         h2 { font-size: 32px; color: #005670; }
+        .method h2 { font-size: 30px; font-family: 'Montserrat', sans-serif; }
         h3 { font-size: 24px; color: #00a3b7; }
-        p, ul { font-family: 'Open Sans', sans-serif; line-height: 1.7; margin: 0 auto; }
+        p, ul { font-family: 'Open Sans', sans-serif; line-height: 1.8; margin: 0 auto; }
+        .method-container p, .method-container ul li { font-weight: 600; font-size: 16px; }
         ul { list-style: none; padding: 0; }
-        ul li { margin: 12px 0; font-size: 16px; }
+        ul li { margin: 12px 0; }
         .product, .testimonial { transition: transform 0.3s; }
         .product:hover, .testimonial:hover { transform: translateY(-5px); }
         .testimonial { border-left: 5px solid #00a3b7; }
         .credibility-text { font-size: 18px; font-weight: bold; margin: 20px 0; }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .hero-logo { max-width: 150px; }
+            .video-placeholder { max-width: 100%; height: 300px; }
+            .header h1 { font-size: 28px; }
+            .method h2 { font-size: 26px; }
+        }
+        @media (max-width: 500px) {
+            h1 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -130,8 +182,11 @@
 
     <!-- SEÇÃO 2: HERO SECTION PRINCIPAL -->
     <div class="hero section">
+        <img src="assets/logo.jpg" alt="MedAI Brasil Logo" class="hero-logo">
         <h1>
-            <img src="placeholder_heart_ia.png" alt="Heart + IA Icon"> A ESTRATÉGIA DEFINITIVA PARA CUIDAR DA SUA SAÚDE SEM SAIR DE CASA!
+            <img src="placeholder_heart_ia.png" alt="Heart + IA Icon">
+            A ESTRATÉGIA <strong>DEFINITIVA</strong><br>
+            PARA CUIDAR DA <span>SUA SAÚDE</span> SEM SAIR DE CASA!
         </h1>
         <p>Se você quer acabar com a ansiedade de sintomas estranhos e ter respostas médicas precisas 24/7, esta tecnologia é para você.</p>
         <p class="credibility-text">+75.000 brasileiros já transformaram suas vidas | Precisão de 94.7% validada por hospitais</p>
@@ -170,15 +225,17 @@
 
     <!-- SEÇÃO 4: MÉTODO COMPROVADO -->
     <div class="method section">
-        <h2>🔥 TECNOLOGIA COMPROVADA 🔥</h2>
-        <p>Transforme sua saúde com 3 IAs médicas integradas</p>
-        <ul>
-            <li>✅ Detecte problemas de saúde antes dos sintomas aparecerem</li>
-            <li>✅ Tenha apoio emocional inteligente disponível 24/7</li>
-            <li>✅ Receba orientações médicas precisas em tempo real</li>
-            <li>✅ Monitore sua evolução através do painel Órbita</li>
-        </ul>
-        <p><em>*Não substitui orientação médica profissional</em></p>
+        <div class="method-container">
+            <h2>🔥 TECNOLOGIA COMPROVADA 🔥</h2>
+            <p>Transforme sua saúde com 3 IAs médicas integradas</p>
+            <ul>
+                <li>✅ Detecte problemas de saúde antes dos sintomas aparecerem</li>
+                <li>✅ Tenha apoio emocional inteligente disponível 24/7</li>
+                <li>✅ Receba orientações médicas precisas em tempo real</li>
+                <li>✅ Monitore sua evolução através do painel Órbita</li>
+            </ul>
+            <p><em>*Não substitui orientação médica profissional</em></p>
+        </div>
     </div>
 
     <!-- SEÇÃO 5: OS 3 PRODUTOS REAIS -->
@@ -317,6 +374,7 @@
 
     <!-- SEÇÃO 10: FOOTER -->
     <div class="footer section">
+        <img src="assets/logo.jpg" alt="MedAI Brasil Logo" class="footer-logo">
         <p>© 2025 MedAI Brasil - Todos os direitos reservados</p>
         <p>Plataforma de Tecnologia para Saúde e Bem-Estar</p>
         <p>CNPJ: XX.XXX.XXX/0001-XX</p>
