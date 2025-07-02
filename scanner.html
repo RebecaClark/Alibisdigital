@@ -214,8 +214,7 @@
                 </div>
                 <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Blog</a>
                 <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Planos</a>
-                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Suporte</a>
-                <a href="/login.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
                 <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center bounce-in" aria-label="Criar conta">Criar Conta</a>
             </nav>
         </div>
@@ -234,7 +233,8 @@
         </div>
 
         <p id="voice-instruction" class="text-gray-300 mb-4 fade-in hidden">Fale por 10 segundos: diga como se sente (ex.: "Estou feliz hoje").</p>
-        <div id="countdown" class="hidden"></div> <div class="flex justify-center mb-6">
+        <div id="countdown" class="hidden"></div> 
+        <div class="flex justify-center mb-6">
             <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
         </div>
         <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Descobrir Meus Insights</button>
@@ -331,7 +331,7 @@
         // ==================================================================================================
         const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX'; // EXPOSTA - Mover para Backend!
         const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY'; // EXPOSTA - Mover para Backend!
-        const OPENAI_API_KEY = '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'; // EXPOSTA - Mover para Backend!
+        const OPENAI_API_KEY = 'sk-proj-msLKULNN1ZF3CrA5eOXqsXe1kOrgUBJjX4zRi0DKxdVh30teL3RKTOlIi2SE-bAhVfAhVG4u6Y4T3BlbkFJKeiNKUjFFBXncw7RUztxYBezuCbAwS3RtL82-428PJvLfR-NaAHo_KpkhJ7ylnwwE2kTM2vP9cA'; // EXPOSTA - Mover para Backend!
         // ==================================================================================================
 
         function speakDiagnosis(text) {
@@ -502,7 +502,7 @@
                 voiceData = await analyzeVoice().catch(err => {
                     console.error('Voice analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
                     // Fallback para dados de voz mock para continuar o fluxo
-                    return { sentiment: 'neutro', themes: ['silêncio'] }; // Retorna 'silêncio' para indicar falha/ausência
+                    return { sentiment: 'silencio', themes: ['silêncio'] }; // Retorna 'silêncio' para indicar falha/ausência
                 });
                 console.log('Voice analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', JSON.stringify(voiceData));
 
@@ -670,7 +670,7 @@
             }
         }
 
-        // --- FUNÇÃO CENTRAL: UNIFICAR DIAGNÓSTICO (Aprimorada) ---
+        // --- FUNÇÃO CENTRAL: UNIFICAR DIAGNÓSTICO (Aprimorada com Discrepância Prioritária) ---
         function unifyDiagnosis(facialData, voiceData, bpm, userContext) {
             // 1. Emoção facial dominante
             const dominantFacialEmotion = Object.keys(facialData).reduce((a, b) => facialData[a] > facialData[b] ? a : b);
@@ -690,7 +690,7 @@
             let overallCategory = 'neutro';
             let mainMessage = '';
             let actionSuggestion = [];
-            let discrepancies = [];
+            let discrepancies = []; // Mantemos para futuras expansões, mas a mensagem principal cobrirá isso.
 
             // Mapeamento para nomes amigáveis
             const emotionNames = {
@@ -699,65 +699,90 @@
             };
             const friendlyFacialEmotion = emotionNames[dominantFacialEmotion] || dominantFacialEmotion;
 
-            // --- Lógica de Fusão e Mensagem ---
+            // --- Lógica de Fusão e Mensagem (Ordem de Prioridade Alterada) ---
 
-            // Cenário: Silêncio na Voz
-            if (voiceSentiment === 'silencio') {
+            // **NOVO: CENÁRIO DE DISCREPÂNCIA COM ALTA PRIORIDADE**
+            const userContextLower = userContext.toLowerCase();
+            const userSaysNegative = userContextLower.includes('chateado') || userContextLower.includes('triste') || userContextLower.includes('sobrecarregado') || userContextLower.includes('ansioso') || userContextLower.includes('irritado') || userContextLower.includes('preocupado');
+            const userSaysPositive = userContextLower.includes('feliz') || userContextLower.includes('bem') || userContextLower.includes('animado') || userContextLower.includes('ótimo');
+            const userSaysNeutral = !userSaysNegative && !userSaysPositive && userContextLower.length > 0; // Se algo foi dito mas não é nem positivo nem negativo
+
+            const facePositive = dominantFacialEmotion === 'happiness' && facialScore > 40;
+            const faceNegative = (dominantFacialEmotion === 'sadness' || dominantFacialEmotion === 'anger' || dominantFacialEmotion === 'fear') && facialScore > 30;
+            const voicePositive = voiceSentiment === 'positivo';
+            const voiceNegative = voiceSentiment === 'negativo';
+            const voiceNeutral = voiceSentiment === 'neutro';
+
+            // Condições para detectar discrepâncias fortes
+            if (
+                // 1. Usuário diz negativo, mas rosto/voz são positivos/neutros
+                (userSaysNegative && (facePositive || voicePositive || (dominantFacialEmotion === 'neutral' && voiceNeutral))) ||
+                // 2. Usuário diz positivo, mas rosto/voz são negativos
+                (userSaysPositive && (faceNegative || voiceNegative)) ||
+                // 3. Rosto e voz se contradizem (independente do contexto inicial)
+                (facePositive && voiceNegative) ||
+                (faceNegative && voicePositive)
+            ) {
+                overallCategory = 'discrepancia';
+                mainMessage = `Notamos uma **discrepância interessante** entre o que você mencionou sentir ("${userContext || 'Não informado'}") e o que capturamos. Sua expressão principal é de **${friendlyFacialEmotion}** e sua voz soa **${voiceSentiment === 'silencio' ? 'silenciosa' : voiceSentiment}**.`;
+                mainMessage += ` Isso pode indicar sentimentos complexos ou que você está processando suas emoções de uma forma única.`;
+                actionSuggestion.push("Reflita sobre o que você sente versus o que expressa. É um bom ponto de partida para o autoconhecimento.");
+                actionSuggestion.push("Compartilhar seus sentimentos com alguém de confiança pode ajudar a alinhar o que você sente por dentro e por fora.");
+                actionSuggestion.push("Se essa dissonância for frequente, nossos especialistas podem te ajudar a entender melhor suas emoções.");
+                actionSuggestion.push("Lembre-se que buscar apoio é um sinal de força. Nossos especialistas estão aqui para ajudar.");
+
+            }
+            // Cenário: Silêncio na Voz (Mantido com alta prioridade, exceto se já for discrepância)
+            else if (voiceSentiment === 'silencio') {
                 overallCategory = 'silencio_reflexao';
-                mainMessage = `Percebemos um silêncio em sua fala, o que pode indicar um momento de profunda reflexão, cansaço ou a necessidade de um espaço para processar.`;
+                mainMessage = `Percebemos um **silêncio em sua fala**, o que pode indicar um momento de profunda reflexão, cansaço ou a necessidade de um espaço para processar.`;
                 if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
                 mainMessage += ` Sua expressão facial principal é de **${friendlyFacialEmotion}**.`;
                 actionSuggestion.push("Permita-se esse momento de quietude. Não há necessidade de falar se não quiser.");
                 actionSuggestion.push("Se o silêncio for pesado, uma meditação guiada para acalmar a mente pode ajudar.");
                 actionSuggestion.push("Lembre-se que buscar apoio é um sinal de força. Nossos especialistas estão aqui.");
             }
-            // Cenário 1: Felicidade Pura
-            else if (dominantFacialEmotion === 'happiness' && facialScore > 60 && voiceSentiment === 'positivo') {
-                overallCategory = 'alegria';
-                mainMessage = `Que bom! Seu rosto e sua voz irradiam **alegria e positividade**! 🎉 Parece que você está em um ótimo momento, alinhado com o que expressa.`;
-                actionSuggestion.push("Aproveite essa energia e compartilhe-a com o mundo.");
-                actionSuggestion.push("Reflita sobre o que te faz tão bem e tente manter essa chama acesa!");
-                actionSuggestion.push("Considere praticar a gratidão para amplificar ainda mais esses sentimentos positivos.");
-            }
-            // Cenário 2: Sobrecarga/Tristeza
-            else if ((dominantFacialEmotion === 'sadness' && facialScore > 40) || voiceSentiment === 'negativo' || userContext.toLowerCase().includes('sobrecarregado') || userContext.toLowerCase().includes('chateado')) {
+            // Cenário: Tristeza/Sobrecarga (reforçado pelo contexto do usuário)
+            else if (
+                (faceNegative && dominantFacialEmotion === 'sadness' && facialScore > 40) || // Tristeza facial forte
+                (voiceNegative && userSaysNegative) || // Voz negativa e contexto confirma
+                (userSaysNegative && (dominantFacialEmotion === 'sadness' || voiceNegative)) // Usuário diz negativo E rosto/voz confirmam
+            ) {
                 overallCategory = 'tristeza_sobrecarga';
                 mainMessage = `Parece que você está carregando um peso. Sua armadura emocional está forte, mas nosso scanner detecta uma **necessidade de respiro**. O mundo está cobrando demais, né?`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
                 if (bpm >= 80) mainMessage += ` Seu ritmo cardíaco acelerado (${bpm} bpm) reforça que essa sobrecarga está te afetando fisicamente.`;
                 actionSuggestion.push("Tire essa máscara por um segundo e respire fundo. Está tudo bem ser você mesmo aqui.");
                 actionSuggestion.push("Pequenas pausas e momentos de introspecção podem ajudar a aliviar esse peso.");
                 actionSuggestion.push("Considere explorar o porquê dessa 'armadura'. Nossa Avaliação Emocional pode ajudar.");
                 actionSuggestion.push("Se estiver se sentindo muito sobrecarregado(a), o CVV pode oferecer um ouvido amigo. Ligue 188.");
             }
-            // Cenário 3: Tensão/Ansiedade/Medo
-            else if (dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'anger' || bpm >= 80) {
+            // Cenário: Tensão/Ansiedade/Medo
+            else if (
+                (faceNegative && (dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'anger') && facialScore > 30) || // Medo/raiva facial forte
+                (bpm >= 80 && !userSaysPositive) || // BPM alto E usuário não diz positivo
+                (userSaysNegative && (dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'anger')) // Usuário diz negativo E rosto/voz confirmam medo/raiva
+            ) {
                 overallCategory = 'tensao_ansiedade';
                 mainMessage = `Identificamos sinais de **tensão ou preocupação** em suas expressões e talvez na sua voz. Parece que algo está te mantendo em alerta.`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
                 if (bpm >= 80) mainMessage += ` Seu ritmo cardíaco está mais elevado (${bpm} bpm), indicando que seu corpo está reagindo ao estresse.`;
                 actionSuggestion.push("Experimente técnicas de relaxamento, como a respiração profunda, para acalmar a mente e o corpo.");
                 actionSuggestion.push("Reconheça o que está te causando essa tensão. Às vezes, nomear o sentimento já ajuda.");
                 actionSuggestion.push("Uma meditação guiada pode ser um excelente começo para encontrar a calma.");
                 actionSuggestion.push("Se a ansiedade for persistente, conversar com um profissional pode ser muito útil.");
             }
-            // Cenário 4: Neutro / Reflexivo
-            else if (dominantFacialEmotion === 'neutral' && voiceSentiment === 'neutro' && !userContext) {
-                overallCategory = 'reflexao_neutra';
-                mainMessage = `Você parece estar em um momento de **neutralidade e introspecção**. Às vezes, o silêncio e a calma dizem muito.`;
-                actionSuggestion.push("Aproveite este momento para se reconectar consigo mesmo(a).");
-                actionSuggestion.push("Que tal um breve diário de gratidão para notar as coisas boas do dia?");
+            // Cenário: Felicidade Pura
+            else if (facePositive && voicePositive && userSaysPositive) {
+                overallCategory = 'alegria';
+                mainMessage = `Que bom! Seu rosto e sua voz irradiam **alegria e positividade**! 🎉 Parece que você está em um ótimo momento, alinhado com o que expressa.`;
+                actionSuggestion.push("Aproveite essa energia e compartilhe-a com o mundo.");
+                actionSuggestion.push("Reflita sobre o que te faz tão bem e tente manter essa chama acesa!");
+                actionSuggestion.push("Considere praticar a gratidão para amplificar ainda mais esses sentimentos positivos.");
             }
-            // Cenário 5: Discrepâncias (Mais explícito)
-            else if ((dominantFacialEmotion === 'happiness' && voiceSentiment === 'negativo') || (dominantFacialEmotion === 'sadness' && voiceSentiment === 'positivo') || (dominantFacialEmotion === 'neutral' && voiceSentiment === 'negativo')) {
-                overallCategory = 'discrepancia';
-                mainMessage = `Notamos uma **discrepância notável** entre sua expressão facial de **${friendlyFacialEmotion}** e o tom da sua voz, que soa **${voiceSentiment}**. Isso pode indicar sentimentos complexos ou a necessidade de explorar como você realmente se sente.`;
-                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
-                actionSuggestion.push("Reflita sobre o que você sente versus o que expressa. É um bom ponto de partida para o autoconhecimento.");
-                actionSuggestion.push("Compartilhar seus sentimentos com alguém de confiança pode ajudar a alinhar o que você sente por dentro e por fora.");
-                actionSuggestion.push("Se essa dissonância for frequente, nossos especialistas podem te ajudar a entender melhor suas emoções.");
-            }
-            // Cenário Genérico (Fallback)
+            // Cenário: Neutro / Reflexivo (menor prioridade agora, mas ainda útil)
             else {
-                overallCategory = 'geral';
+                overallCategory = 'reflexao_neutra';
                 mainMessage = `Nosso scanner capturou insights sobre seu estado emocional. Parece que você está em um momento de **reflexão sobre suas emoções**.`;
                 if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}", e nossa análise parece confirmar alguns desses sinais.`;
                 actionSuggestion.push("Explore as diferentes facetas das suas emoções com curiosidade.");
@@ -770,8 +795,8 @@
                 actionSuggestion: actionSuggestion,
                 dominantFacialEmotion: friendlyFacialEmotion,
                 voiceSentiment: voiceSentiment,
-                discrepancies: discrepancies,
-                timestamp: new Date().toISOString() // Adiciona timestamp para o histórico
+                discrepancies: discrepancies, // Mantemos por consistência, embora a mensagem principal agora cuide disso
+                timestamp: new Date().toISOString()
             };
         }
 
@@ -788,7 +813,7 @@
             }
 
             let emergencyContactHtml = '';
-            // Adicionar CVV para categorias de emoções mais intensas
+            // Adicionar CVV para categorias de emoções mais intensas, incluindo discrepância agora
             if (['tristeza_sobrecarga', 'tensao_ansiedade', 'discrepancia'].includes(finalEmotion.category)) {
                 emergencyContactHtml = `
                     <p class="fade-in text-yellow-400 mt-4 font-semibold">Precisa de um ouvido amigo? 🫂</p>
@@ -815,7 +840,8 @@
                     ${actionItemsHtml}
                 </ul>
 
-                ${emergencyContactHtml} <p class="fade-in text-xs text-gray-500 mt-4">⚠️ **Importante:** Esta é uma análise baseada em Inteligência Artificial e não substitui um diagnóstico médico ou uma consulta com um profissional de saúde. Busque sempre orientação profissional para cuidados específicos.</p>
+                ${emergencyContactHtml} 
+                <p class="fade-in text-xs text-gray-500 mt-4">⚠️ **Importante:** Esta é uma análise baseada em Inteligência Artificial e não substitui um diagnóstico médico ou uma consulta com um profissional de saúde. Busque sempre orientação profissional para cuidados específicos.</p>
                 
                 <div class="mt-4 flex flex-wrap justify-center gap-4">
                     <button id="refazer-analise-btn" class="futuristic-btn">🔄 Refazer Análise</button>
