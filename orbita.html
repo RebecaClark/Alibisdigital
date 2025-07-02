@@ -19,36 +19,36 @@
         .nav-btn { color: #e5e7eb; font-size: 1rem; background: none; border: none; cursor: pointer; transition: color 0.1s; }
         .nav-btn:hover { color: #3498db; }
         .content { margin-top: 50px; padding: 10px; max-width: 960px; margin-left: auto; margin-right: auto; }
-        .card { background: rgba(45, 55, 72, 0.9); /* Mais opaco para visibilidade */ border: 2px solid #3498db; border-radius: 15px; padding: 15px; margin-bottom: 15px; color: #e5e7eb; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .card { background: rgba(45, 55, 72, 0.9); border: 2px solid #3498db; border-radius: 15px; padding: 15px; margin-bottom: 15px; color: #e5e7eb; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%); animation: pulse 10s infinite; opacity: 0.5; }
         @keyframes pulse { 0% { transform: scale(0); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
         .futuristic-btn {
-            background: linear-gradient(45deg, #7C3AED, #22d3ee); /* Gradiente roxo-ciano */
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
             color: #fff;
             padding: 8px 15px;
             border-radius: 10px;
-            font-size: 0.9rem; /* Levemente maior */
+            font-size: 0.9rem;
             font-weight: 600;
-            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); /* Sombra neon */
-            transition: all 0.2s ease; /* Transição mais suave */
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+            transition: all 0.2s ease;
             width: auto;
             cursor: pointer;
-            display: inline-flex; /* Para alinhar ícones e texto */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px; /* Espaço entre ícone e texto */
+            gap: 5px;
         }
         .futuristic-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 25px rgba(34, 211, 238, 0.7); }
         .futuristic-btn:active { transform: scale(0.98); }
         .futuristic-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.6; box-shadow: none; }
 
         .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress { height: 8px; background: linear-gradient(90deg, #3498db, #22d3ee); width: 0; transition: width 0.3s ease; border-radius: 5px; } /* Gradiente para progresso */
+        .progress { height: 8px; background: linear-gradient(90deg, #3498db, #22d3ee); width: 0; transition: width 0.3s ease; border-radius: 5px; }
         .loading-dots::after { content: ''; display: inline-block; width: 0.8em; height: 0.8em; animation: dots 1.5s steps(3, end) infinite; }
         @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
 
         video { width: 100%; max-width: 480px; height: auto; border: 3px solid #3498db; border-radius: 10px; display: block; margin: 0 auto; box-shadow: 0 0 15px rgba(52, 152, 219, 0.6); }
-        canvas { display: none; } /* Ocultar o canvas de captura */
+        canvas { display: none; }
 
         .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: #2d3748; border: 2px solid #3498db; border-radius: 15px; padding: 25px; box-shadow: 0 0 30px #3498db; z-index: 30; animation: popupOpen 0.3s ease-out; }
         @keyframes popupOpen { from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
@@ -113,7 +113,8 @@
             <p class="text-gray-300 mb-4">Ative sua câmera para uma análise em tempo real do seu estado emocional.</p>
             <div class="flex flex-col items-center justify-center">
                 <video id="camera-feed" autoplay muted playsinline class="mt-2"></video>
-                <canvas id="capture-canvas" style="display: none;"></canvas> <input type="text" id="user-context" placeholder="Como você está se sentindo hoje? (opcional)" class="form-input mt-4">
+                <canvas id="capture-canvas" style="display: none;"></canvas>
+                <input type="text" id="user-context" placeholder="Como você está se sentindo hoje? (opcional)" class="form-input mt-4">
                 <button id="scan-btn" class="futuristic-btn mt-4">
                     <span id="scan-button-text">Escanear Emoção</span>
                     <span id="loading-dots" class="loading-dots hidden"></span>
@@ -229,9 +230,9 @@
         // EM PRODUÇÃO, ELAS DEVEM SER MOVIDAS PARA UM BACKEND SEGURO PARA PROTEGER SUAS CREDENCIAIS.
         // Após os testes, revogue estas chaves e crie novas para uso no backend.
         // ==================================================================================================
-        const FACE_API_KEY = 'YOUR_FACE_API_KEY'; // Substitua pela sua chave da Face++
-        const FACE_API_SECRET = 'YOUR_FACE_API_SECRET'; // Substitua pelo seu segredo da Face++
-        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Substitua pela sua chave da OpenAI
+        const FACE_API_KEY = 'YOUR_FACE_API_KEY'; // <--- SUBSTITUA PELA SUA CHAVE DA FACE++
+        const FACE_API_SECRET = 'YOUR_FACE_API_SECRET'; // <--- SUBSTITUA PELO SEU SEGREDO DA FACE++
+        const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // <--- SUBSTITUA PELA SUA CHAVE DA OPENAI
         // ==================================================================================================
 
         // --- Elementos DOM ---
@@ -281,8 +282,8 @@
         let currentUtterance = null;
         let speechSynth = window.speechSynthesis;
         let habitCount = 0;
-        let habits = []; // Array para armazenar hábitos
-        let audioPlayer = new Audio(); // Player de áudio para sons relaxantes
+        let habits = [];
+        let audioPlayer = new Audio();
 
         // --- Funções Auxiliares do Scanner ---
         async function startCamera() {
@@ -290,11 +291,11 @@
                 cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
                 cameraFeed.srcObject = cameraStream;
                 scanStatusDiv.textContent = "Câmera ativada. Pressione 'Escanear Emoção'.";
-                scanBtn.disabled = false; // Habilita o botão após a câmera iniciar
+                scanBtn.disabled = false;
             } catch (error) {
                 console.error("Erro ao acessar a câmera:", error);
                 scanStatusDiv.textContent = "Erro ao acessar a câmera. Verifique as permissões do navegador.";
-                scanBtn.disabled = true; // Desabilita se a câmera não puder ser acessada
+                scanBtn.disabled = true;
             }
         }
 
@@ -319,6 +320,7 @@
 
             if (!FACE_API_KEY || FACE_API_KEY === 'YOUR_FACE_API_KEY' || !FACE_API_SECRET || FACE_API_SECRET === 'YOUR_FACE_API_SECRET' || !OPENAI_API_KEY || OPENAI_API_KEY === 'YOUR_OPENAI_API_KEY') {
                 scanStatusDiv.textContent = "Erro: Chaves de API não configuradas corretamente. Edite o código.";
+                scanResultDiv.innerHTML = '<p class="text-red-500">Por favor, insira suas chaves de API nos campos designados no código.</p>';
                 resetScanButton();
                 return;
             }
@@ -331,7 +333,7 @@
             }
 
             scanStatusDiv.textContent = "Analisando expressão facial...";
-            scanResultDiv.innerHTML = ""; // Limpa resultados anteriores
+            scanResultDiv.innerHTML = "";
 
             const formData = new URLSearchParams();
             formData.append('api_key', FACE_API_KEY);
@@ -388,7 +390,7 @@
                         'Authorization': `Bearer ${OPENAI_API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo', // Você pode tentar 'gpt-4o' se tiver acesso e preferir.
+                        model: 'gpt-3.5-turbo',
                         messages: [{ role: 'user', content: prompt }],
                         response_format: { type: "json_object" }
                     })
@@ -408,7 +410,7 @@
                             <p class="text-gray-400 text-sm mt-3">Reflita sobre esta análise e use nossas ferramentas para seu bem-estar!</p>
                         `;
                         scanStatusDiv.textContent = "Análise concluída.";
-                        updateDailySuggestions(emotionText, adviceText); // Atualiza sugestões diárias
+                        updateDailySuggestions(emotionText, adviceText);
                     } catch (e) {
                         console.error("Erro ao parsear JSON da OpenAI:", e);
                         scanResultDiv.innerHTML = `
@@ -455,9 +457,8 @@
             popup.style.display = 'block';
             overlay.style.display = 'block';
             disableAllMainButtons(true);
-            speechSynthesis.cancel(); // Sempre cancela qualquer fala anterior
+            speechSynthesis.cancel();
 
-            // Configurações de narração
             if (hasNarration) {
                 narrationControlsArea.classList.remove('hidden');
                 narrationProgressBarContainer.classList.remove('hidden');
@@ -466,16 +467,14 @@
                 pauseNarrationBtn.classList.add('hidden');
                 restartNarrationBtn.classList.add('hidden');
 
-                // Adiciona listeners para os botões de narração
                 playNarrationBtn.onclick = () => narrateText(currentNarrationText);
                 pauseNarrationBtn.onclick = () => speechSynth.pause();
-                restartNarrationBtn.onclick = () => { speechSynth.cancel(); narrateText(currentNarationText); };
+                restartNarrationBtn.onclick = () => { speechSynth.cancel(); narrateText(currentNarrationText); };
             } else {
                 narrationControlsArea.classList.add('hidden');
                 narrationProgressBarContainer.classList.add('hidden');
             }
 
-            // Configuração do botão de ação no popup
             if (hasActionButton) {
                 popupActionButton.classList.remove('hidden');
                 popupActionButton.textContent = actionBtnText;
@@ -489,11 +488,11 @@
         function hidePopup() {
             popup.style.display = 'none';
             overlay.style.display = 'none';
-            speechSynthesis.cancel(); // Garante que a narração pare ao fechar o modal
-            audioPlayer.pause(); // Para qualquer som relaxante
+            speechSynthesis.cancel();
+            audioPlayer.pause();
             disableAllMainButtons(false);
-            currentUtterance = null; // Reseta a utterance atual
-            currentNarrationText = ""; // Limpa o texto de narração
+            currentUtterance = null;
+            currentNarrationText = "";
         }
 
         function minimizePopup() {
@@ -501,7 +500,7 @@
             alert(`Janela "${popupTitle.textContent}" minimizada. Clique em "Minimizar" novamente para reabrir.`);
             speechSynthesis.cancel();
             audioPlayer.pause();
-            disableAllMainButtons(false); // Permite interação com o restante da página
+            disableAllMainButtons(false);
         }
 
         function disableAllMainButtons(disable) {
@@ -511,7 +510,6 @@
 
         // --- Funções de Narração (TTS) ---
         function cleanTextForNarration(text) {
-            // Remove emojis e substitui caracteres especiais que podem ser mal interpretados
             return text
                 .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}]/gu, '')
                 .replace(/🌟/g, 'estrela')
@@ -521,7 +519,7 @@
                 .replace(/🏎️/g, 'carro de corrida')
                 .replace(/📈/g, 'gráfico subindo')
                 .replace(/😰/g, 'rosto ansioso')
-                .replace(/\s+/g, ' ') // Remove múltiplos espaços
+                .replace(/\s+/g, ' ')
                 .trim();
         }
 
@@ -537,7 +535,7 @@
             currentNarrationText = cleanTextForNarration(text);
             currentUtterance = new SpeechSynthesisUtterance(currentNarrationText);
             currentUtterance.lang = 'pt-BR';
-            currentUtterance.rate = 0.95; // Velocidade ligeiramente mais lenta
+            currentUtterance.rate = 0.95;
             currentUtterance.pitch = 1.0;
             currentUtterance.volume = 0.9;
 
@@ -667,10 +665,10 @@
         const breathingContent = "Vamos praticar a técnica de respiração 4-7-8, que ajuda a acalmar o sistema nervoso. Feche a boca e inspire silenciosamente pelo nariz contando até 4. Segure a respiração contando até 7. Expire completamente pela boca, fazendo um som de 'sopro', contando até 8. Repita este ciclo por 5 vezes. Sinta a tranquilidade em cada expiração. Concentre-se na contagem e na sensação do ar.";
 
         const relaxingSoundsContent = {
-            rain: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Exemplo de MP3
-            waves: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", // Exemplo de MP3
-            'white-noise': "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", // Exemplo de MP3
-            forest: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" // Exemplo de MP3
+            rain: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            waves: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+            'white-noise': "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+            forest: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
         };
 
         function startMeditation() {
@@ -679,7 +677,7 @@
             if (med) {
                 currentNarrationText = med.text;
                 showPopup(med.title, `<p>${med.text}</p><p class="mt-4 text-gray-400 text-sm">Respire profundamente e relaxe.</p>`, true);
-                narrateText(currentNarrationText); // Inicia a narração
+                narrateText(currentNarrationText);
             } else {
                 showPopup('Erro', '<p>Meditação não encontrada.</p>');
             }
@@ -699,7 +697,7 @@
 
             if (audioSrc) {
                 audioPlayer.src = audioSrc;
-                audioPlayer.loop = true; // Toca em loop
+                audioPlayer.loop = true;
                 audioPlayer.play().then(() => {
                     showPopup(`Sons Relaxantes: ${soundType.charAt(0).toUpperCase() + soundType.slice(1)}`, `
                         <p class="text-center text-lg">Tocando sons de ${soundType.replace('-', ' ')}...</p>
@@ -751,7 +749,6 @@
             `, false, true, 'Salvar Reflexão', () => {
                 const response = document.getElementById('reflection-response').value.trim();
                 if (response) {
-                    // Aqui você poderia salvar a reflexão em localStorage ou enviar para um backend
                     hidePopup();
                     showPopup('Reflexão Salva!', `<p>Sua reflexão foi registrada:</p><p class="mt-2 text-gray-300">"${response}"</p><p class="mt-4 text-gray-400 text-sm">Refletir ajuda a construir autoconsciência e gratidão!</p>`);
                 } else {
@@ -771,10 +768,9 @@
         // --- Inicialização ao Carregar a Página ---
         document.addEventListener('DOMContentLoaded', () => {
             startCamera();
-            loadHabits(); // Carrega hábitos salvos
-            renderHabits(); // Renderiza os hábitos
+            loadHabits();
+            renderHabits();
 
-            // Event Listeners para os botões principais
             scanBtn.addEventListener('click', analyzeEmotion);
             habitLogBtn.addEventListener('click', logHabit);
             reflectionBtn.addEventListener('click', dailyReflection);
@@ -786,10 +782,9 @@
             breathBtn.addEventListener('click', startBreathing);
             communityBtn.addEventListener('click', joinCommunity);
 
-            // Event Listeners para o Popup
             closeBtn.addEventListener('click', hidePopup);
             minimizeBtn.addEventListener('click', minimizePopup);
-            overlay.addEventListener('click', hidePopup); // Fechar popup ao clicar no overlay
+            overlay.addEventListener('click', hidePopup);
         });
     </script>
 </body>
