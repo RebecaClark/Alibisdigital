@@ -5,11 +5,19 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
 body {
   font-family: 'Arial', sans-serif;
   background-color: #1a2526;
   color: #ffffff;
   line-height: 1.6;
+  text-align: center; /* Ensure text alignment is centered by default */
 }
 
 /* Cabeçalho com Efeito Holográfico */
@@ -30,9 +38,8 @@ body {
 }
 
 .header-container {
-  max-width: 7xl;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1280px; /* Replaced max-width: 7xl with explicit value for clarity */
+  margin: 0 auto; /* Centered with auto margins */
   padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -162,9 +169,12 @@ body {
 #hero {
   background: linear-gradient(to right, #1a2526, #2c3e50);
   padding: 5rem 1.5rem;
-  text-align: center;
-  position: relative;
-  margin-top: 5rem; /* Espaço para o cabeçalho fixo */
+  margin-top: 5rem; /* Space for fixed header */
+}
+
+.hero-container {
+  max-width: 1280px; /* Match header-container */
+  margin: 0 auto; /* Center the content */
 }
 
 #hero h1 {
@@ -183,8 +193,8 @@ body {
 video {
   width: 100%;
   max-width: 48rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto; /* Center video */
+  display: block; /* Ensure block-level for centering */
   border-radius: 0.75rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   border: 0.125rem solid #22d3ee;
@@ -205,8 +215,7 @@ video {
 
 .newsletter {
   max-width: 48rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto; /* Center newsletter */
   background: rgba(31, 41, 55, 0.9);
   padding: 1.5rem;
   border-radius: 0.75rem;
@@ -243,6 +252,21 @@ video {
   }
 }
 
+/* Outras seções */
+.features, .testimonials, .cta, .plans, .support {
+  padding: 2rem 1.5rem;
+}
+
+.section-container {
+  max-width: 1280px; /* Consistent with other containers */
+  margin: 0 auto; /* Center all sections */
+}
+
+.features h2, .testimonials h2, .cta h2, .plans h2, .support h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
 /* Animações */
 @keyframes fadeIn {
   from {
@@ -255,15 +279,4 @@ video {
 
 .fade-in {
   animation: fadeIn 1s ease-in;
-}
-
-/* Outras seções (estilize conforme necessário) */
-.features, .testimonials, .cta, .plans, .support {
-  padding: 2rem 1.5rem;
-  text-align: center;
-}
-
-.features h2, .testimonials h2, .cta h2, .plans h2, .support h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
 }
