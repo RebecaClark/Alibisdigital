@@ -22,7 +22,7 @@
         default-src 'self';
         script-src 'self' https://cdn.jsdelivr.net https://www.youtube.com;
         style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
-        img-src 'self' data: https://medaibrasil.com.br https://projects.clickmax.io https://maquinamilionaria.com;
+        img-src 'self' data: https://medaibrasil.com.br https://projects.clickmax.io https://maquinamilionaria.com https://via.placeholder.com;
         font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com;
         frame-src https://www.youtube.com;
         connect-src 'self';
@@ -263,8 +263,8 @@
             margin-right: 0.625rem;
         }
         .urgency-header {
-            width: 100vw;
-            padding: 1.5rem 0;
+            width: 100%;
+            padding: 1.5rem 1rem;
             font-size: 1.125rem;
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             font-weight: 600;
@@ -274,8 +274,9 @@
             top: 0;
             z-index: 1000;
             animation: pulse 2s infinite;
-            margin: 0 auto;
-            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); }
@@ -628,6 +629,7 @@
             border-radius: 0.5rem;
             margin-bottom: 1.5rem;
             transition: box-shadow 0.3s ease;
+            cursor: pointer;
         }
         .faq-item:hover {
             box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
@@ -637,9 +639,8 @@
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
         }
         .faq-question {
-            cursor: pointer;
             display: flex;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem 0;
             justify-content: space-between;
             align-items: center;
         }
@@ -655,18 +656,13 @@
             text-align: center;
         }
         .faq-answer {
-            display: none;
-            padding: 0 1rem 0.75rem;
-            margin-top: 0.75rem;
-            text-align: left;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
         }
         .faq-item.active .faq-answer {
-            display: block;
+            max-height: 200px;
+            padding: 0.75rem 0;
         }
         .faq-item.active .faq-toggle {
             transform: rotate(45deg);
@@ -705,7 +701,7 @@
         .footer-links h2 {
             font-size: 1rem;
             margin-bottom: 0.75rem;
-            color: var(--primary-color);
+            color var(--primary-color);
         }
         .footer-links a {
             color: var(--primary-color);
@@ -910,7 +906,7 @@
                 <p data-style-guide-typography-content="small">Apenas 97 vagas restantes para acessar a IA médica mais avançada do Brasil ⏰</p>
                 <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Garantir vaga no MedAI Brasil" class="btn btn-urgency">
                     <span data-style-guide-typography-content="small">GARANTIR MINHA VAGA AGORA!</span>
-                    <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-circle-arrow-right" class="fa-solid fa-circle-arrow-right cm-icon" aria-hidden="true"></i>
                 </a>
                 <div class="countdown" aria-live="polite">⏰ 46:44:00 (expira em 02/07/2025, 19:16 -03)</div>
             </div>
@@ -940,7 +936,7 @@
                 <div class="cta-section">
                     <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Transformar saúde com MedAI Brasil" class="btn btn-primary-large">
                         <span data-style-guide-typography-content="small">🔥 QUERO TRANSFORMAR MINHA SAÚDE COM IA AGORA! 🔥</span>
-                        <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-circle-arrow-right" class="fa-solid fa-circle-arrow-right cm-icon" aria-hidden="true"></i>
                     </a>
                     <div class="credibility">
                         <div class="credibility-item">📊 +75K Usuários</div>
@@ -957,7 +953,7 @@
             <p data-style-guide-typography-content="small" class="section-subtitle">Conheça as 3 IAs que vão revolucionar sua saúde</p>
             <div class="products-grid">
                 <div id="ij7c4" class="product-card" data-card-type="product" data-name="Scanner Corporal IA">
-                    <i data-icon="fa-house" class="fa-solid fa-camera product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-camera" class="fa-solid fa-camera product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">🔬 Scanner Corporal IA</h3>
                     <p data-style-guide-typography-content="small">Detecção precoce com tecnologia avançada. Analisa padrões corporais e faciais para identificar sinais de estresse e possíveis problemas de saúde com 94.7% de precisão.</p>
                     <ul>
@@ -970,7 +966,7 @@
                     </ul>
                 </div>
                 <div id="ia47a" class="product-card" data-card-type="product" data-name="Apoio Emocional IA">
-                    <i data-icon="fa-house" class="fa-solid fa-brain product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-brain" class="fa-solid fa-brain product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">💭 Apoio Emocional IA</h3>
                     <p data-style-guide-typography-content="small">Terapia personalizada 24/7. O Abili, nosso terapeuta virtual, oferece apoio emocional com conversas empáticas e técnicas de relaxamento baseadas em 10M casos.</p>
                     <ul>
@@ -983,7 +979,7 @@
                     </ul>
                 </div>
                 <div id="i39v8" class="product-card" data-card-type="product" data-name="Medical IA">
-                    <i data-icon="fa-house" class="fa-solid fa-user-nurse product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-user-nurse" class="fa-solid fa-user-nurse product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">🩺 Medical IA</h3>
                     <p data-style-guide-typography-content="small">Pré-diagnósticos em 3 minutos. Analisa sintomas, condições e estilo de vida com base em conhecimento médico avançado de 50K especialistas.</p>
                     <ul>
@@ -996,7 +992,7 @@
                     </ul>
                 </div>
                 <div id="iey2h" class="product-card" data-card-type="product" data-name="Painel Órbita">
-                    <i data-icon="fa-house" class="fa-solid fa-chart-line product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-chart-line" class="fa-solid fa-chart-line product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">🌐 Painel Órbita</h3>
                     <p data-style-guide-typography-content="small">Central de dados integrada. Monitora estado emocional, hábitos diários e progresso, consolidando dados das 3 IAs em um dashboard interativo.</p>
                     <ul>
@@ -1009,7 +1005,7 @@
                     </ul>
                 </div>
                 <div id="imobile" class="product-card" data-card-type="product" data-name="Aplicativo Mobile">
-                    <i data-icon="fa-house" class="fa-solid fa-mobile-alt product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-mobile-alt" class="fa-solid fa-mobile-alt product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">📱 Aplicativo Mobile</h3>
                     <p data-style-guide-typography-content="small">Saúde no seu bolso. Acesse Scanner Corporal, Apoio Emocional e Medical IA diretamente no celular, com notificações e sincronização.</p>
                     <ul>
@@ -1022,7 +1018,7 @@
                     </ul>
                 </div>
                 <div id="iblog" class="product-card" data-card-type="product" data-name="Blog Educativo IA">
-                    <i data-icon="fa-house" class="fa-solid fa-book product-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-book" class="fa-solid fa-book product-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">📚 Blog Educativo IA</h3>
                     <p data-style-guide-typography-content="small">Conteúdo sobre saúde e IA. Artigos educativos sobre bem-estar, privacidade e IA, personalizados para seu perfil de saúde.</p>
                     <ul>
@@ -1038,7 +1034,7 @@
             <div class="cta-products">
                 <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Acesso completo às 3 IAs do MedAI Brasil" class="btn">
                     <span data-style-guide-typography-content="small">QUERO ACESSO COMPLETO ÀS 3 IAs AGORA!</span>
-                    <i data-icon="fa-house" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-arrow-right" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
                 </a>
             </div>
         </section>
@@ -1049,57 +1045,57 @@
             <div class="testimonials-grid">
                 <div id="i907g" class="testimonial-card" data-card-type="testimonial">
                     <div class="stars">
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
                     </div>
                     <p data-style-guide-typography-content="small" class="quote">"O Scanner Corporal IA identificou sinais de estresse que eu não percebia!"</p>
                     <div class="author">
-                        <img alt="Foto de Ana Paula Rodrigues" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="60" height="60">
+                        <img alt="Foto de Ana Paula Rodrigues" src="https://via.placeholder.com/60x60?text=Ana" loading="lazy" width="60" height="60">
                         <span data-style-guide-typography-content="small">Ana Paula Rodrigues, Executiva, São Paulo, SP</span>
                     </div>
                 </div>
                 <div id="i0zjj" class="testimonial-card" data-card-type="testimonial">
                     <div class="stars">
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
                     </div>
                     <p data-style-guide-typography-content="small" class="quote">"A Medical IA me orientou para o especialista certo em minutos!"</p>
                     <div class="author">
-                        <img alt="Foto de Dr. João Silva" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="60" height="60">
+                        <img alt="Foto de Dr. João Silva" src="https://via.placeholder.com/60x60?text=Joao" loading="lazy" width="60" height="60">
                         <span data-style-guide-typography-content="small">Dr. João Silva, Médico, Rio de Janeiro, RJ</span>
                     </div>
                 </div>
                 <div id="iy1n6" class="testimonial-card" data-card-type="testimonial">
                     <div class="stars">
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
                     </div>
                     <p data-style-guide-typography-content="small" class="quote">"O Apoio Emocional IA é como um terapeuta sempre disponível!"</p>
                     <div class="author">
-                        <img alt="Foto de Maria Oliveira" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="60" height="60">
+                        <img alt="Foto de Maria Oliveira" src="https://via.placeholder.com/60x60?text=Maria" loading="lazy" width="60" height="60">
                         <span data-style-guide-typography-content="small">Maria Oliveira, Professora, Belo Horizonte, MG</span>
                     </div>
                 </div>
                 <div id="i1234" class="testimonial-card" data-card-type="testimonial">
                     <div class="stars">
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
-                        <i data-icon="fa-house" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
+                        <i data-icon="fa-star" class="fa-solid fa-star star-rating" aria-hidden="true"></i>
                     </div>
                     <p data-style-guide-typography-content="small" class="quote">"O Painel Órbita organiza minha saúde em um só lugar!"</p>
                     <div class="author">
-                        <img alt="Foto de Dr. Carlos Mendes" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="60" height="60">
+                        <img alt="Foto de Dr. Carlos Mendes" src="https://via.placeholder.com/60x60?text=Carlos" loading="lazy" width="60" height="60">
                         <span data-style-guide-typography-content="small">Dr. Carlos Mendes, Engenheiro, Belo Horizonte, MG</span>
                     </div>
                 </div>
@@ -1107,7 +1103,7 @@
             <div class="cta-products">
                 <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Transformar saúde com MedAI Brasil" class="btn">
                     <span data-style-guide-typography-content="small">SEJA O PRÓXIMO A TRANSFORMAR SUA SAÚDE!</span>
-                    <i data-icon="fa-house" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-arrow-right" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
                 </a>
             </div>
         </section>
@@ -1117,11 +1113,11 @@
                 <div class="cm-column">
                     <h2 id="highlight-testimonial-title" data-style-guide-typography-headline="medium">Testemunho Profissional</h2>
                     <p data-style-guide-typography-content="small">"Como médico, testei a MedAI Brasil e fiquei impressionado com sua precisão. O Scanner Corporal identificou padrões sutis que poderiam passar despercebidos, a Medical IA ofereceu orientações baseadas em evidências com rapidez, e o Apoio Emocional foi uma ferramenta valiosa para gerenciar o estresse. O Painel Órbita integra tudo de forma intuitiva, facilitando o acompanhamento."</p>
-                    <img alt="Foto de Dr. Adriano Santoro" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="80" height="80">
+                    <img alt="Foto de Dr. Adriano Santoro" src="https://via.placeholder.com/80x80?text=Adriano" loading="lazy" width="80" height="80">
                     <span data-style-guide-typography-content="small">Dr. Adriano Santoro, Médico e Usuário - Florianópolis</span>
                     <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Acesso completo à IA médica do MedAI Brasil" class="btn">
                         <span data-style-guide-typography-content="small">QUERO ACESSO COMPLETO À IA MÉDICA AGORA</span>
-                        <i data-icon="fa-house" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-arrow-right" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -1132,7 +1128,7 @@
             <p data-style-guide-typography-content="small" class="section-subtitle">5 Etapas para Transformar Sua Saúde</p>
             <div class="method-grid">
                 <div id="i639o" class="method-card" data-card-type="method" data-name="Seu Ponto de Partida">
-                    <i data-icon="fa-house" class="fa-solid fa-crosshairs method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-crosshairs" class="fa-solid fa-crosshairs method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Seu Ponto de Partida</h3>
                     <p data-style-guide-typography-content="small">Entenda como o MedAI funciona.</p>
                     <ul>
@@ -1141,7 +1137,7 @@
                     </ul>
                 </div>
                 <div id="i4h3s" class="method-card" data-card-type="method" data-name="Plano Personalizado">
-                    <i data-icon="fa-house" class="fa-solid fa-clipboard-list method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-clipboard-list" class="fa-solid fa-clipboard-list method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Plano Personalizado</h3>
                     <p data-style-guide-typography-content="small">Crie seu plano com IA.</p>
                     <ul>
@@ -1150,7 +1146,7 @@
                     </ul>
                 </div>
                 <div id="ijb2q" class="method-card" data-card-type="method" data-name="Resultados Rápidos">
-                    <i data-icon="fa-house" class="fa-solid fa-rocket method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-rocket" class="fa-solid fa-rocket method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Resultados Rápidos</h3>
                     <p data-style-guide-typography-content="small">Aplique IA para bem-estar.</p>
                     <ul>
@@ -1159,7 +1155,7 @@
                     </ul>
                 </div>
                 <div id="iopt" class="method-card" data-card-type="method" data-name="Otimização Contínua">
-                    <i data-icon="fa-house" class="fa-solid fa-cogs method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-cogs" class="fa-solid fa-cogs method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Otimização Contínua</h3>
                     <p data-style-guide-typography-content="small">Ajuste sua rotina com IA.</p>
                     <ul>
@@ -1168,7 +1164,7 @@
                     </ul>
                 </div>
                 <div id="iscale" class="method-card" data-card-type="method" data-name="Escalando Bem-Estar">
-                    <i data-icon="fa-house" class="fa-solid fa-chart-line method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-chart-line" class="fa-solid fa-chart-line method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Escalando Bem-Estar</h3>
                     <p data-style-guide-typography-content="small">Maximize sua saúde.</p>
                     <ul>
@@ -1177,7 +1173,7 @@
                     </ul>
                 </div>
                 <div id="imentor" class="method-card" data-card-type="method" data-name="Mentorias ao Vivo">
-                    <i data-icon="fa-house" class="fa-solid fa-video method-icon" aria-hidden="true"></i>
+                    <i data-icon="fa-video" class="fa-solid fa-video method-icon" aria-hidden="true"></i>
                     <h3 data-style-guide-typography-content="medium">Mentorias ao Vivo</h3>
                     <p data-style-guide-typography-content="small">6 lives gravadas por 3 meses.</p>
                     <ul>
@@ -1207,7 +1203,7 @@
                     <div class="offer-benefits">
                         <h3 data-style-guide-typography-headline="small">MEDAI BRASIL COMPLETO</h3>
                         <div class="benefit-item">
-                            <i data-icon="fa-house" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
+                            <i data-icon="fa-check" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
                             <div class="benefit-text">
                                 <h3 data-style-guide-typography-content="medium">Scanner Corporal IA</h3>
                                 <p data-style-guide-typography-content="small">Análise corporal completa</p>
@@ -1215,15 +1211,15 @@
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <i data-icon="fa-house" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
+                            <i data-icon="fa-check" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
                             <div class="benefit-text">
                                 <h3 data-style-guide-typography-content="medium">Apoio Emocional IA</h3>
-                                <p data-style-guide-typography-content="small">Terapia 24/7</p>
+                                <p data-styleGuide-typography-content="small">Terapia 24/7</p>
                                 <p data-style-guide-typography-content="small" class="benefit-price">R$ <s>197/mês</s></p>
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <i data-icon="fa-house" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
+                            <i data-icon="fa-check" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
                             <div class="benefit-text">
                                 <h3 data-style-guide-typography-content="medium">Medical IA</h3>
                                 <p data-style-guide-typography-content="small">Diagnósticos em 3 min</p>
@@ -1231,7 +1227,7 @@
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <i data-icon="fa-house" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
+                            <i data-icon="fa-check" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
                             <div class="benefit-text">
                                 <h3 data-style-guide-typography-content="medium">Painel Órbita</h3>
                                 <p data-style-guide-typography-content="small">Central de dados</p>
@@ -1239,7 +1235,7 @@
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <i data-icon="fa-house" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
+                            <i data-icon="fa-check" class="fa-solid fa-check check-icon" aria-hidden="true"></i>
                             <div class="benefit-text">
                                 <h3 data-style-guide-typography-content="medium">App Mobile</h3>
                                 <p data-style-guide-typography-content="small">Acesso 24/7</p>
@@ -1250,7 +1246,7 @@
                     </div>
                     <a data-style-guide-typography-content="small" href="https://pay.kiwify.com.br/WnE4R3B" target="_blank" rel="noopener noreferrer" role="button" aria-label="Comprar MedAI Brasil agora" class="btn">
                         <span data-style-guide-typography-content="small">🔥 COMPRAR AGORA - ACESSO IMEDIATO! 🔥</span>
-                        <i data-icon="fa-house" class="fa-solid fa-check cm-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-check" class="fa-solid fa-check cm-icon" aria-hidden="true"></i>
                     </a>
                     <p data-style-guide-typography-content="small">🔒 Pagamento 100% seguro via Ticto</p>
                     <p data-style-guide-typography-content="small">✅ Garantia de 30 dias</p>
@@ -1271,42 +1267,42 @@
             <div class="offer-benefits">
                 <div class="bonus-box">
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Acesso completo às 3 IAs médicas</h3>
                             <p data-style-guide-typography-content="small">Scanner Corporal, Apoio Emocional e Medical IA.</p>
                         </div>
                     </div>
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Painel Órbita com dashboard personalizado</h3>
                             <p data-style-guide-typography-content="small">Central de dados integrada para monitoramento.</p>
                         </div>
                     </div>
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Aplicativo mobile premium</h3>
                             <p data-style-guide-typography-content="small">Acesso 24/7 no seu celular.</p>
                         </div>
                     </div>
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Blog educativo com conteúdo personalizado</h3>
                             <p data-style-guide-typography-content="small">Artigos sobre saúde e IA.</p>
                         </div>
                     </div>
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Suporte técnico prioritário</h3>
                             <p data-style-guide-typography-content="small">Atendimento 24/7 via chat e e-mail.</p>
                         </div>
                     </div>
                     <div class="benefit-item">
-                        <i data-icon="fa-house" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
+                        <i data-icon="fa-gift" class="fa-solid fa-gift check-icon" aria-hidden="true"></i>
                         <div class="benefit-text">
                             <h3 data-style-guide-typography-content="medium">Atualizações gratuitas das IAs</h3>
                             <p data-style-guide-typography-content="small">Novas funcionalidades sem custo adicional.</p>
@@ -1325,168 +1321,120 @@
             </div>
         </section>
 
-        <section id="faq" class="faq-section section" aria-labelledby="faq-title">
-            <h2 id="faq-title" data-style-guide-typography-headline="small" class="section-title">🔥 PERGUNTAS FREQUENTES 🔥</h2>
-            <p data-style-guide-typography-content="small" class="section-subtitle">Tire suas dúvidas sobre a plataforma MedAI Brasil</p>
-            <div class="faq-container">
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-1">
+        class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-6">
                     <div class="faq-question" tabindex="0">
-                        <h3 data-style-guide-typography-content="medium">❓O que é a MedAI Brasil?</h3>
+                        <h3 data-style-guide-typography-content="medium">❓ Como acesso o aplicativo mobile?</h3>
                         <span class="faq-toggle">+</span>
                     </div>
-                    <div id="faq-answer-1" class="faq-answer">
-                        <p data-style-guide-typography-content="small">A MedAI Brasil é uma plataforma de inteligência artificial que integra Scanner Corporal, Apoio Emocional, Medical IA e Painel Órbita para cuidar da sua saúde física e mental 24/7.</p>
+                    <div id="faq-answer-6" class="faq-answer">
+                        <p data-style-guide-typography-content="small">Após a compra, você recebe um link para baixar o aplicativo mobile, disponível para iOS e Android, com acesso completo às IAs e sincronização automática.</p>
                     </div>
                 </div>
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-2">
-                    <div class="faq-question" tabindex="0">
-                        <h3 data-style-guide-typography-content="medium">❓ Como funciona o Scanner Corporal IA?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div id="faq-answer-2" class="faq-answer">
-                        <p data-style-guide-typography-content="small">O Scanner Corporal IA analisa padrões corporais e faciais usando a câmera do seu dispositivo, identificando sinais de estresse ou possíveis problemas de saúde com 94.7% de precisão.</p>
-                    </div>
-                </div>
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-3">
-                    <div class="faq-question" tabindex="0">
-                        <h3 data-style-guide-typography-content="medium">❓ A Medical IA substitui um médico?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div id="faq-answer-3" class="faq-answer">
-                        <p data-style-guide-typography-content="small">Não, a Medical IA oferece pré-diagnósticos e orientações baseadas em sintomas, mas não substitui a consulta com um médico. É uma ferramenta de apoio para decisões mais rápidas.</p>
-                    </div>
-                </div>
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-4">
-                    <div class="faq-question" tabindex="0">
-                        <h3 data-style-guide-typography-content="medium">❓ O que é o Painel Órbita?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div id="faq-answer-4" class="faq-answer">
-                        <p data-style-guide-typography-content="small">O Painel Órbita é um dashboard interativo que integra dados das 3 IAs, oferecendo relatórios, gráficos e insights personalizados sobre sua saúde.</p>
-                    </div>
-                </div>
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-5">
-                    <div class="faq-question" tabindex="0">
-                        <h3 data-style-guide-typography-content="medium">❓ Como funciona a garantia de 30 dias?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div id="faq-answer-5" class="faq-answer">
-                        <p data-style-guide-typography-content="small">Você pode experimentar a plataforma por 30 dias. Se não estiver satisfeito, solicite o reembolso total em até 48 horas, sem perguntas, pelo e-mail suporte@medaibrasil.com.</p>
-                    </div>
-                </div>
-                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-6">
+                <div class="faq-item" role="button" aria-expanded="false" aria-controls="faq-answer-7">
                     <div class="faq-question" tabindex="0">
                         <h3 data-style-guide-typography-content="medium">❓ É seguro usar a MedAI Brasil?</h3>
                         <span class="faq-toggle">+</span>
                     </div>
-                    <div id="faq-answer-6" class="faq-answer">
-                        <p data-style-guide-typography-content="small">Sim, usamos criptografia SSL e seguimos as normas da LGPD para garantir a segurança e privacidade dos seus dados.</p>
+                    <div id="faq-answer-7" class="faq-answer">
+                        <p data-style-guide-typography-content="small">Sim, usamos criptografia SSL e seguimos padrões rigorosos de privacidade para proteger seus dados. Sua segurança é nossa prioridade.</p>
                     </div>
                 </div>
             </div>
-            <div class="cta-products">
-                <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Acessar MedAI Brasil agora" class="btn">
-                    <span data-style-guide-typography-content="small">QUERO COMEÇAR AGORA!</span>
-                    <i data-icon="fa-house" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
-                </a>
-            </div>
         </section>
     </main>
-    <footer id="ifooter" class="section" aria-label="Rodapé">
-        <div class="cm-row">
-            <div class="cm-column footer-logo">
-                <img alt="Logo MedAI Brasil" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="150" height="auto">
-                <div class="footer-info">
-                    <p data-style-guide-typography-content="small">MedAI Brasil - Transformando a saúde com IA</p>
-                    <p data-style-guide-typography-content="small">© 2025 MedAI Brasil. Todos os direitos reservados.</p>
-                    <p data-style-guide-typography-content="small">CNPJ: 12.345.678/0001-99</p>
-                    <p data-style-guide-typography-content="small"><a href="mailto:suporte@medaibrasil.com">suporte@medaibrasil.com</a></p>
+    <footer id="footer" aria-label="Rodapé do MedAI Brasil">
+        <div class="section">
+            <div class="cm-row">
+                <div class="cm-column footer-logo">
+                    <img alt="Logo MedAI Brasil" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" width="150" height="auto">
+                    <div class="footer-info">
+                        <p data-style-guide-typography-content="small">MedAI Brasil - Transformando sua saúde com IA</p>
+                        <p data-style-guide-typography-content="small">suporte@medaibrasil.com | +55 11 9XXXXXXXX</p>
+                        <p data-style-guide-typography-content="small">© 2025 MedAI Brasil. Todos os direitos reservados.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="cm-column footer-links">
-                <h2 data-style-guide-typography-content="medium">Links Úteis</h2>
-                <a data-style-guide-typography-content="small" href="/politica-de-privacidade" aria-label="Política de Privacidade">Política de Privacidade</a>
-                <a data-style-guide-typography-content="small" href="/termos-de-uso" aria-label="Termos de Uso">Termos de Uso</a>
-                <a data-style-guide-typography-content="small" href="/contato" aria-label="Contato">Contato</a>
-                <a data-style-guide-typography-content="small" href="/faq" aria-label="Perguntas Frequentes">FAQ</a>
+                <div class="cm-column footer-links">
+                    <h2 data-style-guide-typography-headline="small">Links Úteis</h2>
+                    <a href="/termos" data-style-guide-typography-content="small">Termos de Uso</a>
+                    <a href="/privacidade" data-style-guide-typography-content="small">Política de Privacidade</a>
+                    <a href="/suporte" data-style-guide-typography-content="small">Suporte</a>
+                    <a href="/blog" data-style-guide-typography-content="small">Blog</a>
+                </div>
             </div>
         </div>
     </footer>
-    <div id="cm-popup" class="cm-popup" role="dialog" aria-label="Pop-up de confirmação de saída">
+    <div id="cm-popup" class="cm-popup" aria-hidden="true">
         <div class="cm-popup-overlay"></div>
-        <div class="cm-popup-modal">
-            <button class="cm-popup-close-button" aria-label="Fechar pop-up">×</button>
-            <h2 data-style-guide-typography-headline="small">🔥 Não perca essa oferta! 🔥</h2>
-            <p data-style-guide-typography-content="small">Você está prestes a sair! Aproveite agora as últimas vagas para transformar sua saúde com a MedAI Brasil.</p>
-            <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Ficar e garantir vaga" class="btn">
-                <span data-style-guide-typography-content="small">QUERO GARANTIR MINHA VAGA!</span>
-                <i data-icon="fa-house" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
+        <div class="cm-popup-modal" role="dialog" aria-labelledby="popup-title">
+            <button class="cm-popup-close-button" aria-label="Fechar popup">✕</button>
+            <h2 id="popup-title" data-style-guide-typography-headline="small">🔥 Oferta Exclusiva! 🔥</h2>
+            <p data-style-guide-typography-content="small">Não perca a chance de transformar sua saúde com a MedAI Brasil. Garanta sua vaga agora!</p>
+            <a href="#checkout" role="button" aria-label="Aproveitar oferta exclusiva" class="btn">
+                <span data-style-guide-typography-content="small">APROVEITAR AGORA</span>
+                <i data-icon="fa-arrow-right" class="fa-solid fa-arrow-right cm-icon" aria-hidden="true"></i>
             </a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" defer></script>
     <script>
-        window.addEventListener("load", function () {
+        window.addEventListener('DOMContentLoaded', () => {
+            // FAQ Toggle Functionality
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    document.querySelectorAll('.faq-item').forEach(i => {
+                        i.classList.remove('active');
+                        i.setAttribute('aria-expanded', 'false');
+                        i.querySelector('.faq-answer').style.maxHeight = '0';
+                    });
+                    if (!isActive) {
+                        item.classList.add('active');
+                        item.setAttribute('aria-expanded', 'true');
+                        const answer = item.querySelector('.faq-answer');
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                });
+            });
+
+            // Popup Functionality
+            const popup = document.getElementById('cm-popup');
+            const closePopup = document.querySelector('.cm-popup-close-button');
+            setTimeout(() => popup.classList.add('visible'), 5000);
+            closePopup.addEventListener('click', () => popup.classList.remove('visible'));
+            document.querySelector('.cm-popup-overlay').addEventListener('click', () => popup.classList.remove('visible'));
+
+            // Cookie Consent
             window.cookieconsent.initialise({
-                "palette": {
-                    "popup": { "background": "#010104", "text": "#ffffff" },
-                    "button": { "background": "#00f0ff", "text": "#010104" }
+                palette: {
+                    popup: { background: '#010104' },
+                    button: { background: '#00f0ff' }
                 },
-                "content": {
-                    "message": "Nós usamos cookies para melhorar sua experiência em nosso site. Ao continuar, você concorda com nossa Política de Privacidade.",
-                    "dismiss": "Aceitar",
-                    "link": "Saiba mais",
-                    "href": "/politica-de-privacidade"
+                content: {
+                    message: 'Nós usamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa Política de Privacidade.',
+                    dismiss: 'Entendido',
+                    link: 'Saiba mais',
+                    href: '/privacidade'
                 }
             });
-        });
 
-        document.querySelectorAll(".faq-item").forEach(item => {
-            item.addEventListener("click", () => {
-                item.classList.toggle("active");
-                const isExpanded = item.classList.contains("active");
-                item.setAttribute("aria-expanded", isExpanded);
-            });
-        });
-
-        const popup = document.getElementById("cm-popup");
-        const closePopup = document.querySelector(".cm-popup-close-button");
-        let isExiting = false;
-
-        document.addEventListener("mouseleave", (e) => {
-            if (e.clientY <= 0 && !isExiting) {
-                isExiting = true;
-                popup.classList.add("visible");
+            // Countdown Timer
+            const countdownElements = document.querySelectorAll('.countdown, .countdown-large');
+            const endTime = new Date('2025-07-02T19:16:00-03:00').getTime();
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+                if (distance < 0) {
+                    countdownElements.forEach(el => el.textContent = 'Oferta expirada!');
+                    return;
+                }
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                countdownElements.forEach(el => el.textContent = `⏰ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} (expira em 02/07/2025, 19:16 -03)`);
             }
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
         });
-
-        closePopup.addEventListener("click", () => {
-            popup.classList.remove("visible");
-        });
-
-        function updateCountdown() {
-            const endDate = new Date("2025-07-02T19:16:00-03:00").getTime();
-            const now = new Date().getTime();
-            const distance = endDate - now;
-
-            if (distance < 0) {
-                document.querySelectorAll(".countdown, .countdown-large").forEach(el => {
-                    el.textContent = "Oferta expirada!";
-                });
-                return;
-            }
-
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.querySelectorAll(".countdown, .countdown-large").forEach(el => {
-                el.textContent = `⏰ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} (expira em 02/07/2025, 19:16 -03)`;
-            });
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
     </script>
 </body>
 </html>
