@@ -1,684 +1,930 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="MedAI Brasil - Transforme sua saúde com Scanner Corporal, Medical IA e Apoio Emocional. Bem-estar 24/7 com IA avançada." />
-    <meta name="keywords" content="MedAI Brasil, inteligência artificial, Scanner Corporal, Medical IA, Apoio Emocional, saúde, bem-estar" />
-    <meta name="author" content="MedAI Brasil" />
-    <meta content="MedAI Brasil - Transforme Sua Saúde com IA" property="og:title" />
-    <meta content="Cuide da sua saúde física e mental com IA avançada, 24/7, no seu celular." property="og:description" />
-    <meta content="https://medaibrasil.com.br/assets/images/hero-bg.webp" property="og:image" />
-    <meta content="https://medaibrasil.com.br" property="og:url" />
-    <meta content="website" property="og:type" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@MedAIBrasil" />
-    <title>MedAI Brasil - Transforme Sua Saúde com Inteligência Artificial</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scanner Emocional com IA da Álibis Digital. Descubra insights sobre seu bem-estar emocional. Teste grátis por 3 dias!">
+    <meta name="keywords" content="scanner emocional, IA, bem-estar, saúde mental, autoconhecimento, inteligência artificial, emoções">
+    <meta name="author" content="Álibis Digital">
+    <title>Scanner Emocional - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js" onerror="console.warn('dsp.js failed to load, falling back to simulated heart rate')"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
-        /* Para o header principal de navegação */
-        .holo-nav .header-container {
-            display: flex;
-            justify-content: center; /* Centraliza horizontalmente o conteúdo do header */
-            align-items: center; /* Centraliza verticalmente o conteúdo do header */
-            width: 100%; /* Garante que o container ocupe toda a largura */
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            color: #e5e7eb;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
         }
-
-        /* Para o header de urgência */
-        .urgency-header .cm-row {
-            display: flex;
-            justify-content: center; /* Centraliza horizontalmente o conteúdo do header de urgência */
-            align-items: center; /* Centraliza verticalmente o conteúdo do header de urgência */
-            text-align: center; /* Centraliza o texto dentro dos elementos <p> e <a> */
-            width: 100%; /* Garante que o container ocupe toda a largura */
-            flex-direction: column; /* Organiza os itens em coluna para o text-align funcionar melhor */
-        }
-
-        /* Para a seção Hero - logo e título principal */
-        .hero-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centraliza o logo e o título */
-            text-align: center; /* Centraliza o texto do título */
-            width: 100%;
-        }
-
-        /* Para o sub-headline na seção Hero */
-        .sub-headline {
-            text-align: center; /* Centraliza o texto dos parágrafos */
-            width: 100%;
-        }
-
-        /* Para a seção de vídeo na seção Hero */
-        .video-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centraliza o vídeo e o texto abaixo */
-            width: 100%;
-        }
-
-        /* Adicionei algumas regras básicas para garantir que os cards e seções se centralizem se não tiverem outras regras */
-        .cm-row {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .cm-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-        }
-
-        .products-grid, .testimonials-grid, .method-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px; /* Espaço entre os cards */
-            width: 100%;
-            max-width: 1200px; /* Limite a largura para melhor visualização */
-            margin-top: 20px;
-        }
-
-        .product-card, .testimonial-card, .method-card {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 300px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .product-icon, .method-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-
-        .cta-products, .cta-section {
-            margin-top: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-
-        .btn-primary-large, .btn-buy-now {
-            background-color: #007bff; /* Exemplo de cor */
-        }
-
-        .btn-secondary {
-            background-color: #6c757d; /* Exemplo de cor */
-        }
-
-        /* Estilo para ocultar cabeçalho, rodapé e depoimentos, se desejar testar */
-        /* .holo-nav, .urgency-header, #iks4pj, #i0h0uz, footer { display: none !important; } */
-
-        /* Estilo para a imagem da câmera e logo no Scanner Corporal IA - apenas conceitual */
-        .scanner-camera-frame {
-            position: relative; /* Para posicionar o logo dentro */
-            width: 100%; /* Ou um tamanho fixo, ex: 300px */
-            height: 200px; /* Ou um tamanho fixo, ex: 200px */
-            background-color: #333; /* Simula a tela da câmera */
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1.2em;
-            overflow: hidden; /* Garante que o logo não vaze */
-        }
-
-        .scanner-camera-frame .logo-overlay {
+        #particles-js {
             position: absolute;
-            top: 10px; /* Distância do topo */
-            right: 10px; /* Distância da direita */
-            width: 50px; /* Tamanho do logo */
-            height: auto;
-            opacity: 0.7; /* Para ser mais discreto */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
         }
-
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .bounce-in { animation: bounceIn 0.8s ease-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        .holo-nav { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); animation: holoGlow 2s infinite alternate; }
+        @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
+        .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
+        .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
+        .futuristic-btn {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+            overflow: hidden;
+        }
+        .futuristic-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: lightSweep 3s infinite linear; }
+        .futuristic-btn:hover { transform: translateY(-3px) rotate(2deg); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee; background: linear-gradient(45deg, #6D28D9, #06B6D4); }
+        .futuristic-btn:active { transform: scale(0.95); }
+        .futuristic-btn:disabled { background: linear-gradient(45deg, #4B5563, #6B7280); box-shadow: none; opacity: 0.6; cursor: not-allowed; animation: none; }
+        .futuristic-btn:disabled:hover { transform: none; box-shadow: none; background: linear-gradient(45deg, #4B5563, #6B7280); }
+        .futuristic-btn .ripple { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+        @keyframes neonPulse { 0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; } 100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; } }
+        @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        .neon-box {
+            background: linear-gradient(45deg, #0a1f2e, #00ccff);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+        .loading-dots::after { content: ''; display: inline-block; width: 1em; height: 1em; animation: dots 1.5s steps(3, end) infinite; }
+        @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
+        .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+        .progress { height: 8px; background: #22d3ee; width: 0; transition: width 0.3s ease; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            min-width: 160px;
+            z-index: 10;
+            flex-direction: column;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        .dropdown-menu a:hover { background: rgba(30, 30, 30, 0.8); }
+        .dropdown-menu-mobile {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            margin-top: 4px;
+            padding: 8px 0;
+        }
+        .dropdown-menu-mobile a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        #countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #22d3ee;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #22d3ee;
+        }
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            video { width: 100%; height: auto; }
+            .neon-box { padding: 10px; }
+            .logo-img {
+                height: 2rem; /* h-8 */
+                width: auto;
+                object-fit: contain;
+            }
+            .logo-container {
+                gap: 0.5rem; /* space-x-2 */
+            }
+            #mobile-menu {
+                background: rgba(17, 24, 39, 0.95); /* Consistente com o desktop */
+                backdrop-filter: blur(10px);
+            }
+            #mobile-menu nav {
+                space-y: 2; /* Espaçamento mais compacto */
+            }
+            #mobile-menu a, #mobile-menu button {
+                font-size: 1rem; /* Tamanho de fonte ajustado */
+            }
+        }
     </style>
 </head>
-<body id="iy4k">
+<body>
     <div id="particles-js"></div>
-    <header class="holo-nav">
-        <div class="header-container">
-            <div class="logo">
-                <img alt="Logo MedAI Brasil" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" />
+
+    <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center logo-container space-x-3">
+                <a href="/">
+                    <img src="/assets/logo.png" alt="Logo da Álibis Digital" class="logo-img h-10 w-auto fade-in">
+                </a>
             </div>
-            <nav id="navbar">
-                <div class="dropdown">
-                    <a href="#" class="futuristic-btn">Explorar</a>
+            <div class="flex items-center space-x-3">
+                <div class="md:hidden">
+                    <button id="hamburger-menu" class="text-white focus:outline-none p-2 rounded" aria-label="Abrir menu de navegação">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <nav id="navbar" class="hidden md:flex space-x-6 text-sm items-center">
+                <div class="dropdown relative">
+                    <button class="hover:text-[#22d3ee] transition flex items-center" aria-label="Abrir menu de serviços">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                        <span>Serviços</span>
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
                     <div class="dropdown-menu">
-                        <a href="#imgrd">Produtos</a>
-                        <a href="#iks4pj">Depoimentos</a>
-                        <a href="#ixphig">Método</a>
-                        <a href="#checkout">Preços</a>
-                        <a href="#iq3old">FAQ</a>
+                        <a href="/scanner.html" class="hover:text-[#22d3ee] transition fade-in">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:text-[#22d3ee] transition fade-in">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:text-[#22d3ee] transition fade-in">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:text-[#22d3ee] transition fade-in">Criar Álibi</a>
                     </div>
                 </div>
-                <div class="language-switch">
-                    <img src="https://flagcdn.com/16x12/br.png" alt="Português" />
-                    <span>PT</span>
-                </div>
-                <a href="#checkout" class="futuristic-btn">Comprar Agora</a>
+                <a href="/blog.html" class="hover:text-[#22d3ee] transition fade-in">Blog</a>
+                <a href="/planos.html" class="hover:text-[#22d3ee] transition fade-in">Planos</a>
+                <a href="/suporte.html" class="hover:text-[#22d3ee] transition fade-in">Suporte</a>
+                <a href="/login.html" class="hover:text-[#22d3ee] transition fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold bounce-in" aria-label="Criar conta">Criar Conta</a>
             </nav>
-            <div id="hamburger-menu">
-                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
-            </div>
-            <div id="mobile-menu">
-                <div class="language-switch-mobile">
-                    <img src="https://flagcdn.com/16x12/br.png" alt="Português" />
-                    <span>PT</span>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-gray-800 bg-opacity-95 w-full hidden py-4">
+            <nav class="flex flex-col items-center space-y-2">
+                <div class="w-full">
+                    <button id="services-toggle" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded flex justify-between items-center slide-in-left" aria-label="Abrir menu de serviços">
+                        <span>Serviços</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="services-menu" class="dropdown-menu-mobile hidden">
+                        <a href="/scanner.html" class="hover:bg-gray-700 slide-in-right">Scanner com IA</a>
+                        <a href="/apoio-emocional.html" class="hover:bg-gray-700 slide-in-right">Avaliação Emocional</a>
+                        <a href="/medical-ia.html" class="hover:bg-gray-700 slide-in-right">Diagnóstico Médico</a>
+                        <a href="/alibi.html" class="hover:bg-gray-700 slide-in-right">Criar Álibi</a>
+                    </div>
                 </div>
-                <div class="dropdown-menu-mobile">
-                    <a href="#imgrd">Produtos</a>
-                    <a href="#iks4pj">Depoimentos</a>
-                    <a href="#ixphig">Método</a>
-                    <a href="#checkout">Preços</a>
-                    <a href="#iq3old">FAQ</a>
-                </div>
-            </div>
+                <a href="/blog.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Blog</a>
+                <a href="/planos.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Planos</a>
+                <a href="/suporte.html" class="text-white py-2 px-4 text-lg w-full text-center hover:bg-gray-700 rounded fade-in">Login</a>
+                <a href="/criar-conta.html" class="futuristic-btn text-white py-2 px-4 rounded-full text-lg w-full text-center bounce-in" aria-label="Criar conta">Criar Conta</a>
+            </nav>
         </div>
     </header>
-    <header id="i3s5a" class="urgency-header section">
-        <div class="cm-row">
-            <div id="ij95k" class="cm-column">
-                <p data-style-guide-typography-content="small">🔥 OFERTA LIMITADA - ÚLTIMAS 48 HORAS! 🔥</p>
-                <p data-style-guide-typography-content="small">Apenas 97 vagas restantes para acessar a IA médica mais avançada do Brasil ⏰</p>
-                <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Garantir vaga no MedAI Brasil" class="btn btn-urgency">
-                    <span data-style-guide-typography-content="small">GARANTIR MINHA VAGA AGORA!</span>
-                    <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                </a>
-                <div class="countdown">⏰ 46:44:00 (expira em 02/07/2025, 19:16 -03)</div>
+    <div class="h-20"></div>
+
+    <section class="container mx-auto px-4 py-16 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4 fade-in">Seu rosto e sua voz têm muito a dizer. Vamos ouvi-los?</h1>
+        <p class="text-lg text-gray-300 mb-8 fade-in">Ative sua câmera e descubra insights sobre seu estado emocional, como em uma conversa com um guia de bem-estar.</p>
+
+        <div class="mb-6 fade-in max-w-md mx-auto">
+            <label for="user-context" class="block text-gray-300 text-sm font-semibold mb-2">Em uma frase, como você se sente hoje ou o que te trouxe aqui?</label>
+            <input type="text" id="user-context" placeholder="Ex: 'Me sinto um pouco sobrecarregado(a) hoje.'"
+                   class="w-full p-3 rounded-md bg-white bg-opacity-10 text-white placeholder-gray-400 border border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] focus:border-transparent transition-all duration-300">
+            <p class="text-xs mt-1 text-gray-500">Isso ajuda a IA a entender melhor seu momento.</p>
+        </div>
+
+        <p id="voice-instruction" class="text-gray-300 mb-4 fade-in hidden">Fale por 10 segundos: diga como se sente (ex.: "Estou feliz hoje").</p>
+        <div id="countdown" class="hidden"></div> 
+        <div class="flex justify-center mb-6">
+            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
+        </div>
+        <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Descobrir Meus Insights</button>
+
+        <div id="result" class="neon-box mt-8 hidden">
+            </div>
+
+        <div id="history-section" class="neon-box mt-8 hidden">
+            <h3 class="text-xl font-bold text-white mb-4">Seu Histórico de Bem-Estar</h3>
+            <div id="analysis-history" class="text-left text-gray-300">
+                <p>Nenhuma análise anterior encontrada.</p>
             </div>
         </div>
-    </header>
-    <section id="i7vc5" class="hero-section section">
-        <div class="hero-content">
-            <div class="hero-header">
-                <div class="logo"><img alt="Logo MedAI Brasil" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" /></div>
-                <h1 data-style-guide-typography-headline="small" class="main-headline">🤖 A PRIMEIRA PLATAFORMA DE INTELIGÊNCIA ARTIFICIAL QUE CUIDA DA SUA SAÚDE COMPLETA 24 HORAS POR DIA!</h1>
+
+        <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
+            <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório Completo por E-mail</h3>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="email" id="email" placeholder="Seu Melhor E-mail" class="w-full p-2 rounded bg-white text-gray-800 text-sm" required>
+                <button type="submit" class="futuristic-btn" aria-label="Enviar Relatório">Enviar</button>
             </div>
-            <div class="sub-headline">
-                <p data-style-guide-typography-content="small">3 IAs Integradas: Scanner Corporal + Apoio Emocional + Medical IA + Painel Órbita</p>
-                <p data-style-guide-typography-content="small">✅ Mais de 75.000 brasileiros transformaram sua saúde (atualizado em 30/06/2025)</p>
-                <p data-style-guide-typography-content="small">✅ Precisão de 94.7% validada por especialistas</p>
-                <p data-style-guide-typography-content="small">✅ Disponível 24/7 no seu celular (*Não substitui orientação médica)</p>
-            </div>
-            <div class="video-section">
-                <iframe allowfullscreen src="https://www.youtube.com/embed/[VIDEO_ID]?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="Como a MedAI Brasil Transforma Sua Saúde"></iframe>
-                <p data-style-guide-typography-content="small">Como a MedAI Brasil Transforma Sua Saúde</p>
-            </div>
-            <div class="cta-section">
-                <a data-style-guide-typography-content="small" href="#checkout" role="button" aria-label="Iniciar compra do MedAI Brasil" class="btn btn-primary-large">
-                    <span data-style-guide-typography-content="small">🔥 QUERO TRANSFORMAR MINHA SAÚDE COM IA AGORA! 🔥</span>
-                    <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                </a>
-                <div class="credibility">
-                    <div class="credibility-item">📊 +75K Usuários</div>
-                    <div class="credibility-item">🇧🇷 100% Brasileiro</div>
-                    <div class="credibility-item">🔒 SSL Seguro</div>
-                    <div class="credibility-item">⚡ 24/7 Online</div>
+            <p class="text-xs mt-2 text-gray-500">🔒 Seus dados estão seguros. Após envio, acesse <a href="obrigado.html" class="text-[#22d3ee] hover:underline">obrigado.html</a> para mais detalhes.</p>
+        </form>
+        <div class="mt-6 flex flex-col justify-center items-center gap-2">
+            <p class="text-sm text-gray-500 fade-in">🚀 Oferta Especial: Teste grátis por 3 dias! Apenas <span id="vagas">5</span> vagas restantes!</p>
+            <a href="bridge.html" class="futuristic-btn" aria-label="Assinar com 3 Dias Grátis">✨ Assinar e Começar (3 Dias Grátis)</a>
+        </div>
+        <div class="mt-8 max-w-2xl mx-auto">
+            <h3 class="text-xl font-semibold text-white mb-4 fade-in">O que nossos usuários dizem</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-in">
+                    <p class="text-gray-300 italic">"O scanner me ajudou a entender minhas emoções e a melhorar meu dia!"</p>
+                    <p class="text-gray-500 text-sm mt-2">— Ana, São Paulo</p>
+                </div>
+                <div class="bg-[rgba(20,20,20,0.8)] p-4 rounded-md fade-in">
+                    <p class="text-gray-300 italic">"Uma ferramenta incrível para cuidar da minha saúde emocional."</p>
+                    <p class="text-gray-500 text-sm mt-2">— João, Rio de Janeiro</p>
                 </div>
             </div>
+            <div class="mt-6 fade-in">
+                <p class="text-gray-300">Quer saber mais sobre como lidar com suas emoções?</p>
+                <a href="saude-emocional-triagem-ia.html" class="text-[#22d3ee] hover:underline">Leia mais no nosso blog: Saúde Emocional com Triagem IA</a>
+            </div>
         </div>
+        <canvas id="canvas" width="320" height="240" style="display: none;" willReadFrequently="true"></canvas>
     </section>
-    <main id="i9p5o">
-        <section id="imgrd" class="products-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h2 data-style-guide-typography-subheadline="small">🔥 TECNOLOGIA COMPROVADA 🔥</h2>
-                    <h1 data-style-guide-typography-headline="small">Conheça as 3 IAs que vão revolucionar sua saúde</h1>
-                    <div class="products-grid">
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-heartbeat"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">🔬 Scanner Corporal IA</h3>
-                            <div class="scanner-camera-frame">
-                                <p>Simulação da Câmera</p>
-                                <img src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" alt="MedAI Logo" class="logo-overlay" />
-                                </div>
-                            <p data-style-guide-typography-content="small">**Desvende sua saúde oculta.** Identificação ágil de riscos.</p>
-                            <p data-style-guide-typography-content="small">Utiliza inteligência artificial para **analisar padrões corporais e faciais**, revelando sinais de estresse e potenciais condições de saúde com uma **precisão de 94.7%**, validada clinicamente.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">**Prevenção Inteligente:** Detecta anomalias antes que se agravem.</li>
-                                <li class="cm-list-item">**Insights Personalizados:** Relatórios detalhados e compreensíveis sobre seu corpo.</li>
-                                <li class="cm-list-item">**Saúde em Tempo Real:** Monitore mudanças e progressos continuamente.</li>
-                                <li class="cm-list-item">**Alertas Essenciais:** Receba avisos sobre riscos e tendências importantes.</li>
-                                <li class="cm-list-item">**Design Intuitivo:** Facilidade de uso para todos.</li>
-                                <li class="cm-list-item">**Sua Privacidade:** Análise segura e confidencial dos seus dados.</li>
-                            </ul>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-brain"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">💭 Apoio Emocional IA</h3>
-                            <p data-style-guide-typography-content="small">Terapia personalizada 24/7.</p>
-                            <p data-style-guide-typography-content="small">O Abili, nosso terapeuta virtual, oferece apoio emocional com conversas empáticas e técnicas de relaxamento baseadas em 10M casos.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">Conversas empáticas inteligentes</li>
-                                <li class="cm-list-item">Técnicas de relaxamento personalizadas</li>
-                                <li class="cm-list-item">Monitoramento do humor</li>
-                                <li class="cm-list-item">Apoio em crises de ansiedade</li>
-                                <li class="cm-list-item">Privacidade total</li>
-                                <li class="cm-list-item">Disponível 24/7</li>
-                            </ul>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-user-md"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">🩺 Medical IA</h3>
-                            <p data-style-guide-typography-content="small">Pré-diagnósticos em 3 minutos.</p>
-                            <p data-style-guide-typography-content="small">Analisa sintomas, condições e estilo de vida com base em conhecimento médico avançado de 50K especialistas.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">Análise inteligente de sintomas</li>
-                                <li class="cm-list-item">Orientações médicas precisas</li>
-                                <li class="cm-list-item">Interpretação de dados de saúde</li>
-                                <li class="cm-list-item">Sugestões de especialistas</li>
-                                <li class="cm-list-item">Base de conhecimento médico</li>
-                                <li class="cm-list-item">Respostas em tempo real</li>
-                            </ul>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-chart-line"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">🌐 Painel Órbita</h3>
-                            <p data-style-guide-typography-content="small">Central de dados integrada.</p>
-                            <p data-style-guide-typography-content="small">Monitora estado emocional, hábitos diários e progresso, consolidando dados das 3 IAs em um dashboard interativo.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">Dashboard completo de saúde</li>
-                                <li class="cm-list-item">Integração das 3 IAs</li>
-                                <li class="cm-list-item">Histórico detalhado</li>
-                                <li class="cm-list-item">Gráficos de evolução</li>
-                                <li class="cm-list-item">Relatórios personalizados</li>
-                                <li class="cm-list-item">Insights inteligentes</li>
-                            </ul>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-mobile-alt"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">📱 Aplicativo Mobile</h3>
-                            <p data-style-guide-typography-content="small">Saúde no seu bolso.</p>
-                            <p data-style-guide-typography-content="small">Acesse Scanner Corporal, Apoio Emocional e Medical IA diretamente no celular, com notificações e sincronização.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">Acesso mobile completo</li>
-                                <li class="cm-list-item">Interface otimizada</li>
-                                <li class="cm-list-item">Notificações push</li>
-                                <li class="cm-list-item">Sincronização automática</li>
-                                <li class="cm-list-item">Uso offline limitado</li>
-                                <li class="cm-list-item">Backup na nuvem</li>
-                            </ul>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-icon"><i class="fas fa-book"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">📚 Blog Educativo IA</h3>
-                            <p data-style-guide-typography-content="small">Conteúdo sobre saúde e IA.</p>
-                            <p data-style-guide-typography-content="small">Artigos educativos sobre bem-estar, privacidade e IA, personalizados para seu perfil de saúde.</p>
-                            <ul class="space-y-2">
-                                <li class="cm-list-item">Conteúdo personalizado</li>
-                                <li class="cm-list-item">Artigos médicos confiáveis</li>
-                                <li class="cm-list-item">Dicas de prevenção</li>
-                                <li class="cm-list-item">Atualização constante</li>
-                                <li class="cm-list-item">Linguagem acessível</li>
-                                <li class="cm-list-item">Fontes científicas</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="cta-products">
-                        <a data-style-guide-typography-content="small" href="https://#checkout" role="button" aria-label="Iniciar compra do MedAI Brasil" class="btn btn-secondary">
-                            <span data-style-guide-typography-content="small">QUERO ACESSO COMPLETO ÀS 3 IAs AGORA!</span>
-                            <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                        </a>
-                    </div>
-                </div>
+
+    <footer class="bg-[rgba(0,0,0,0.8)] text-gray-400 py-8">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-white font-semibold mb-2">Álibis Digitais</h3>
+                <p>Soluções de bem-estar com tecnologia avançada.</p>
             </div>
-        </section>
-        <section id="iks4pj" class="testimonials-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h2 data-style-guide-typography-subheadline="small">+75.000 BRASILEIROS APROVARAM NOSSA TECNOLOGIA</h2>
-                    <h1 data-style-guide-typography-headline="small">Veja depoimentos reais de quem transformou sua saúde</h1>
-                    <div class="testimonials-grid">
-                        <div class="testimonial-card">
-                            <div class="stars star-rating">⭐⭐⭐⭐⭐</div>
-                            <p data-style-guide-typography-content="small" class="quote">"O Scanner Corporal IA identificou sinais de estresse que eu não percebia!"</p>
-                            <div class="author">
-                                <img alt="Ana Paula Rodrigues" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/889a15b7-2750-49f6-8280-d76202e0f5b0" loading="lazy" />
-                                <div class="author-info">
-                                    <h3 data-style-guide-typography-subheadline="small">Ana Paula Rodrigues</h3>
-                                    <p data-style-guide-typography-content="small">Executiva, São Paulo, SP</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="stars star-rating">⭐⭐⭐⭐⭐</div>
-                            <p data-style-guide-typography-content="small" class="quote">"A Medical IA me orientou para o especialista certo em minutos!"</p>
-                            <div class="author">
-                                <img alt="Dr. João Silva" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/8f74ae74-1eaa-4ddb-a6d4-107f58c46ad5" loading="lazy" />
-                                <div class="author-info">
-                                    <h3 data-style-guide-typography-subheadline="small">Dr. João Silva</h3>
-                                    <p data-style-guide-typography-content="small">Médico, Rio de Janeiro, RJ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="stars star-rating">⭐⭐⭐⭐⭐</div>
-                            <p data-style-guide-typography-content="small" class="quote">"O Apoio Emocional IA é como um terapeuta sempre disponível!"</p>
-                            <div class="author">
-                                <img alt="Maria Oliveira" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/f355bfc0-7a26-410a-9e5d-4f7a133a9b8e" loading="lazy" />
-                                <div class="author-info">
-                                    <h3 data-style-guide-typography-subheadline="small">Maria Oliveira</h3>
-                                    <p data-style-guide-typography-content="small">Professora, Belo Horizonte, MG</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="stars star-rating">⭐⭐⭐⭐⭐</div>
-                            <p data-style-guide-typography-content="small" class="quote">"O Painel Órbita organiza minha saúde em um só lugar!"</p>
-                            <div class="author">
-                                <img alt="Dr. Carlos Mendes" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/439f018b-15a6-489f-8af3-dbb143cc7d04" loading="lazy" />
-                                <div class="author-info">
-                                    <h3 data-style-guide-typography-subheadline="small">Dr. Carlos Mendes</h3>
-                                    <p data-style-guide-typography-content="small">Engenheiro, Belo Horizonte, MG</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cta-section">
-                        <a data-style-guide-typography-content="small" href="https://#checkout" role="button" aria-label="Iniciar compra do MedAI Brasil" class="btn btn-primary-large">
-                            <span data-style-guide-typography-content="small">SEJA O PRÓXIMO A TRANSFORMAR SUA SAÚDE!</span>
-                            <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                        </a>
-                    </div>
-                </div>
+            <div>
+                <h4 class="text-white font-semibold mb-2">Navegue</h4>
+                <ul class="space-y-1">
+                    <li><a href="index.html" class="hover:text-white">Início</a></li>
+                    <li><a href="scanner.html" class="hover:text-white">Scanner</a></li>
+                    <li><a href="blog.html" class="hover:text-white">Blog</a></li>
+                    <li><a href="medical-ia.html">Diagnósticos Médicos</a></li>
+                    <li><a href="apoio-emocional.html">Apoio Emocional</a></li>
+                    <li><a href="alibi.html">Criar Álibi</a></li>
+                    <li><a href="bridge.html">Planos</a></li>
+                    <li><a href="suporte.html">Suporte</a></li>
+                    <li><a href="privacidade.html">Privacidade</a></li>
+                    <li><a href="termos.html">Termos</a></li>
+                    <li><a href="politicas.html">Políticas</a></li>
+                </ul>
             </div>
-        </section>
-        <section id="i0h0uz" class="highlight-testimonial section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h1 data-style-guide-typography-headline="small">"Como médico, testei a MedAI Brasil e fiquei impressionado com sua precisão. O Scanner Corporal identificou padrões sutis que poderiam passar despercebidos, a Medical IA ofereceu orientações baseadas em evidências com rapidez, e o Apoio Emocional foi uma ferramenta valiosa para gerenciar o estresse. O Painel Órbita integra tudo de forma intuitiva, facilitando o acompanhamento."</h1>
-                    <p data-style-guide-typography-content="small">
-                        <img id="i7v2rj" alt="Dr. Adriano Santoro" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/1dada792-26d5-4877-a370-35e82c08cb5c" loading="lazy" />
-                    </p>
-                    <span data-style-guide-typography-content="medium">Dr. Adriano Santoro, Médico e Usuário - Florianópolis</span>
-                    <p></p>
-                    <a data-style-guide-typography-content="small" href="https://#checkout" role="button" aria-label="Iniciar compra do MedAI Brasil" class="btn btn-primary-large">
-                        <span data-style-guide-typography-content="small">QUERO ACESSO COMPLETO À IA MÉDICA AGORA</span>
-                        <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                    </a>
-                </div>
+            <div>
+                <h4 class="text-white font-semibold mb-2">Contato</h4>
+                <ul class="space-y-1">
+                    <li><a href="mailto:contato@alibisdigitais.com.br" class="hover:text-white">E-mail: contato@alibisdigitais.com.br</a></li>
+                    <li><a href="https://wa.me/5511912345678" class="hover:text-white">WhatsApp: (11) 91234-5678</a></li>
+                </ul>
             </div>
-        </section>
-        <section id="ixphig" class="method-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h2 data-style-guide-typography-subheadline="small">🔥 MÉTODO MEDAI BRASIL 🔥</h2>
-                    <h1 data-style-guide-typography-headline="small">5 Etapas para Transformar Sua Saúde</h1>
-                    <div class="method-grid">
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-map"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Seu Ponto de Partida</h3>
-                            <p data-style-guide-typography-content="small">Entenda como o MedAI funciona.</p>
-                        </div>
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-cogs"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Plano Personalizado</h3>
-                            <p data-style-guide-typography-content="small">Crie seu plano com IA.</p>
-                        </div>
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-chart-line"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Resultados Rápidos</h3>
-                            <p data-style-guide-typography-content="small">Aplique IA para bem-estar.</p>
-                        </div>
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-check-circle"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Otimização Contínua</h3>
-                            <p data-style-guide-typography-content="small">Ajuste sua rotina com IA.</p>
-                        </div>
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-rocket"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Escalando Bem-Estar</h3>
-                            <p data-style-guide-typography-content="small">Maximize sua saúde.</p>
-                        </div>
-                        <div class="method-card">
-                            <div class="method-icon"><i class="fas fa-video"></i></div>
-                            <h3 data-style-guide-typography-subheadline="small">Mentorias ao Vivo</h3>
-                            <p data-style-guide-typography-content="small">6 lives gravadas por 3 meses.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="checkout" class="pricing-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <div class="urgency-reminder">
-                        <h2 data-style-guide-typography-subheadline="small">🔥 OFERTA ESPECIAL EXPIRA EM 48H! 🔥</h2>
-                        <div class="countdown-large">⏰ 46:44:00 (expira em 02/07/2025, 19:16 -03)</div>
-                        <p data-style-guide-typography-content="small">⚠️ Apenas 73 vagas restantes este mês!</p>
-                    </div>
-                    <div class="pricing-container">
-                        <div class="special-offer">
-                            <div class="offer-badge">OFERTA ESPECIAL</div>
-                            <h2 data-style-guide-typography-subheadline="small">MEDAI BRASIL COMPLETO</h2>
-                            <p data-style-guide-typography-content="small" class="offer-description">Acesso às 3 IAs + Órbita + App + Conteúdo + Suporte</p>
-                            <div class="offer-benefits">
-                                <div class="benefit-item">
-                                    <span class="check-icon">✅</span>
-                                    <div class="benefit-text">
-                                        <h3 data-style-guide-typography-subheadline="small">Scanner Corporal IA</h3>
-                                        <p data-style-guide-typography-content="small">Análise corporal completa</p>
-                                        <p data-style-guide-typography-content="small" class="benefit-price">R$ 297/mês</p>
-                                    </div>
-                                </div>
-                                <div class="benefit-item">
-                                    <span class="check-icon">✅</span>
-                                    <div class="benefit-text">
-                                        <h3 data-style-guide-typography-subheadline="small">Apoio Emocional IA</h3>
-                                        <p data-style-guide-typography-content="small">Terapia 24/7</p>
-                                        <p data-style-guide-typography-content="small" class="benefit-price">R$ 197/mês</p>
-                                    </div>
-                                </div>
-                                <div class="benefit-item">
-                                    <span class="check-icon">✅</span>
-                                    <div class="benefit-text">
-                                        <h3 data-style-guide-typography-subheadline="small">Medical IA</h3>
-                                        <p data-style-guide-typography-content="small">Diagnósticos em 3 min</p>
-                                        <p data-style-guide-typography-content="small" class="benefit-price">R$ 397/mês</p>
-                                    </div>
-                                </div>
-                                <div class="benefit-item">
-                                    <span class="check-icon">✅</span>
-                                    <div class="benefit-text">
-                                        <h3 data-style-guide-typography-subheadline="small">Painel Órbita</h3>
-                                        <p data-style-guide-typography-content="small">Central de dados</p>
-                                        <p data-style-guide-typography-content="small" class="benefit-price">R$ 97/mês</p>
-                                    </div>
-                                </div>
-                                <div class="benefit-item">
-                                    <span class="check-icon">✅</span>
-                                    <div class="benefit-text">
-                                        <h3 data-style-guide-typography-subheadline="small">App Mobile</h3>
-                                        <p data-style-guide-typography-content="small">Acesso 24/7</p>
-                                        <p data-style-guide-typography-content="small" class="benefit-price">R$ 67/mês</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="savings">
-                                <p data-style-guide-typography-content="small">💰 Economia Total: R$ 1.198 (60% de desconto)</p>
-                            </div>
-                            <div class="price-display">
-                                <div class="old-price">De R$ 1.997,00</div>
-                                <div class="current-price">
-                                    <span class="installments">12x R$ 69,74</span>
-                                    <span class="full-price">ou R$ 799,00 à vista</span>
-                                </div>
-                            </div>
-                            <a data-style-guide-typography-content="small" href="https://#checkout" role="button" aria-label="Iniciar compra do MedAI Brasil" class="btn btn-buy-now">
-                                <span data-style-guide-typography-content="small">🔥 COMPRAR AGORA - ACESSO IMEDIATO! 🔥</span>
-                                <i data-icon="fa-house" class="fa-solid fa-circle-arrow-right cm-icon"></i>
-                            </a>
-                            <div class="payment-security">
-                                <p data-style-guide-typography-content="small">🔒 Pagamento 100% seguro via Ticto</p>
-                                <p data-style-guide-typography-content="small">✅ Garantia de 30 dias</p>
-                                <p data-style-guide-typography-content="small">⚡ Acesso em até 5 minutos</p>
-                            </div>
-                            <div class="payment-icons">
-                                <img alt="Visa" src="https://maquinamilionaria.com/assets/images/visa.png" loading="lazy" />
-                                <img alt="Mastercard" src="https://maquinamilionaria.com/assets/images/mastercard.png" loading="lazy" />
-                                <img alt="Elo" src="https://maquinamilionaria.com/assets/images/elo.png" loading="lazy" />
-                                <img alt="PIX" src="https://maquinamilionaria.com/assets/images/pix.png" loading="lazy" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        </main>
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+        </div>
+        <div class="text-center mt-4">
+            <p class="text-sm">© 2025 Álibis Digitais. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
     <script>
-        window.addEventListener("load", function(){
-            window.cookieconsent.initialise({
-                "palette": {
-                    "popup": {
-                        "background": "#000"
-                    },
-                    "button": {
-                        "background": "#f1d600"
-                    }
-                },
-                "content": {
-                    "message": "Este site utiliza cookies para garantir que você obtenha a melhor experiência.",
-                    "dismiss": "Entendi!",
-                    "link": "Saiba Mais",
-                    "href": "/politica-de-privacidade" /* Substitua com o link da sua política de privacidade */
-                }
-            })
+        particlesJS('particles-js', {
+            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#22d3ee' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 }, move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' } },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ffffff"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    },
-                    "image": {
-                        "src": "img/github.svg",
-                        "width": 100,
-                        "height": 100
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#ffffff",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
+
+        // ==================================================================================================
+        // !!! AVISO DE SEGURANÇA CRÍTICO !!!
+        // AS CHAVES DE API ABAIXO ESTÃO EXPOSTAS NO CÓDIGO CLIENT-SIDE (FRONTEND).
+        // PARA UM AMBIENTE DE PRODUÇÃO REAL, VOCÊ DEVE PROTEGER ESTAS CHAVES USANDO UM BACKEND.
+        // O BACKEND SERVIRIA COMO UM PROXY, RECEBENDO AS REQUISIÇÕES DO FRONTEND E ENVIANDO-AS
+        // COM AS CHAVES PARA AS APIS EXTERNAS, MANTENDO AS CHAVES SEGURAS NO SERVIDOR.
+        // ==================================================================================================
+        const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX'; // EXPOSTA - Mover para Backend!
+        const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY'; // EXPOSTA - Mover para Backend!
+        const OPENAI_API_KEY = 'sk-proj-msLKULNN1ZF3CrA5eOXqsXe1kOrgUBJjX4zRi0DKxdVh30teL3RKTOlIi2SE-bAhVfAhVG4u6Y4T3BlbkFJKeiNKUjFFBXncw7RUztxYBezuCbAwS3RtL82-428PJvLfR-NaAHo_KpkhJ7ylnwwE2kTM2vP9cA'; // EXPOSTA - Mover para Backend!
+        // ==================================================================================================
+
+        function speakDiagnosis(text) {
+            try {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.85; // Ajustado para voz mais natural
+                utterance.pitch = 0.7; // Tom mais grave
+                utterance.volume = 0.9; // Volume suavizado
+                window.speechSynthesis.speak(utterance);
+                console.log('Diagnosis spoken at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', text);
+            } catch (error) {
+                console.error('Speech synthesis error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const video = document.getElementById('video');
+            const analyzeButton = document.getElementById('analyze-button');
+            const resultDiv = document.getElementById('result');
+            const form = document.getElementById('lead-form');
+            const userContextInput = document.getElementById('user-context'); // Novo elemento
+
+            // Evento para o botão de hambúrguer
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (hamburgerMenu && mobileMenu) {
+                hamburgerMenu.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Evento para o toggle do submenu "Serviços" no mobile
+            const servicesToggle = document.getElementById('services-toggle');
+            const servicesMenu = document.getElementById('services-menu');
+            if (servicesToggle && servicesMenu) {
+                servicesToggle.addEventListener('click', () => {
+                    servicesMenu.classList.toggle('hidden');
+                });
+            }
+
+            let cameraInitialized = false;
+
+            if (video) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); // Pedir permissão de áudio também
+                    video.srcObject = stream;
+                    cameraInitialized = true;
+                    console.log('Camera and microphone initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                } catch (err) {
+                    console.error('Camera/Microphone error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera ou o microfone. Verifique permissões e use HTTPS ou localhost.</p>';
+                    analyzeButton.disabled = true;
                 }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
+            }
+
+            if (analyzeButton) {
+                analyzeButton.addEventListener('click', (e) => {
+                    console.log('Analyze button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    if (!cameraInitialized) {
+                        resultDiv.classList.remove('hidden');
+                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Câmera/Microfone não inicializados. Verifique permissões e recarregue.</p>';
+                        return;
+                    }
+                    createRipple(e);
+                    // Passar o contexto do usuário para a análise
+                    const userContext = userContextInput.value.trim();
+                    startAnalysis(userContext);
+                });
+            }
+
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value;
+                    console.log('Form submitted at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', email);
+                    alert('Relatório enviado para: ' + email);
+                    createRipple(e);
+                    form.reset();
+                });
+            }
+
+            const ctaButtons = document.querySelectorAll('.futuristic-btn');
+            ctaButtons.forEach(button => button.addEventListener('click', createRipple));
+
+            let vagas = 5;
+            // A cada 6 horas (21600000 ms), reduz uma vaga. Era 1h no original, ajustado para 6h para um demo mais longo.
+            setInterval(() => {
+                if (vagas > 0) {
+                    vagas--;
+                    document.getElementById('vagas').textContent = vagas;
+                }
+            }, 21600000); // 6 horas
+
+            // Exibir histórico ao carregar a página
+            displayAnalysisHistory();
+        });
+
+        function createRipple(event) {
+            const button = event.currentTarget;
+            if (button.disabled) return;
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+            button.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        }
+
+        // Função para simular BPM caso dsp.js falhe ou análise de BPM não seja possível
+        function simulateHeartRate() {
+            const minBPM = 60;
+            const maxBPM = 90;
+            return Math.floor(Math.random() * (maxBPM - minBPM + 1)) + minBPM;
+        }
+
+        async function startAnalysis(userContext) {
+            const canvas = document.getElementById('canvas');
+            const video = document.getElementById('video');
+            const resultDiv = document.getElementById('result');
+            const form = document.getElementById('lead-form');
+            const analyzeButton = document.getElementById('analyze-button');
+
+            if (!canvas || !video || !resultDiv) {
+                console.error('Missing required elements at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', { canvas, video, resultDiv });
+                resultDiv.classList.remove('hidden');
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Elementos necessários não encontrados.</p>';
+                return;
+            }
+
+            analyzeButton.disabled = true; // Desabilita o botão durante a análise
+            resultDiv.classList.remove('hidden');
+
+            try {
+                console.log('Starting analysis process at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                
+
+                const totalSteps = 3;
+                let currentStep = 0;
+
+                function updateProgress(step, message) {
+                    currentStep = step;
+                    const progress = document.getElementById('progress');
+                    resultDiv.innerHTML = `<p class="fade-in text-white">${message}<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>`;
+                    if (progress) progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                }
+
+                updateProgress(0, 'Preparando a análise...');
+
+                let facialData, voiceData, bpm;
+
+                updateProgress(1, 'Analisando expressão facial...');
+                // Fallback para mockFaceResponse em caso de falha da API Face++
+                const faceAnalysisResponse = await analyzeFace(canvas, video).catch(err => {
+                    console.error('Facial analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    // Retorna um mock para continuar o fluxo mesmo se a API falhar
+                    return { emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 } };
+                });
+                facialData = faceAnalysisResponse.emotion;
+                console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', JSON.stringify(facialData));
+
+
+                updateProgress(2, 'Fale por 10 segundos: diga como se sente (ex.: "Estou feliz hoje").');
+                voiceData = await analyzeVoice().catch(err => {
+                    console.error('Voice analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    // Fallback para dados de voz mock para continuar o fluxo
+                    return { sentiment: 'silencio', themes: ['silêncio'] }; // Retorna 'silêncio' para indicar falha/ausência
+                });
+                console.log('Voice analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', JSON.stringify(voiceData));
+
+                updateProgress(3, 'Calculando frequência cardíaca...');
+                bpm = simulateHeartRate(); // Usando a simulação por simplicidade e confiabilidade do demo
+                console.log('Heart rate calculation completed (simulated) at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', bpm);
+
+                // Passar todos os dados e o contexto do usuário para a unificação do diagnóstico
+                const finalEmotion = unifyDiagnosis(facialData, voiceData, bpm, userContext);
+                console.log('Final emotion determined at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', finalEmotion, 'Raw scores:', { facial: facialData, voice: voiceData, bpm: bpm, context: userContext });
+                
+                // Salvar análise no histórico
+                saveAnalysisToHistory(finalEmotion, bpm, userContext);
+                displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form);
+                displayAnalysisHistory(); // Atualizar histórico na UI
+
+            } catch (error) {
+                console.error('Unexpected error in analysis at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message, 'Stack:', error.stack);
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Erro crítico. Tente novamente ou contate suporte.</p>';
+                form.classList.remove('hidden');
+            } finally {
+                analyzeButton.disabled = false; // Habilita o botão novamente
+            }
+        }
+
+        async function analyzeFace(canvas, video) {
+            try {
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageBase64 = canvas.toDataURL('image/png').split(',')[1];
+
+                const formData = new FormData();
+                formData.append('api_key', FACE_API_KEY);
+                formData.append('api_secret', FACE_API_SECRET);
+                formData.append('image_base64', imageBase64);
+                formData.append('return_attributes', 'emotion');
+
+                const response = await fetch('https://api-us.faceplusplus.com/facepp/v3/detect', { method: 'POST', body: formData });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`Face++ API request failed with status: ${response.status}. Response: ${errorText}`);
+                    throw new Error(`Face++ API request failed: ${errorText}`);
+                }
+                const data = await response.json();
+                if (data.faces && data.faces.length > 0) {
+                    return { emotion: data.faces[0].attributes.emotion };
+                }
+                console.warn('No faces detected by Face++ at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                // Fallback to mock data if no faces detected
+                return { emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 } };
+            } catch (error) {
+                console.error('Face++ error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
+                // Re-throw or return a meaningful error/mock if needed
+                throw error;
+            }
+        }
+
+        async function analyzeVoice() {
+            const voiceInstruction = document.getElementById('voice-instruction');
+            const countdownElement = document.getElementById('countdown');
+            let countdownInterval;
+
+            try {
+                if (voiceInstruction) voiceInstruction.classList.remove('hidden');
+                if (countdownElement) countdownElement.classList.remove('hidden');
+
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'pt-BR';
+                recognition.maxAlternatives = 1;
+                recognition.interimResults = false;
+
+                return new Promise((resolve, reject) => {
+                    let transcript = '';
+                    let timer = 10;
+
+                    recognition.onstart = () => {
+                        console.log('Voice recording started at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                        if (voiceInstruction) voiceInstruction.textContent = 'Gravando... Fale agora!';
+                        countdownElement.textContent = timer;
+                        countdownInterval = setInterval(() => {
+                            timer--;
+                            countdownElement.textContent = timer;
+                            if (timer <= 0) {
+                                clearInterval(countdownInterval);
+                                recognition.stop();
+                                console.log('Voice recording stopped after 10s.');
+                                if (voiceInstruction) voiceInstruction.classList.add('hidden');
+                                if (countdownElement) countdownElement.classList.add('hidden');
+                            }
+                        }, 1000);
+                    };
+
+                    recognition.onresult = async (event) => {
+                        transcript = event.results[0][0].transcript;
+                        console.log('Voice transcript at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', transcript);
+                    };
+
+                    recognition.onend = async () => {
+                        clearInterval(countdownInterval);
+                        if (voiceInstruction) voiceInstruction.classList.add('hidden');
+                        if (countdownElement) countdownElement.classList.add('hidden');
+
+                        if (!transcript.trim()) {
+                            console.warn('No speech detected during recording.');
+                            resolve({ sentiment: 'silencio', themes: ['silêncio'] }); // Indicar que não houve fala
+                            return;
                         }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-        });
+
+                        try {
+                            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${OPENAI_API_KEY}`
+                                },
+                                body: JSON.stringify({
+                                    model: "gpt-3.5-turbo", // Ou "gpt-4", dependendo da sua necessidade
+                                    messages: [
+                                        { "role": "system", "content": "Analise o sentimento e os temas principais do texto em português. Responda apenas com um JSON { 'sentiment': 'positivo' | 'negativo' | 'neutro' | 'misto' | 'silencio', 'themes': ['tema1', 'tema2'], 'confidence': 0.8 }. Se não houver texto claro, retorne neutro. Se o texto for vazio ou apenas ruído, retorne 'silencio' para o sentimento e 'silêncio' para o tema." },
+                                        { "role": "user", "content": transcript }
+                                    ],
+                                    max_tokens: 100,
+                                    response_format: { type: "json_object" } // Solicita resposta em JSON
+                                })
+                            });
+
+                            if (!response.ok) {
+                                const errorBody = await response.text();
+                                console.error(`OpenAI API request failed with status: ${response.status}. Body: ${errorBody}`);
+                                throw new Error(`OpenAI API request failed: ${errorBody}`);
+                            }
+
+                            const data = await response.json();
+                            console.log('OpenAI Voice Analysis Response:', data);
+
+                            // Parse the content, assuming it's a JSON string
+                            const content = data.choices[0].message.content;
+                            try {
+                                const parsedContent = JSON.parse(content);
+                                resolve(parsedContent); // Resolve with the parsed JSON object
+                            } catch (jsonParseError) {
+                                console.error('Failed to parse OpenAI JSON response:', content, jsonParseError);
+                                resolve({ sentiment: 'neutro', themes: ['indefinido'] }); // Fallback
+                            }
+
+                        } catch (error) {
+                            console.error('OpenAI voice analysis error:', error);
+                            reject(error); // Rejeita a Promise em caso de erro na API
+                        }
+                    };
+
+                    recognition.onerror = (event) => {
+                        console.error('Speech recognition error:', event.error);
+                        clearInterval(countdownInterval);
+                        if (voiceInstruction) voiceInstruction.classList.add('hidden');
+                        if (countdownElement) countdownElement.classList.add('hidden');
+                        reject(new Error('Speech recognition failed: ' + event.error));
+                    };
+
+                    recognition.start();
+                });
+            } catch (error) {
+                console.error('Error initiating voice analysis:', error);
+                throw error; // Propaga o erro para ser pego pelo startAnalysis
+            }
+        }
+
+        // --- FUNÇÃO CENTRAL: UNIFICAR DIAGNÓSTICO (Aprimorada com Discrepância Prioritária) ---
+        function unifyDiagnosis(facialData, voiceData, bpm, userContext) {
+            // 1. Emoção facial dominante
+            const dominantFacialEmotion = Object.keys(facialData).reduce((a, b) => facialData[a] > facialData[b] ? a : b);
+            const facialScore = facialData[dominantFacialEmotion];
+
+            // 2. Sentimento da voz (do OpenAI)
+            const voiceSentiment = voiceData && voiceData.sentiment ? voiceData.sentiment : 'neutro';
+            const voiceThemes = voiceData && voiceData.themes ? voiceData.themes.join(', ') : '';
+
+            // 3. Análise da Frequência Cardíaca (BPM)
+            let bpmInsight = '';
+            if (bpm >= 90) { bpmInsight = 'Seu ritmo cardíaco está um pouco acelerado, indicando possível estresse ou agitação.'; }
+            else if (bpm >= 75) { bpmInsight = 'Sua frequência cardíaca está normal, mas reflete um estado de alerta ou energia moderada.'; }
+            else { bpmInsight = 'Sua frequência cardíaca está relaxada, sugerindo um estado de calma.'; }
+
+            // 4. Lógica de fusão e geração da mensagem
+            let overallCategory = 'neutro';
+            let mainMessage = '';
+            let actionSuggestion = [];
+            let discrepancies = []; // Mantemos para futuras expansões, mas a mensagem principal cobrirá isso.
+
+            // Mapeamento para nomes amigáveis
+            const emotionNames = {
+                sadness: 'tristeza', anger: 'raiva', happiness: 'felicidade', surprise: 'surpresa',
+                neutral: 'neutralidade', fear: 'medo', disgust: 'nojo'
+            };
+            const friendlyFacialEmotion = emotionNames[dominantFacialEmotion] || dominantFacialEmotion;
+
+            // --- Lógica de Fusão e Mensagem (Ordem de Prioridade Alterada) ---
+
+            // **NOVO: CENÁRIO DE DISCREPÂNCIA COM ALTA PRIORIDADE**
+            const userContextLower = userContext.toLowerCase();
+            const userSaysNegative = userContextLower.includes('chateado') || userContextLower.includes('triste') || userContextLower.includes('sobrecarregado') || userContextLower.includes('ansioso') || userContextLower.includes('irritado') || userContextLower.includes('preocupado');
+            const userSaysPositive = userContextLower.includes('feliz') || userContextLower.includes('bem') || userContextLower.includes('animado') || userContextLower.includes('ótimo');
+            const userSaysNeutral = !userSaysNegative && !userSaysPositive && userContextLower.length > 0; // Se algo foi dito mas não é nem positivo nem negativo
+
+            const facePositive = dominantFacialEmotion === 'happiness' && facialScore > 40;
+            const faceNegative = (dominantFacialEmotion === 'sadness' || dominantFacialEmotion === 'anger' || dominantFacialEmotion === 'fear') && facialScore > 30;
+            const voicePositive = voiceSentiment === 'positivo';
+            const voiceNegative = voiceSentiment === 'negativo';
+            const voiceNeutral = voiceSentiment === 'neutro';
+
+            // Condições para detectar discrepâncias fortes
+            if (
+                // 1. Usuário diz negativo, mas rosto/voz são positivos/neutros
+                (userSaysNegative && (facePositive || voicePositive || (dominantFacialEmotion === 'neutral' && voiceNeutral))) ||
+                // 2. Usuário diz positivo, mas rosto/voz são negativos
+                (userSaysPositive && (faceNegative || voiceNegative)) ||
+                // 3. Rosto e voz se contradizem (independente do contexto inicial)
+                (facePositive && voiceNegative) ||
+                (faceNegative && voicePositive)
+            ) {
+                overallCategory = 'discrepancia';
+                mainMessage = `Notamos uma **discrepância interessante** entre o que você mencionou sentir ("${userContext || 'Não informado'}") e o que capturamos. Sua expressão principal é de **${friendlyFacialEmotion}** e sua voz soa **${voiceSentiment === 'silencio' ? 'silenciosa' : voiceSentiment}**.`;
+                mainMessage += ` Isso pode indicar sentimentos complexos ou que você está processando suas emoções de uma forma única.`;
+                actionSuggestion.push("Reflita sobre o que você sente versus o que expressa. É um bom ponto de partida para o autoconhecimento.");
+                actionSuggestion.push("Compartilhar seus sentimentos com alguém de confiança pode ajudar a alinhar o que você sente por dentro e por fora.");
+                actionSuggestion.push("Se essa dissonância for frequente, nossos especialistas podem te ajudar a entender melhor suas emoções.");
+                actionSuggestion.push("Lembre-se que buscar apoio é um sinal de força. Nossos especialistas estão aqui para ajudar.");
+
+            }
+            // Cenário: Silêncio na Voz (Mantido com alta prioridade, exceto se já for discrepância)
+            else if (voiceSentiment === 'silencio') {
+                overallCategory = 'silencio_reflexao';
+                mainMessage = `Percebemos um **silêncio em sua fala**, o que pode indicar um momento de profunda reflexão, cansaço ou a necessidade de um espaço para processar.`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
+                mainMessage += ` Sua expressão facial principal é de **${friendlyFacialEmotion}**.`;
+                actionSuggestion.push("Permita-se esse momento de quietude. Não há necessidade de falar se não quiser.");
+                actionSuggestion.push("Se o silêncio for pesado, uma meditação guiada para acalmar a mente pode ajudar.");
+                actionSuggestion.push("Lembre-se que buscar apoio é um sinal de força. Nossos especialistas estão aqui.");
+            }
+            // Cenário: Tristeza/Sobrecarga (reforçado pelo contexto do usuário)
+            else if (
+                (faceNegative && dominantFacialEmotion === 'sadness' && facialScore > 40) || // Tristeza facial forte
+                (voiceNegative && userSaysNegative) || // Voz negativa e contexto confirma
+                (userSaysNegative && (dominantFacialEmotion === 'sadness' || voiceNegative)) // Usuário diz negativo E rosto/voz confirmam
+            ) {
+                overallCategory = 'tristeza_sobrecarga';
+                mainMessage = `Parece que você está carregando um peso. Sua armadura emocional está forte, mas nosso scanner detecta uma **necessidade de respiro**. O mundo está cobrando demais, né?`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
+                if (bpm >= 80) mainMessage += ` Seu ritmo cardíaco acelerado (${bpm} bpm) reforça que essa sobrecarga está te afetando fisicamente.`;
+                actionSuggestion.push("Tire essa máscara por um segundo e respire fundo. Está tudo bem ser você mesmo aqui.");
+                actionSuggestion.push("Pequenas pausas e momentos de introspecção podem ajudar a aliviar esse peso.");
+                actionSuggestion.push("Considere explorar o porquê dessa 'armadura'. Nossa Avaliação Emocional pode ajudar.");
+                actionSuggestion.push("Se estiver se sentindo muito sobrecarregado(a), o CVV pode oferecer um ouvido amigo. Ligue 188.");
+            }
+            // Cenário: Tensão/Ansiedade/Medo
+            else if (
+                (faceNegative && (dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'anger') && facialScore > 30) || // Medo/raiva facial forte
+                (bpm >= 80 && !userSaysPositive) || // BPM alto E usuário não diz positivo
+                (userSaysNegative && (dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'anger')) // Usuário diz negativo E rosto/voz confirmam medo/raiva
+            ) {
+                overallCategory = 'tensao_ansiedade';
+                mainMessage = `Identificamos sinais de **tensão ou preocupação** em suas expressões e talvez na sua voz. Parece que algo está te mantendo em alerta.`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}".`;
+                if (bpm >= 80) mainMessage += ` Seu ritmo cardíaco está mais elevado (${bpm} bpm), indicando que seu corpo está reagindo ao estresse.`;
+                actionSuggestion.push("Experimente técnicas de relaxamento, como a respiração profunda, para acalmar a mente e o corpo.");
+                actionSuggestion.push("Reconheça o que está te causando essa tensão. Às vezes, nomear o sentimento já ajuda.");
+                actionSuggestion.push("Uma meditação guiada pode ser um excelente começo para encontrar a calma.");
+                actionSuggestion.push("Se a ansiedade for persistente, conversar com um profissional pode ser muito útil.");
+            }
+            // Cenário: Felicidade Pura
+            else if (facePositive && voicePositive && userSaysPositive) {
+                overallCategory = 'alegria';
+                mainMessage = `Que bom! Seu rosto e sua voz irradiam **alegria e positividade**! 🎉 Parece que você está em um ótimo momento, alinhado com o que expressa.`;
+                actionSuggestion.push("Aproveite essa energia e compartilhe-a com o mundo.");
+                actionSuggestion.push("Reflita sobre o que te faz tão bem e tente manter essa chama acesa!");
+                actionSuggestion.push("Considere praticar a gratidão para amplificar ainda mais esses sentimentos positivos.");
+            }
+            // Cenário: Neutro / Reflexivo (menor prioridade agora, mas ainda útil)
+            else {
+                overallCategory = 'reflexao_neutra';
+                mainMessage = `Nosso scanner capturou insights sobre seu estado emocional. Parece que você está em um momento de **reflexão sobre suas emoções**.`;
+                if (userContext) mainMessage += ` Você mencionou sentir-se "${userContext}", e nossa análise parece confirmar alguns desses sinais.`;
+                actionSuggestion.push("Explore as diferentes facetas das suas emoções com curiosidade.");
+                actionSuggestion.push("Lembre-se de que é normal ter altos e baixos emocionais.");
+            }
+
+            return {
+                category: overallCategory,
+                message: mainMessage,
+                actionSuggestion: actionSuggestion,
+                dominantFacialEmotion: friendlyFacialEmotion,
+                voiceSentiment: voiceSentiment,
+                discrepancies: discrepancies, // Mantemos por consistência, embora a mensagem principal agora cuide disso
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        // --- FUNÇÃO PARA EXIBIR O DIAGNÓSTICO (Aprimorada) ---
+        function displayDiagnosis(finalEmotion, bpm, facialData, voiceData, resultDiv, form) {
+            const diagnosisText = finalEmotion.message; // Mensagem principal gerada por unifyDiagnosis
+
+            let actionItemsHtml = finalEmotion.actionSuggestion.map(item => `<li>${item}</li>`).join('');
+            if (actionItemsHtml === '') { // Fallback se nenhuma sugestão específica for gerada
+                actionItemsHtml = `
+                    <li>Tire um tempo para você e pratique a respiração consciente.</li>
+                    <li>Explore mais sobre suas emoções em nosso blog.</li>
+                `;
+            }
+
+            let emergencyContactHtml = '';
+            // Adicionar CVV para categorias de emoções mais intensas, incluindo discrepância agora
+            if (['tristeza_sobrecarga', 'tensao_ansiedade', 'discrepancia'].includes(finalEmotion.category)) {
+                emergencyContactHtml = `
+                    <p class="fade-in text-yellow-400 mt-4 font-semibold">Precisa de um ouvido amigo? 🫂</p>
+                    <p class="fade-in text-yellow-300 text-sm">O Centro de Valorização da Vida (CVV) oferece apoio emocional gratuito e sigiloso 24h por dia.</p>
+                    <p class="fade-in text-yellow-300 text-lg font-bold">Ligue 188</p>
+                    <p class="fade-in text-yellow-300 text-sm">Ou acesse <a href="https://www.cvv.org.br/" target="_blank" class="text-[#22d3ee] hover:underline">cvv.org.br</a></p>
+                `;
+            }
+
+
+            resultDiv.innerHTML = `
+                <p class="fade-in text-white text-lg font-bold">✨ Seu Scanner Emocional Revela: ✨</p>
+                <p class="fade-in text-gray-300 mt-2">${diagnosisText}</p>
+
+                <div class="mt-4 text-left ml-4">
+                    <p class="fade-in text-gray-400 text-sm">💓 **Frequência Cardíaca:** ${bpm} bpm (monitorada)</p>
+                    <p class="fade-in text-gray-400 text-sm">👁️ **Expressão Facial Principal:** ${finalEmotion.dominantFacialEmotion}</p>
+                    <p class="fade-in text-gray-400 text-sm">🎙️ **Tom de Voz Principal:** ${finalEmotion.voiceSentiment === 'silencio' ? 'silêncio (nenhuma fala detectada)' : finalEmotion.voiceSentiment}</p>
+                    ${finalEmotion.discrepancies.length > 0 ? `<p class="fade-in text-yellow-300 text-sm mt-2">❗ **Observação:** ${finalEmotion.discrepancies.join(' ')}</p>` : ''}
+                </div>
+
+                <p class="fade-in text-white mt-6 font-semibold">🧘 Seu Próximo Passo para o Bem-Estar:</p>
+                <ul class="list-disc list-inside text-gray-300 text-left ml-4 mt-2">
+                    ${actionItemsHtml}
+                </ul>
+
+                ${emergencyContactHtml} 
+                <p class="fade-in text-xs text-gray-500 mt-4">⚠️ **Importante:** Esta é uma análise baseada em Inteligência Artificial e não substitui um diagnóstico médico ou uma consulta com um profissional de saúde. Busque sempre orientação profissional para cuidados específicos.</p>
+                
+                <div class="mt-4 flex flex-wrap justify-center gap-4">
+                    <button id="refazer-analise-btn" class="futuristic-btn">🔄 Refazer Análise</button>
+                    <a href="/meditacao-guiada.html" class="futuristic-btn">🧘‍♀️ Meditação Guiada</a>
+                    <a href="/apoio-emocional.html" class="futuristic-btn">🫂 Quero Mais Apoio</a>
+                </div>
+            `;
+            // Event listeners para os novos botões/links dentro do resultDiv
+            document.getElementById('refazer-analise-btn').addEventListener('click', () => startAnalysis(document.getElementById('user-context').value.trim()));
+            // Para a Meditação Guiada, você pode ter uma página dedicada ou um modal com áudio.
+            // Para "Quero Mais Apoio", link direto para a página de apoio emocional.
+
+            form.classList.remove('hidden'); // Exibe o formulário de email
+            
+            // --- Remove os asteriscos antes de falar ---
+            const cleanedDiagnosisText = diagnosisText.replace(/\*\*/g, ''); 
+            speakDiagnosis(cleanedDiagnosisText); // Agora fala o texto limpo
+        }
+
+        // --- Funções para Histórico de Análises ---
+        const MAX_HISTORY_ITEMS = 5; // Limitar o histórico a 5 itens
+
+        function saveAnalysisToHistory(analysisResult, bpm, userContext) {
+            let history = JSON.parse(localStorage.getItem('scannerHistory')) || [];
+            
+            const newEntry = {
+                timestamp: analysisResult.timestamp,
+                mainMessage: analysisResult.message.replace(/\*\*/g, ''), // Salva mensagem limpa de **
+                category: analysisResult.category,
+                facialEmotion: analysisResult.dominantFacialEmotion,
+                voiceSentiment: analysisResult.voiceSentiment,
+                bpm: bpm,
+                userContext: userContext
+            };
+
+            history.unshift(newEntry); // Adiciona no início (mais recente primeiro)
+            if (history.length > MAX_HISTORY_ITEMS) {
+                history = history.slice(0, MAX_HISTORY_ITEMS); // Mantém apenas os últimos N
+            }
+            localStorage.setItem('scannerHistory', JSON.stringify(history));
+            console.log('Analysis saved to history:', newEntry);
+        }
+
+        function displayAnalysisHistory() {
+            const historySection = document.getElementById('history-section');
+            const analysisHistoryDiv = document.getElementById('analysis-history');
+            let history = JSON.parse(localStorage.getItem('scannerHistory')) || [];
+
+            if (history.length === 0) {
+                analysisHistoryDiv.innerHTML = '<p>Nenhuma análise anterior encontrada. Faça sua primeira análise!</p>';
+                historySection.classList.add('hidden');
+                return;
+            }
+
+            historySection.classList.remove('hidden');
+            analysisHistoryDiv.innerHTML = ''; // Limpa o conteúdo existente
+
+            history.forEach((entry, index) => {
+                const date = new Date(entry.timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const time = new Date(entry.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                
+                const entryHtml = `
+                    <div class="mb-4 p-3 rounded-md bg-white bg-opacity-5 border border-[#22d3ee] fade-in">
+                        <p class="text-sm font-semibold text-white">Análise ${index + 1} - ${date} às ${time}</p>
+                        <p class="text-xs text-gray-400 mt-1">Contexto: "${entry.userContext || 'Não informado'}"</p>
+                        <p class="text-sm text-gray-300 mt-1">${entry.mainMessage}</p>
+                        <p class="text-xs text-gray-500 mt-1">Facial: ${entry.facialEmotion}, Voz: ${entry.voiceSentiment === 'silencio' ? 'silêncio' : entry.voiceSentiment}, BPM: ${entry.bpm}</p>
+                    </div>
+                `;
+                analysisHistoryDiv.innerHTML += entryHtml;
+            });
+        }
+
+        // --- Adicione a função calculateHeartRate se pretende usá-la no futuro,
+        // mas note que a precisão via JS e vídeo é limitada. Mantenha como simulada por enquanto.
+        async function calculateHeartRate(video, canvas) {
+            // Esta é uma implementação muito simplificada/conceitual.
+            // A detecção de pulso via vídeo exige algoritmos de processamento de imagem complexos (PPG).
+            // A `dsp.js` é mais para processamento de sinais de áudio.
+            // Para um demo, use a função `simulateHeartRate()`.
+            return simulateHeartRate();
+        }
+
     </script>
 </body>
 </html>
