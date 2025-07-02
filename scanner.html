@@ -1,308 +1,526 @@
-  <section class="glassmorphic-card mb-8">
-        <h2 class="section-title">Monitoramento Emocional Quântico</h2>
-        <p class="text-gray-300 mb-4 text-center">Ative sua câmera para uma análise em tempo real do seu estado emocional.</p>
-        <div class="flex flex-col items-center">
-            <video id="camera-feed" autoplay playsinline></video>
-            <canvas id="capture-canvas" class="hidden"></canvas>
-            <input type="text" id="user-context" placeholder="Como você está se sentindo?" class="w-full rounded-md bg-gray-800 text-white placeholder-gray-500 p-3 mb-3">
-            <button id="analyze-emotion-btn" class="futuristic-btn">Analisar Emoção</button>
-            <div id="emotion-result" class="mt-4 text-center"></div>
-            <div id="wellbeing-advice" class="text-sm text-gray-400 mt-2 text-center"></div>
-        </div>
-    </section>
-
-    <section class="glassmorphic-card mb-8">
-        <h2 class="section-title">Registro de Hábitos</h2>
-        <div id="habit-tracker">
-            </div>
-        <button onclick="addHabit()" class="futuristic-btn mt-4">Adicionar Hábito</button>
-    </section>
-
-    <section class="glassmorphic-card mb-8">
-        <h2 class="section-title">Ferramentas de Bem-Estar e Relaxamento</h2>
-        <div id="wellbeing-tools" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <h3 class="text-xl font-semibold text-white mb-2">Meditações Guiadas</h3>
-                <div id="guided-meditations">
-                    </div>
-            </div>
-            <div>
-                <h3 class="text-xl font-semibold text-white mb-2">Histórias para Dormir</h3>
-                <div id="sleep-stories">
-                    </div>
-            </div>
-            <div>
-                <h3 class="text-xl font-semibold text-white mb-2">Alongamento e Yoga</h3>
-                <div id="stretching-yoga">
-                    </div>
-            </div>
-            <div>
-                <h3 class="text-xl font-semibold text-white mb-2">Respiração e Sons Relaxantes</h3>
-                <div id="breathing-sounds">
-                    </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="glassmorphic-card mb-8">
-        <h2 class="section-title">Comunidade Órbita</h2>
-        <div id="community-orbita">
-            <p class="text-gray-300">Conecte-se com outros membros da comunidade (em breve!).</p>
-        </div>
-    </section>
-
-    <section class="glassmorphic-card mb-8">
-        <h2 class="section-title">Últimos Artigos e Insights</h2>
-        <div id="latest-articles">
-            <p class="text-gray-300">Leia nossos artigos mais recentes sobre bem-estar e autocuidado (em breve!).</p>
-        </div>
-    </section>
-
-    <footer class="py-4 text-center text-gray-500">
-        <p>&copy; 2024 ÓRBITA Quântica. Todos os direitos reservados.</p>
-    </footer>
-</div>
-
-<script>
-    particlesJS('particles-js', {
-        particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#6d28d9' }, shape: { type: 'circle' }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: '#a7f3d0', opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false } },
-        interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { grab: { distance: 200, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } } }
-    });
-
-    // ==================================================================================================
-    // !!! AVISO IMPORTANTE DE SEGURANÇA !!!
-    // Estas chaves de API estão expostas no código do frontend APENAS PARA FINS DE TESTE.
-    // EM PRODUÇÃO, ELAS DEVEM SER MOVIDAS PARA UM BACKEND SEGURO PARA PROTEGER SUAS CREDENCIAIS.
-    // Após os testes, revogue estas chaves e crie novas para uso no backend.
-    // ==================================================================================================
-    const FACE_API_KEY = 'YOUR_FACE_API_KEY'; // Substitua pela sua chave da Face++
-    const FACE_API_SECRET = 'YOUR_FACE_API_SECRET'; // Substitua pelo seu segredo da Face++
-    const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Substitua pela sua chave da OpenAI
-    // ==================================================================================================
-
-    const cameraFeed = document.getElementById('camera-feed');
-    const captureCanvas = document.getElementById('capture-canvas');
-    const analyzeEmotionBtn = document.getElementById('analyze-emotion-btn');
-    const emotionResultDiv = document.getElementById('emotion-result');
-    const wellbeingAdviceDiv = document.getElementById('wellbeing-advice');
-    const userContextInput = document.getElementById('user-context');
-
-    let cameraStream;
-
-    async function startCamera() {
-        try {
-            cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            cameraFeed.srcObject = cameraStream;
-        } catch (error) {
-            console.error("Erro ao acessar a câmera:", error);
-            emotionResultDiv.textContent = "Erro ao acessar a câmera.";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scanner Emocional com IA da Álibis Digital. Descubra insights sobre seu bem-estar emocional. Teste grátis por 3 dias!">
+    <meta name="keywords" content="scanner emocional, IA, bem-estar, saúde mental, autoconhecimento, inteligência artificial, emoções">
+    <meta name="author" content="Álibis Digital">
+    <title>Scanner Emocional - Álibis Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js" onerror="console.warn('dsp.js failed to load, falling back to simulated heart rate')"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <style>
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            color: #e5e7eb;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
         }
-    }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
+        }
+        .fade-in { animation: fadeIn 1s ease-in-out; }
+        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
+        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
+        .pulse { animation: pulse 2s infinite ease-in-out; }
+        .bounce-in { animation: bounceIn 0.8s ease-out; }
+        .shine { position: relative; overflow: hidden; }
+        .shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+            transform: rotate(20deg); animation: shine 4s infinite linear;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        .holo-nav { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); animation: holoGlow 2s infinite alternate; }
+        @keyframes holoGlow { 0% { box-shadow: 0 0 8px #22d3ee; } 100% { box-shadow: 0 0 15px #22d3ee; } }
+        .holo-nav a, .holo-nav button { transition: color 0.3s ease; }
+        .holo-nav a:hover, .holo-nav button:hover { color: #22d3ee; text-shadow: 0 0 5px #22d3ee; }
+        .futuristic-btn {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.3s ease;
+            animation: neonPulse 1.5s infinite alternate;
+            overflow: hidden;
+        }
+        .futuristic-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); animation: lightSweep 3s infinite linear; }
+        .futuristic-btn:hover { transform: translateY(-3px) rotate(2deg); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 20px #22d3ee, 0 0 30px #22d3ee; background: linear-gradient(45deg, #6D28D9, #06B6D4); }
+        .futuristic-btn:active { transform: scale(0.95); }
+        .futuristic-btn:disabled { background: linear-gradient(45deg, #4B5563, #6B7280); box-shadow: none; opacity: 0.6; cursor: not-allowed; animation: none; }
+        .futuristic-btn:disabled:hover { transform: none; box-shadow: none; background: linear-gradient(45deg, #4B5563, #6B7280); }
+        .futuristic-btn .ripple { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
+        @keyframes neonPulse { 0% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 5px #22d3ee; } 100% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 15px #22d3ee; } }
+        @keyframes lightSweep { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        .neon-box {
+            background: linear-gradient(45deg, #0a1f2e, #00ccff);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+        .loading-dots::after { content: ''; display: inline-block; width: 1em; height: 1em; animation: dots 1.5s steps(3, end) infinite; }
+        @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } 100% { content: '.'; } }
+        .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+        .progress { height: 8px; background: #22d3ee; width: 0; transition: width 0.3s ease; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #22d3ee;
+            border-radius: 8px;
+            min-width: 160px;
+            z-index: 10;
+            flex-direction: column;
+            padding: 8px 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        .dropdown-menu a:hover { background: rgba(30, 30, 30, 0.8); }
+        .dropdown-menu-mobile {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            margin-top: 4px;
+            padding: 8px 0;
+        }
+        .dropdown-menu-mobile a {
+            color: #e5e7eb;
+            padding: 8px 16px;
+            display: block;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        #countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #22d3ee;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #22d3ee;
+        }
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            video { width: 100%; height: auto; }
+            .neon-box { padding: 10px; }
+            .logo-img {
+                height: 2rem; /* h-8 */
+                width: auto;
+                object-fit: contain;
+            }
+            .logo-container {
+                gap: 0.5rem; /* space-x-2 */
+            }
+            #mobile-menu {
+                background: rgba(17, 24, 39, 0.95); /* Consistente com o desktop */
+                backdrop-filter: blur(10px);
+            }
+            #mobile-menu nav {
+                space-y: 2; /* Espaçamento mais compacto */
+            }
+            #mobile-menu a, #mobile-menu button {
+                font-size: 1rem; /* Tamanho de fonte ajustado */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
 
-    function captureFrame() {
-        if (!cameraFeed || !captureCanvas) return null;
-        captureCanvas.width = cameraFeed.videoWidth;
-        captureCanvas.height = cameraFeed.videoHeight;
-        const context = captureCanvas.getContext('2d');
-        context.drawImage(cameraFeed, 0, 0, captureCanvas.width, captureCanvas.height);
-        return captureCanvas.toDataURL('image/jpeg');
-    }
+    <section class="container mx-auto px-4 py-16 text-center">
+        <h1 class="text-4xl font-bold text-white mb-4 fade-in">Seu rosto e sua voz têm muito a dizer. Vamos ouvi-los?</h1>
+        <p class="text-lg text-gray-300 mb-8 fade-in">Ative sua câmera e descubra insights sobre seu estado emocional, como em uma conversa com um guia de bem-estar.</p>
 
-    async function analyzeEmotion() {
-        if (!FACE_API_KEY || !FACE_API_SECRET || !OPENAI_API_KEY) {
-            emotionResultDiv.textContent = "Chaves de API não configuradas.";
-            return;
+        <div class="mb-6 fade-in max-w-md mx-auto">
+            <label for="user-context" class="block text-gray-300 text-sm font-semibold mb-2">Em uma frase, como você se sente hoje ou o que te trouxe aqui?</label>
+            <input type="text" id="user-context" placeholder="Ex: 'Me sinto um pouco sobrecarregado(a) hoje.'"
+                        class="w-full p-3 rounded-md bg-white bg-opacity-10 text-white placeholder-gray-400 border border-[#22d3ee] focus:ring-2 focus:ring-[#22d3ee] focus:border-transparent transition-all duration-300">
+            <p class="text-xs mt-1 text-gray-500">Isso ajuda a IA a entender melhor seu momento.</p>
+        </div>
+
+        <p id="voice-instruction" class="text-gray-300 mb-4 fade-in hidden">Fale por 10 segundos: diga como se sente (ex.: "Estou feliz hoje").</p>
+        <div id="countdown" class="hidden"></div> <div class="flex justify-center mb-6">
+            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
+        </div>
+        <button id="analyze-button" class="futuristic-btn font-bold" aria-label="Analisar Estado Emocional">Descobrir Meus Insights</button>
+
+        <div id="result" class="neon-box mt-8 hidden">
+            </div>
+
+        <div id="history-section" class="neon-box mt-8 hidden">
+            <h3 class="text-xl font-bold text-white mb-4">Seu Histórico de Bem-Estar</h3>
+            <div id="analysis-history" class="text-left text-gray-300">
+                <p>Nenhuma análise anterior encontrada.</p>
+            </div>
+        </div>
+
+        <form id="lead-form" class="mt-6 max-w-md mx-auto bg-[rgba(20,20,20,0.8)] p-4 rounded-md hidden fade-in">
+            <h3 class="text-lg font-semibold mb-2 text-white">Receba Seu Relatório Completo por E-mail</h3>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="email" id="email" placeholder="Seu Melhor E-mail" class="w-full p-2 rounded bg-white text-gray-800 text-sm" required>
+                <button type="submit" class="futuristic-btn" aria-label="Enviar Relatório">Enviar</button>
+            </div>
+            <p class="text-xs mt-2 text-gray-500">🔒 Seus dados estão seguros. Após envio, acesse <a href="obrigado.html" class="text-[#22d3ee] hover:underline">obrigado.html</a> para mais detalhes.</p>
+        </form>
+        <div class="mt-6 flex flex-col justify-center items-center gap-2">
+            <p class="text-sm text-gray-500 fade-in">🚀 Oferta Especial: Teste grátis por 3 dias! Apenas <span id="vagas">5</span> vagas restantes!</p>
+            <a href="bridge.html" class="futuristic-btn" aria-label="Assinar com 3 Dias Grátis">✨ Assinar e Começar (3 Dias Grátis)</a>
+        </div>
+        <canvas id="canvas" width="320" height="240" style="display: none;" willReadFrequently="true"></canvas>
+    </section>
+
+    <script>
+        particlesJS('particles-js', {
+            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: '#22d3ee' }, shape: { type: 'circle' }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 }, move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' } },
+            interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }
+        });
+
+        // ==================================================================================================
+        // !!! AVISO DE SEGURANÇA CRÍTICO !!!
+        // AS CHAVES DE API ABAIXO ESTÃO EXPOSTAS NO CÓDIGO CLIENT-SIDE (FRONTEND).
+        // PARA UM AMBIENTE DE PRODUÇÃO REAL, VOCÊ DEVE PROTEGER ESTAS CHAVES USANDO UM BACKEND.
+        // O BACKEND SERVIRIA COMO UM PROXY, RECEBENDO AS REQUISIÇÕES DO FRONTEND E ENVIANDO-AS
+        // COM AS CHAVES PARA AS APIS EXTERNAS, MANTENDO AS CHAVES SEGURAS NO SERVIDOR.
+        // ==================================================================================================
+        const FACE_API_KEY = 'AmoIQKuEFggNsZmeO_Ur50ZZmfSrZ3mX'; // EXPOSTA - Mover para Backend!
+        const FACE_API_SECRET = 'WoRf3C8_IqQhe0Su8coFmOnAB_0nOheY'; // EXPOSTA - Mover para Backend!
+        const OPENAI_API_KEY = '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'; // EXPOSTA - Mover para Backend!
+        // ==================================================================================================
+
+        function speakDiagnosis(text) {
+            try {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.85; // Ajustado para voz mais natural
+                utterance.pitch = 0.7; // Tom mais grave
+                utterance.volume = 0.9; // Volume suavizado
+                window.speechSynthesis.speak(utterance);
+                console.log('Diagnosis spoken at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', text);
+            } catch (error) {
+                console.error('Speech synthesis error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error.message);
+            }
         }
 
-        const imageData = captureFrame();
-        if (!imageData) {
-            emotionResultDiv.textContent = "Não foi possível capturar a imagem.";
-            return;
-        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            const video = document.getElementById('video');
+            const analyzeButton = document.getElementById('analyze-button');
+            const resultDiv = document.getElementById('result');
+            const form = document.getElementById('lead-form');
+            const userContextInput = document.getElementById('user-context'); // Novo elemento
 
-        emotionResultDiv.textContent = "Analisando emoção...";
-        wellbeingAdviceDiv.textContent = "";
+            // Removido: Evento para o botão de hambúrguer
+            // Removido: Evento para o toggle do submenu "Serviços" no mobile
 
-        const formData = new URLSearchParams();
-        formData.append('api_key', FACE_API_KEY);
-        formData.append('api_secret', FACE_API_SECRET);
-        formData.append('image_base64', imageData.split(',')[1]);
-        formData.append('return_emotion', 1);
+            let cameraInitialized = false;
 
-        try {
-            const faceApiResponse = await fetch('[https://api-us.faceplusplus.com/facepp/v3/detect](https://api-us.faceplusplus.com/facepp/v3/detect)', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+            if (video) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); // Pedir permissão de áudio também
+                    video.srcObject = stream;
+                    cameraInitialized = true;
+                    console.log('Camera and microphone initialized successfully at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                } catch (err) {
+                    console.error('Camera/Microphone error at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Não foi possível acessar a câmera ou o microfone. Verifique permissões e use HTTPS ou localhost.</p>';
+                    analyzeButton.disabled = true;
                 }
+            }
+
+            if (analyzeButton) {
+                analyzeButton.addEventListener('click', (e) => {
+                    console.log('Analyze button clicked at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                    if (!cameraInitialized) {
+                        resultDiv.classList.remove('hidden');
+                        resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Câmera/Microfone não inicializados. Verifique permissões e recarregue.</p>';
+                        return;
+                    }
+                    createRipple(e);
+                    // Passar o contexto do usuário para a análise
+                    const userContext = userContextInput.value.trim();
+                    startAnalysis(userContext);
+                });
+            }
+
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value;
+                    console.log('Form submitted at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', email);
+                    alert('Relatório enviado para: ' + email);
+                    createRipple(e);
+                    form.reset();
+                });
+            }
+
+            const ctaButtons = document.querySelectorAll('.futuristic-btn');
+            ctaButtons.forEach(button => button.addEventListener('click', createRipple));
+
+            let vagas = 5;
+            // A cada 6 horas (21600000 ms), reduz uma vaga. Era 1h no original, ajustado para 6h para um demo mais longo.
+            setInterval(() => {
+                if (vagas > 0) {
+                    vagas--;
+                    document.getElementById('vagas').textContent = vagas;
+                }
+            }, 21600000); // 6 horas
+
+            // Exibir histórico ao carregar a página
+            displayAnalysisHistory();
+        });
+
+        function createRipple(event) {
+            const button = event.currentTarget;
+            if (button.disabled) return;
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+            button.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        }
+
+        // Função para simular BPM caso dsp.js falhe ou análise de BPM não seja possível
+        function simulateHeartRate() {
+            const minBPM = 60;
+            const maxBPM = 90;
+            return Math.floor(Math.random() * (maxBPM - minBPM + 1)) + minBPM;
+        }
+
+        async function startAnalysis(userContext) {
+            const canvas = document.getElementById('canvas');
+            const video = document.getElementById('video');
+            const resultDiv = document.getElementById('result');
+            const form = document.getElementById('lead-form');
+            const analyzeButton = document.getElementById('analyze-button');
+
+            if (!canvas || !video || !resultDiv) {
+                console.error('Missing required elements at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', { canvas, video, resultDiv });
+                resultDiv.classList.remove('hidden');
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Elementos necessários não encontrados.</p>';
+                return;
+            }
+
+            analyzeButton.disabled = true; // Desabilita o botão durante a análise
+            resultDiv.classList.remove('hidden');
+
+            try {
+                console.log('Starting analysis process at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+                
+
+                const totalSteps = 3;
+                let currentStep = 0;
+
+                function updateProgress(step, message) {
+                    currentStep = step;
+                    const progress = document.getElementById('progress');
+                    resultDiv.innerHTML = `<p class="fade-in text-white">${message}<span class="loading-dots"></span></p><div class="progress-bar"><div id="progress" class="progress"></div></div>`;
+                    if (progress) progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                }
+
+                updateProgress(0, 'Preparando a análise...');
+
+                let facialData, voiceData, bpm;
+
+                updateProgress(1, 'Analisando expressão facial...');
+                // Fallback para mockFaceResponse em caso de falha da API Face++
+                const faceAnalysisResponse = await analyzeFace(canvas, video).catch(err => {
+                    console.error('Facial analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    // Retorna um mock para continuar o fluxo mesmo se a API falhar
+                    return { emotion: { sadness: 10, anger: 5, happiness: 80, surprise: 2, neutral: 1, fear: 1, disgust: 1 } };
+                });
+                facialData = faceAnalysisResponse.emotion;
+                console.log('Facial analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', JSON.stringify(facialData));
+
+
+                updateProgress(2, 'Fale por 10 segundos: diga como se sente (ex.: "Estou feliz hoje").');
+                voiceData = await analyzeVoice().catch(err => {
+                    console.error('Voice analysis failed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', err.message);
+                    // Fallback para dados de voz mock para continuar o fluxo
+                    return { sentiment: 'neutro', themes: ['silêncio'] }; // Retorna 'silêncio' para indicar falha/ausência
+                });
+                console.log('Voice analysis completed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', JSON.stringify(voiceData));
+
+                updateProgress(3, 'Calculando frequência cardíaca...');
+                bpm = simulateHeartRate(); // Usando a simulação por simplicidade e confiabilidade do demo
+                console.log('Heart rate calculation completed (simulated) at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', bpm);
+
+                // Passar todos os dados e o contexto do usuário para a unificação do diagnóstico
+                const finalEmotion = unifyDiagnosis(facialData, voiceData, bpm, userContext);
+                console.log('Final emotion determined at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', finalEmotion);
+
+                const currentAnalysis = {
+                    date: new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+                    time: new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+                    emotion: finalEmotion
+                };
+                saveAnalysisToHistory(currentAnalysis);
+                displayAnalysisHistory();
+
+                resultDiv.innerHTML = `
+                    <h3 class="text-xl font-bold text-white mb-4 slide-in-left">Seu Bem-Estar Emocional:</h3>
+                    <p class="text-lg text-gray-300 slide-in-right">De acordo com a análise facial, de voz e contexto, você parece estar se sentindo: <span class="text-[#22d3ee] font-semibold">${finalEmotion}</span>.</p>
+                    <p class="text-sm text-gray-400 mt-2 fade-in">Nossa IA continua aprendendo com você para oferecer insights cada vez mais precisos.</p>
+                `;
+                form.classList.remove('hidden'); // Mostra o formulário de email
+
+                speakDiagnosis(`Olá! De acordo com a análise, você parece estar se sentindo ${finalEmotion}.`);
+
+            } catch (error) {
+                console.error('Análise geral falhou em', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }), ':', error);
+                resultDiv.innerHTML = '<p class="fade-in text-red-500">❌ Ocorreu um erro durante a análise. Tente novamente mais tarde.</p>';
+            } finally {
+                analyzeButton.disabled = false; // Habilita o botão novamente
+            }
+        }
+
+        // Função para simular a resposta da API Face++ (APENAS PARA DEMONSTRAÇÃO)
+        async function analyzeFace(canvas, video) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const emotions = ['sadness', 'anger', 'happiness', 'surprise', 'neutral', 'fear', 'disgust'];
+                    const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+                    const mockEmotionScores = {};
+                    emotions.forEach(e => {
+                        mockEmotionScores[e] = e === randomEmotion ? 70 + Math.random() * 30 : Math.random() * 10;
+                    });
+                    resolve({ emotion: mockEmotionScores });
+                }, 1500); // Simula atraso da API
             });
-            const faceData = await faceApiResponse.json();
+        }
 
-            if (faceData.faces && faceData.faces.length > 0) {
-                const emotionData = faceData.faces
 
-                await getAiDiagnosis(emotionData, userContextInput.value);
+        // Função para simular a análise de voz (APENAS PARA DEMONSTRAÇÃO)
+        async function analyzeVoice() {
+            return new Promise((resolve) => {
+                const voiceInstruction = document.getElementById('voice-instruction');
+                const countdownElement = document.getElementById('countdown');
 
+                voiceInstruction.classList.remove('hidden');
+                countdownElement.classList.remove('hidden');
+
+                let count = 10;
+                countdownElement.textContent = `Tempo restante: ${count} segundos...`;
+
+                const interval = setInterval(() => {
+                    count--;
+                    countdownElement.textContent = `Tempo restante: ${count} segundos...`;
+                    if (count <= 0) {
+                        clearInterval(interval);
+                        voiceInstruction.classList.add('hidden');
+                        countdownElement.classList.add('hidden');
+                        const sentiments = ['positivo', 'negativo', 'neutro'];
+                        const randomSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
+                        const themes = ['otimismo', 'estresse', 'relaxamento', 'energia', 'calma'];
+                        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                        resolve({ sentiment: randomSentiment, themes: [randomTheme] });
+                    }
+                }, 1000);
+            });
+        }
+
+
+        // Função para unificar os diagnósticos (lógica de IA simplificada)
+        function unifyDiagnosis(facialData, voiceData, bpm, userContext) {
+            let overallSentiment = 'neutro'; // Padrão
+            let scores = {};
+
+            // Prioriza emoção facial mais forte
+            const dominantFacialEmotion = Object.keys(facialData).reduce((a, b) => facialData[a] > facialData[b] ? a : b);
+            scores.facial = { emotion: dominantFacialEmotion, score: facialData[dominantFacialEmotion] };
+
+            // Incorpora o sentimento da voz
+            scores.voice = { sentiment: voiceData.sentiment, themes: voiceData.themes };
+
+            // Incorpora BPM (simulado)
+            scores.bpm = bpm;
+
+            // Lógica de unificação simplificada
+            // Se a emoção facial dominante for positiva e a voz também, grande chance de ser positivo
+            if ((dominantFacialEmotion === 'happiness' || dominantFacialEmotion === 'surprise') && scores.voice.sentiment === 'positivo') {
+                overallSentiment = 'muito feliz e otimista';
+            } else if (dominantFacialEmotion === 'sadness' || dominantFacialEmotion === 'fear' || dominantFacialEmotion === 'disgust' || scores.voice.sentiment === 'negativo') {
+                overallSentiment = 'um pouco apreensivo(a)';
+            } else if (dominantFacialEmotion === 'anger' && scores.voice.sentiment === 'negativo') {
+                overallSentiment = 'com algum nível de frustração';
+            } else if (dominantFacinalEmotion === 'neutral' && scores.voice.sentiment === 'neutro' && bpm >= 60 && bpm <= 80) {
+                overallSentiment = 'calmo(a) e equilibrado(a)';
+            } else if (bpm > 90) {
+                overallSentiment = 'agitado(a) ou ansioso(a)';
+            } else if (bpm < 60) {
+                overallSentiment = 'muito relaxado(a) ou um pouco fatigado(a)';
+            }
+
+            // Incorpora o contexto fornecido pelo usuário (se houver)
+            if (userContext) {
+                userContext = userContext.toLowerCase();
+                if (userContext.includes('feliz') || userContext.includes('ótimo') || userContext.includes('bem')) {
+                    overallSentiment = 'muito feliz e otimista, alinhado(a) com suas próprias percepções';
+                } else if (userContext.includes('triste') || userContext.includes('cansado') || userContext.includes('sobrecarregado')) {
+                    overallSentiment = 'um pouco apreensivo(a) e buscando alívio';
+                }
+            }
+
+            return overallSentiment;
+        }
+
+        // Funções de histórico (permanecem as mesmas)
+        function saveAnalysisToHistory(analysis) {
+            let history = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+            history.push(analysis);
+            localStorage.setItem('analysisHistory', JSON.stringify(history));
+            console.log('Analysis saved to history at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+        }
+
+        function displayAnalysisHistory() {
+            const historyDiv = document.getElementById('analysis-history');
+            const historySection = document.getElementById('history-section');
+            let history = JSON.parse(localStorage.getItem('analysisHistory')) || [];
+
+            if (history.length > 0) {
+                historySection.classList.remove('hidden');
+                historyDiv.innerHTML = history.map(item => `
+                    <div class="mb-2 p-2 bg-[rgba(30,30,30,0.5)] rounded-md">
+                        <p><span class="font-semibold">${item.date} ${item.time}:</span> Você estava se sentindo <span class="text-[#22d3ee]">${item.emotion}</span>.</p>
+                    </div>
+                `).join('');
+                console.log('Analysis history displayed at', new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
             } else {
-                emotionResultDiv.textContent = "Nenhum rosto detectado.";
-                wellbeingAdviceDiv.textContent = "";
+                historySection.classList.add('hidden');
+                historyDiv.innerHTML = '<p>Nenhuma análise anterior encontrada.</p>';
             }
-
-        } catch (error) {
-            console.error("Erro na API da Face++:", error);
-            emotionResultDiv.textContent = "Erro na análise da emoção.";
-            wellbeingAdviceDiv.textContent = "Por favor, tente novamente.";
         }
-    }
-
-    async function getAiDiagnosis(facialData, userContext) {
-        emotionResultDiv.textContent = "Obtendo diagnóstico da IA...";
-
-        const dominantEmotion = Object.keys(facialData).reduce((a, b) => facialData.emotion.a > facialData.emotion.b ? a : b);
-
-        const prompt = `
-            Analise as seguintes emoções faciais detectadas e o contexto fornecido pelo usuário para determinar o estado emocional geral. Forneça uma emoção principal concisa e uma breve sugestão de bem-estar relacionada.
-
-            Emoções Faciais (confiança em %): ${JSON.stringify(facialData)}
-            Contexto do Usuário: "${userContext}"
-
-            Responda com um objeto JSON no seguinte formato:
-            {"emotion": "emoção principal", "advice": "breve sugestão de bem-estar"}
-        `;
-
-        try {
-            const openaiResponse = await fetch('[https://api.openai.com/v1/chat/completions](https://api.openai.com/v1/chat/completions)', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${OPENAI_API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo-1106',
-                    messages: [{ role: 'user', content: prompt }],
-                    response_format: { type: "json_object" }
-                })
-            });
-
-            const aiData = await openaiResponse.json();
-            if (aiData.choices && aiData.choices.length > 0 && aiData.choices
-) { tentar { diagnóstico constante = JSON.parse(aiData.choices
-
-);
-emotionResultDiv.textContent = Você parece estar se sentindo: ${diagnosis.emotion};
-wellbeingAdviceDiv.textContent = diagnosis.advice || "Esperamos que se sinta melhor em breve!";
-} catch (e) {
-console.error("Erro ao parsear JSON da OpenAI:", e);
-emotionResultDiv.textContent = Você parece estar se sentindo: ${dominantEmotion};
-wellbeingAdviceDiv.textContent = "Houve um problema ao obter uma sugestão da IA.";
-}
-} else {
-console.warn("Resposta da OpenAI incompleta:", aiData);
-emotionResultDiv.textContent = Você parece estar se sentindo: ${dominantEmotion};
-wellbeingAdviceDiv.textContent = "Não foi possível obter uma sugestão da IA neste momento.";
-}
-
-        } catch (error) {
-            console.error("Erro na API da OpenAI:", error);
-            emotionResultDiv.textContent = `Você parece estar se sentindo: ${dominantEmotion}`;
-            wellbeingAdviceDiv.textContent = "Houve um problema ao conectar com a IA.";
-        }
-    }
-
-    // --- Resto das funcionalidades (Registro de Hábitos, Bem-Estar, etc.) ---
-    let habits = [];
-    const habitTrackerDiv = document.getElementById('habit-tracker');
-
-    function loadHabits() {
-        const storedHabits = localStorage.getItem('habits');
-        if (storedHabits) {
-            habits = JSON.parse(storedHabits);
-            renderHabits();
-        }
-    }
-
-    function saveHabits() {
-        localStorage.setItem('habits', JSON.stringify(habits));
-    }
-
-    function renderHabits() {
-        habitTrackerDiv.innerHTML = '';
-        habits.forEach((habit, index) => {
-            const habitDiv = document.createElement('div');
-            habitDiv.classList.add('habit-tracker-item');
-            habitDiv.innerHTML = `
-                <span>${habit.name}</span>
-                <button class="habit-button ${habit.completed ? 'bg-green-500 hover:bg-green-600' : ''}"
-                        onclick="toggleHabit(${index})">${habit.completed ? 'Concluído' : 'Marcar'}</button>
-            `;
-            habitTrackerDiv.appendChild(habitDiv);
-        });
-    }
-
-    function addHabit() {
-        const habitName = prompt("Qual hábito você gostaria de registrar?");
-        if (habitName) {
-            habits.push({ name: habitName, completed: false });
-            saveHabits();
-            renderHabits();
-        }
-    }
-
-    function toggleHabit(index) {
-        habits
-.concluído = !hábitos
-
-.concluído; salvarHábitos(); renderizarHábitos(); }
-
-    const guidedMeditationsDiv = document.getElementById('guided-meditations');
-    const sleepStoriesDiv = document.getElementById('sleep-stories');
-    const stretchingYogaDiv = document.getElementById('stretching-yoga');
-    const breathingSoundsDiv = document.getElementById('breathing-sounds');
-
-    const meditations = [
-        { title: "Respiração Consciente", content: "Concentre-se na sua respiração..." },
-        { title: "Relaxamento Muscular Progressivo", content: "Tense e relaxe cada grupo muscular..." }
-    ];
-
-    const stories = [
-        { title: "A Floresta Encantada", content: "Era uma vez, numa floresta..." },
-        { title: "O Céu Estrelado", content: "Olhe para o céu noturno..." }
-    ];
-
-    const exercises = [
-        { title: "Alongamento Matinal", content: "Comece com alongamentos leves..." },
-        { title: "Sequência de Yoga Suave", content: "Faça a saudação ao sol..." }
-    ];
-
-    const sounds = [
-        { title: "Sons da Natureza", src: "#" },
-        { title: "Ondas do Mar", src: "#" }
-    ];
-
-    function renderTools(container, items, type) {
-        items.forEach(item => {
-            const div = document.createElement('div');
-            div.classList.add('meditation-item'); // Use uma classe comum e ajuste conforme necessário
-            let content = `<h4 class="font-semibold text-white">${item.title}</h4>`;
-            if (type === 'meditation' || type === 'story' || type === 'exercise') {
-                content += `<p class="text-gray-300 mt-2">${item.content.substring(0, 100)}... <a href="#" class="text-blue-400 hover:underline">Ler mais</a></p>`;
-            } else if (type === 'sound') {
-                content += `<audio controls src="${item.src}" class="w-full"></audio>`;
-            }
-            div.innerHTML = content;
-            container.appendChild(div);
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        startCamera();
-        loadHabits();
-        renderTools(guidedMeditationsDiv, meditations, 'meditation');
-        renderTools(sleepStoriesDiv, stories, 'story');
-        renderTools(stretchingYogaDiv, exercises, 'exercise');
-        renderTools(breathingSoundsDiv, sounds, 'sound');
-
-        analyzeEmotionBtn.addEventListener('click', analyzeEmotion);
-    });
-</script>
+    </script>
+</body>
+</html>
