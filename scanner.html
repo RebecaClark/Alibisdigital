@@ -59,6 +59,99 @@
             align-items: center; /* Centraliza o vídeo e o texto abaixo */
             width: 100%;
         }
+
+        /* Adicionei algumas regras básicas para garantir que os cards e seções se centralizem se não tiverem outras regras */
+        .cm-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .cm-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .products-grid, .testimonials-grid, .method-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Espaço entre os cards */
+            width: 100%;
+            max-width: 1200px; /* Limite a largura para melhor visualização */
+            margin-top: 20px;
+        }
+
+        .product-card, .testimonial-card, .method-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 300px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-icon, .method-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .cta-products, .cta-section {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-primary-large, .btn-buy-now {
+            background-color: #007bff; /* Exemplo de cor */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Exemplo de cor */
+        }
+
+        /* Estilo para ocultar cabeçalho, rodapé e depoimentos, se desejar testar */
+        /* .holo-nav, .urgency-header, #iks4pj, #i0h0uz, footer { display: none !important; } */
+
+        /* Estilo para a imagem da câmera e logo no Scanner Corporal IA - apenas conceitual */
+        .scanner-camera-frame {
+            position: relative; /* Para posicionar o logo dentro */
+            width: 100%; /* Ou um tamanho fixo, ex: 300px */
+            height: 200px; /* Ou um tamanho fixo, ex: 200px */
+            background-color: #333; /* Simula a tela da câmera */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2em;
+            overflow: hidden; /* Garante que o logo não vaze */
+        }
+
+        .scanner-camera-frame .logo-overlay {
+            position: absolute;
+            top: 10px; /* Distância do topo */
+            right: 10px; /* Distância da direita */
+            width: 50px; /* Tamanho do logo */
+            height: auto;
+            opacity: 0.7; /* Para ser mais discreto */
+        }
+
     </style>
 </head>
 <body id="iy4k">
@@ -156,15 +249,19 @@
                         <div class="product-card">
                             <div class="product-icon"><i class="fas fa-heartbeat"></i></div>
                             <h3 data-style-guide-typography-subheadline="small">🔬 Scanner Corporal IA</h3>
-                            <p data-style-guide-typography-content="small">Detecção precoce com tecnologia avançada.</p>
-                            <p data-style-guide-typography-content="small">Analisa padrões corporais e faciais para identificar sinais de estresse e possíveis problemas de saúde com 94.7% de precisão.</p>
+                            <div class="scanner-camera-frame">
+                                <p>Simulação da Câmera</p>
+                                <img src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" alt="MedAI Logo" class="logo-overlay" />
+                                </div>
+                            <p data-style-guide-typography-content="small">**Desvende sua saúde oculta.** Identificação ágil de riscos.</p>
+                            <p data-style-guide-typography-content="small">Utiliza inteligência artificial para **analisar padrões corporais e faciais**, revelando sinais de estresse e potenciais condições de saúde com uma **precisão de 94.7%**, validada clinicamente.</p>
                             <ul class="space-y-2">
-                                <li class="cm-list-item">Análise corporal e facial inteligente</li>
-                                <li class="cm-list-item">Detecção precoce de anomalias</li>
-                                <li class="cm-list-item">Relatórios detalhados</li>
-                                <li class="cm-list-item">Monitoramento contínuo</li>
-                                <li class="cm-list-item">Alertas preventivos</li>
-                                <li class="cm-list-item">Interface intuitiva</li>
+                                <li class="cm-list-item">**Prevenção Inteligente:** Detecta anomalias antes que se agravem.</li>
+                                <li class="cm-list-item">**Insights Personalizados:** Relatórios detalhados e compreensíveis sobre seu corpo.</li>
+                                <li class="cm-list-item">**Saúde em Tempo Real:** Monitore mudanças e progressos continuamente.</li>
+                                <li class="cm-list-item">**Alertas Essenciais:** Receba avisos sobre riscos e tendências importantes.</li>
+                                <li class="cm-list-item">**Design Intuitivo:** Facilidade de uso para todos.</li>
+                                <li class="cm-list-item">**Sua Privacidade:** Análise segura e confidencial dos seus dados.</li>
                             </ul>
                         </div>
                         <div class="product-card">
@@ -448,242 +545,140 @@
                 </div>
             </div>
         </section>
-        <section id="icibab" class="bonus section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <div class="bonus-box">
-                        <h2 data-style-guide-typography-subheadline="small">🎁 BÔNUS EXCLUSIVO 🎁</h2>
-                        <h1 data-style-guide-typography-headline="small">Você vai levar tudo isso:</h1>
-                        <ul class="space-y-4">
-                            <li class="cm-list-item">Acesso completo às 3 IAs médicas</li>
-                            <li class="cm-list-item">Painel Órbita com dashboard personalizado</li>
-                            <li class="cm-list-item">Aplicativo mobile premium</li>
-                            <li class="cm-list-item">Blog educativo com conteúdo personalizado</li>
-                            <li class="cm-list-item">Suporte técnico prioritário</li>
-                            <li class="cm-list-item">Atualizações gratuitas das IAs</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="ix32yy" class="garantia section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <div class="guarantee-box">
-                        <h2 data-style-guide-typography-subheadline="small">🛡️ GARANTIA BLINDADA DE 30 DIAS</h2>
-                        <h1 data-style-guide-typography-headline="small">Experimente por 30 dias. Se não ficar satisfeito, reembolso total em 48h, sem perguntas.</h1>
-                        <p data-style-guide-typography-content="small">Sua satisfação ou seu dinheiro de volta. Você tem total segurança ao adquirir o MedAI Brasil. Se em até 30 dias você não sentir a transformação na sua saúde, nós devolvemos cada centavo, sem burocracia. Isso mostra nossa confiança na qualidade e eficácia da nossa plataforma.</p>
-                        <a data-style-guide-typography-content="small" href="https://#checkout" role="button" aria-label="Garantir MedAI Brasil com garantia" class="btn btn-guarantee">
-                            <span data-style-guide-typography-content="small">GARANTIR MEU ACESSO AGORA SEM RISCOS!</span>
-                            <i data-icon="fa-house" class="fa-solid fa-check-circle cm-icon"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="iq3old" class="faq-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h2 data-style-guide-typography-subheadline="small">❓ PERGUNTAS FREQUENTES ❓</h2>
-                    <h1 data-style-guide-typography-headline="small">Dúvidas Comuns sobre o MedAI Brasil</h1>
-                    <div class="faq-accordion">
-                        <div class="faq-item">
-                            <button class="faq-question">O MedAI Brasil substitui um médico?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">Não, o MedAI Brasil é uma ferramenta de apoio e monitoramento da saúde, não substituindo consultas, diagnósticos ou tratamentos médicos. Ele oferece informações e insights baseados em IA para complementar o cuidado com sua saúde, mas a orientação de um profissional de saúde é essencial.</p>
-                            </div>
-                        </div>
-                        <div class="faq-item">
-                            <button class="faq-question">Como funciona o Scanner Corporal IA?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">O Scanner Corporal IA utiliza a câmera do seu celular para analisar padrões corporais e faciais, identificando sinais de estresse, desequilíbrios e possíveis condições. Ele fornece relatórios detalhados e sugestões para melhoria, sempre com alta precisão.</p>
-                            </div>
-                        </div>
-                        <div class="faq-item">
-                            <button class="faq-question">O Apoio Emocional IA é realmente eficaz?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">Sim, o Apoio Emocional IA (Abili) foi desenvolvido com base em milhões de casos e dados de terapia comportamental. Ele oferece conversas empáticas, técnicas de relaxamento e suporte para gerenciar o estresse e a ansiedade, sendo uma ferramenta complementar valiosa para o bem-estar mental.</p>
-                            </div>
-                        </div>
-                        <div class="faq-item">
-                            <button class="faq-question">Meus dados estão seguros com o MedAI Brasil?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">Absolutamente. A segurança e privacidade dos seus dados são nossa prioridade máxima. Utilizamos criptografia de ponta (SSL) e seguimos as mais rigorosas normas de proteção de dados para garantir que suas informações estejam sempre seguras e confidenciais.</p>
-                            </div>
-                        </div>
-                        <div class="faq-item">
-                            <button class="faq-question">Qual a precisão da Medical IA?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">A Medical IA possui uma precisão validada de 94.7% por especialistas. Ela analisa seus sintomas e histórico com base em uma vasta base de conhecimento médico, fornecendo pré-diagnósticos e orientações que podem ser discutidas com seu médico.</p>
-                            </div>
-                        </div>
-                        <div class="faq-item">
-                            <button class="faq-question">Como acesso o MedAI Brasil após a compra?</button>
-                            <div class="faq-answer">
-                                <p data-style-guide-typography-content="small">Após a confirmação da sua compra, você receberá um e-mail com as instruções de acesso em até 5 minutos. Você poderá baixar o aplicativo e começar a usar todas as funcionalidades imediatamente.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="contact" class="contact-section section">
-            <div class="cm-row">
-                <div class="cm-column">
-                    <h2 data-style-guide-typography-subheadline="small">📧 ENTRE EM CONTATO 📧</h2>
-                    <h1 data-style-guide-typography-headline="small">Fale Conosco</h1>
-                    <p data-style-guide-typography-content="small">Tem mais alguma dúvida ou precisa de suporte? Entre em contato conosco. Estamos aqui para ajudar!</p>
-                    <a data-style-guide-typography-content="small" href="mailto:suporte@medaibrasil.com.br" class="btn btn-contact">
-                        <span data-style-guide-typography-content="small">ENVIAR E-MAIL AGORA</span>
-                        <i data-icon="fa-house" class="fa-solid fa-envelope cm-icon"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer id="footer" class="footer-section section">
-        <div class="cm-row">
-            <div class="cm-column">
-                <div class="footer-content">
-                    <div class="footer-logo">
-                        <img alt="Logo MedAI Brasil" src="https://projects.clickmax.io/78521f86-40a6-432e-8bd6-9d54d18c68a5/assets/b3532894-8dde-4898-a02f-e6104f93bed0" loading="lazy" />
-                        <p data-style-guide-typography-content="small">Transformando sua saúde com inteligência artificial.</p>
-                    </div>
-                    <div class="footer-links">
-                        <h3 data-style-guide-typography-subheadline="small">Links Rápidos</h3>
-                        <ul>
-                            <li><a href="#imgrd">Produtos</a></li>
-                            <li><a href="#iks4pj">Depoimentos</a></li>
-                            <li><a href="#ixphig">Método</a></li>
-                            <li><a href="#checkout">Preços</a></li>
-                            <li><a href="#iq3old">FAQ</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-contact">
-                        <h3 data-style-guide-typography-subheadline="small">Contato</h3>
-                        <p data-style-guide-typography-content="small">Email: suporte@medaibrasil.com.br</p>
-                        <p data-style-guide-typography-content="small">Atendimento: Segunda a Sexta, 9h às 18h</p>
-                    </div>
-                    <div class="footer-social">
-                        <h3 data-style-guide-typography-subheadline="small">Siga-nos</h3>
-                        <div class="social-icons">
-                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p data-style-guide-typography-content="small">© <span id="current-year"></span> MedAI Brasil. Todos os direitos reservados.
-                        <a href="https://medaibrasil.com.br/politica-de-privacidade">Política de Privacidade</a> |
-                        <a href="https://medaibrasil.com.br/termos-de-uso">Termos de Uso</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+        </main>
     <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
     <script>
-        // Particle.js configuration
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "img/github.svg", "width": 100, "height": 100 } },
-                "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
-            },
-            "interactivity": {
-                "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } }
-            },
-            "retina_detect": true
-        });
-
-        // Cookie Consent
         window.addEventListener("load", function(){
             window.cookieconsent.initialise({
                 "palette": {
-                    "popup": { "background": "#000" },
-                    "button": { "background": "#f1d600" }
+                    "popup": {
+                        "background": "#000"
+                    },
+                    "button": {
+                        "background": "#f1d600"
+                    }
                 },
-                "theme": "classic",
-                "position": "bottom-right",
                 "content": {
-                    "message": "Este site usa cookies para garantir que você obtenha a melhor experiência.",
+                    "message": "Este site utiliza cookies para garantir que você obtenha a melhor experiência.",
                     "dismiss": "Entendi!",
-                    "link": "Saiba mais",
-                    "href": "https://medaibrasil.com.br/politica-de-privacidade"
+                    "link": "Saiba Mais",
+                    "href": "/politica-de-privacidade" /* Substitua com o link da sua política de privacidade */
                 }
-            });
+            })
         });
-
-        // Hamburger Menu for Mobile
-        document.getElementById('hamburger-menu').addEventListener('click', function() {
-            var mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu.style.display === 'block') {
-                mobileMenu.style.display = 'none';
-            } else {
-                mobileMenu.style.display = 'block';
-            }
-        });
-
-        // Close mobile menu when a link is clicked
-        document.querySelectorAll('#mobile-menu a').forEach(item => {
-            item.addEventListener('click', () => {
-                document.getElementById('mobile-menu').style.display = 'none';
-            });
-        });
-
-        // Update current year in footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.closest('.faq-item');
-                const faqAnswer = faqItem.querySelector('.faq-answer');
-
-                faqItem.classList.toggle('active');
-
-                if (faqItem.classList.contains('active')) {
-                    faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 'px';
-                } else {
-                    faqAnswer.style.maxHeight = null;
+    </script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
                 }
-            });
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
         });
-
-        // Countdown Timer Logic (assuming a fixed target date for demonstration)
-        function updateCountdown() {
-            // Target date is July 2, 2025, 7:16 PM (19:16) -03
-            const targetDate = new Date("2025-07-02T19:16:00-03:00").getTime();
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            const countdownElement = document.querySelector('.countdown');
-            const countdownLargeElement = document.querySelector('.countdown-large');
-
-            if (distance < 0) {
-                countdownElement.innerHTML = "OFERTA EXPIRADA!";
-                countdownLargeElement.innerHTML = "OFERTA EXPIRADA!";
-            } else {
-                countdownElement.innerHTML = `⏰ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} (expira em 02/07/2025, 19:16 -03)`;
-                countdownLargeElement.innerHTML = `⏰ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} (expira em 02/07/2025, 19:16 -03)`;
-            }
-        }
-
-        updateCountdown(); // Initial call
-        setInterval(updateCountdown, 1000); // Update every second
     </script>
 </body>
 </html>
