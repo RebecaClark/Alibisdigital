@@ -13,6 +13,7 @@
             color: #333;
             background: linear-gradient(135deg, #e6f0fa, #ffffff);
             overflow-x: hidden;
+            text-align: center;
         }
         #particles-js {
             position: fixed;
@@ -26,14 +27,20 @@
             background: #005670;
             color: white;
             padding: 40px;
-            text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             border-radius: 10px;
         }
-        .header h1 { color: white; }
-        .hero { background: rgba(255, 255, 255, 0.95); border-radius: 10px; }
+        .header h1 { color: white; font-size: 36px; margin: 0; }
+        .hero { background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 40px; }
         .testimonials, .method, .products, .offer, .bonus, .faq { margin: 40px 0; }
-        .testimonials h2, .method h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { color: white; background: #005670; padding: 10px; border-radius: 8px; }
+        .testimonials h2, .method h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { 
+            color: white; 
+            background: #005670; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin: 0 auto;
+            max-width: 800px;
+        }
         .success p, .success p strong { color: white; }
         .btn {
             background: #00a3b7;
@@ -53,8 +60,9 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             max-width: 800px;
+            text-align: left;
         }
-        .countdown { font-size: 32px; color: white; font-weight: bold; background: #005670; padding: 10px; border-radius: 8px; }
+        .countdown { font-size: 32px; color: white; font-weight: bold; background: #ff4d4d; padding: 10px; border-radius: 8px; }
         .offer-container {
             background: #fff;
             border: 2px solid #00a3b7;
@@ -63,6 +71,7 @@
             margin: 20px auto;
             max-width: 800px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
         }
         .offer-container h3 { color: #005670; font-size: 28px; }
         .offer-container .price { font-size: 24px; font-weight: bold; color: #005670; }
@@ -72,9 +81,9 @@
             padding: 30px;
             border-radius: 10px;
             margin: 20px auto;
-            max-width: 800px;
+            max-width: 900px;
+            height: 500px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            height: 450px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -86,15 +95,26 @@
             font-size: 14px;
             border-radius: 10px 10px 0 0;
         }
-        h1 { font-size: 40px; color: #005670; font-weight: 700; }
+        h1 { 
+            font-size: 40px; 
+            color: #005670; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+        h1 img { width: 40px; height: 40px; }
+        h1 span { color: #ff4d4d; }
         h2 { font-size: 32px; color: #005670; }
         h3 { font-size: 24px; color: #00a3b7; }
-        p { font-family: 'Open Sans', sans-serif; line-height: 1.7; }
+        p, ul { font-family: 'Open Sans', sans-serif; line-height: 1.7; margin: 0 auto; }
         ul { list-style: none; padding: 0; }
         ul li { margin: 12px 0; font-size: 16px; }
         .product, .testimonial { transition: transform 0.3s; }
         .product:hover, .testimonial:hover { transform: translateY(-5px); }
         .testimonial { border-left: 5px solid #00a3b7; }
+        .credibility-text { font-size: 18px; font-weight: bold; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -104,18 +124,22 @@
     <!-- SEÇÃO 1: HEADER DE URGÊNCIA -->
     <div class="header section">
         <h1>🔥 OFERTA LIMITADA - ÚLTIMAS 48 HORAS! 🔥</h1>
-        <p>Apenas 97 vagas restantes para acessar a IA médica mais avançada do Brasil</p>
+        <p>Apenas 97 vagas para a IA médica mais avançada do Brasil</p>
         <a href="#" class="btn">GARANTIR MINHA VAGA AGORA!</a>
     </div>
 
     <!-- SEÇÃO 2: HERO SECTION PRINCIPAL -->
     <div class="hero section">
-        <h1>🤖 A PRIMEIRA INTELIGÊNCIA ARTIFICIAL MÉDICA QUE CUIDA DA SUA SAÚDE COMPLETA 24 HORAS POR DIA</h1>
-        <p>Descubra Problemas Antes dos Sintomas | Apoio Emocional Instantâneo | Diagnósticos Precisos em 60 Segundos</p>
+        <h1>
+            <img src="placeholder_heart_ia.png" alt="Heart + IA Icon">
+            A ESTRATÉGIA DEFINITIVA PARA CUIDAR DA SUA SAÚDE SEM SAIR DE CASA!
+        </h1>
+        <p>Se você quer acabar com a ansiedade de sintomas estranhos e ter respostas médicas precisas 24/7, esta tecnologia é para você.</p>
+        <p class="credibility-text">+75.000 brasileiros já transformaram suas vidas | Precisão de 94.7% validada por hospitais</p>
         <div class="video-placeholder">
             <p>[VÍDEO AQUI - 4 minutos]<br>"Como 3 IAs Médicas Revolucionaram a Saúde de 75.000 Brasileiros"</p>
         </div>
-        <a href="#" class="btn">QUERO ACESSO COMPLETO À IA MÉDICA AGORA</a>
+        <a href="#" class="btn">QUERO ACESSO À IA MÉDICA AGORA</a>
         <p>🔒 Acesso Imediato | 💳 Parcele em 12x | ✅ 30 dias de garantia</p>
     </div>
 
