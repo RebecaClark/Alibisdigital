@@ -32,8 +32,8 @@
         }
         .header h1 { color: white; }
         .hero { background: rgba(255, 255, 255, 0.95); border-radius: 10px; }
-        .credibility, .testimonials, .method, .products, .offer, .bonus, .faq { margin: 40px 0; }
-        .credibility h2, .testimonials h2, .method h2, .products h2, .offer h2, .success h2 { color: white; background: #005670; padding: 10px; border-radius: 8px; }
+        .testimonials, .method, .products, .offer, .bonus, .faq { margin: 40px 0; }
+        .testimonials h2, .method h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { color: white; background: #005670; padding: 10px; border-radius: 8px; }
         .success p, .success p strong { color: white; }
         .btn {
             background: #00a3b7;
@@ -46,7 +46,7 @@
             transition: transform 0.3s, background 0.3s;
         }
         .btn:hover { background: #005670; transform: scale(1.05); }
-        .product, .testimonial {
+        .product, .testimonial, .bonus-container, .faq-container {
             background: #fff;
             padding: 20px;
             margin: 20px auto;
@@ -67,8 +67,18 @@
         .offer-container h3 { color: #005670; font-size: 28px; }
         .offer-container .price { font-size: 24px; font-weight: bold; color: #005670; }
         .offer-container .discount { color: #ff4d4d; font-weight: bold; }
-        .logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
-        .logos img { max-width: 100px; height: auto; }
+        .video-placeholder {
+            background: #e0f7fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .footer {
             background: #005670;
             color: white;
@@ -82,14 +92,6 @@
         p { font-family: 'Open Sans', sans-serif; line-height: 1.7; }
         ul { list-style: none; padding: 0; }
         ul li { margin: 12px 0; font-size: 16px; }
-        .video-placeholder {
-            background: #e0f7fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 600px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
         .product, .testimonial { transition: transform 0.3s; }
         .product:hover, .testimonial:hover { transform: translateY(-5px); }
         .testimonial { border-left: 5px solid #00a3b7; }
@@ -106,7 +108,7 @@
         <a href="#" class="btn">GARANTIR MINHA VAGA AGORA!</a>
     </div>
 
-    <!-- SEÇÃO 2: HERO SECTION -->
+    <!-- SEÇÃO 2: HERO SECTION PRINCIPAL -->
     <div class="hero section">
         <h1>🤖 A PRIMEIRA INTELIGÊNCIA ARTIFICIAL MÉDICA QUE CUIDA DA SUA SAÚDE COMPLETA 24 HORAS POR DIA</h1>
         <p>Descubra Problemas Antes dos Sintomas | Apoio Emocional Instantâneo | Diagnósticos Precisos em 60 Segundos</p>
@@ -117,20 +119,7 @@
         <p>🔒 Acesso Imediato | 💳 Parcele em 12x | ✅ 30 dias de garantia</p>
     </div>
 
-    <!-- SEÇÃO 3: LOGOS DE CREDIBILIDADE -->
-    <div class="credibility section">
-        <h2>Tecnologia validada por:</h2>
-        <div class="logos">
-            <!-- Substituir por logos reais -->
-            <img src="placeholder_sirio.jpg" alt="Hospital Sírio-Libanês">
-            <img src="placeholder_einstein.jpg" alt="Hospital Albert Einstein">
-            <img src="placeholder_unifesp.jpg" alt="UNIFESP">
-            <img src="placeholder_fmusp.jpg" alt="FMUSP">
-            <img src="placeholder_cfm.jpg" alt="CFM">
-        </div>
-    </div>
-
-    <!-- SEÇÃO 4: PROVA SOCIAL (DEPOIMENTOS) -->
+    <!-- SEÇÃO 3: PROVA SOCIAL (DEPOIMENTOS) -->
     <div class="testimonials section">
         <h2>+75.000 BRASILEIROS JÁ TRANSFORMARAM SUAS VIDAS</h2>
         <p>Veja depoimentos reais de quem usa nossa IA médica</p>
@@ -156,7 +145,7 @@
         </div>
     </div>
 
-    <!-- SEÇÃO 5: MÉTODO COMPROVADO -->
+    <!-- SEÇÃO 4: MÉTODO COMPROVADO -->
     <div class="method section">
         <h2>🔥 TECNOLOGIA COMPROVADA 🔥</h2>
         <p>Transforme sua saúde com 3 IAs médicas integradas</p>
@@ -169,7 +158,7 @@
         <p><em>*Não substitui orientação médica profissional</em></p>
     </div>
 
-    <!-- SEÇÃO 6: OS 3 PRODUTOS REAIS -->
+    <!-- SEÇÃO 5: OS 3 PRODUTOS REAIS -->
     <div class="products section">
         <h2>🔥 3 INTELIGÊNCIAS ARTIFICIAIS MÉDICAS INTEGRADAS 🔥</h2>
         <p>Conheça cada IA que vai revolucionar sua saúde</p>
@@ -253,14 +242,14 @@
         </div>
     </div>
 
-    <!-- SEÇÃO 7: DEPOIMENTO DESTAQUE -->
+    <!-- SEÇÃO 6: DEPOIMENTO DESTAQUE -->
     <div class="success section">
         <h2>As 3 IAs da MedAI Brasil mudaram completamente minha relação com a saúde</h2>
         <p>"O Scanner me alertou sobre problemas que eu nem sabia que tinha, o Apoio Emocional me ajuda com ansiedade, e a Medical IA me orienta sempre que preciso. O Órbita mostra tudo de forma clara!"</p>
         <p><strong>Dr. Adriano Santoro, Médico e Usuário - Florianópolis</strong><br>⭐⭐⭐⭐⭐</p>
     </div>
 
-    <!-- SEÇÃO 8: OFERTA IRRESISTÍVEL -->
+    <!-- SEÇÃO 7: OFERTA IRRESISTÍVEL -->
     <div class="offer section">
         <h2>🔥 Oferta acaba em: <span class="countdown">02/07/2025, 19:16 -03</span> 🔥</h2>
         <div class="offer-container">
@@ -274,32 +263,36 @@
         </div>
     </div>
 
-    <!-- SEÇÃO 9: BÔNUS EXCLUSIVOS -->
+    <!-- SEÇÃO 8: BÔNUS EXCLUSIVOS -->
     <div class="bonus section">
         <h2>🎁 Bônus Exclusivo 🎁</h2>
-        <p>Você vai levar tudo isso:</p>
-        <ul>
-            <li>Acesso completo às 3 IAs médicas</li>
-            <li>Painel Órbita com dashboard personalizado</li>
-            <li>Aplicativo mobile premium</li>
-            <li>Blog educativo com conteúdo personalizado</li>
-            <li>Suporte técnico prioritário</li>
-            <li>Atualizações gratuitas das IAs</li>
-        </ul>
+        <div class="bonus-container">
+            <p>Você vai levar tudo isso:</p>
+            <ul>
+                <li>Acesso completo às 3 IAs médicas</li>
+                <li>Painel Órbita com dashboard personalizado</li>
+                <li>Aplicativo mobile premium</li>
+                <li>Blog educativo com conteúdo personalizado</li>
+                <li>Suporte técnico prioritário</li>
+                <li>Atualizações gratuitas das IAs</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- SEÇÃO 10: FAQ -->
+    <!-- SEÇÃO 9: FAQ -->
     <div class="faq section">
         <h2>🔥 FAQ 🔥</h2>
-        <p><strong>As IAs realmente funcionam?</strong><br>Sim! Nossas IAs são baseadas em machine learning médico e já ajudaram mais de 75.000 pessoas a cuidarem melhor da saúde.</p>
-        <p><strong>É seguro usar as IAs médicas?</strong><br>Totalmente! Utilizamos criptografia avançada e seguimos todas as normas de segurança de dados de saúde.</p>
-        <p><strong>As IAs substituem consultas médicas?</strong><br>Não substituem, mas complementam. Elas te orientam quando procurar ajuda médica e qual tipo de especialista consultar.</p>
-        <p><strong>Funciona no celular?</strong><br>Perfeitamente! Temos aplicativo mobile com todas as funcionalidades das 3 IAs.</p>
-        <p><strong>O que é o Órbita?</strong><br>É seu painel de controle pessoal onde você visualiza todos os dados das 3 IAs integrados, com gráficos e relatórios.</p>
-        <p><strong>E se eu não gostar?</strong><br>30 dias de garantia total. Não gostou? Devolvemos 100% do seu dinheiro.</p>
+        <div class="faq-container">
+            <p><strong>As IAs realmente funcionam?</strong><br>Sim! Nossas IAs são baseadas em machine learning médico e já ajudaram mais de 75.000 pessoas a cuidarem melhor da saúde.</p>
+            <p><strong>É seguro usar as IAs médicas?</strong><br>Totalmente! Utilizamos criptografia avançada e seguimos todas as normas de segurança de dados de saúde.</p>
+            <p><strong>As IAs substituem consultas médicas?</strong><br>Não substituem, mas complementam. Elas te orientam quando procurar ajuda médica e qual tipo de especialista consultar.</p>
+            <p><strong>Funciona no celular?</strong><br>Perfeitamente! Temos aplicativo mobile com todas as funcionalidades das 3 IAs.</p>
+            <p><strong>O que é o Órbita?</strong><br>É seu painel de controle pessoal onde você visualiza todos os dados das 3 IAs integrados, com gráficos e relatórios.</p>
+            <p><strong>E se eu não gostar?</strong><br>30 dias de garantia total. Não gostou? Devolvemos 100% do seu dinheiro.</p>
+        </div>
     </div>
 
-    <!-- SEÇÃO 11: FOOTER -->
+    <!-- SEÇÃO 10: FOOTER -->
     <div class="footer section">
         <p>© 2025 MedAI Brasil - Todos os direitos reservados</p>
         <p>Plataforma de Tecnologia para Saúde e Bem-Estar</p>
