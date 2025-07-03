@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js" onerror="console.warn('dsp.js failed to load, falling back to simulated heart rate')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
     <style>
         html { scroll-behavior: smooth; }
@@ -86,68 +88,6 @@
             from { box-shadow: 0 0 5px #22d3ee; }
             to { box-shadow: 0 0 15px #22d3ee; }
         }
-        #chat-container {
-            display: block;
-            bottom: fixed 20px;
-            right: fixed 20px;
-            z-index: 1000;
-        }
-        #chat-bubble {
-            background: linear-gradient(45deg, #7C3AED, #22d3ee);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 15px #22d3ee;
-            animation: pulse 2s infinite;
-        }
-        #chat-window {
-            display: none;
-            background: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid #22d3ee;
-            border-radius: 15px;
-            width: 320px;
-            height: 420px;
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            box-shadow: 0 0 15px #22d3ee;
-        }
-        #chat-messages {
-            height: 340px;
-            overflow-y: auto;
-            padding: 12px;
-            color: #e5e7eb;
-        }
-        #chat-input {
-            background: rgba(55, 65, 81, 0.8);
-            border: 1px solid #22d3ee;
-            border-radius: 20px;
-            padding: 10px;
-            width: 100%;
-            color: white;
-        }
-        .listening-indicator {
-            display: none;
-            color: #22d3ee;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-top: 5px;
-        }
-        .listening-indicator.active { display: block; }
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
         .form-input, .form-textarea {
             background: rgba(55, 65, 81, 0.8);
             border: 1px solid #22d3ee;
@@ -171,15 +111,14 @@
             display: block;
             opacity: 1;
         }
-        /* Estilização para lista de sintomas (NOVO) */
         .symptom-list {
             display: flex;
             flex-direction: column;
-            gap: 12px; /* Espaçamento vertical entre itens */
-            max-height: 300px; /* Limite de altura com rolagem */
-            overflow-y: auto; /* Rolagem para listas longas */
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
             padding: 8px;
-            background: rgba(31, 41, 55, 0.5); /* Fundo sutil para destacar */
+            background: rgba(31, 41, 55, 0.5);
             border-radius: 8px;
         }
         .symptom-item {
@@ -190,7 +129,7 @@
             transition: background 0.2s;
         }
         .symptom-item:hover {
-            background: rgba(34, 211, 238, 0.1); /* Hover neon sutil */
+            background: rgba(34, 211, 238, 0.1);
         }
         .symptom-list input[type="checkbox"] {
             appearance: none;
@@ -227,7 +166,54 @@
         .symptom-list label:hover {
             color: #22d3ee;
         }
-        /* Ajustes para responsividade */
+        .neon-border {
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.1), transparent);
+            transition: 0.5s;
+        }
+        .neon-border:hover::after {
+            left: 100%;
+        }
+        .health-card {
+            background: rgba(31, 41, 55, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            border-left: 3px solid #22d3ee;
+        }
+        .health-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .action-card {
+            background: rgba(17, 24, 39, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            border-top: 2px solid #7C3AED;
+        }
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2);
+        }
+        @keyframes fadeInGrow {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .chart-container {
+            animation: fadeInGrow 0.6s ease-out forwards;
+        }
         @media (min-width: 1440px) {
             .max-w-7xl { max-width: 1280px; }
             .max-w-3xl { max-width: 896px; }
@@ -239,8 +225,6 @@
             .symptom-list { max-height: 350px; }
             .symptom-list input[type="checkbox"] { width: 20px; height: 20px; }
             .symptom-list label { font-size: 1rem; }
-            #chat-window { width: 360px; height: 460px; }
-            #chat-messages { height: 380px; }
         }
         @media (max-width: 1024px) {
             .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
@@ -261,8 +245,6 @@
             h2 { font-size: 1.5rem; }
             .max-w-3xl { max-width: 100%; padding: 0 1rem; }
             .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
-            #chat-window { width: 95%; right: 2.5%; height: 400px; }
-            #chat-messages { height: 320px; }
             #diagnostico-form .form-group { margin-bottom: 1.5rem; }
             #diagnostico-form .form-group label { font-size: 0.875rem; }
             .symptom-list { max-height: 250px; }
@@ -273,9 +255,6 @@
             h1 { font-size: 1.75rem; line-height: 2rem; }
             h2 { font-size: 1.25rem; }
             .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
-            #chat-bubble { width: 50px; height: 50px; }
-            #chat-window { width: 90%; height: 360px; }
-            #chat-messages { height: 280px; }
             #diagnostico-form .form-group input,
             #diagnostico-form .form-group select,
             #diagnostico-form .form-group textarea {
@@ -289,10 +268,7 @@
     </style>
 </head>
 <body class="text-white">
-    <!-- Fundo com Partículas -->
     <div id="particles-js"></div>
-
-    <!-- Cabeçalho com Efeito Holográfico -->
     <header class="holo-nav fixed top-0 left-0 w-full z-50 transition-shadow duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -344,7 +320,7 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="sexo">Sexo Biológico</label>
-                            <select id="sexo" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="sexo" required class="form-input">
                                 <option value="">Selecione...</option>
                                 <option value="Masculino">Masculino</option>
                                 <option value="Feminino">Feminino</option>
@@ -353,25 +329,26 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="idade">Idade (anos)</label>
-                            <input id="idade" type="number" min="0" max="120" placeholder="Ex.: 40" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="idade" type="number" min="0" max="120" placeholder="Ex.: 40" required class="form-input">
                             <div id="idade-error" class="error-message text-red-500 mt-1 hidden">Por favor, informe sua idade.</div>
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white">Peso (kg) e Altura (m)</label>
                             <div class="flex gap-4">
                                 <div class="flex-1">
-                                    <input id="peso" type="number" step="0.1" min="0" placeholder="Ex.: 70" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                                    <input id="peso" type="number" step="0.1" min="0" placeholder="Ex.: 70" required class="form-input">
                                     <div id="peso-error" class="error-message text-red-500 mt-1 hidden">Por favor, informe seu peso.</div>
                                 </div>
                                 <div class="flex-1">
-                                    <input id="altura" type="number" step="0.01" min="0" placeholder="Ex.: 1.80" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                                    <input id="altura" type="number" step="0.01" min="0" placeholder="Ex.: 1.80" required class="form-input">
                                     <div id="altura-error" class="error-message text-red-500 mt-1 hidden">Por favor, informe sua altura.</div>
                                 </div>
                             </div>
                         </div>
+                        <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(2)">Próximo</button>
                     </div>
 
-                    <!-- Step 2: Sintomas Principais (NOVO LAYOUT) -->
+                    <!-- Step 2: Sintomas Principais -->
                     <div id="step-2" class="step">
                         <div class="instructions text-gray-400 mb-4">
                             Selecione até 5 sintomas principais que você está enfrentando. Forneça detalhes adicionais quando solicitado.
@@ -379,65 +356,32 @@
                         <div class="form-group mb-4">
                             <label class="required text-white mb-2 block">Sintomas Principais (Selecione até 5)</label>
                             <div class="symptom-list">
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Febre/Hipertermia" id="sintoma-fiebre">
-                                    <label for="sintoma-fiebre">Febre/Hipertermia</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Tosse" id="sintoma-tosse">
-                                    <label for="sintoma-tosse">Tosse</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Dispneia" id="sintoma-dispneia">
-                                    <label for="sintoma-dispneia">Dispneia (Falta de Ar)</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Dor de Cabeça" id="sintoma-dor-cabeca">
-                                    <label for="sintoma-dor-cabeca">Dor de Cabeça</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Dor Muscular" id="sintoma-dor-muscular">
-                                    <label for="sintoma-dor-muscular">Dor Muscular/Articular</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Fadiga" id="sintoma-fadiga">
-                                    <label for="sintoma-fadiga">Fadiga (Cansaço Extremo)</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Náusea/Vômito" id="sintoma-nausea">
-                                    <label for="sintoma-nausea">Náusea/Vômito</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Dor Abdominal" id="sintoma-dor-abdominal">
-                                    <label for="sintoma-dor-abdominal">Dor Abdominal</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Manchas Cutâneas" id="sintoma-manchas">
-                                    <label for="sintoma-manchas">Manchas Cutâneas</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Icterícia" id="sintoma-ictericia">
-                                    <label for="sintoma-ictericia">Icterícia</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas" value="Outro" id="sintoma-outro">
-                                    <label for="sintoma-outro">Outro</label>
-                                </div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Febre/Hipertermia" id="sintoma-fiebre"><label for="sintoma-fiebre">Febre/Hipertermia</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Tosse" id="sintoma-tosse"><label for="sintoma-tosse">Tosse</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Dispneia" id="sintoma-dispneia"><label for="sintoma-dispneia">Dispneia (Falta de Ar)</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Dor de Cabeça" id="sintoma-dor-cabeca"><label for="sintoma-dor-cabeca">Dor de Cabeça</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Dor Muscular" id="sintoma-dor-muscular"><label for="sintoma-dor-muscular">Dor Muscular/Articular</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Fadiga" id="sintoma-fadiga"><label for="sintoma-fadiga">Fadiga (Cansaço Extremo)</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Náusea/Vômito" id="sintoma-nausea"><label for="sintoma-nausea">Náusea/Vômito</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Dor Abdominal" id="sintoma-dor-abdominal"><label for="sintoma-dor-abdominal">Dor Abdominal</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Manchas Cutâneas" id="sintoma-manchas"><label for="sintoma-manchas">Manchas Cutâneas</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Icterícia" id="sintoma-ictericia"><label for="sintoma-ictericia">Icterícia</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas" value="Outro" id="sintoma-outro"><label for="sintoma-outro">Outro</label></div>
                             </div>
                             <div id="sintomas-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione pelo menos um sintoma.</div>
-                            <input id="sintomas-outra" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Especifique o sintoma">
+                            <input id="sintomas-outra" type="text" class="form-input mt-2 hidden" placeholder="Especifique o sintoma">
                         </div>
                         <div class="form-group mb-4 hidden" id="febre-details">
                             <label class="text-white" for="temperatura">Temperatura Máxima (°C)</label>
-                            <input id="temperatura" type="number" step="0.1" min="35" max="42" placeholder="Ex.: 38.5" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="temperatura" type="number" step="0.1" min="35" max="42" placeholder="Ex.: 38.5" class="form-input">
                         </div>
                         <div class="form-group mb-4 hidden" id="dor-details">
                             <label class="text-white" for="dor-intensidade">Intensidade da Dor (0-10)</label>
-                            <input id="dor-intensidade" type="number" min="0" max="10" placeholder="Ex.: 7" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="dor-intensidade" type="number" min="0" max="10" placeholder="Ex.: 7" class="form-input">
                         </div>
                         <div class="form-group mb-4 hidden" id="tosse-details">
                             <label class="text-white" for="tosse-tipo">Tipo de Tosse</label>
-                            <select id="tosse-tipo" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="tosse-tipo" class="form-input">
                                 <option value="">Selecione...</option>
                                 <option value="Seca">Seca</option>
                                 <option value="Produtiva">Produtiva (com secreção)</option>
@@ -445,13 +389,17 @@
                         </div>
                         <div class="form-group mb-4 hidden" id="dispneia-details">
                             <label class="text-white" for="dispneia-gravidade">Gravidade da Dispneia (0-4)</label>
-                            <select id="dispneia-gravidade" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="dispneia-gravidade" class="form-input">
                                 <option value="0">0: Sem falta de ar</option>
                                 <option value="1">1: Leve, só em esforços intensos</option>
                                 <option value="2">2: Moderada, ao caminhar rápido</option>
                                 <option value="3">3: Grave, ao caminhar devagar</option>
                                 <option value="4">4: Muito grave, em repouso</option>
                             </select>
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="prevStep(1)">Anterior</button>
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(3)">Próximo</button>
                         </div>
                     </div>
 
@@ -462,7 +410,7 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="duracao">Duração dos Sintomas</label>
-                            <select id="duracao" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="duracao" required class="form-input">
                                 <option value="">Selecione...</option>
                                 <option value="Horas">Horas</option>
                                 <option value="1-3 Dias">1-3 Dias</option>
@@ -475,15 +423,15 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="desencadeantes">Fatores Desencadeantes ou Agravantes</label>
-                            <input id="desencadeantes" type="text" placeholder="Ex.: frio, esforço físico" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="desencadeantes" type="text" placeholder="Ex.: frio, esforço físico" class="form-input">
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="aliviantes">Fatores Aliviantes</label>
-                            <input id="aliviantes" type="text" placeholder="Ex.: repouso" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="aliviantes" type="text" placeholder="Ex.: repouso" class="form-input">
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="exposicao">Contexto de Exposição</label>
-                            <select id="exposicao" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="exposicao" required class="form-input">
                                 <option value="Nenhuma">Nenhuma</option>
                                 <option value="Viagem Internacional">Viagem Internacional</option>
                                 <option value="Contato com Doentes">Contato com Doentes</option>
@@ -492,6 +440,10 @@
                                 <option value="Área com Surtos">Área com Surtos (ex.: Dengue)</option>
                             </select>
                             <div id="exposicao-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="prevStep(2)">Anterior</button>
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(4)">Próximo</button>
                         </div>
                     </div>
 
@@ -512,19 +464,23 @@
                                 <label class="flex items-center"><input type="checkbox" name="cronicas" value="Enxaqueca" class="mr-2"> Enxaqueca</label>
                                 <label class="flex items-center"><input type="checkbox" name="cronicas" value="Outra" class="mr-2"> Outra</label>
                             </div>
-                            <input id="cronicas-outra" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Ex.: Especificar (ex.: artrite)">
+                            <input id="cronicas-outra" type="text" class="form-input mt-2 hidden" placeholder="Ex.: Especificar (ex.: artrite)">
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="cirurgias">Cirurgias Prévias</label>
-                            <input id="cirurgias" type="text" placeholder="Ex.: apendicectomia em 2010" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="cirurgias" type="text" placeholder="Ex.: apendicectomia em 2010" class="form-input">
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="alergias">Alergias Medicamentosas ou Ambientais</label>
-                            <input id="alergias" type="text" placeholder="Ex.: penicilina, pólen" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="alergias" type="text" placeholder="Ex.: penicilina, pólen" class="form-input">
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="medicamentos">Medicamentos em Uso</label>
-                            <input id="medicamentos" type="text" placeholder="Ex.: Losartana 50 mg, 1x/dia" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="medicamentos" type="text" placeholder="Ex.: Losartana 50 mg, 1x/dia" class="form-input">
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="prevStep(3)">Anterior</button>
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(5)">Próximo</button>
                         </div>
                     </div>
 
@@ -535,27 +491,27 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="tabagismo">Tabagismo</label>
-                            <select id="tabagismo" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="tabagismo" required class="form-input">
                                 <option value="Nunca Fumou">Nunca Fumou</option>
                                 <option value="Ex-Fumante">Ex-Fumante</option>
                                 <option value="Fumante Ativo">Fumante Ativo</option>
                             </select>
                             <div id="tabagismo-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
-                            <input id="tabagismo-detalhes" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Ex.: 20 maços-ano">
+                            <input id="tabagismo-detalhes" type="text" class="form-input mt-2 hidden" placeholder="Ex.: 20 maços-ano">
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="etilismo">Etilismo</label>
-                            <select id="etilismo" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="etilismo" required class="form-input">
                                 <option value="Não Bebe">Não Bebe</option>
                                 <option value="Uso Social">Uso Social</option>
                                 <option value="Uso Regular">Uso Regular</option>
                             </select>
                             <div id="etilismo-error" class="error-message text-red-500 mt-1 hidden">Por favor, selecione uma opção.</div>
-                            <input id="etilismo-detalhes" type="text" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded mt-2 hidden" placeholder="Ex.: 2 doses/semana">
+                            <input id="etilismo-detalhes" type="text" class="form-input mt-2 hidden" placeholder="Ex.: 2 doses/semana">
                         </div>
                         <div class="form-group mb-4">
                             <label class="required text-white" for="atividade-fisica">Atividade Física</label>
-                            <select id="atividade-fisica" required class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <select id="atividade-fisica" required class="form-input">
                                 <option value="Sedentário">Sedentário</option>
                                 <option value="Leve">Leve (ex.: caminhada 2x/semana)</option>
                                 <option value="Moderada">Moderada (ex.: academia 3-4x/semana)</option>
@@ -565,454 +521,231 @@
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="estresse">Nível de Estresse (0-5)</label>
-                            <input id="estresse" type="number" min="0" max="5" placeholder="0 = Nenhum, 5 = Extremo" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="estresse" type="number" min="0" max="5" placeholder="0 = Nenhum, 5 = Extremo" class="form-input">
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="prevStep(4)">Anterior</button>
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(6)">Próximo</button>
                         </div>
                     </div>
 
-                    <!-- Step 6: Revisão de Sistemas (NOVO LAYOUT) -->
+                    <!-- Step 6: Revisão de Sistemas -->
                     <div id="step-6" class="step">
                         <div class="instructions text-gray-400 mb-4">
                             Informe sintomas adicionais ou observações para completar sua avaliação.
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="sinais-vitais">Sinais Vitais Recentes (opcional)</label>
-                            <input id="sinais-vitais" type="text" placeholder="Ex.: PA 130/80 mmHg, FC 72 bpm" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded">
+                            <input id="sinais-vitais" type="text" placeholder="Ex.: PA 130/80 mmHg, FC 72 bpm" class="form-input">
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white mb-2 block">Sintomas Secundários</label>
                             <div class="symptom-list">
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Perda de Paladar/Olfato" id="sintoma-sec-perda-padar">
-                                    <label for="sintoma-sec-perda-padar">Perda de Paladar/Olfato</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Dor de Garganta" id="sintoma-sec-dor-garganta">
-                                    <label for="sintoma-sec-dor-garganta">Dor de Garganta</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Coriza" id="sintoma-sec-coriza">
-                                    <label for="sintoma-sec-coriza">Coriza</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Diarreia" id="sintoma-sec-diarreia">
-                                    <label for="sintoma-sec-diarreia">Diarreia</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Tontura" id="sintoma-sec-tontura">
-                                    <label for="sintoma-sec-tontura">Tontura</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Perda de Peso" id="sintoma-sec-perda-peso">
-                                    <label for="sintoma-sec-perda-peso">Perda de Peso Involuntária</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Suores Noturnos" id="sintoma-sec-suores">
-                                    <label for="sintoma-sec-suores">Suores Noturnos</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Confusão Mental" id="sintoma-sec-confusao">
-                                    <label for="sintoma-sec-confusao">Confusão Mental</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Tremor" id="sintoma-sec-tremor">
-                                    <label for="sintoma-sec-tremor">Tremor</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Tristeza Persistente" id="sintoma-sec-tristeza">
-                                    <label for="sintoma-sec-tristeza">Tristeza Persistente</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Manchas Anestésicas" id="sintoma-sec-manchas-anest">
-                                    <label for="sintoma-sec-manchas-anest">Manchas Anestésicas</label>
-                                </div>
-                                <div class="symptom-item">
-                                    <input type="checkbox" name="sintomas-secundarios" value="Sede Excessiva" id="sintoma-sec-sede">
-                                    <label for="sintoma-sec-sede">Sede Excessiva</label>
-                                </div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Perda de Paladar/Olfato" id="sintoma-sec-perda-padar"><label for="sintoma-sec-perda-padar">Perda de Paladar/Olfato</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Dor de Garganta" id="sintoma-sec-dor-garganta"><label for="sintoma-sec-dor-garganta">Dor de Garganta</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Coriza" id="sintoma-sec-coriza"><label for="sintoma-sec-coriza">Coriza</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Diarreia" id="sintoma-sec-diarreia"><label for="sintoma-sec-diarreia">Diarreia</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Tontura" id="sintoma-sec-tontura"><label for="sintoma-sec-tontura">Tontura</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Perda de Peso Involuntária" id="sintoma-sec-perda-peso"><label for="sintoma-sec-perda-peso">Perda de Peso Involuntária</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Suores Noturnos" id="sintoma-sec-suores"><label for="sintoma-sec-suores">Suores Noturnos</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Confusão Mental" id="sintoma-sec-confusao"><label for="sintoma-sec-confusao">Confusão Mental</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Tremor" id="sintoma-sec-tremor"><label for="sintoma-sec-tremor">Tremor</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Tristeza Persistente" id="sintoma-sec-tristeza"><label for="sintoma-sec-tristeza">Tristeza Persistente</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Manchas Anestésicas" id="sintoma-sec-manchas"><label for="sintoma-sec-manchas">Manchas Anestésicas</label></div>
+                                <div class="symptom-item"><input type="checkbox" name="sintomas-secundarios" value="Sede Excessiva" id="sintoma-sec-sede"><label for="sintoma-sec-sede">Sede Excessiva</label></div>
                             </div>
                         </div>
                         <div class="form-group mb-4">
                             <label class="text-white" for="observacoes">Observações Adicionais</label>
-                            <textarea id="observacoes" rows="5" placeholder="Descreva outros sintomas ou informações relevantes" class="w-full p-2 bg-gray-800 border border-[#22d3ee] rounded"></textarea>
+                            <textarea id="observacoes" placeholder="Ex.: sintomas começaram após viagem" class="form-textarea"></textarea>
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="prevStep(5)">Anterior</button>
+                            <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="processarDiagnostico()">Obter Diagnóstico</button>
                         </div>
                     </div>
-
-                    <div class="flex justify-end mt-6">
-                        <button id="submit-form" type="submit" class="futuristic-btn" disabled>Obter Diagnóstico</button>
-                    </div>
                 </form>
-
-                <div id="resultado-diagnostico" class="hidden mt-6">
-                    <h2 class="text-2xl font-bold text-[#22d3ee] mb-4">🩺 Pré-Diagnóstico Clínico</h2>
-                    <div id="resposta-diagnostico"></div>
-                    <p class="text-gray-400 mt-4">⚠️ Este é um pré-diagnóstico gerado por IA. Não substitui uma consulta médica profissional. Consulte um médico para um diagnóstico preciso.</p>
+                <div id="quick-health-panel" class="mt-8 p-6 bg-gray-800 bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg neon-border hidden">
+                    <h3 class="text-xl font-bold text-[#22d3ee] mb-4">📊 Seu Perfil de Saúde Instantâneo</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="health-card">
+                            <h4 class="font-semibold mb-2 text-white">⚕️ Saúde Física</h4>
+                            <div id="physical-diagnoses" class="text-gray-200"></div>
+                        </div>
+                        <div class="health-card">
+                            <h4 class="font-semibold mb-2 text-white">🧠 Saúde Emocional</h4>
+                            <div id="emotional-diagnoses" class="text-gray-200"></div>
+                            <div class="mt-3 text-sm text-gray-400">💡 Dica: Nosso Scanner Emocional pode fornecer análise mais precisa</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 action-card">
+                        <h4 class="font-semibold mb-2 text-white">📌 Plano de Ação Recomendado</h4>
+                        <ul id="action-plan" class="list-disc pl-5 space-y-2 text-gray-200"></ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Rodapé -->
-    <footer class="bg-[rgba(15,23,42,0.8)] py-10 px-4 text-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="space-y-4">
-                    <h3 class="text-xl font-bold text-white shine">Álibis Digital</h3>
-                    <p class="text-sm text-gray-400 fade-in">Soluções de bem-estar com tecnologia avançada.</p>
-                </div>
-                <div class="space-y-4">
-                    <h4 class="text-lg font-semibold text-white">Navegação</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/#" class="text-gray-400 hover:text-white transition">Início</a></li>
-                        <li><a href="/scanner.html" class="text-gray-400 hover:text-white transition">Scanner</a></li>
-                        <li><a href="/blog.html" class="text-gray-400 hover:text-white transition">Blog</a></li>
-                        <li><a href="/medical-ia.html" class="text-gray-400 hover:text-white transition">Diagnósticos</a></li>
-                        <li><a href="/apoio-emocional.html" class="text-gray-400 hover:text-white transition">Apoio Emocional</a></li>
-                        <li><a href="/alibi.html" class="text-gray-400 hover:text-white transition">Criar Álibis</a></li>
-                        <li><a href="/planos.html" class="text-gray-400 hover:text-white transition">Planos</a></li>
-                        <li><a href="/suporte.html" class="text-gray-400 hover:text-white transition">Suporte</a></li>
-                        <li><a href="/sobre.html" class="text-gray-500 hover:text-white transition">Adicionar</a></li>
-                        <li><a href="/login.html" class="text-gray-400 hover:text-white transition">Login</a></li>
-                    </ul>
-                </div>
-                <div class="space-y-4">
-                    <h4 class="text-lg font-semibold text-white">Contato</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li class="fade-in">E-mail: <a href="mailto:support@alibisdigital.com.br" class="text-gray-400 hover:text-white transition">support@alibisdigital.com.br</a></li>
-                        <li class="fade-in">WhatsApp: <a href="https://wa.me/5511912345678" class="text-gray-400 hover:text-white transition">+55 11 91234-5678</a></li>
-                        <li><a href="/privacidade.html" class="text-gray-400 hover:text-white transition">Política de Privacidade</a></li>
-                        <li><a href="/termos.html" class="text-gray-400 hover:text-white transition">Termos de Uso</a></li>
-                        <li><a href="/politicas.html" class="text-gray-400 hover:text-white transition">Políticas Gerais</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-8 text-center">
-                <p class="text-xs text-gray-500">© 2025 Álibis Digital. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('[INIT] DOM loaded, inicializing Form');
+        // Inicialização do Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#22d3ee' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
 
-            let currentStep = 1;
-            const totalSteps = 6;
-            const steps = document.querySelectorAll('.step');
-            const submitButton = document.getElementById('submit-form');
-
-            // Inicializar partículas
-            particlesJS('particles-js', {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: '#22d3ee' },
-                    shape: { type: 'circle' },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
-                    move: { enable: true, speed: 2, direction: 'none', random: true }
-                },
-                interactivity: {
-                    events: { onhover: { enable: true, mode: 'repulse' } }
-                }
-            });
-
-            function updateStep() {
-                console.log(`[NAV] Atualizando para passo ${currentStep}`);
-                try {
-                    steps.forEach((step, index) => {
-                        const isActive = index === currentStep - 1;
-                        step.classList.toggle('active', isActive);
-                        console.log(`[NAV] Passo ${index + 1} ativo: ${isActive}`);
-                    });
-                    validateStep();
-                } catch (e) {
-                    console.error(`[ERROR] updateStep falhou: ${e.message}`);
-                }
+        // Navegação do formulário
+        let currentStep = 1;
+        function nextStep(step) {
+            if (validateStep(currentStep)) {
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                document.getElementById(`step-${step}`).classList.add('active');
+                currentStep = step;
+                toggleSymptomDetails();
             }
+        }
 
-            function validateStep() {
-                console.log(`[VALIDATE] Validando passo ${currentStep}`);
-                let valid = true;
-                const currentStepElement = steps[currentStep - 1];
-                if (!currentStepElement) {
-                    console.error(`[ERROR] Passo ${currentStep} não encontrado`);
-                    return false;
-                }
+        function prevStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${step}`).classList.add('active');
+            currentStep = step;
+            toggleSymptomDetails();
+        }
 
-                // Validar inputs obrigatórios
-                const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
-                inputs.forEach(input => {
-                    const errorElement = document.getElementById(`${input.id}-error`);
-                    const isValid = input.value && input.value !== '';
-                    if (!isValid) {
-                        valid = false;
-                        input.classList.add('border-red-500');
-                        if (errorElement) errorElement.classList.remove('hidden');
-                        console.log(`[VALIDATE] Input ${input.id} inválido: ${input.value}`);
-                    } else {
-                        input.classList.remove('border-red-500');
-                        if (errorElement) errorElement.classList.add('hidden');
-                        console.log(`[VALIDATE] Input ${input.id} válido: ${input.value}`);
-                    }
-                });
-
-                // Validação específica para passo 2
-                if (currentStep === 2) {
-                    const checkedSymptoms = currentStepElement.querySelectorAll('input[name="sintomas"]:checked').length;
-                    const symptomsError = document.getElementById('sintomas-error');
-                    if (checkedSymptoms.length === 0) {
-                        valid = false;
-                        if (symptomsError) symptomsError.classList.remove('hidden');
-                        console.log('[VALIDATE] Nenhum sintoma selecionado');
-                    } else {
-                        if (symptomsError) symptomsError.classList.add('hidden');
-                        console.log(`[VALIDATE] ${checkedSymptoms.length} sintomas selecionados`);
-                    }
-                }
-
-                submitButton.disabled = !valid;
-                console.log(`[VALIDATE] Passo ${currentStep} válido: ${valid}, Botão de envio desabilitado: ${submitButton.disabled}`);
-                return valid;
+        // Validação do formulário
+        function validateStep(step) {
+            let isValid = true;
+            if (step === 1) {
+                const sexo = document.getElementById('sexo').value;
+                const idade = document.getElementById('idade').value;
+                const peso = document.getElementById('peso').value;
+                const altura = document.getElementById('altura').value;
+                document.getElementById('sexo-error').classList.toggle('hidden', sexo !== '');
+                document.getElementById('idade-error').classList.toggle('hidden', idade !== '' && idade >= 0 && idade <= 120);
+                document.getElementById('peso-error').classList.toggle('hidden', peso !== '' && peso >= 0);
+                document.getElementById('altura-error').classList.toggle('hidden', altura !== '' && altura >= 0);
+                isValid = sexo !== '' && idade !== '' && peso !== '' && altura !== '';
+            } else if (step === 2) {
+                const sintomas = document.querySelectorAll('input[name="sintomas"]:checked').length;
+                document.getElementById('sintomas-error').classList.toggle('hidden', sintomas > 0 && sintomas <= 5);
+                isValid = sintomas > 0 && sintomas <= 5;
+            } else if (step === 3) {
+                const duracao = document.getElementById('duracao').value;
+                const exposicao = document.getElementById('exposicao').value;
+                document.getElementById('duracao-error').classList.toggle('hidden', duracao !== '');
+                document.getElementById('exposicao-error').classList.toggle('hidden', exposicao !== '');
+                isValid = duracao !== '' && exposicao !== '';
+            } else if (step === 5) {
+                const tabagismo = document.getElementById('tabagismo').value;
+                const etilismo = document.getElementById('etilismo').value;
+                const atividadeFisica = document.getElementById('atividade-fisica').value;
+                document.getElementById('tabagismo-error').classList.toggle('hidden', tabagismo !== '');
+                document.getElementById('etilismo-error').classList.toggle('hidden', etilismo !== '');
+                document.getElementById('atividade-fisica-error').classList.toggle('hidden', atividadeFisica !== '');
+                isValid = tabagismo !== '' && etilismo !== '' && atividadeFisica !== '';
             }
+            return isValid;
+        }
 
-            // Listeners para validação em tempo real
-            steps.forEach(step => {
-                step.querySelectorAll('input, select').forEach(input => {
-                    input.addEventListener('input', () => {
-                        console.log(`[INPUT] ${input.id} alterado para: ${input.value}`);
-                        validateStep();
-                    });
-                    input.addEventListener('change', () => {
-                        console.log(`[CHANGE] ${input.id} alterado para: ${input.value}`);
-                        validateStep();
-                    });
-                });
-                if (step.id === 'step-2') {
-                    step.querySelectorAll('input[name="sintomas"]').forEach(cb => {
-                        cb.addEventListener('change', validateStep);
-                    });
-                }
-            });
+        // Exibir campos adicionais para sintomas
+        function toggleSymptomDetails() {
+            const sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value);
+            document.getElementById('febre-details').classList.toggle('hidden', !sintomas.includes('Febre/Hipertermia'));
+            document.getElementById('dor-details').classList.toggle('hidden', !sintomas.includes('Dor de Cabeça') && !sintomas.includes('Dor Muscular') && !sintomas.includes('Dor Abdominal'));
+            document.getElementById('tosse-details').classList.toggle('hidden', !sintomas.includes('Tosse'));
+            document.getElementById('dispneia-details').classList.toggle('hidden', !sintomas.includes('Dispneia'));
+            document.getElementById('sintomas-outra').classList.toggle('hidden', !sintomas.includes('Outro'));
+        }
 
-            submitButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('[SUBMIT] Botão de envio clicado');
-                if (validateStep()) {
-                    processarDiagnostico();
+        // Limitar seleção de sintomas
+        document.querySelectorAll('input[name="sintomas"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const checkedCount = document.querySelectorAll('input[name="sintomas"]:checked').length;
+                if (checkedCount > 5) {
+                    checkbox.checked = false;
+                    document.getElementById('sintomas-error').classList.remove('hidden');
+                    document.getElementById('sintomas-error').textContent = 'Selecione no máximo 5 sintomas.';
                 } else {
-                    console.log('[ERROR] Formulário inválido');
+                    document.getElementById('sintomas-error').classList.add('hidden');
+                    toggleSymptomDetails();
                 }
             });
+        });
 
-            // Campos condicional
-            document.querySelectorAll('input[name="sintomas"]').forEach(cb => {
-                cb.addEventListener('change', () => {
-                    console.log(`[CONDITIONAL] Checkbox de sintomas ${cb.value} alterado`);
-                    const checked = document.querySelectorAll('input[name="sintomas"]:checked').length;
-                    if (checked > 5) {
-                        cb.checked = false;
-                        alert('Por favor, selecione apenas até 5 sintomas.');
-                        console.log('[CONDITIONAL] Limite de 5 sintomas excedido, desmarcado');
-                    }
-                    document.getElementById('sintomas-outra').classList.toggle('hidden', !Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).some(c => c.value === 'Outro'));
-                    document.getElementById('febre-details').classList.toggle('hidden', !Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).some(c => c.value === 'Febre/Hipertermia'));
-                    document.getElementById('dor-details').classList.toggle('hidden', !Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).some(c => ['Dor de Cabeça', 'Dor Muscular', 'Dor Abdominal'].includes(c.value)));
-                    document.getElementById('tosse-details').classList.toggle('hidden', !Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).some(c => c.value === 'Tosse'));
-                    document.getElementById('dispneia-details').classList.toggle('hidden', !Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).some(c => c.value === 'Dispneia'));
-                    validateStep();
-                });
-            });
+        // Diagnóstico com IA
+        function quickEnhancedDiagnosis(sintomas, emotionalData = {}) {
+            const emotionalScore = emotionalData.stressLevel || 
+                                 (sintomas.includes('Fadiga') ? 70 : 
+                                 (sintomas.includes('Dor de Cabeça') ? 65 : 50));
+            
+            const emotionalConditions = {
+                'Síndrome do Pânico': { symptoms: ['Dispneia', 'Tontura', 'Taquicardia'], emotionalThreshold: 80 },
+                'Burnout': { symptoms: ['Fadiga', 'Dor de Cabeça', 'Confusão Mental'], emotionalThreshold: 75 },
+                'Transtorno de Ansiedade': { symptoms: ['Tristeza Persistente', 'Dor Muscular', 'Tontura'], emotionalThreshold: 70 }
+            };
 
-            document.querySelectorAll('input[name="cronicas"]').forEach(cb => {
-                cb.addEventListener('change', () => {
-                    console.log(`[CONDITIONAL] Checkbox de crônicas ${cb.value} alterado`);
-                    const checked = document.querySelectorAll('input[name="cronicas"]:checked');
-                    if (cb.value === 'Nenhuma' && cb.checked) {
-                        checked.forEach(c => {
-                            if (c.value !== 'Nenhuma') c.checked = false;
-                        });
-                        console.log('[CONDITIONAL] Nenhuma selecionada, limpando outras');
-                    } else if (checked.length > 0 && Array.from(checked).some(c => c.value !== 'Nenhuma')) {
-                        document.querySelector('input[name="cronicas"][value="Nenhuma"]').checked = false;
-                        document.getElementById('cronicas-outra').classList.toggle('hidden', !Array.from(checked).some(c => c.value === 'Outra'));
-                    }
-                    validateStep();
-                });
-            });
+            const physicalConditions = {
+                'Gripe': { symptoms: ['Febre/Hipertermia', 'Tosse', 'Fadiga', 'Dor Muscular'], probability: 80 },
+                'Dengue': { symptoms: ['Febre/Hipertermia', 'Dor Muscular', 'Manchas Cutâneas'], probability: 85 },
+                'Gastrite': { symptoms: ['Náusea/Vômito', 'Dor Abdominal'], probability: 70 }
+            };
 
-            document.getElementById('tabagismo').addEventListener('change', (e) => {
-                console.log(`[CONDITIONAL] Tabagismo alterado para: ${e.target.value}`);
-                document.getElementById('tabagismo-detalhes').classList.toggle('hidden', e.target.value === 'Nunca Fumado');
-                validateStep();
-            });
-
-            document.getElementById('etilismo').addEventListener('change', (e) => {
-                console.log(`[CONDITIONAL] Etilismo alterado para: ${e.target.value}`);
-                document.getElementById('etilismo-detalhes').classList.toggle('hidden', e.target.value === 'Não Bebe');
-                validateStep();
-            });
-
-            function processarDiagnostico() {
-                console.log('[DIAG] Processando diagnóstico...');
-                const dados = {};
-                try {
-                    dados.sexo = document.getElementById('sexo').value || 'Não informado';
-                    dados.idade = parseInt(document.getElementById('idade').value) || 0;
-                    dados.peso = parseFloat(document.getElementById('peso').value) || 0.0;
-                    dados.altura = parseFloat(document.getElementById('altura').value) || 0.0;
-                    dados.imc = (dados.peso / (dados.altura * dados.altura)).toFixed(2) || '0.0';
-                    dados.sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(c => c.value === 'Outro' ? document.getElementById('sintomas-outra').value : c.value).join(', ') || 'Nenhum';
-                    dados.temperatura = parseFloat(document.getElementById('temperatura').value) || 0.0;
-                    dados.dor_intensidade = parseInt(document.getElementById('dor-intensidade').value) || 0;
-                    dados.tosse = document.getElementById('tosse-tipo').value || 'Não definido';
-                    dados.dispneia_gravidade = parseInt(document.getElementById('dispneia-gravidade').value) || 0;
-                    dados.duracao = document.getElementById('duracao').value || 'Não informado';
-                    dados.desencadeantes = document.getElementById('desencadeantes').value || 'Nenhum';
-                    dados.aliviador = document.getElementById('aliviantes').value || 'Nenhum';
-                    dados.exposicao = document.getElementById('exposicao').value || 'Não definido';
-                    dados.cronicas = Array.from(document.querySelectorAll('input[name="cronicas"]:checked')).map(c => c.value === 'Outra' ? document.getElementById('cronicas-outra').value : c.value).join(', ') || 'Nenhuma';
-                } catch (e) {
-                    console.error(`[ERROR] Falha ao coletar dados: ${e.message}`);
-                    return;
-                }
-
-                // Sistema de pontuação para diagnósticos
-                let scores = {
-                    influenza: 0.0,
-                    covid19: 0.0,
-                    bronchitis: 0.0,
-                    dengue: 0.0,
-                    tension_headache: 0.0
-                };
-
-                try {
-                    if (dados.sintomas.includes('Febre/Hipertermia')) {
-                        scores.influenza += 20;
-                        scores.covid19 += 25;
-                        scores.dengue += 25;
-                        scores.bronchitis += 15;
-                        if (dados.temperatura >= 38) {
-                            scores.influenza += 25;
-                            scores.covid19 += 10;
-                            scores.dengue += 15;
-                        }
-                    }
-                    if (dados.sintomas.includes('Tosse')) {
-                        scores.influenza += 20;
-                        scores.covid19 += 25;
-                        scores.bronchitis += 30;
-                        if (dados.tosse === 'Seca') {
-                            scores.covid19 += 15;
-                            scores.influenza += 10;
-                        } else if (dados.tosse === 'Produtiva') {
-                            scores.bronchitis += 20;
-                        }
-                    }
-                    if (dados.sintomas.includes('Dor de Cabeça')) {
-                        scores.influenza += 15;
-                        scores.covid19 += 10;
-                        scores.dengue += 20;
-                        scores.tension_headache += 30;
-                        if (dados.dor_intensidade >= 7) {
-                            scores.tension_headache += 10;
-                            scores.dengue += 10;
-                        }
-                    }
-                    if (dados.sintomas.includes('Dor Muscular')) {
-                        scores.influenza += 25;
-                        scores.covid19 += 15;
-                        scores.dengue += 20;
-                        scores.tension_headache += 10;
-                    }
-                    if (['1-3 Dias', '4-7 Dias'].includes(dados.duracao)) {
-                        scores.influenza += 10;
-                        scores.covid19 += 10;
-                        scores.dengue += 10;
-                    }
-                    if (dados.exposicao === 'Contato com Doentes') {
-                        scores.influenza += 15;
-                        scores.covid19 += 15;
-                        scores.bronchitis += 10;
-                    }
-                    if (dados.exposicao === 'Área de Surtos') {
-                        scores.dengue += 15;
-                    }
-
-                    console.log('[DIAG] Diagnósticos:', scores);
-
-                    // Gerar saída de diagnóstico
-                    const diagnoses = [];
-                    if (scores.dengue >= 50) {
-                        diagnoses.push({
-                            nome: 'Diagnóstico',
-                            tipo: 'Dengue',
-                            probabilidade: Math.min(80, scores.dengue),
-                            recomendação: 'Procure um médico para exames de laboratório (hemograma) e avaliação de plaquetas. Hidrate-se bem.'
-                        });
-                    }
-                    if (scores.influenza >= 50) {
-                        diagnoses.push({
-                            nome: 'Diagnóstico',
-                            tipo: 'Influenza (Gripe)',
-                            probabilidade: Math.min(75, scores.influenza),
-                            recomendação: 'Repouse, mantenha-se hidratado e monitore a temperatura. Procure um médico se persistir por mais de 4 dias.'
-                        });
-                    }
-                    if (scores.covid19 >= 50) {
-                        diagnoses.push({
-                            nome: 'Diagnóstico',
-                            tipo: 'COVID-19',
-                            probabilidade: Math.min(75, scores.covid19),
-                            recomendação: 'Realize um teste PCR ou antígeno imediatamente. Isole-se e contate um médico. Monitore oxigenação e sintomas respiratórios.'
-                        });
-                    }
-                    if (scores.tension_headache >= 40) {
-                        diagnoses.push({
-                            nome: 'Diagnóstico',
-                            tipo: 'Cefaleia Tensional',
-                            probabilidade: Math.min(60, scores.tension_headache),
-                            recomendação: 'Tente relaxar e se hidratar. Consulte um médico se a dor persistir.'
-                        });
-                    }
-
-                    diagnoses.sort((a, b) => b.probabilidade - a.probabilidade);
-
-                    let resultado = diagnoses.length > 0
-                        ? diagnoses.map(d => `<p><strong>${d.nome}:</strong> ${d.tipo} (${d.probabilidade}% de probabilidade).<br><strong>Recomendações:</strong> ${d.recomendação}</p>`).join('')
-                        : '<p>Sem diagnósticos claros com base nos dados fornecidos. Consulte um médico para avaliação detalhada.</p>';
-
-                    document.getElementById('resposta-diagnostico').innerHTML = resultado;
-                    document.getElementById('resultado-diagnostico').classList.remove('hidden');
-                    console.log('[DIAG] Diagnóstico processado com sucesso');
-                } catch (e) {
-                    console.error(`[ERROR] Falha ao processar diagnóstico: ${e.message}`);
-                    document.getElementById('resposta-diagnostico').innerHTML = '<p>Erro ao processar diagnóstico. Tente novamente.</p>';
-                    document.getElementById('resultado-diagnostico').classList.remove('hidden');
+            let diagnoses = [];
+            // Diagnósticos físicos
+            for (const [condition, data] of Object.entries(physicalConditions)) {
+                if (data.symptoms.some(s => sintomas.includes(s))) {
+                    diagnoses.push({ condition, probability: data.probability, recommendations: ['Consulte um médico', 'Repouso', 'Hidratação'] });
                 }
             }
+            // Diagnósticos emocionais
+            for (const [condition, data] of Object.entries(emotionalConditions)) {
+                if (emotionalScore >= data.emotionalThreshold && data.symptoms.some(s => sintomas.includes(s))) {
+                    diagnoses.push({ condition, probability: Math.min(90, emotionalScore + 20), recommendations: ['Avaliação psicológica', 'Exercícios de respiração 3x/dia', 'Redução de estresse'] });
+                }
+            }
+            return diagnoses;
+        }
 
-            // Navegação entre passos
-            document.querySelectorAll('.next-step').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (validateStep() && currentStep < totalSteps) {
-                        currentStep++;
-                        updateStep();
-                        console.log(`[NAV] Avançando para passo ${currentStep}`);
-                    }
-                });
-            });
+        function processarDiagnostico() {
+            if (validateStep(currentStep)) {
+                const sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value)
+                                    .concat(Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value));
+                const emotionalData = { stressLevel: parseInt(document.getElementById('estresse').value) || 0 };
+                const diagnoses = quickEnhancedDiagnosis(sintomas, emotionalData);
+                displayDiagnoses(diagnoses);
+                document.getElementById('quick-health-panel').classList.remove('hidden');
+                document.getElementById('diagnostico-form').classList.add('hidden');
+            }
+        }
 
-            document.querySelectorAll('.prev-step').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (currentStep > 1) {
-                        currentStep--;
-                        updateStep();
-                        console.log(`[NAV] Voltando para passo ${currentStep}`);
-                    }
-                });
-            });
+        function displayDiagnoses(diagnoses) {
+            const physicalDiagnoses = document.getElementById('physical-diagnoses');
+            const emotionalDiagnoses = document.getElementById('emotional-diagnoses');
+            const actionPlan = document.getElementById('action-plan');
+            
+            physicalDiagnoses.innerHTML = diagnoses.filter(d => !['Síndrome do Pânico', 'Burnout', 'Transtorno de Ansiedade'].includes(d.condition))
+                .map(d => `<p>${d.condition} (${d.probability}%): ${d.recommendations.join(', ')}</p>`).join('') || '<p>Nenhum diagnóstico físico identificado.</p>';
+            emotionalDiagnoses.innerHTML = diagnoses.filter(d => ['Síndrome do Pânico', 'Burnout', 'Transtorno de Ansiedade'].includes(d.condition))
+                .map(d => `<p>${d.condition} (${d.probability}%)</p>`).join('') || '<p>Nenhum diagnóstico emocional identificado.</p>';
+            actionPlan.innerHTML = diagnoses.flatMap(d => d.recommendations).map(r => `<li>${r}</li>`).join('') || '<li>Sem recomendações no momento.</li>';
+        }
 
-            // Inicializar
-            updateStep();
+        // Menu mobile
+        document.getElementById('hamburger-menu').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         });
     </script>
 </body>
