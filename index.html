@@ -30,7 +30,6 @@
             overflow-x: hidden;
         }
         
-        /* Efeito de partículas */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -39,20 +38,17 @@
             z-index: -1;
         }
         
-        /* Container principal */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
-        /* Seções */
         section {
             padding: 80px 0;
             position: relative;
         }
         
-        /* Header de urgência */
         .urgency-bar {
             background: linear-gradient(to right, var(--primary), #6B7280);
             color: white;
@@ -81,7 +77,6 @@
             margin-left: 15px;
         }
         
-        /* Hero Section */
         .hero {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
@@ -117,9 +112,22 @@
             background: linear-gradient(to right, var(--secondary), var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.5s ease-out;
         }
         
-        .hero h1 span {
+        .hero h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .hero h2 span {
             color: var(--success);
             -webkit-text-fill-color: var(--success);
         }
@@ -132,10 +140,9 @@
         
         .hero-logo {
             max-width: 180px;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
         
-        /* Botões */
         .btn {
             display: inline-block;
             padding: 18px 36px;
@@ -175,7 +182,6 @@
             padding: 20px 45px;
         }
         
-        /* Credibilidade */
         .trust-badges {
             display: flex;
             align-items: center;
@@ -198,7 +204,6 @@
             color: var(--success);
         }
         
-        /* Video */
         .video-container {
             margin: 50px 0;
             border-radius: 15px;
@@ -219,7 +224,6 @@
             border: none;
         }
         
-        /* Seção de depoimentos */
         .testimonials {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
@@ -303,7 +307,6 @@
             margin: 0;
         }
         
-        /* Seção de produtos */
         .products {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
@@ -382,7 +385,6 @@
             margin-bottom: 15px;
         }
         
-        /* Seção de oferta */
         .offer {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -495,7 +497,6 @@
             color: var(--primary);
         }
         
-        /* Garantia */
         .guarantee {
             background: white;
             border-radius: 15px;
@@ -525,7 +526,6 @@
             font-weight: 600;
         }
         
-        /* FAQ */
         .faq {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
@@ -576,7 +576,6 @@
             max-height: 500px;
         }
         
-        /* Rodapé */
         footer {
             background: var(--dark);
             color: white;
@@ -631,7 +630,6 @@
             margin: 0 auto;
         }
         
-        /* Animações */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -647,7 +645,6 @@
             animation: pulse 2s infinite;
         }
         
-        /* Responsivo */
         @media (max-width: 992px) {
             .hero-bg {
                 display: none;
@@ -657,7 +654,7 @@
                 padding: 40px;
             }
             
-            .hero h1 {
+            .hero h1, .hero h2 {
                 font-size: 36px;
             }
             
@@ -679,7 +676,7 @@
                 padding: 40px;
             }
             
-            .hero h1 {
+            .hero h1, .hero h2 {
                 font-size: 32px;
             }
             
@@ -707,7 +704,7 @@
                 border-radius: 15px;
             }
             
-            .hero h1 {
+            .hero h1, .hero h2 {
                 font-size: 28px;
             }
             
@@ -730,10 +727,8 @@
     </style>
 </head>
 <body>
-    <!-- Efeito de partículas -->
     <div id="particles-js"></div>
     
-    <!-- Barra de urgência -->
     <div class="urgency-bar">
         <div class="container">
             <div>
@@ -743,14 +738,13 @@
         </div>
     </div>
     
-    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
             <div class="hero">
                 <div class="hero-content">
+                    <h1>A REVOLUÇÃO DA</h1>
                     <img src="https://via.placeholder.com/180x60" alt="MedAI Brasil" class="hero-logo">
-                    <h1>A REVOLUÇÃO DA <span>SAÚDE INTELIGENTE
-                    </span> CHEGOU AO BRASIL</h1>
+                    <h2><span>SAÚDE INTELIGENTE</span> CHEGOU AO BRASIL</h2>
                     <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
                     <div>
                         <a href="#offer" class="btn btn-primary btn-lg pulse">
@@ -774,11 +768,9 @@
         </div>
     </section>
     
-    <!-- Video Section -->
     <section>
         <div class="container">
             <div class="video-container">
-                <!-- Substitua pelo seu vídeo real -->
                 <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
                     [VÍDEO DE VENDAS AQUI]
                 </div>
@@ -786,7 +778,6 @@
         </div>
     </section>
     
-    <!-- Depoimentos -->
     <section>
         <div class="container">
             <div class="testimonials">
@@ -851,7 +842,6 @@
         </div>
     </section>
     
-    <!-- Produtos -->
     <section>
         <div class="container">
             <div class="products">
@@ -1022,7 +1012,6 @@
         </div>
     </section>
     
-    <!-- Oferta -->
     <section id="offer">
         <div class="container">
             <div class="offer">
@@ -1088,7 +1077,6 @@
         </div>
     </section>
     
-    <!-- FAQ -->
     <section>
         <div class="container">
             <div class="faq">
@@ -1160,7 +1148,6 @@
         </div>
     </section>
     
-    <!-- Rodapé -->
     <footer>
         <div class="container">
             <img src="https://via.placeholder.com/150x50" alt="MedAI Brasil" class="footer-logo">
@@ -1187,10 +1174,8 @@
         </div>
     </footer>
     
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Inicializar partículas
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
@@ -1215,20 +1200,15 @@
             retina_detect: true
         });
         
-        // Contador regressivo
         function updateCountdown() {
             const endDate = new Date();
-            endDate.setHours(endDate.getHours() + 2); // 2 horas a partir de agora
-            
+            endDate.setHours(endDate.getHours() + 2);
             const now = new Date();
             const distance = endDate - now;
-            
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
             document.querySelector(".countdown").textContent = `Oferta termina em: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
             if (distance < 0) {
                 document.querySelector(".countdown").textContent = "Oferta encerrada!";
             }
@@ -1237,30 +1217,21 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
         
-        // Tabs de produtos
         document.querySelectorAll('.product-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remover classe active de todas as tabs e conteúdos
                 document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.product-content').forEach(c => c.classList.remove('active'));
-                
-                // Adicionar classe active à tab clicada
                 tab.classList.add('active');
-                
-                // Mostrar conteúdo correspondente
                 const tabId = tab.getAttribute('data-tab');
                 document.getElementById(`${tabId}-content`).classList.add('active');
             });
         });
         
-        // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 question.classList.toggle('active');
                 const answer = question.nextElementSibling;
                 answer.classList.toggle('active');
-                
-                // Fechar outras respostas
                 document.querySelectorAll('.faq-question').forEach(q => {
                     if (q !== question) {
                         q.classList.remove('active');
@@ -1270,14 +1241,11 @@
             });
         });
         
-        // Smooth scroll para links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
