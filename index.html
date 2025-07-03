@@ -132,17 +132,41 @@
             -webkit-text-fill-color: var(--success);
         }
         
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .hero-logo {
-            max-width: 180px;
-            margin: 20px 0;
-        }
-        
+        .hero-headlines {
+    margin-bottom: 20px;
+}
+.hero-headlines h1,
+.hero-headlines h2 {
+    margin: 0;
+    line-height: 1.2;
+}
+.hero-headlines h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+.hero-headlines h2 {
+    font-size: 42px;
+    margin-top: 10px;
+}
+.hero-logo {
+    display: block;
+    margin: 10px 0;
+}
+@media (max-width: 768px) {
+    .hero-headlines h1 {
+        font-size: 36px;
+    }
+    .hero-headlines h2 {
+        font-size: 32px;
+    }
+}
+@media (max-width: 576px) {
+    .hero-headlines h1 {
+        font-size: 28px;
+    }
+    .hero-headlines h2 {
+        font-size: 24px;
+    }
         .btn {
             display: inline-block;
             padding: 18px 36px;
@@ -1113,44 +1137,45 @@
         </div>
     </div>
     
-    <section class="hero-section">
-        <div class="container">
-            <div class="hero">
-                <div class="hero-content">
+  <section class="hero-section">
+    <div class="container">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-headlines">
                     <h1>A REVOLUÇÃO DA</h1>
                     <img src="https://via.placeholder.com/180x60" alt="MedAI Brasil" class="hero-logo">
                     <h2><span>SAÚDE INTELIGENTE</span> CHEGOU AO BRASIL</h2>
-                    <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
-                    
-                    <div class="ar-preview">
-                        <button id="ar-button" class="btn btn-primary">
-                            <i class="fas fa-mobile-alt"></i> EXPERIMENTE EM REALIDADE AUMENTADA
-                        </button>
-                        <div class="ar-overlay">
-                            <video autoplay loop muted playsinline>
-                                <source src="ar-demo.mp4" type="video/mp4">
-                            </video>
-                            <p>Aponte sua câmera para ver como o scanner funciona em seu ambiente</p>
-                        </div>
-                    </div>
-                    
-                    <div class="trust-badges">
-                        <div class="trust-badge">
-                            <i class="fas fa-check-circle"></i> +75.000 pacientes atendidos
-                        </div>
-                        <div class="trust-badge">
-                            <i class="fas fa-shield-alt"></i> Privacidade garantida
-                        </div>
-                        <div class="trust-badge">
-                            <i class="fas fa-gem"></i> 30 dias de garantia
-                        </div>
+                </div>
+                <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
+                
+                <div class="ar-preview">
+                    <button id="ar-button" class="btn btn-primary">
+                        <i class="fas fa-mobile-alt"></i> EXPERIMENTE EM REALIDADE AUMENTADA
+                    </button>
+                    <div class="ar-overlay">
+                        <video autoplay loop muted playsinline>
+                            <source src="ar-demo.mp4" type="video/mp4">
+                        </video>
+                        <p>Aponte sua câmera para ver como o scanner funciona em seu ambiente</p>
                     </div>
                 </div>
-                <div class="hero-bg"></div>
+                
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="fas fa-check-circle"></i> +75.000 pacientes atendidos
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fas fa-shield-alt"></i> Privacidade garantida
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fas fa-gem"></i> 30 dias de garantia
+                    </div>
+                </div>
             </div>
+            <div class="hero-bg"></div>
         </div>
-    </section>
-    
+    </div>
+</section>
     <section class="ai-demo">
         <div class="container">
             <div class="demo-card">
