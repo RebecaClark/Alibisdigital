@@ -6,9 +6,11 @@
     <title>Diagnóstico Médico Avançado com IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js" onerror="console.warn('dsp.js failed to load, falling back to simulated heart rate')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js" onerror="console.warn('dsp.js failed to load')"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         html { scroll-behavior: smooth; }
         body {
@@ -27,8 +29,6 @@
             background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
         }
         .fade-in { animation: fadeIn 1s ease-in-out; }
-        .slide-in-left { animation: slideInLeft 1.2s ease-in-out; }
-        .slide-in-right { animation: slideInRight 1.2s ease-in-out; }
         .pulse { animation: pulse 2s infinite ease-in-out; }
         .shine { position: relative; overflow: hidden; }
         .shine::after {
@@ -39,14 +39,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
         }
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -207,46 +199,33 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2);
         }
-        @keyframes fadeInGrow {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        .scanner-btn {
+            background: linear-gradient(45deg, #7C3AED, #22d3ee);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
-        .chart-container {
-            animation: fadeInGrow 0.6s ease-out forwards;
+        .scanner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px #22d3ee;
         }
-        @media (min-width: 1440px) {
-            .max-w-7xl { max-width: 1280px; }
-            .max-w-3xl { max-width: 896px; }
-            #diagnostico-form .form-group input,
-            #diagnostico-form .form-group select,
-            #diagnostico-form .form-group textarea {
-                font-size: 1.125rem;
-            }
-            .symptom-list { max-height: 350px; }
-            .symptom-list input[type="checkbox"] { width: 20px; height: 20px; }
-            .symptom-list label { font-size: 1rem; }
+        .dimension-card {
+            background: rgba(31, 41, 55, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #22d3ee;
         }
-        @media (max-width: 1024px) {
-            .max-w-7xl { max-width: 100%; padding: 0 1.5rem; }
-            .max-w-3xl { max-width: 100%; padding: 0 1rem; }
-            #diagnostico-form .form-group input,
-            #diagnostico-form .form-group select,
-            #diagnostico-form .form-group textarea {
-                font-size: 1rem;
-            }
-            .symptom-list { max-height: 300px; }
-            .symptom-list input[type="checkbox"] { width: 18px; height: 18px; }
-            .symptom-list label { font-size: 0.875rem; }
-            .futuristic-btn { font-size: 1rem; padding: 0.75rem 1.5rem; }
+        .score {
+            font-size: 1.5rem;
+            color: #22d3ee;
         }
         @media (max-width: 768px) {
             .holo-nav .header-right { flex-direction: column; align-items: flex-end; }
             h1 { font-size: 2.25rem; line-height: 2.5rem; }
             h2 { font-size: 1.5rem; }
-            .max-w-3xl { max-width: 100%; padding: 0 1rem; }
             .futuristic-btn { width: 100%; margin-bottom: 0.5rem; font-size: 0.875rem; padding: 0.75rem; }
-            #diagnostico-form .form-group { margin-bottom: 1.5rem; }
-            #diagnostico-form .form-group label { font-size: 0.875rem; }
             .symptom-list { max-height: 250px; }
             .symptom-list input[type="checkbox"] { width: 16px; height: 16px; }
             .symptom-list label { font-size: 0.75rem; }
@@ -255,11 +234,6 @@
             h1 { font-size: 1.75rem; line-height: 2rem; }
             h2 { font-size: 1.25rem; }
             .futuristic-btn { font-size: 0.75rem; padding: 0.5rem; }
-            #diagnostico-form .form-group input,
-            #diagnostico-form .form-group select,
-            #diagnostico-form .form-group textarea {
-                font-size: 0.875rem;
-            }
             .form-input, .form-textarea { padding: 8px; }
             .symptom-list { max-height: 200px; }
             .symptom-list input[type="checkbox"] { width: 14px; height: 14px; }
@@ -343,6 +317,21 @@
                                     <input id="altura" type="number" step="0.01" min="0" placeholder="Ex.: 1.80" required class="form-input">
                                     <div id="altura-error" class="error-message text-red-500 mt-1 hidden">Por favor, informe sua altura.</div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="text-white">Scanner Corporal (Opcional)</label>
+                            <div class="scanner-options grid grid-cols-2 gap-4 mt-2">
+                                <button type="button" class="scanner-btn futuristic-btn" onclick="activateCameraScanner('pele')">
+                                    <i class="fas fa-camera"></i> Analisar Pele
+                                </button>
+                                <button type="button" class="scanner-btn futuristic-btn" onclick="activateVoiceAnalysis()">
+                                    <i class="fas fa-microphone"></i> Análise de Voz
+                                </button>
+                            </div>
+                            <div id="scanner-results" class="hidden mt-4">
+                                <h4 class="text-sm font-semibold text-[#22d3ee]">Resultados do Scanner:</h4>
+                                <div id="scanner-feedback" class="text-gray-200"></div>
                             </div>
                         </div>
                         <button type="button" class="futuristic-btn text-white py-2 px-4 rounded-full text-sm font-semibold mt-4" onclick="nextStep(2)">Próximo</button>
@@ -565,22 +554,44 @@
                         </div>
                     </div>
                 </form>
-                <div id="quick-health-panel" class="mt-8 p-6 bg-gray-800 bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg neon-border hidden">
-                    <h3 class="text-xl font-bold text-[#22d3ee] mb-4">📊 Seu Perfil de Saúde Instantâneo</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="health-card">
-                            <h4 class="font-semibold mb-2 text-white">⚕️ Saúde Física</h4>
-                            <div id="physical-diagnoses" class="text-gray-200"></div>
-                        </div>
-                        <div class="health-card">
-                            <h4 class="font-semibold mb-2 text-white">🧠 Saúde Emocional</h4>
-                            <div id="emotional-diagnoses" class="text-gray-200"></div>
-                            <div class="mt-3 text-sm text-gray-400">💡 Dica: Nosso Scanner Emocional pode fornecer análise mais precisa</div>
+                <div id="holistic-dashboard" class="mt-8 p-6 bg-gray-800 bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-lg neon-border hidden">
+                    <div class="dashboard-header mb-6">
+                        <h3 class="text-xl font-bold text-[#22d3ee] mb-4">📊 Seu Painel de Saúde Integral</h3>
+                        <div class="health-score text-center">
+                            <div class="score-value text-4xl font-bold text-[#22d3ee]" id="overall-health-score">0</div>
+                            <div class="score-label text-gray-400">Score de Saúde Geral</div>
                         </div>
                     </div>
-                    <div class="mt-6 action-card">
-                        <h4 class="font-semibold mb-2 text-white">📌 Plano de Ação Recomendado</h4>
-                        <ul id="action-plan" class="list-disc pl-5 space-y-2 text-gray-200"></ul>
+                    <div class="health-dimensions grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="dimension-card physical">
+                            <h4 class="font-semibold mb-2">Física <span class="score" id="physical-score">0</span></h4>
+                            <canvas id="physical-chart" height="100"></canvas>
+                        </div>
+                        <div class="dimension-card emotional">
+                            <h4 class="font-semibold mb-2">Emocional <span class="score" id="emotional-score">0</span></h4>
+                            <canvas id="emotional-chart" height="100"></canvas>
+                        </div>
+                        <div class="dimension-card metabolic">
+                            <h4 class="font-semibold mb-2">Metabólica <span class="score" id="metabolic-score">0</span></h4>
+                            <canvas id="metabolic-chart" height="100"></canvas>
+                        </div>
+                        <div class="dimension-card environmental">
+                            <h4 class="font-semibold mb-2">Ambiental <span class="score" id="environmental-score">0</span></h4>
+                            <canvas id="environmental-chart" height="100"></canvas>
+                        </div>
+                    </div>
+                    <div class="action-plan mt-6 action-card">
+                        <h4 class="font-semibold mb-2 text-white">📌 Plano de Ação Integrado</h4>
+                        <div class="plan-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="medical-actions">
+                                <h5 class="text-[#22d3ee] mb-2">Medicina</h5>
+                                <ul id="medical-actions" class="list-disc pl-5 space-y-2 text-gray-200"></ul>
+                            </div>
+                            <div class="lifestyle-actions">
+                                <h5 class="text-[#22d3ee] mb-2">Estilo de Vida</h5>
+                                <ul id="lifestyle-actions" class="list-disc pl-5 space-y-2 text-gray-200"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -615,6 +626,7 @@
                 document.getElementById(`step-${step}`).classList.add('active');
                 currentStep = step;
                 toggleSymptomDetails();
+                saveFormProgress();
             }
         }
 
@@ -660,6 +672,25 @@
             return isValid;
         }
 
+        // Salvar progresso do formulário
+        function saveFormProgress() {
+            const formData = {
+                sexo: document.getElementById('sexo').value,
+                idade: document.getElementById('idade').value,
+                peso: document.getElementById('peso').value,
+                altura: document.getElementById('altura').value,
+                sintomas: Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value),
+                sintomasSecundarios: Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value),
+                duracao: document.getElementById('duracao').value,
+                exposicao: document.getElementById('exposicao').value,
+                tabagismo: document.getElementById('tabagismo').value,
+                etilismo: document.getElementById('etilismo').value,
+                atividadeFisica: document.getElementById('atividade-fisica').value,
+                estresse: document.getElementById('estresse').value
+            };
+            localStorage.setItem('formProgress', JSON.stringify(formData));
+        }
+
         // Exibir campos adicionais para sintomas
         function toggleSymptomDetails() {
             const sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value);
@@ -685,62 +716,244 @@
             });
         });
 
-        // Diagnóstico com IA
-        function quickEnhancedDiagnosis(sintomas, emotionalData = {}) {
-            const emotionalScore = emotionalData.stressLevel || 
-                                 (sintomas.includes('Fadiga') ? 70 : 
-                                 (sintomas.includes('Dor de Cabeça') ? 65 : 50));
-            
-            const emotionalConditions = {
-                'Síndrome do Pânico': { symptoms: ['Dispneia', 'Tontura', 'Taquicardia'], emotionalThreshold: 80 },
-                'Burnout': { symptoms: ['Fadiga', 'Dor de Cabeça', 'Confusão Mental'], emotionalThreshold: 75 },
-                'Transtorno de Ansiedade': { symptoms: ['Tristeza Persistente', 'Dor Muscular', 'Tontura'], emotionalThreshold: 70 }
+        // Scanner Corporal (Simulado para Implementação Imediata)
+        async function activateCameraScanner(type) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                document.getElementById('scanner-results').classList.remove('hidden');
+                document.getElementById('scanner-feedback').innerHTML = `<p>Simulação: Análise de pele detectou possíveis manchas cutâneas.</p>`;
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                document.getElementById('scanner-results').classList.remove('hidden');
+                document.getElementById('scanner-feedback').innerHTML = `<p class="text-red-500">Erro: Permissão de câmera negada ou dispositivo não suportado.</p>`;
+            }
+        }
+
+        // Análise de Voz (Simulada)
+        async function activateVoiceAnalysis() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementById('scanner-results').classList.remove('hidden');
+                document.getElementById('scanner-feedback').innerHTML = `<p>Simulação: Análise de voz indica possíveis sinais de estresse vocal.</p>`;
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                document.getElementById('scanner-results').classList.remove('hidden');
+                document.getElementById('scanner-feedback').innerHTML = `<p class="text-red-500">Erro: Permissão de microfone negada ou dispositivo não suportado.</p>`;
+            }
+        }
+
+        // Diagnóstico Avançado
+        async function enhancedDiagnosis(userData) {
+            const biometricData = { heartRate: 72, bloodPressure: '130/80' }; // Simulado
+            const emotionalAnalysis = await analyzeEmotionalPatterns(userData);
+            const visualAnalysis = userData.scannerResults || { skin: 'Normal', voice: 'Normal' };
+
+            const healthScores = {
+                physical: calculatePhysicalScore(userData, biometricData, visualAnalysis),
+                emotional: emotionalAnalysis.score,
+                metabolic: calculateMetabolicScore(userData, biometricData),
+                environmental: calculateEnvironmentalScore(userData)
             };
 
+            const diagnoses = await fetchAIDiagnosis({
+                symptoms: userData.symptoms,
+                history: userData.history,
+                biometrics: biometricData,
+                emotional: emotionalAnalysis,
+                visual: visualAnalysis
+            });
+
+            return {
+                healthScores,
+                primaryDiagnosis: diagnoses.primary,
+                differentialDiagnoses: diagnoses.differential,
+                recommendations: generatePersonalizedRecommendations(diagnoses.primary, healthScores, userData.lifestyle),
+                monitoringPlan: createMonitoringPlan(userData, diagnoses.primary)
+            };
+        }
+
+        async function analyzeEmotionalPatterns(userData) {
+            const emotionalScore = userData.stressLevel || 
+                                 (userData.symptoms.includes('Fadiga') ? 70 : 
+                                 (userData.symptoms.includes('Dor de Cabeça') ? 65 : 50));
+            return { score: emotionalScore, patterns: ['stress', 'fatigue'] };
+        }
+
+        function calculatePhysicalScore(userData, biometricData, visualAnalysis) {
+            let score = 80;
+            if (userData.symptoms.length > 3) score -= 10;
+            if (biometricData.heartRate > 100) score -= 5;
+            if (visualAnalysis.skin !== 'Normal') score -= 5;
+            return Math.max(0, score);
+        }
+
+        function calculateMetabolicScore(userData, biometricData) {
+            let score = 85;
+            if (userData.history.includes('Diabetes')) score -= 10;
+            if (userData.lifestyle.tabagismo === 'Fumante Ativo') score -= 5;
+            return Math.max(0, score);
+        }
+
+        function calculateEnvironmentalScore(userData) {
+            let score = 90;
+            if (userData.exposicao !== 'Nenhuma') score -= 15;
+            return Math.max(0, score);
+        }
+
+        async function fetchAIDiagnosis(data) {
             const physicalConditions = {
                 'Gripe': { symptoms: ['Febre/Hipertermia', 'Tosse', 'Fadiga', 'Dor Muscular'], probability: 80 },
                 'Dengue': { symptoms: ['Febre/Hipertermia', 'Dor Muscular', 'Manchas Cutâneas'], probability: 85 },
                 'Gastrite': { symptoms: ['Náusea/Vômito', 'Dor Abdominal'], probability: 70 }
             };
+            const emotionalConditions = {
+                'Síndrome do Pânico': { symptoms: ['Dispneia', 'Tontura', 'Tristeza Persistente'], emotionalThreshold: 80 },
+                'Burnout': { symptoms: ['Fadiga', 'Dor de Cabeça', 'Confusão Mental'], emotionalThreshold: 75 },
+                'Transtorno de Ansiedade': { symptoms: ['Tristeza Persistente', 'Dor Muscular', 'Tontura'], emotionalThreshold: 70 }
+            };
 
-            let diagnoses = [];
-            // Diagnósticos físicos
-            for (const [condition, data] of Object.entries(physicalConditions)) {
-                if (data.symptoms.some(s => sintomas.includes(s))) {
-                    diagnoses.push({ condition, probability: data.probability, recommendations: ['Consulte um médico', 'Repouso', 'Hidratação'] });
+            let primary = [], differential = [];
+            for (const [condition, info] of Object.entries(physicalConditions)) {
+                if (info.symptoms.some(s => data.symptoms.includes(s))) {
+                    primary.push({ condition, probability: info.probability });
+                } else {
+                    differential.push({ condition, probability: info.probability * 0.5 });
                 }
             }
-            // Diagnósticos emocionais
-            for (const [condition, data] of Object.entries(emotionalConditions)) {
-                if (emotionalScore >= data.emotionalThreshold && data.symptoms.some(s => sintomas.includes(s))) {
-                    diagnoses.push({ condition, probability: Math.min(90, emotionalScore + 20), recommendations: ['Avaliação psicológica', 'Exercícios de respiração 3x/dia', 'Redução de estresse'] });
+            for (const [condition, info] of Object.entries(emotionalConditions)) {
+                if (data.emotional.score >= info.emotionalThreshold && info.symptoms.some(s => data.symptoms.includes(s))) {
+                    primary.push({ condition, probability: Math.min(90, data.emotional.score + 20) });
+                } else {
+                    differential.push({ condition, probability: Math.min(90, data.emotional.score) * 0.5 });
                 }
             }
-            return diagnoses;
+            return { primary, differential };
+        }
+
+        function generatePersonalizedRecommendations(primaryDiagnosis, healthScores, lifestyle) {
+            const recommendations = {
+                medical: [],
+                lifestyle: []
+            };
+            primaryDiagnosis.forEach(d => {
+                if (['Gripe', 'Dengue', 'Gastrite'].includes(d.condition)) {
+                    recommendations.medical.push('Consulte um médico', 'Hidratação', 'Repouso');
+                } else {
+                    recommendations.medical.push('Avaliação psicológica');
+                    recommendations.lifestyle.push('Exercícios de respiração 3x/dia', 'Redução de estresse');
+                }
+            });
+            if (lifestyle.tabagismo === 'Fumante Ativo') {
+                recommendations.lifestyle.push('Reduzir tabagismo');
+            }
+            if (lifestyle.atividadeFisica === 'Sedentário') {
+                recommendations.lifestyle.push('Iniciar atividade física leve');
+            }
+            return recommendations;
+        }
+
+        function createMonitoringPlan(userData, primaryDiagnosis) {
+            return {
+                frequency: primaryDiagnosis.length > 0 ? 'Semanal' : 'Mensal',
+                actions: ['Monitorar sintomas', 'Acompanhar sinais vitais']
+            };
         }
 
         function processarDiagnostico() {
             if (validateStep(currentStep)) {
-                const sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value)
-                                    .concat(Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value));
-                const emotionalData = { stressLevel: parseInt(document.getElementById('estresse').value) || 0 };
-                const diagnoses = quickEnhancedDiagnosis(sintomas, emotionalData);
-                displayDiagnoses(diagnoses);
-                document.getElementById('quick-health-panel').classList.remove('hidden');
-                document.getElementById('diagnostico-form').classList.add('hidden');
+                const userData = {
+                    symptoms: Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value)
+                                .concat(Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value)),
+                    history: Array.from(document.querySelectorAll('input[name="cronicas"]:checked')).map(input => input.value),
+                    lifestyle: {
+                        tabagismo: document.getElementById('tabagismo').value,
+                        etilismo: document.getElementById('etilismo').value,
+                        atividadeFisica: document.getElementById('atividade-fisica').value
+                    },
+                    stressLevel: parseInt(document.getElementById('estresse').value) || 0,
+                    exposicao: document.getElementById('exposicao').value,
+                    scannerResults: document.getElementById('scanner-feedback').innerText
+                };
+                enhancedDiagnosis(userData).then(result => {
+                    displayHolisticDashboard(result);
+                    document.getElementById('diagnostico-form').classList.add('hidden');
+                    document.getElementById('holistic-dashboard').classList.remove('hidden');
+                });
             }
         }
 
-        function displayDiagnoses(diagnoses) {
-            const physicalDiagnoses = document.getElementById('physical-diagnoses');
-            const emotionalDiagnoses = document.getElementById('emotional-diagnoses');
-            const actionPlan = document.getElementById('action-plan');
-            
-            physicalDiagnoses.innerHTML = diagnoses.filter(d => !['Síndrome do Pânico', 'Burnout', 'Transtorno de Ansiedade'].includes(d.condition))
-                .map(d => `<p>${d.condition} (${d.probability}%): ${d.recommendations.join(', ')}</p>`).join('') || '<p>Nenhum diagnóstico físico identificado.</p>';
-            emotionalDiagnoses.innerHTML = diagnoses.filter(d => ['Síndrome do Pânico', 'Burnout', 'Transtorno de Ansiedade'].includes(d.condition))
-                .map(d => `<p>${d.condition} (${d.probability}%)</p>`).join('') || '<p>Nenhum diagnóstico emocional identificado.</p>';
-            actionPlan.innerHTML = diagnoses.flatMap(d => d.recommendations).map(r => `<li>${r}</li>`).join('') || '<li>Sem recomendações no momento.</li>';
+        function displayHolisticDashboard(result) {
+            document.getElementById('overall-health-score').textContent = Math.round(
+                (result.healthScores.physical + result.healthScores.emotional + 
+                 result.healthScores.metabolic + result.healthScores.environmental) / 4
+            );
+            document.getElementById('physical-score').textContent = result.healthScores.physical;
+            document.getElementById('emotional-score').textContent = result.healthScores.emotional;
+            document.getElementById('metabolic-score').textContent = result.healthScores.metabolic;
+            document.getElementById('environmental-score').textContent = result.healthScores.environmental;
+
+            document.getElementById('medical-actions').innerHTML = result.recommendations.medical
+                .map(action => `<li>${action}</li>`).join('');
+            document.getElementById('lifestyle-actions').innerHTML = result.recommendations.lifestyle
+                .map(action => `<li>${action}</li>`).join('');
+
+            // Gráficos
+            new Chart(document.getElementById('physical-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Física'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.physical],
+                        backgroundColor: '#22d3ee',
+                        borderColor: '#22d3ee',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+            new Chart(document.getElementById('emotional-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Emocional'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.emotional],
+                        backgroundColor: '#7C3AED',
+                        borderColor: '#7C3AED',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+            new Chart(document.getElementById('metabolic-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Metabólica'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.metabolic],
+                        backgroundColor: '#22d3ee',
+                        borderColor: '#22d3ee',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+            new Chart(document.getElementById('environmental-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Ambiental'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.environmental],
+                        backgroundColor: '#7C3AED',
+                        borderColor: '#7C3AED',
+                        borderWidth: 1
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
         }
 
         // Menu mobile
