@@ -15,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@1.0.0/dist/face-landmarks-detection.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Fontes -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
@@ -146,31 +147,100 @@
             overflow: hidden;
         }
         
-        .biofeedback-line {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary-color);
-            transform-origin: left center;
+        /* Estilos para os sensores */
+        .sensor-status {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
-        .emotion-marker {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
+        .sensor-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
         }
         
-        .pulse-dot {
+        .sensor-active {
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.5);
+            color: #22d3ee;
+        }
+        
+        .sensor-inactive {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            animation: pulse 2s infinite;
+        }
+        
+        .sensor-icon {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: var(--danger-color);
-            position: absolute;
-            animation: pulse 1.5s infinite;
+        }
+        
+        .sensor-active .sensor-icon {
+            background: #22d3ee;
+            box-shadow: 0 0 5px #22d3ee;
+        }
+        
+        .sensor-inactive .sensor-icon {
+            background: #ef4444;
+            box-shadow: 0 0 5px #ef4444;
+        }
+        
+        /* Alerta de sensores */
+        .sensor-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .sensor-alert-content {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+        }
+        
+        .sensor-alert-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .sensor-alert-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .sensor-alert-content button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sensor-alert-content button:hover {
+            background: var(--secondary-color);
         }
         
         /* AR Overlay */
@@ -207,6 +277,10 @@
             
             .biofeedback-container {
                 height: 200px;
+            }
+            
+            .sensor-status {
+                flex-direction: column;
             }
         }
     </style>
@@ -374,6 +448,23 @@
                 <!-- Biofeedback -->
                 <div class="neon-card p-6">
                     <h2 class="text-2xl font-bold mb-4 text-white">Biofeedback Emocional</h2>
+                    
+                    <!-- Indicadores de Sensor -->
+                    <div class="sensor-status">
+                        <div id="face-status" class="sensor-indicator">
+                            <div class="sensor-icon"></div>
+                            <span>Detecção Facial</span>
+                        </div>
+                        <div id="voice-status" class="sensor-indicator">
+                            <div class="sensor-icon"></div>
+                            <span>Análise de Voz</span>
+                        </div>
+                        <div id="ppg-status" class="sensor-indicator">
+                            <div class="sensor-icon"></div>
+                            <span>Frequência Cardíaca</span>
+                        </div>
+                    </div>
+                    
                     <div class="biofeedback-container">
                         <canvas id="biofeedback-canvas" width="600" height="300"></canvas>
                     </div>
@@ -789,7 +880,12 @@
             currentHrv: null,
             currentVoiceSentiment: null,
             biofeedbackData: [],
-            analysisHistory: []
+            analysisHistory: [],
+            sensorStatus: {
+                face: { active: false, lastDetection: null, message: "Posicione seu rosto na câmera" },
+                voice: { active: false, lastDetection: null, message: "Fale continuamente por 15 segundos" },
+                ppg: { active: false, lastDetection: null, message: "Mantenha-se iluminado para detecção cardíaca" }
+            }
         };
         
         // Elementos DOM
@@ -818,7 +914,10 @@
             newAnalysisBtn: document.getElementById('new-analysis-btn'),
             userContext: document.getElementById('user-context'),
             biofeedbackCanvas: document.getElementById('biofeedback-canvas'),
-            historyChart: document.getElementById('history-chart')
+            historyChart: document.getElementById('history-chart'),
+            faceStatus: document.getElementById('face-status'),
+            voiceStatus: document.getElementById('voice-status'),
+            ppgStatus: document.getElementById('ppg-status')
         };
         
         // =============================================
@@ -892,7 +991,7 @@
                 console.log('Todos os modelos carregados com sucesso');
             } catch (error) {
                 console.error('Erro ao carregar modelos:', error);
-                alert('Erro ao inicializar os recursos de IA. Por favor, recarregue a página.');
+                showErrorModal('Erro ao inicializar os recursos de IA. Por favor, recarregue a página.');
             }
         }
         
@@ -931,6 +1030,45 @@
         }
         
         // =============================================
+        // Monitoramento de Sensores
+        // =============================================
+        function checkAllSensors() {
+            const now = Date.now();
+            const timeThreshold = 5000; // 5 segundos para considerar inativo
+            
+            // Atualiza status com base na última detecção
+            Object.keys(state.sensorStatus).forEach(sensor => {
+                state.sensorStatus[sensor].active = state.sensorStatus[sensor].lastDetection && 
+                                     (now - state.sensorStatus[sensor].lastDetection) < timeThreshold;
+            });
+
+            // Atualiza UI
+            updateSensorUI();
+            
+            // Retorna se todos estão ativos
+            return Object.values(state.sensorStatus).every(s => s.active);
+        }
+
+        function updateSensorUI() {
+            Object.keys(state.sensorStatus).forEach(sensor => {
+                const element = document.getElementById(`${sensor}-status`);
+                if (element) {
+                    if (state.sensorStatus[sensor].active) {
+                        element.classList.add('sensor-active');
+                        element.classList.remove('sensor-inactive');
+                    } else {
+                        element.classList.add('sensor-inactive');
+                        element.classList.remove('sensor-active');
+                    }
+                    element.title = state.sensorStatus[sensor].message;
+                }
+            });
+            
+            // Atualiza o botão de análise
+            dom.analyzeBtn.disabled = !checkAllSensors();
+        }
+        
+        // =============================================
         // Fluxo Principal de Análise
         // =============================================
         async function startAnalysisFlow() {
@@ -959,9 +1097,6 @@
                 // Inicializa o analisador de voz
                 initVoiceAnalyzer();
                 
-                // Habilita o botão de análise
-                dom.analyzeBtn.disabled = false;
-                
                 // Inicia o loop de detecção facial
                 state.isAnalyzing = true;
                 detectFaces();
@@ -969,7 +1104,7 @@
                 console.log('Análise inicializada com sucesso');
             } catch (error) {
                 console.error('Erro ao iniciar análise:', error);
-                alert('Não foi possível acessar a câmera/microfone. Verifique as permissões.');
+                showErrorModal('Não foi possível acessar a câmera/microfone. Verifique as permissões.');
             }
         }
         
@@ -994,6 +1129,10 @@
                 ).withFaceLandmarks().withFaceExpressions();
                 
                 if (detections.length > 0) {
+                    // Atualiza status do sensor facial
+                    state.sensorStatus.face.lastDetection = Date.now();
+                    state.sensorStatus.face.message = "Rosto detectado";
+                    
                     // Pega a primeira face detectada
                     const detection = detections[0];
                     
@@ -1005,9 +1144,13 @@
                     drawFaceLandmarks(detection.landmarks);
                 } else {
                     // Sem faces detectadas
+                    state.sensorStatus.face.message = "Posicione seu rosto na câmera";
                     dom.emotionValue.textContent = '--';
                     dom.faceOverlay.innerHTML = '';
                 }
+                
+                // Atualiza UI dos sensores
+                updateSensorUI();
                 
                 // Continua o loop
                 requestAnimationFrame(detectFaces);
@@ -1146,6 +1289,16 @@
                     
                     // Atualiza a UI
                     updatePPGUI();
+                    
+                    // Atualiza status do sensor PPG
+                    if (state.ppgProcessor.bpm) {
+                        state.sensorStatus.ppg.lastDetection = now;
+                        state.sensorStatus.ppg.message = `Batimento detectado: ${state.ppgProcessor.bpm} BPM`;
+                    } else {
+                        state.sensorStatus.ppg.message = "Ajustando detecção cardíaca...";
+                    }
+                    
+                    updateSensorUI();
                     
                     // Continua o processamento
                     setTimeout(processFrame, 1000 / config.ppg.sampleRate);
@@ -1294,17 +1447,39 @@
         }
         
         function updateVoiceUI(volume) {
-            // Simula análise de sentimento baseada no volume e tom
+            const now = Date.now();
+            
             if (volume < 5) {
-                dom.voiceValue.textContent = 'Silêncio';
-                state.currentVoiceSentiment = 'neutro';
+                state.sensorStatus.voice.message = "Fale mais alto (volume baixo)";
+                state.sensorStatus.voice.lastDetection = null;
+                state.currentVoiceSentiment = null;
+                dom.voiceValue.textContent = '--';
             } else {
-                // Em uma implementação real, isso usaria análise espectral e ML
-                const sentiments = ['positivo', 'neutro', 'negativo'];
-                const randomSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
+                state.sensorStatus.voice.lastDetection = now;
+                state.sensorStatus.voice.message = "Voz detectada";
                 
-                dom.voiceValue.textContent = randomSentiment.charAt(0).toUpperCase() + randomSentiment.slice(1);
-                state.currentVoiceSentiment = randomSentiment;
+                // Análise simplificada do tom (em produção seria mais sofisticada)
+                const sentiment = analyzeVoiceTone(volume);
+                dom.voiceValue.textContent = sentiment.text;
+                state.currentVoiceSentiment = sentiment.type;
+            }
+            
+            updateSensorUI();
+        }
+        
+        function analyzeVoiceTone(volume) {
+            // Em produção, isso usaria análise espectral e ML
+            // Aqui é uma simulação básica
+            
+            // Gera um valor aleatório para demonstração
+            const random = Math.random();
+            
+            if (random > 0.7) {
+                return { type: 'positivo', text: 'Positivo' };
+            } else if (random > 0.3) {
+                return { type: 'neutro', text: 'Neutro' };
+            } else {
+                return { type: 'negativo', text: 'Negativo' };
             }
         }
         
@@ -1312,8 +1487,17 @@
         // Execução da Análise Completa
         // =============================================
         async function performAnalysis() {
-            if (!state.currentEmotion || !state.currentBpm || !state.currentVoiceSentiment) {
-                alert('Por favor, espere até que todos os sinais sejam detectados.');
+            if (!checkAllSensors()) {
+                const missingSensors = Object.entries(state.sensorStatus)
+                    .filter(([_, status]) => !status.active)
+                    .map(([sensor]) => sensor);
+                
+                let message = "<strong>Por favor, ajuste os seguintes sensores:</strong><br><br>";
+                message += missingSensors.map(sensor => {
+                    return `• <strong>${sensor.toUpperCase()}:</strong> ${state.sensorStatus[sensor].message}`;
+                }).join('<br>');
+                
+                showSensorAlert(message);
                 return;
             }
             
@@ -1340,7 +1524,7 @@
                 console.log('Análise concluída:', results);
             } catch (error) {
                 console.error('Erro na análise:', error);
-                alert('Erro ao processar a análise. Por favor, tente novamente.');
+                showErrorModal('Erro ao processar a análise. Por favor, tente novamente.');
             } finally {
                 dom.analyzeBtn.innerHTML = '<span>Analisar Agora</span><i class="fas fa-search icon"></i>';
             }
@@ -1469,7 +1653,7 @@
                 renderAR();
             } catch (error) {
                 console.error('Erro ao iniciar AR:', error);
-                alert('Não foi possível acessar a câmera para o modo AR.');
+                showErrorModal('Não foi possível acessar a câmera para o modo AR.');
             }
         }
         
@@ -1860,6 +2044,46 @@
             
             // Habilita botão de análise
             dom.analyzeBtn.disabled = false;
+            
+            // Reinicia os sensores
+            Object.keys(state.sensorStatus).forEach(sensor => {
+                state.sensorStatus[sensor].active = false;
+                state.sensorStatus[sensor].lastDetection = null;
+            });
+            
+            updateSensorUI();
+        }
+        
+        function showSensorAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.className = 'sensor-alert';
+            alertBox.innerHTML = `
+                <div class="sensor-alert-content">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-4">Ajuste necessário</h3>
+                    <p class="text-gray-300 mb-6">${message}</p>
+                    <button class="futuristic-btn px-6 py-2" onclick="this.parentElement.parentElement.remove()">
+                        <span>Entendido</span>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(alertBox);
+        }
+        
+        function showErrorModal(message) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4 border border-cyan-400">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-4">Erro</h3>
+                    <p class="text-gray-300 mb-6">${message}</p>
+                    <button class="futuristic-btn px-6 py-2 w-full" onclick="this.parentElement.parentElement.remove()">
+                        <span>OK</span>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
         }
     </script>
 </body>
