@@ -630,6 +630,345 @@
             margin: 0 auto;
         }
         
+        /* Novos estilos adicionados */
+        .ar-preview {
+            margin: 30px 0;
+            text-align: center;
+        }
+        .ar-overlay {
+            display: none;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+        }
+        .ar-overlay video {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+        }
+        .ai-demo {
+            padding: 60px 0;
+        }
+        .demo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .demo-questions {
+            margin: 30px 0;
+        }
+        .question {
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s;
+        }
+        .question h4 {
+            margin-bottom: 15px;
+        }
+        .answer-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .answer-btn {
+            padding: 12px 20px;
+            background: #F3F4F6;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .answer-btn:hover {
+            background: #E5E7EB;
+        }
+        .demo-result {
+            background: #F9FAFB;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
+        }
+        .result-content {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .comparison {
+            padding: 60px 0;
+        }
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .comparison-header, .comparison-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .comparison-header {
+            background: var(--dark);
+            color: white;
+            font-weight: 600;
+        }
+        .comparison-row {
+            padding: 20px;
+            align-items: center;
+        }
+        .comparison-row.highlight {
+            background: rgba(74, 144, 226, 0.1);
+            font-weight: 600;
+        }
+        .feature-col, .traditional-col, .medai-col {
+            padding: 15px;
+        }
+        .traditional-col {
+            color: #EF4444;
+            position: relative;
+        }
+        .traditional-col::before {
+            content: "✖";
+            margin-right: 8px;
+        }
+        .medai-col {
+            color: #10B981;
+            position: relative;
+        }
+        .medai-col::before {
+            content: "✓";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        .timeline {
+            padding: 60px 0;
+            background: rgba(255,255,255,0.95);
+        }
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        .timeline-date {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .timeline-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .timeline-content h4 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+            right: -10px;
+            top: 30px;
+        }
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+            left: -10px;
+            top: 30px;
+        }
+        .wearables-integration {
+            text-align: center;
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 20px;
+        }
+        .wearables-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .wearable-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .wearable-item img {
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        .wearable-item:hover img {
+            transform: translateY(-5px);
+        }
+        .sync-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px auto;
+            position: relative;
+            height: 150px;
+            max-width: 500px;
+        }
+        .phone, .watch {
+            background: #1A252F;
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .phone {
+            width: 80px;
+            height: 150px;
+            padding: 10px;
+        }
+        .watch {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            padding: 8px;
+        }
+        .screen {
+            background: linear-gradient(135deg, #4A90E2, #2D5E9D);
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            animation: pulse 3s infinite;
+        }
+        .waves {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            display: flex;
+            justify-content: center;
+        }
+        .wave {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            animation: wave 3s infinite;
+        }
+        .wave:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        .wave:nth-child(3) {
+            animation-delay: 1s;
+        }
+        .impact-counter {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--dark), var(--secondary));
+            color: white;
+        }
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        .counter-item {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+        }
+        .counter-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, white, #E5E7EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .counter-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .live-feed {
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .feed-header {
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feed-content {
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .feed-item {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s;
+        }
+        .feed-item img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        .feed-item .text {
+            font-size: 14px;
+        }
+        .feed-item .time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-left: auto;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -639,6 +978,11 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
+        }
+        
+        @keyframes wave {
+            0% { transform: scale(0.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
         }
         
         .pulse {
@@ -664,6 +1008,14 @@
             
             .offer .price {
                 font-size: 60px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: -10px;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+                right: auto;
             }
         }
         
@@ -695,6 +1047,29 @@
             .guarantee {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .timeline-container::before {
+                left: 40px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .comparison-header, .comparison-row {
+                grid-template-columns: 1fr;
+            }
+            .feature-col, .traditional-col, .medai-col {
+                padding: 10px;
+            }
+            .traditional-col::before, .medai-col::before {
+                display: inline-block;
+                width: 20px;
             }
         }
         
@@ -746,11 +1121,19 @@
                     <img src="https://via.placeholder.com/180x60" alt="MedAI Brasil" class="hero-logo">
                     <h2><span>SAÚDE INTELIGENTE</span> CHEGOU AO BRASIL</h2>
                     <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
-                    <div>
-                        <a href="#offer" class="btn btn-primary btn-lg pulse">
-                            <i class="fas fa-arrow-right"></i> QUERO MINHA SAÚDE TRANSFORMADA
-                        </a>
+                    
+                    <div class="ar-preview">
+                        <button id="ar-button" class="btn btn-primary">
+                            <i class="fas fa-mobile-alt"></i> EXPERIMENTE EM REALIDADE AUMENTADA
+                        </button>
+                        <div class="ar-overlay">
+                            <video autoplay loop muted playsinline>
+                                <source src="ar-demo.mp4" type="video/mp4">
+                            </video>
+                            <p>Aponte sua câmera para ver como o scanner funciona em seu ambiente</p>
+                        </div>
                     </div>
+                    
                     <div class="trust-badges">
                         <div class="trust-badge">
                             <i class="fas fa-check-circle"></i> +75.000 pacientes atendidos
@@ -764,6 +1147,26 @@
                     </div>
                 </div>
                 <div class="hero-bg"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="ai-demo">
+        <div class="container">
+            <div class="demo-card">
+                <h3>EXPERIMENTE NOSSA IA AGORA MESMO</h3>
+                <p>Responda 3 perguntas rápidas e veja como nossa IA analisa sua saúde:</p>
+                
+                <div class="demo-questions">
+                    <!-- Questões aparecerão aqui dinamicamente -->
+                </div>
+                
+                <div class="demo-result" style="display:none;">
+                    <h4>ANÁLISE PRELIMINAR DA IA:</h4>
+                    <div class="result-content"></div>
+                    <p class="disclaimer">Esta é apenas uma demonstração. Para análise completa, assine nosso serviço.</p>
+                    <button class="btn btn-primary" id="try-again">Tentar Novamente</button>
+                </div>
             </div>
         </div>
     </section>
@@ -1008,6 +1411,150 @@
                         </a>
                     </div>
                 </div>
+                
+                <div class="wearables-integration">
+                    <h3>COMPATÍVEL COM SEUS DISPOSITIVOS</h3>
+                    <p>Sincronize facilmente com seus wearables favoritos para dados ainda mais precisos</p>
+                    
+                    <div class="wearables-grid">
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Apple Watch">
+                            <span>Apple Watch</span>
+                        </div>
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Samsung Galaxy Watch">
+                            <span>Samsung Watch</span>
+                        </div>
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Fitbit">
+                            <span>Fitbit</span>
+                        </div>
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Garmin">
+                            <span>Garmin</span>
+                        </div>
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Xiaomi">
+                            <span>Xiaomi</span>
+                        </div>
+                        <div class="wearable-item">
+                            <img src="https://via.placeholder.com/80x80" alt="Withings">
+                            <span>Withings</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sync-animation">
+                        <div class="phone">
+                            <div class="screen"></div>
+                        </div>
+                        <div class="waves">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                            <div class="wave"></div>
+                        </div>
+                        <div class="watch">
+                            <div class="screen"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2>PORQUE NOSSA TECNOLOGIA É REVOLUCIONÁRIA</h2>
+                <p>Compare com os métodos tradicionais de monitoramento de saúde</p>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div class="feature-col">RECURSO</div>
+                    <div class="traditional-col">MÉTODOS TRADICIONAIS</div>
+                    <div class="medai-col">MEDAI BRASIL</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-col">Frequência Cardíaca</div>
+                    <div class="traditional-col">Eletrocardiograma (R$ 300+)</div>
+                    <div class="medai-col">Monitoramento contínuo via câmera</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-col">Análise Respiratória</div>
+                    <div class="traditional-col">Espirometria (R$ 250+)</div>
+                    <div class="medai-col">Detecção por padrões de voz</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-col">Acompanhamento Emocional</div>
+                    <div class="traditional-col">Terapia (R$ 200/sessão)</div>
+                    <div class="medai-col">Suporte 24/7 com IA especializada</div>
+                </div>
+                
+                <div class="comparison-row">
+                    <div class="feature-col">Painel Completo</div>
+                    <div class="traditional-col">Check-up anual (R$ 1.500+)</div>
+                    <div class="medai-col">Dashboard atualizado em tempo real</div>
+                </div>
+                
+                <div class="comparison-row highlight">
+                    <div class="feature-col">Custo Anual Estimado</div>
+                    <div class="traditional-col">R$ 4.000+</div>
+                    <div class="medai-col">Apenas R$ 997 (ou 12x R$97)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="timeline">
+        <div class="container">
+            <div class="section-header">
+                <h2>SAÚDE PREDITIVA: O FUTURO DA MEDICINA</h2>
+                <p>Veja como nossa IA pode prever e prevenir problemas antes que ocorram</p>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-date">HOJE</div>
+                    <div class="timeline-content">
+                        <h4>Monitoramento Básico</h4>
+                        <p>Frequência cardíaca, padrões de sono e níveis de estresse</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">30 DIAS</div>
+                    <div class="timeline-content">
+                        <h4>Padrões Identificados</h4>
+                        <p>A IA detecta anomalias e padrões preocupantes em seus dados</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">90 DIAS</div>
+                    <div class="timeline-content">
+                        <h4>Alertas Preventivos</h4>
+                        <p>Notificações sobre possíveis problemas de saúde futuros</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">1 ANO</div>
+                    <div class="timeline-content">
+                        <h4>Prevenção de Doenças</h4>
+                        <p>Intervenções precoces podem evitar 80% dos problemas cardíacos</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">5 ANOS</div>
+                    <div class="timeline-content">
+                        <h4>Longevidade Aumentada</h4>
+                        <p>Usuários regulares mostram 40% menos hospitalizações</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1072,6 +1619,43 @@
                         <h3>Garantia de Satisfação de 30 Dias</h3>
                         <p>Se em 30 dias você não estiver completamente satisfeito, devolvemos 100% do seu dinheiro sem questionamentos.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="impact-counter">
+        <div class="container">
+            <div class="section-header">
+                <h2>NOSSO IMPACTO NA SAÚDE DOS BRASILEIROS</h2>
+                <p>Junte-se a milhares de usuários que já transformaram sua saúde</p>
+            </div>
+            
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <div class="counter-number" data-target="75243">0</div>
+                    <div class="counter-label">Pacientes Atendidos</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" data-target="1247">0</div>
+                    <div class="counter-label">Problemas Detectados</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" data-target="98">0</div>
+                    <div class="counter-label">Porcento de Satisfação</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" data-target="365">0</div>
+                    <div class="counter-label">Dias de Monitoramento</div>
+                </div>
+            </div>
+            
+            <div class="live-feed">
+                <div class="feed-header">
+                    <i class="fas fa-bell"></i> ATIVIDADE RECENTE:
+                </div>
+                <div class="feed-content">
+                    <!-- Itens serão adicionados dinamicamente -->
                 </div>
             </div>
         </div>
@@ -1254,6 +1838,174 @@
                 }
             });
         });
+        
+        // AR Preview
+        document.getElementById('ar-button').addEventListener('click', function() {
+            const overlay = document.querySelector('.ar-overlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+            
+            if(overlay.style.display === 'block') {
+                this.innerHTML = '<i class="fas fa-times"></i> FECHAR VISUALIZAÇÃO AR';
+            } else {
+                this.innerHTML = '<i class="fas fa-mobile-alt"></i> EXPERIMENTE EM REALIDADE AUMENTADA';
+            }
+        });
+        
+        // Demo de IA
+        const questions = [
+            {
+                question: "Como você classificaria seu nível de estresse recentemente?",
+                answers: ["Quase nenhum", "Moderado", "Alto", "Extremo"],
+                responses: [
+                    "Ótimo sinal! Seu relato de baixo estresse é benéfico para saúde cardiovascular.",
+                    "O estresse moderado pode ser administrável, mas nossa IA pode ajudar a reduzir ainda mais.",
+                    "Níveis altos de estresse merecem atenção. Nosso módulo emocional pode ajudar significativamente.",
+                    "Estresse extremo requer cuidados. Recomendamos nosso acompanhamento emocional 24/7."
+                ]
+            },
+            {
+                question: "Com que frequência você pratica atividades físicas?",
+                answers: ["Diariamente", "3-4 vezes/semana", "Raramente", "Quase nunca"],
+                responses: [
+                    "Excelente! Atividade física regular é um dos melhores indicadores de saúde.",
+                    "Boa frequência! Nossa IA pode sugerir otimizações para seus treinos.",
+                    "Aumentar a atividade física pode trazer benefícios significativos. Podemos ajudar!",
+                    "Sedentarismo é fator de risco importante. Nosso plano personalizado pode mudar isso."
+                ]
+            },
+            {
+                question: "Como está a qualidade do seu sono?",
+                answers: ["Excelente (7-9h tranquilas)", "Regular (acordo cansado)", "Ruim (dificuldade para dormir)", "Muito ruim (insônia frequente)"],
+                responses: [
+                    "Sono de qualidade é fundamental e você está no caminho certo!",
+                    "Pequenos ajustes podem melhorar sua qualidade de sono. Temos soluções!",
+                    "Problemas de sono afetam saúde geral. Nosso scanner detecta padrões preocupantes.",
+                    "Insônia frequente merece atenção profissional. Podemos indicar especialistas."
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userResponses = [];
+
+        function showQuestion(index) {
+            const q = questions[index];
+            let html = `<div class="question">
+                <h4>${q.question}</h4>
+                <div class="answer-options">`;
+            
+            q.answers.forEach((answer, i) => {
+                html += `<div class="answer-btn" data-index="${i}">${answer}</div>`;
+            });
+            
+            html += `</div></div>`;
+            document.querySelector('.demo-questions').innerHTML = html;
+            
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    userResponses.push(parseInt(this.getAttribute('data-index')));
+                    if(currentQuestion < questions.length - 1) {
+                        currentQuestion++;
+                        showQuestion(currentQuestion);
+                    } else {
+                        showResult();
+                    }
+                });
+            });
+        }
+
+        function showResult() {
+            document.querySelector('.demo-questions').style.display = 'none';
+            const resultDiv = document.querySelector('.demo-result');
+            resultDiv.style.display = 'block';
+            
+            let resultHTML = '';
+            questions.forEach((q, i) => {
+                resultHTML += `<p><strong>${q.question}</strong><br>
+                Sua resposta: ${q.answers[userResponses[i]]}<br>
+                ${q.responses[userResponses[i]]}</p><hr>`;
+            });
+            
+            resultHTML += `<p class="pulse" style="color: var(--primary); font-weight: 600;">
+                Com o acesso completo, nossa IA cruzaria esses dados com 127 outros indicadores para uma análise precisa!
+            </p>`;
+            
+            document.querySelector('.result-content').innerHTML = resultHTML;
+            
+            document.getElementById('try-again').addEventListener('click', function() {
+                currentQuestion = 0;
+                userResponses = [];
+                document.querySelector('.demo-questions').style.display = 'block';
+                document.querySelector('.demo-questions').innerHTML = '';
+                resultDiv.style.display = 'none';
+                showQuestion(0);
+            });
+        }
+
+        // Iniciar a demonstração
+        showQuestion(0);
+        
+        // Contadores animados
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter-number');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                
+                if(count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(animateCounters, 1);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            });
+        }
+
+        // Feed de atividade simulada
+        const activities = [
+            { name: "Ana C.", city: "São Paulo", action: "acabou de detectar uma anomalia cardíaca", time: "1 min atrás" },
+            { name: "Carlos M.", city: "Rio de Janeiro", action: "iniciou acompanhamento emocional", time: "3 mins atrás" },
+            { name: "Mariana R.", city: "Belo Horizonte", action: "recebeu alerta preventivo de saúde", time: "7 mins atrás" },
+            { name: "João P.", city: "Porto Alegre", action: "sincronizou seu Apple Watch", time: "12 mins atrás" },
+            { name: "Fernanda S.", city: "Recife", action: "completou 30 dias de monitoramento", time: "18 mins atrás" },
+            { name: "Roberto L.", city: "Brasília", action: "detectou melhora nos padrões de sono", time: "25 mins atrás" }
+        ];
+
+        function addFeedItem() {
+            if(activities.length === 0) return;
+            
+            const activity = activities.shift();
+            const feedItem = document.createElement('div');
+            feedItem.className = 'feed-item';
+            feedItem.innerHTML = `
+                <img src="https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg" alt="${activity.name}">
+                <div class="text"><strong>${activity.name}</strong> (${activity.city}) ${activity.action}</div>
+                <div class="time">${activity.time}</div>
+            `;
+            
+            const feedContent = document.querySelector('.feed-content');
+            feedContent.insertBefore(feedItem, feedContent.firstChild);
+            
+            if(feedContent.children.length > 5) {
+                feedContent.removeChild(feedContent.lastChild);
+            }
+            
+            setTimeout(addFeedItem, Math.random() * 5000 + 3000);
+        }
+
+        // Iniciar animações quando a seção for visível
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                animateCounters();
+                addFeedItem();
+                observer.disconnect();
+            }
+        }, { threshold: 0.1 });
+
+        observer.observe(document.querySelector('.impact-counter'));
     </script>
 </body>
 </html>
