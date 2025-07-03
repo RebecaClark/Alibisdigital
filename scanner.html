@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection@1.0.0/dist/face-landmarks-detection.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     
     <!-- Fontes -->
@@ -816,7 +817,8 @@
             saveReportBtn: document.getElementById('save-report-btn'),
             newAnalysisBtn: document.getElementById('new-analysis-btn'),
             userContext: document.getElementById('user-context'),
-            biofeedbackCanvas: document.getElementById('biofeedback-canvas')
+            biofeedbackCanvas: document.getElementById('biofeedback-canvas'),
+            historyChart: document.getElementById('history-chart')
         };
         
         // =============================================
@@ -863,7 +865,7 @@
         // =============================================
         async function loadModels() {
             try {
-                // Carrega modelo de detecção facial
+                // Carrega modelo de detecção facial do TensorFlow.js
                 state.faceDetector = await faceLandmarksDetection.createDetector(
                     faceLandmarksDetection.SupportedModels.MediaPipeFaceDetector, {
                         runtime: 'mediapipe',
@@ -871,7 +873,7 @@
                         solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection'
                     }
                 );
-                
+
                 // Carrega modelo de landmarks faciais
                 state.faceMesh = await faceLandmarksDetection.createDetector(
                     faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh, {
@@ -881,23 +883,12 @@
                         solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh'
                     }
                 );
-                
-                // Carrega modelo de emoções (simulado - na prática seria um modelo customizado)
-                state.emotionModel = {
-                    predict: async (faceImage) => {
-                        // Simulação - em produção usaria um modelo TensorFlow.js treinado
-                        const emotions = ['neutro', 'feliz', 'triste', 'surpreso', 'com raiva', 'com medo', 'com nojo'];
-                        const scores = emotions.map(() => Math.random());
-                        const total = scores.reduce((a, b) => a + b, 0);
-                        const normalized = scores.map(s => s / total);
-                        
-                        return emotions.reduce((acc, emotion, i) => {
-                            acc[emotion] = normalized[i];
-                            return acc;
-                        }, {});
-                    }
-                };
-                
+
+                // Carrega modelo de emoções (usando Face API.js)
+                await faceapi.nets.tinyFaceDetector.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+                await faceapi.nets.faceLandmark68Net.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+                await faceapi.nets.faceExpressionNet.loadFromUri('https://justadudewhohacks.github.io/face-api.js/models');
+
                 console.log('Todos os modelos carregados com sucesso');
             } catch (error) {
                 console.error('Erro ao carregar modelos:', error);
@@ -972,6 +963,7 @@
                 dom.analyzeBtn.disabled = false;
                 
                 // Inicia o loop de detecção facial
+                state.isAnalyzing = true;
                 detectFaces();
                 
                 console.log('Análise inicializada com sucesso');
@@ -995,27 +987,22 @@
                 
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
-                // Detecta faces
-                const faces = await state.faceDetector.estimateFaces(canvas);
+                // Detecta faces com Face API.js
+                const detections = await faceapi.detectAllFaces(
+                    canvas, 
+                    new faceapi.TinyFaceDetectorOptions()
+                ).withFaceLandmarks().withFaceExpressions();
                 
-                if (faces.length > 0) {
-                    const face = faces[0];
+                if (detections.length > 0) {
+                    // Pega a primeira face detectada
+                    const detection = detections[0];
                     
-                    // Detecta landmarks faciais para emoção
-                    const landmarks = await state.faceMesh.estimateFaces(canvas);
+                    // Atualiza estado e UI
+                    state.currentEmotion = getDominantEmotion(detection.expressions);
+                    updateEmotionUI(state.currentEmotion);
                     
-                    if (landmarks.length > 0) {
-                        // Analisa emoção (simplificado - na prática usaria o modelo carregado)
-                        const emotionResults = await state.emotionModel.predict(canvas);
-                        const dominantEmotion = getDominantEmotion(emotionResults);
-                        
-                        // Atualiza estado e UI
-                        state.currentEmotion = dominantEmotion;
-                        updateEmotionUI(dominantEmotion);
-                        
-                        // Desenha landmarks faciais (para visualização)
-                        drawFaceLandmarks(landmarks[0]);
-                    }
+                    // Desenha landmarks faciais
+                    drawFaceLandmarks(detection.landmarks);
                 } else {
                     // Sem faces detectadas
                     dom.emotionValue.textContent = '--';
@@ -1026,15 +1013,15 @@
                 requestAnimationFrame(detectFaces);
             } catch (error) {
                 console.error('Erro na detecção facial:', error);
-                setTimeout(detectFaces, 1000); // Tenta novamente após 1s
+                setTimeout(detectFaces, 1000);
             }
         }
         
-        function getDominantEmotion(emotionScores) {
+        function getDominantEmotion(expressions) {
             let maxScore = 0;
-            let dominantEmotion = 'neutro';
+            let dominantEmotion = 'neutral';
             
-            for (const [emotion, score] of Object.entries(emotionScores)) {
+            for (const [emotion, score] of Object.entries(expressions)) {
                 if (score > maxScore) {
                     maxScore = score;
                     dominantEmotion = emotion;
@@ -1044,22 +1031,22 @@
             return {
                 emotion: dominantEmotion,
                 confidence: maxScore,
-                scores: emotionScores
+                scores: expressions
             };
         }
         
         function updateEmotionUI(emotionData) {
             const emotionMap = {
-                'feliz': { text: 'Feliz', color: 'text-green-400', icon: 'fa-smile' },
-                'triste': { text: 'Triste', color: 'text-blue-400', icon: 'fa-frown' },
-                'surpreso': { text: 'Surpreso', color: 'text-yellow-400', icon: 'fa-surprise' },
-                'com raiva': { text: 'Raiva', color: 'text-red-400', icon: 'fa-angry' },
-                'com medo': { text: 'Medo', color: 'text-purple-400', icon: 'fa-flushed' },
-                'com nojo': { text: 'Nojo', color: 'text-orange-400', icon: 'fa-grimace' },
-                'neutro': { text: 'Neutro', color: 'text-gray-400', icon: 'fa-meh' }
+                'happy': { text: 'Feliz', color: 'text-green-400', icon: 'fa-smile' },
+                'sad': { text: 'Triste', color: 'text-blue-400', icon: 'fa-frown' },
+                'surprised': { text: 'Surpreso', color: 'text-yellow-400', icon: 'fa-surprise' },
+                'angry': { text: 'Raiva', color: 'text-red-400', icon: 'fa-angry' },
+                'fearful': { text: 'Medo', color: 'text-purple-400', icon: 'fa-flushed' },
+                'disgusted': { text: 'Nojo', color: 'text-orange-400', icon: 'fa-grimace' },
+                'neutral': { text: 'Neutro', color: 'text-gray-400', icon: 'fa-meh' }
             };
             
-            const { text, color, icon } = emotionMap[emotionData.emotion] || emotionMap['neutro'];
+            const { text, color, icon } = emotionMap[emotionData.emotion] || emotionMap['neutral'];
             
             dom.emotionValue.innerHTML = `
                 <span class="${color}">${text}</span>
@@ -1079,19 +1066,34 @@
             svg.style.top = '0';
             svg.style.left = '0';
             
-            // Desenha os landmarks (apenas alguns pontos para demonstração)
-            const keyPoints = [10, 152, 234, 454]; // Pontos estratégicos (nariz, olhos, boca)
+            // Desenha contorno do rosto (pontos 0-16)
+            const jawOutline = landmarks.getJawOutline();
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let pathData = `M ${jawOutline[0].x} ${jawOutline[0].y}`;
             
-            keyPoints.forEach(pointIndex => {
-                const point = landmarks.keypoints[pointIndex];
-                if (point) {
+            for (let i = 1; i < jawOutline.length; i++) {
+                pathData += ` L ${jawOutline[i].x} ${jawOutline[i].y}`;
+            }
+            
+            path.setAttribute('d', pathData);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#22d3ee');
+            path.setAttribute('stroke-width', '2');
+            svg.appendChild(path);
+            
+            // Desenha pontos dos olhos (simplificado)
+            const leftEye = landmarks.getLeftEye();
+            const rightEye = landmarks.getRightEye();
+            
+            [leftEye, rightEye].forEach(eye => {
+                eye.forEach(point => {
                     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     circle.setAttribute('cx', point.x);
                     circle.setAttribute('cy', point.y);
-                    circle.setAttribute('r', '3');
+                    circle.setAttribute('r', '2');
                     circle.setAttribute('fill', '#22d3ee');
                     svg.appendChild(circle);
-                }
+                });
             });
             
             dom.faceOverlay.appendChild(svg);
@@ -1353,13 +1355,13 @@
             let recommendations = [];
             
             // Lógica de análise (simplificada)
-            if (currentEmotion.emotion === 'feliz' && currentVoiceSentiment === 'positivo') {
+            if (currentEmotion.emotion === 'happy' && currentVoiceSentiment === 'positivo') {
                 summary = 'Você parece estar em um ótimo estado emocional! Sua expressão facial, frequência cardíaca e tom de voz indicam felicidade e bem-estar.';
                 recommendations = [
                     'Aproveite esse momento positivo para praticar gratidão ou compartilhar sua energia com outras pessoas.',
                     'Considere registrar esse estado em seu diário emocional para referência futura.'
                 ];
-            } else if (currentEmotion.emotion === 'triste' || currentVoiceSentiment === 'negativo') {
+            } else if (currentEmotion.emotion === 'sad' || currentVoiceSentiment === 'negativo') {
                 summary = 'Identificamos sinais de tristeza ou desconforto emocional. Isso é completamente normal e faz parte da experiência humana.';
                 recommendations = [
                     'Respire fundo por 5 segundos, segure por 3 e expire por 7. Repita algumas vezes.',
@@ -1492,17 +1494,16 @@
                 // Desenha o frame do vídeo
                 ctx.drawImage(dom.arVideo, 0, 0, canvas.width, canvas.height);
                 
-                // Detecta faces
-                const faces = await state.faceDetector.estimateFaces(canvas);
+                // Detecta faces com Face API.js
+                const detections = await faceapi.detectAllFaces(
+                    canvas, 
+                    new faceapi.TinyFaceDetectorOptions()
+                ).withFaceLandmarks().withFaceExpressions();
                 
-                if (faces.length > 0) {
-                    // Detecta landmarks para AR
-                    const landmarks = await state.faceMesh.estimateFaces(canvas);
-                    
-                    if (landmarks.length > 0) {
-                        // Desenha emoção em AR
-                        drawAREmotion(landmarks[0]);
-                    }
+                if (detections.length > 0) {
+                    const detection = detections[0];
+                    state.currentEmotion = getDominantEmotion(detection.expressions);
+                    drawAREmotion(detection.landmarks);
                 }
                 
                 // Continua o loop
@@ -1522,12 +1523,12 @@
             
             if (state.currentEmotion) {
                 const colorMap = {
-                    'feliz': '#10b981', // Verde
-                    'triste': '#3b82f6', // Azul
-                    'surpreso': '#f59e0b', // Amarelo
-                    'com raiva': '#ef4444', // Vermelho
-                    'com medo': '#8b5cf6', // Roxo
-                    'com nojo': '#f97316'  // Laranja
+                    'happy': '#10b981', // Verde
+                    'sad': '#3b82f6', // Azul
+                    'surprised': '#f59e0b', // Amarelo
+                    'angry': '#ef4444', // Vermelho
+                    'fearful': '#8b5cf6', // Roxo
+                    'disgusted': '#f97316'  // Laranja
                 };
                 
                 emotionColor = colorMap[state.currentEmotion.emotion] || emotionColor;
@@ -1538,19 +1539,13 @@
             ctx.lineWidth = 2;
             ctx.beginPath();
             
-            // Pontos do contorno facial (simplificado)
-            const outlinePoints = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234];
+            // Pontos do contorno facial
+            const jawOutline = landmarks.getJawOutline();
+            ctx.moveTo(jawOutline[0].x, jawOutline[0].y);
             
-            outlinePoints.forEach((pointIdx, i) => {
-                const point = landmarks.keypoints[pointIdx];
-                if (point) {
-                    if (i === 0) {
-                        ctx.moveTo(point.x, point.y);
-                    } else {
-                        ctx.lineTo(point.x, point.y);
-                    }
-                }
-            });
+            for (let i = 1; i < jawOutline.length; i++) {
+                ctx.lineTo(jawOutline[i].x, jawOutline[i].y);
+            }
             
             ctx.closePath();
             ctx.stroke();
@@ -1687,11 +1682,10 @@
             // Em uma implementação real, usaria uma biblioteca como Chart.js
             // Aqui está uma versão simplificada com SVG
             
-            const historyContainer = document.getElementById('history-chart');
-            historyContainer.innerHTML = '';
+            dom.historyChart.innerHTML = '';
             
             if (state.analysisHistory.length === 0) {
-                historyContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum histórico disponível</p>';
+                dom.historyChart.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum histórico disponível</p>';
                 return;
             }
             
@@ -1727,13 +1721,13 @@
             state.analysisHistory.forEach((entry, i) => {
                 const x = 50 + (i * (700 / (state.analysisHistory.length - 1)));
                 const emotionHeight = {
-                    'feliz': 60,
-                    'neutro': 120,
-                    'triste': 180,
-                    'surpreso': 80,
-                    'com raiva': 160,
-                    'com medo': 140,
-                    'com nojo': 150
+                    'happy': 60,
+                    'neutral': 120,
+                    'sad': 180,
+                    'surprised': 80,
+                    'angry': 160,
+                    'fearful': 140,
+                    'disgusted': 150
                 }[entry.emotion.emotion] || 120;
                 
                 const y = 200 - emotionHeight;
@@ -1746,13 +1740,13 @@
                 
                 // Cor baseada na emoção
                 const colorMap = {
-                    'feliz': '#10b981',
-                    'triste': '#3b82f6',
-                    'surpreso': '#f59e0b',
-                    'com raiva': '#ef4444',
-                    'com medo': '#8b5cf6',
-                    'com nojo': '#f97316',
-                    'neutro': '#9ca3af'
+                    'happy': '#10b981',
+                    'sad': '#3b82f6',
+                    'surprised': '#f59e0b',
+                    'angry': '#ef4444',
+                    'fearful': '#8b5cf6',
+                    'disgusted': '#f97316',
+                    'neutral': '#9ca3af'
                 };
                 
                 circle.setAttribute('fill', colorMap[entry.emotion.emotion] || '#9ca3af');
@@ -1782,13 +1776,13 @@
             state.analysisHistory.forEach((entry, i) => {
                 const x = 50 + (i * (700 / (state.analysisHistory.length - 1)));
                 const emotionHeight = {
-                    'feliz': 60,
-                    'neutro': 120,
-                    'triste': 180,
-                    'surpreso': 80,
-                    'com raiva': 160,
-                    'com medo': 140,
-                    'com nojo': 150
+                    'happy': 60,
+                    'neutral': 120,
+                    'sad': 180,
+                    'surprised': 80,
+                    'angry': 160,
+                    'fearful': 140,
+                    'disgusted': 150
                 }[entry.emotion.emotion] || 120;
                 
                 const y = 200 - emotionHeight;
@@ -1807,7 +1801,7 @@
             path.setAttribute('stroke-dasharray', '5,5');
             svg.appendChild(path);
             
-            historyContainer.appendChild(svg);
+            dom.historyChart.appendChild(svg);
         }
         
         // =============================================
