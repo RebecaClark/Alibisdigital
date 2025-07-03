@@ -3,424 +3,1288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAI Brasil - A Saúde do Futuro com IA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <title>MedAI Brasil - Revolução em Saúde com IA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+        :root {
+            --primary: #4A90E2;
+            --secondary: #2D5E9D;
+            --accent: #D3D3D3;
+            --dark: #1A252F;
+            --light: #F9FAFB;
+            --success: #6B7280;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            color: #333;
-            background: linear-gradient(135deg, #e6f0fa, #ffffff);
-            overflow-x: hidden;
-            text-align: center;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Efeito de partículas */
         #particles-js {
             position: fixed;
             width: 100%;
             height: 100%;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
             z-index: -1;
-            background: linear-gradient(135deg, #005670, #00a3b7);
         }
-        .section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
-        .header {
-            background: #005670;
-            color: white;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-        .header h1 { color: white; font-size: 36px; margin: 0; }
-        .hero { background: rgba(255, 255, 255, 0.95); border-radius: 10px; padding: 40px; }
-        .testimonials, .method, .products, .offer, .bonus, .faq { margin: 40px 0; }
-        .testimonials h2, .products h2, .offer h2, .success h2, .bonus h2, .faq h2 { 
-            color: white; 
-            background: #005670; 
-            padding: 10px; 
-            border-radius: 8px; 
+        
+        /* Container principal */
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            max-width: 800px;
+            padding: 0 20px;
         }
-        .method h2 {
+        
+        /* Seções */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        /* Header de urgência */
+        .urgency-bar {
+            background: linear-gradient(to right, var(--primary), #6B7280);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .urgency-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .urgency-bar .countdown {
+            font-weight: 700;
+            font-size: 18px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-left: 15px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .hero-content {
+            padding: 60px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 40%;
+            background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover no-repeat;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        .hero h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 30px;
-            color: white;
-            background: #005670;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 0 auto;
-            max-width: 800px;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .success p, .success p strong { color: white; }
+        
+        .hero h1 span {
+            color: var(--success);
+            -webkit-text-fill-color: var(--success);
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .hero-logo {
+            max-width: 180px;
+            margin-bottom: 20px;
+        }
+        
+        /* Botões */
         .btn {
-            background: #00a3b7;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
             display: inline-block;
-            transition: transform 0.3s, background 0.3s;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
-        .btn:hover { background: #005670; transform: scale(1.05); }
-        .product, .testimonial, .bonus-container, .faq-container, .method-container {
-            background: #fff;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 800px;
-            text-align: left;
-            animation: fadeIn 1s ease-in-out;
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
         }
-        .method-container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(0, 163, 183, 0.5);
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
         }
-        .method-container ul li {
-            animation: slideIn 1s ease-in-out;
-            animation-fill-mode: both;
+        
+        .btn-accent {
+            background: var(--accent);
+            color: var(--dark);
         }
-        .method-container ul li:nth-child(1) { animation-delay: 0.2s; }
-        .method-container ul li:nth-child(2) { animation-delay: 0.4s; }
-        .method-container ul li:nth-child(3) { animation-delay: 0.6s; }
-        .method-container ul li:nth-child(4) { animation-delay: 0.8s; }
-        .countdown { font-size: 32px; color: white; font-weight: bold; background: #ff4d4d; padding: 10px; border-radius: 8px; }
-        .offer-container {
-            background: #fff;
-            border: 2px solid #00a3b7;
-            border-radius: 10px;
+        
+        .btn-accent:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(211, 211, 211, 0.3);
+            background: #B0B0B0;
+        }
+        
+        .btn-lg {
+            font-size: 18px;
+            padding: 20px 45px;
+        }
+        
+        /* Credibilidade */
+        .trust-badges {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            background: rgba(0,0,0,0.03);
+            padding: 8px 15px;
+            border-radius: 50px;
+        }
+        
+        .trust-badge i {
+            margin-right: 8px;
+            color: var(--success);
+        }
+        
+        /* Video */
+        .video-container {
+            margin: 50px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: var(--dark);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Seção de depoimentos */
+        .testimonials {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: #6B7280;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
             padding: 30px;
-            margin: 20px auto;
-            max-width: 800px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-card .stars {
+            color: #9CA3AF;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-card .author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .testimonial-card .author-info h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-card .author-info p {
+            font-style: normal;
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+        }
+        
+        /* Seção de produtos */
+        .products {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .product-tab {
+            padding: 12px 25px;
+            background: white;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .product-tab.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .product-content {
+            display: none;
+        }
+        
+        .product-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .product-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
             text-align: center;
         }
-        .offer-container h3 { color: #005670; font-size: 28px; }
-        .offer-container .price { font-size: 24px; font-weight: bold; color: #005670; }
-        .offer-container .discount { color: #ff4d4d; font-weight: bold; }
-        .video-placeholder {
-            background: #e0f7fa;
-            padding: 30px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 900px;
-            height: 500px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .footer {
-            background: #005670;
-            color: white;
-            padding: 40px;
-            font-size: 14px;
-            border-radius: 10px 10px 0 0;
-        }
-        .hero-logo, .footer-logo {
-            display: block;
             margin: 0 auto 20px;
-            max-width: 200px;
-            height: auto;
+            color: white;
+            font-size: 30px;
         }
-        .footer-logo { max-width: 150px; }
-        h1 { 
-            font-size: 32px; 
-            color: #005670; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-            margin: 0; 
+        
+        .feature-card h3 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        /* Seção de oferta */
+        .offer {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .offer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .offer h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .offer .price {
+            font-size: 72px;
+            font-weight: 700;
+            margin: 30px 0;
+            line-height: 1;
+        }
+        
+        .offer .price small {
+            font-size: 24px;
+            vertical-align: super;
+        }
+        
+        .offer .old-price {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-size: 24px;
+        }
+        
+        .offer .discount {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .offer-bonuses {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: left;
+        }
+        
+        .offer-bonuses h3 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .offer-bonuses ul {
+            list-style: none;
+        }
+        
+        .offer-bonuses li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .offer-bonuses li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+        
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .payment-method i {
+            color: var(--primary);
+        }
+        
+        /* Garantia */
+        .guarantee {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .guarantee-icon {
+            min-width: 80px;
+            height: 80px;
+            background: linear-gradient(to right, var(--success), #9CA3AF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+        
+        .guarantee-content h3 {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        /* FAQ */
+        .faq {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .faq-question {
+            background: white;
+            padding: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: #F9FAFB;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            background: #F9FAFB;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        /* Rodapé */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
             text-align: center;
         }
-        h1 img { width: 40px; height: 40px; }
-        h1 span { color: #ff4d4d; }
-        h2 { font-size: 32px; color: #005670; }
-        .method h2 { font-size: 30px; font-family: 'Montserrat', sans-serif; }
-        h3 { font-size: 24px; color: #00a3b7; }
-        p, ul { font-family: 'Open Sans', sans-serif; line-height: 1.8; margin: 0 auto; }
-        .method-container p, .method-container ul li { font-weight: 600; font-size: 16px; }
-        ul { list-style: none; padding: 0; }
-        ul li { margin: 12px 0; }
-        .product, .testimonial { transition: transform 0.3s; }
-        .product:hover, .testimonial:hover { transform: translateY(-5px); }
-        .testimonial { border-left: 5px solid #00a3b7; }
-        .credibility-text { font-size: 18px; font-weight: bold; margin: 20px 0; }
+        
+        .footer-logo {
+            max-width: 150px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-social a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-disclaimer {
+            font-size: 14px;
+            opacity: 0.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Animações */
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateX(-20px); }
-            100% { opacity: 1; transform: translateX(0); }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .hero-bg {
+                display: none;
+            }
+            
+            .hero-content {
+                padding: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .section-header h2 {
+                font-size: 36px;
+            }
+            
+            .offer .price {
+                font-size: 60px;
+            }
+        }
+        
         @media (max-width: 768px) {
-            h1 { font-size: 28px; }
-            .hero-logo { max-width: 150px; }
-            .video-placeholder { max-width: 100%; height: 300px; }
-            .header h1 { font-size: 28px; }
-            .method h2 { font-size: 26px; }
+            section {
+                padding: 60px 0;
+            }
+            
+            .hero, .testimonials, .products, .offer, .faq {
+                padding: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .section-header h2 {
+                font-size: 32px;
+            }
+            
+            .offer h2 {
+                font-size: 32px;
+            }
+            
+            .offer .price {
+                font-size: 48px;
+            }
+            
+            .guarantee {
+                flex-direction: column;
+                text-align: center;
+            }
         }
-        @media (max-width: 500px) {
-            h1 { font-size: 24px; }
+        
+        @media (max-width: 576px) {
+            .hero, .testimonials, .products, .offer, .faq {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .section-header h2 {
+                font-size: 28px;
+            }
+            
+            .offer h2 {
+                font-size: 28px;
+            }
+            
+            .offer .price {
+                font-size: 36px;
+            }
+            
+            .btn-lg {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Particles.js Background -->
+    <!-- Efeito de partículas -->
     <div id="particles-js"></div>
-
-    <!-- SEÇÃO 1: HEADER DE URGÊNCIA -->
-    <div class="header section">
-        <h1>🔥 OFERTA LIMITADA - ÚLTIMAS 48 HORAS! 🔥</h1>
-        <p>Apenas 97 vagas para a IA médica mais avançada do Brasil</p>
-        <a href="#" class="btn">GARANTIR MINHA VAGA AGORA!</a>
-    </div>
-
-    <!-- SEÇÃO 2: HERO SECTION PRINCIPAL -->
-    <div class="hero section">
-        <img src="assets/logo.jpg" alt="MedAI Brasil Logo" class="hero-logo">
-        <h1>
-            <img src="placeholder_heart_ia.png" alt="Heart + IA Icon">
-            A ESTRATÉGIA <strong>DEFINITIVA</strong><br>
-            PARA CUIDAR DA <span>SUA SAÚDE</span> SEM SAIR DE CASA!
-        </h1>
-        <p>Se você quer acabar com a ansiedade de sintomas estranhos e ter respostas médicas precisas 24/7, esta tecnologia é para você.</p>
-        <p class="credibility-text">+75.000 brasileiros já transformaram suas vidas | Precisão de 94.7% validada por hospitais</p>
-        <div class="video-placeholder">
-            <p>[VÍDEO AQUI - 4 minutos]<br>"Como 3 IAs Médicas Revolucionaram a Saúde de 75.000 Brasileiros"</p>
-        </div>
-        <a href="#" class="btn">QUERO ACESSO À IA MÉDICA AGORA</a>
-        <p>🔒 Acesso Imediato | 💳 Parcele em 12x | ✅ 30 dias de garantia</p>
-    </div>
-
-    <!-- SEÇÃO 3: PROVA SOCIAL (DEPOIMENTOS) -->
-    <div class="testimonials section">
-        <h2>+75.000 BRASILEIROS JÁ TRANSFORMARAM SUAS VIDAS</h2>
-        <p>Veja depoimentos reais de quem usa nossa IA médica</p>
-        <div class="testimonial">
-            <p>"O Scanner IA detectou sinais de problemas cardíacos que eu nem imaginava. Procurei um cardiologista e estou em tratamento preventivo!"</p>
-            <p><strong>Ana Paula Rodrigues, Executiva - São Paulo</strong><br>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="testimonial">
-            <p>"O Apoio Emocional IA me ajudou em momentos de crise de ansiedade. É como ter um psicólogo disponível 24 horas!"</p>
-            <p><strong>Roberto Silva, Empresário - Rio de Janeiro</strong><br>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="testimonial">
-            <p>"A Medical IA analisou meus sintomas e me orientou a procurar o especialista certo. Economizei tempo e dinheiro!"</p>
-            <p><strong>Carlos Mendes, Engenheiro - Belo Horizonte</strong><br>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="testimonial">
-            <p>"Uso o Órbita para acompanhar minha evolução de saúde. Os relatórios são incríveis!"</p>
-            <p><strong>Mariana Costa, Professora - Brasília</strong><br>⭐⭐⭐⭐⭐</p>
-        </div>
-        <div class="testimonial">
-            <p>"As 3 IAs juntas mudaram minha relação com a saúde. Agora tenho controle total!"</p>
-            <p><strong>Juliana Santos, Designer - Salvador</strong><br>⭐⭐⭐⭐⭐</p>
+    
+    <!-- Barra de urgência -->
+    <div class="urgency-bar">
+        <div class="container">
+            <div>
+                <i class="fas fa-bolt"></i> ÚLTIMAS VAGAS DISPONÍVEIS! <span class="countdown">Oferta termina em: 02:00:00</span>
+            </div>
+            <a href="#offer" class="btn btn-accent">GARANTIR MEU ACESSO</a>
         </div>
     </div>
-
-    <!-- SEÇÃO 4: MÉTODO COMPROVADO -->
-    <div class="method section">
-        <div class="method-container">
-            <h2>🔥 TECNOLOGIA COMPROVADA 🔥</h2>
-            <p>Transforme sua saúde com 3 IAs médicas integradas</p>
-            <ul>
-                <li>✅ Detecte problemas de saúde antes dos sintomas aparecerem</li>
-                <li>✅ Tenha apoio emocional inteligente disponível 24/7</li>
-                <li>✅ Receba orientações médicas precisas em tempo real</li>
-                <li>✅ Monitore sua evolução através do painel Órbita</li>
-            </ul>
-            <p><em>*Não substitui orientação médica profissional</em></p>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-content">
+                    <img src="https://via.placeholder.com/180x60" alt="MedAI Brasil" class="hero-logo">
+                    <h1>A REVOLUÇÃO DA <span>SAÚDE INTELIGENTE</span> CHEGOU AO BRASIL</h1>
+                    <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
+                    <div>
+                        <a href="#offer" class="btn btn-primary btn-lg pulse">
+                            <i class="fas fa-arrow-right"></i> QUERO MINHA SAÚDE TRANSFORMADA
+                        </a>
+                    </div>
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-check-circle"></i> +75.000 pacientes atendidos
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i> Privacidade garantida
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-gem"></i> 30 dias de garantia
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-bg"></div>
+            </div>
         </div>
-    </div>
-
-    <!-- SEÇÃO 5: OS 3 PRODUTOS REAIS -->
-    <div class="products section">
-        <h2>🔥 3 INTELIGÊNCIAS ARTIFICIAIS MÉDICAS INTEGRADAS 🔥</h2>
-        <p>Conheça cada IA que vai revolucionar sua saúde</p>
-        <div class="product">
-            <h3>🔬 SCANNER CORPORAL IA</h3>
-            <p>"Detecção Inteligente de Problemas de Saúde"</p>
-            <p>Nossa IA Scanner analisa padrões corporais e identifica possíveis problemas de saúde antes dos sintomas aparecerem. Tecnologia baseada em machine learning médico.</p>
-            <ul>
-                <li>Análise corporal inteligente</li>
-                <li>Detecção precoce de anomalias</li>
-                <li>Relatórios detalhados</li>
-                <li>Monitoramento contínuo</li>
-                <li>Alertas preventivos</li>
-                <li>Interface intuitiva</li>
-            </ul>
+    </section>
+    
+    <!-- Video Section -->
+    <section>
+        <div class="container">
+            <div class="video-container">
+                <!-- Substitua pelo seu vídeo real -->
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px;">
+                    [VÍDEO DE VENDAS AQUI]
+                </div>
+            </div>
         </div>
-        <div class="product">
-            <h3>💭 APOIO EMOCIONAL IA</h3>
-            <p>"Seu Companheiro de Bem-Estar Mental"</p>
-            <p>IA especializada em saúde mental que oferece apoio emocional personalizado. Conversas empáticas, técnicas de relaxamento e acompanhamento do seu estado emocional.</p>
-            <ul>
-                <li>Conversas empáticas inteligentes</li>
-                <li>Técnicas de relaxamento personalizadas</li>
-                <li>Monitoramento do humor</li>
-                <li>Apoio em crises de ansiedade</li>
-                <li>Privacidade total</li>
-                <li>Disponível 24/7</li>
-            </ul>
+    </section>
+    
+    <!-- Depoimentos -->
+    <section>
+        <div class="container">
+            <div class="testimonials">
+                <div class="section-header">
+                    <h2>O QUE NOSSOS PACIENTES DIZEM</h2>
+                    <p>Veja como a MedAI Brasil está transformando vidas todos os dias</p>
+                </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"O scanner de saúde detectou um problema cardíaco que eu nem sabia que tinha. Hoje estou em tratamento preventivo graças a essa tecnologia incrível!"</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ana Paula">
+                            <div class="author-info">
+                                <h4>Ana Paula R.</h4>
+                                <p>Executiva, 42 anos - SP</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"O acompanhamento emocional me salvou durante minha depressão. Era como ter um psicólogo disponível 24h por dia, com respostas precisas e acolhedoras."</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos">
+                            <div class="author-info">
+                                <h4>Carlos M.</h4>
+                                <p>Empresário, 38 anos - RJ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Economizei tempo e dinheiro quando a IA me orientou exatamente qual especialista procurar para meu problema. Diagnóstico rápido e tratamento eficaz!"</p>
+                        <div class="author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mariana">
+                            <div class="author-info">
+                                <h4>Mariana C.</h4>
+                                <p>Professora, 45 anos - BH</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product">
-            <h3>🩺 MEDICAL IA</h3>
-            <p>"Orientação Médica Inteligente"</p>
-            <p>IA médica que analisa sintomas, interpreta informações de saúde e fornece orientações baseadas em conhecimento médico avançado para te guiar nas decisões de saúde.</p>
-            <ul>
-                <li>Análise inteligente de sintomas</li>
-                <li>Orientações médicas precisas</li>
-                <li>Interpretação de dados de saúde</li>
-                <li>Sugestões de especialistas</li>
-                <li>Base de conhecimento médico</li>
-                <li>Respostas em tempo real</li>
-            </ul>
+    </section>
+    
+    <!-- Produtos -->
+    <section>
+        <div class="container">
+            <div class="products">
+                <div class="section-header">
+                    <h2>NOSSA PLATAFORMA COMPLETA</h2>
+                    <p>Tudo o que você precisa para cuidar da sua saúde com tecnologia de ponta</p>
+                </div>
+                
+                <div class="product-tabs">
+                    <div class="product-tab active" data-tab="scanner">Scanner de Saúde</div>
+                    <div class="product-tab" data-tab="emotional">Apoio Emocional</div>
+                    <div class="product-tab" data-tab="medical">Orientação Médica</div>
+                    <div class="product-tab" data-tab="orbit">Painel Órbita</div>
+                </div>
+                
+                <div class="product-content active" id="scanner-content">
+                    <div class="product-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <h3>Monitoramento Cardíaco</h3>
+                            <p>Análise avançada da sua frequência cardíaca e possíveis anomalias</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-lungs"></i>
+                            </div>
+                            <h3>Análise Respiratória</h3>
+                            <p>Detecção de padrões respiratórios e possíveis problemas</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>Saúde Neurológica</h3>
+                            <p>Monitoramento de sinais neurológicos e cognitivos</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Histórico Completo</h3>
+                            <p>Armazenamento e análise dos seus dados ao longo do tempo</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="#offer" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right"></i> QUERO O SCANNER DE SAÚDE
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="product-content" id="emotional-content">
+                    <div class="product-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>Chat Emocional</h3>
+                            <p>Conversas inteligentes e empáticas disponíveis 24/7</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-cloud-moon"></i>
+                            </div>
+                            <h3>Monitoramento de Humor</h3>
+                            <p>Análise dos seus padrões emocionais ao longo do tempo</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <h3>Técnicas de Relaxamento</h3>
+                            <p>Exercícios personalizados para reduzir estresse e ansiedade</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3>Alertas Preventivos</h3>
+                            <p>Notificações quando detectamos mudanças preocupantes</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="#offer" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right"></i> QUERO APOIO EMOCIONAL
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="product-content" id="medical-content">
+                    <div class="product-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <h3>Análise de Sintomas</h3>
+                            <p>Interpretação inteligente dos seus sintomas e possíveis causas</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-procedures"></i>
+                            </div>
+                            <h3>Orientação Médica</h3>
+                            <p>Recomendações baseadas em conhecimento médico validado</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h3>Especialistas Indicados</h3>
+                            <p>Saiba exatamente qual profissional procurar para seu caso</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <h3>Informações sobre Medicamentos</h3>
+                            <p>Orientações sobre interações e efeitos colaterais</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="#offer" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right"></i> QUERO ORIENTAÇÃO MÉDICA
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="product-content" id="orbit-content">
+                    <div class="product-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <h3>Dashboard Personalizado</h3>
+                            <p>Visão completa da sua saúde em um painel intuitivo</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3>Histórico Completo</h3>
+                            <p>Todos os seus dados de saúde organizados em um só lugar</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3>Gráficos e Relatórios</h3>
+                            <p>Visualização clara da sua evolução e padrões de saúde</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3>Aplicativo Mobile</h3>
+                            <p>Acesse seus dados de qualquer lugar, a qualquer momento</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="#offer" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right"></i> QUERO O PAINEL ÓRBITA
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product">
-            <h3>🌐 ÓRBITA - PAINEL DE CONTROLE</h3>
-            <p>"Sua Saúde Centralizada"</p>
-            <p>Plataforma integrada que centraliza todos os dados das 3 IAs. Visualize sua evolução, histórico completo e insights personalizados em um painel intuitivo.</p>
-            <ul>
-                <li>Dashboard completo de saúde</li>
-                <li>Integração das 3 IAs</li>
-                <li>Histórico detalhado</li>
-                <li>Gráficos de evolução</li>
-                <li>Relatórios personalizados</li>
-                <li>Insights inteligentes</li>
-            </ul>
+    </section>
+    
+    <!-- Oferta -->
+    <section id="offer">
+        <div class="container">
+            <div class="offer">
+                <h2>OFERTA ESPECIAL POR TEMPO LIMITADO</h2>
+                <p>Aproveite hoje nosso pacote completo com desconto exclusivo</p>
+                
+                <div class="price">
+                    <small>12x de</small> R$ 97<small>,90</small>
+                </div>
+                <p>ou R$ 997 à vista</p>
+                
+                <div class="discount">
+                    <i class="fas fa-gift"></i> 47% DE DESCONTO HOJE!
+                </div>
+                
+                <div class="offer-bonuses">
+                    <h3>Você vai receber:</h3>
+                    <ul>
+                        <li>Acesso completo ao Scanner de Saúde IA</li>
+                        <li>Acompanhamento Emocional Inteligente 24/7</li>
+                        <li>Orientação Médica IA com sintomas e tratamentos</li>
+                        <li>Painel Órbita Premium com todos os seus dados</li>
+                        <li>Aplicativo Mobile para Android e iOS</li>
+                        <li>Atualizações gratuitas por 1 ano</li>
+                        <li>Suporte prioritário por e-mail e chat</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <a href="#" class="btn btn-accent btn-lg pulse">
+                        <i class="fas fa-lock"></i> GARANTIR MEU ACESSO AGORA
+                    </a>
+                </div>
+                
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <i class="fab fa-cc-visa"></i> Visa
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-cc-mastercard"></i> Mastercard
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-cc-amex"></i> Amex
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-barcode"></i> Boleto
+                    </div>
+                    <div class="payment-method">
+                        <i class="fab fa-pix"></i> Pix
+                    </div>
+                </div>
+                
+                <div class="guarantee">
+                    <div class="guarantee-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="guarantee-content">
+                        <h3>Garantia de Satisfação de 30 Dias</h3>
+                        <p>Se em 30 dias você não estiver completamente satisfeito, devolvemos 100% do seu dinheiro sem questionamentos.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product">
-            <h3>📱 APLICATIVO MOBILE</h3>
-            <p>"Sua Saúde no Bolso"</p>
-            <p>Acesse todas as funcionalidades das IAs médicas diretamente do seu smartphone. Interface otimizada para uso móvel com todas as funcionalidades.</p>
-            <ul>
-                <li>Acesso mobile completo</li>
-                <li>Interface otimizada</li>
-                <li>Notificações push</li>
-                <li>Sincronização automática</li>
-                <li>Uso offline limitado</li>
-                <li>Backup na nuvem</li>
-            </ul>
+    </section>
+    
+    <!-- FAQ -->
+    <section>
+        <div class="container">
+            <div class="faq">
+                <div class="section-header">
+                    <h2>PERGUNTAS FREQUENTES</h2>
+                    <p>Tire todas as suas dúvidas sobre a MedAI Brasil</p>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>As IAs substituem consultas médicas?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Não, nossas IAs não substituem consultas médicas, mas são uma ferramenta poderosa para monitoramento, prevenção e orientação. Elas podem te ajudar a identificar quando procurar um médico e qual especialista seria mais adequado para seu caso.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Como meus dados são protegidos?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Utilizamos criptografia de ponta a ponta e seguimos rigorosamente as leis de proteção de dados (LGPD). Seus dados de saúde são armazenados com total segurança e nunca são compartilhados sem sua autorização explícita.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Preciso de equipamentos especiais?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Não! Nossa plataforma funciona com a câmera e microfone do seu smartphone ou computador. Para algumas análises mais avançadas, recomendamos o uso de wearables como smartwatches, mas não são obrigatórios.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Como faço para cancelar?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Você pode cancelar a qualquer momento através da área do cliente em nosso site. Não cobramos taxas de cancelamento e você continua com acesso até o final do período contratado.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Quanto tempo leva para ter acesso?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>O acesso é imediato após a confirmação do pagamento! Você recebe um e-mail com todas as instruções para começar a usar nossa plataforma em poucos minutos.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Funciona em qualquer smartphone?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim, nosso aplicativo está disponível para Android (versão 8.0 ou superior) e iOS (versão 12 ou superior). Também temos uma versão web completa para computadores.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product">
-            <h3>📚 BLOG EDUCATIVO IA</h3>
-            <p>"Conhecimento Médico Personalizado"</p>
-            <p>Conteúdo educativo personalizado baseado no seu perfil de saúde. Artigos, dicas e informações médicas selecionadas especialmente para você.</p>
-            <ul>
-                <li>Conteúdo personalizado</li>
-                <li>Artigos médicos confiáveis</li>
-                <li>Dicas de prevenção</li>
-                <li>Atualização constante</li>
-                <li>Linguagem acessível</li>
-                <li>Fontes científicas</li>
-            </ul>
+    </section>
+    
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <img src="https://via.placeholder.com/150x50" alt="MedAI Brasil" class="footer-logo">
+            
+            <div class="footer-links">
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Dúvidas Frequentes</a>
+                <a href="#">Contato</a>
+                <a href="#">Trabalhe Conosco</a>
+            </div>
+            
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            
+            <div class="footer-disclaimer">
+                <p>MedAI Brasil CNPJ: 00.000.000/0001-00 - Este produto não substitui o parecer médico profissional. Sempre consulte um médico sobre qualquer assunto relativo à sua saúde e aos tratamentos.</p>
+                <p>© 2025 MedAI Brasil. Todos os direitos reservados.</p>
+            </div>
         </div>
-    </div>
-
-    <!-- SEÇÃO 6: DEPOIMENTO DESTAQUE -->
-    <div class="success section">
-        <h2>As 3 IAs da MedAI Brasil mudaram completamente minha relação com a saúde</h2>
-        <p>"O Scanner me alertou sobre problemas que eu nem sabia que tinha, o Apoio Emocional me ajuda com ansiedade, e a Medical IA me orienta sempre que preciso. O Órbita mostra tudo de forma clara!"</p>
-        <p><strong>Dr. Adriano Santoro, Médico e Usuário - Florianópolis</strong><br>⭐⭐⭐⭐⭐</p>
-    </div>
-
-    <!-- SEÇÃO 7: OFERTA IRRESISTÍVEL -->
-    <div class="offer section">
-        <h2>🔥 Oferta acaba em: <span class="countdown">02/07/2025, 19:16 -03</span> 🔥</h2>
-        <div class="offer-container">
-            <h3>MEDAI BRASIL COMPLETO</h3>
-            <p>Acesso às 3 IAs + Órbita + App + Blog</p>
-            <p><s>De R$ 1.497,00</s></p>
-            <p class="price"><strong>12x R$ 69,74</strong> ou <strong>R$ 799,00 à vista</strong></p>
-            <p class="discount">Economia de 47% (R$ 698,00)</p>
-            <a href="#" class="btn">COMPRAR AGORA</a>
-            <p>✅ Pagamento 100% seguro<br>✅ Garantia de 30 dias</p>
-        </div>
-    </div>
-
-    <!-- SEÇÃO 8: BÔNUS EXCLUSIVOS -->
-    <div class="bonus section">
-        <h2>🎁 Bônus Exclusivo 🎁</h2>
-        <div class="bonus-container">
-            <p>Você vai levar tudo isso:</p>
-            <ul>
-                <li>Acesso completo às 3 IAs médicas</li>
-                <li>Painel Órbita com dashboard personalizado</li>
-                <li>Aplicativo mobile premium</li>
-                <li>Blog educativo com conteúdo personalizado</li>
-                <li>Suporte técnico prioritário</li>
-                <li>Atualizações gratuitas das IAs</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- SEÇÃO 9: FAQ -->
-    <div class="faq section">
-        <h2>🔥 FAQ 🔥</h2>
-        <div class="faq-container">
-            <p><strong>As IAs realmente funcionam?</strong><br>Sim! Nossas IAs são baseadas em machine learning médico e já ajudaram mais de 75.000 pessoas a cuidarem melhor da saúde.</p>
-            <p><strong>É seguro usar as IAs médicas?</strong><br>Totalmente! Utilizamos criptografia avançada e seguimos todas as normas de segurança de dados de saúde.</p>
-            <p><strong>As IAs substituem consultas médicas?</strong><br>Não substituem, mas complementam. Elas te orientam quando procurar ajuda médica e qual tipo de especialista consultar.</p>
-            <p><strong>Funciona no celular?</strong><br>Perfeitamente! Temos aplicativo mobile com todas as funcionalidades das 3 IAs.</p>
-            <p><strong>O que é o Órbita?</strong><br>É seu painel de controle pessoal onde você visualiza todos os dados das 3 IAs integrados, com gráficos e relatórios.</p>
-            <p><strong>E se eu não gostar?</strong><br>30 dias de garantia total. Não gostou? Devolvemos 100% do seu dinheiro.</p>
-        </div>
-    </div>
-
-    <!-- SEÇÃO 10: FOOTER -->
-    <div class="footer section">
-        <img src="assets/logo.jpg" alt="MedAI Brasil Logo" class="footer-logo">
-        <p>© 2025 MedAI Brasil - Todos os direitos reservados</p>
-        <p>Plataforma de Tecnologia para Saúde e Bem-Estar</p>
-        <p>CNPJ: XX.XXX.XXX/0001-XX</p>
-        <p>E-mail: suporte@medaibrasil.com.br | Telefone: (11) 9XXXX-XXXX</p>
-        <p>🔒 SSL Seguro | 💳 Pagamentos Seguros</p>
-        <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
-        <p><strong>IMPORTANTE:</strong> As ferramentas da MedAI Brasil são para apoio ao bem-estar e não substituem orientação médica profissional.</p>
-    </div>
-
-    <!-- Particles.js Script -->
+    </footer>
+    
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Inicializar partículas
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#00a3b7" },
+                color: { value: "#9CA3AF" },
                 shape: { type: "circle" },
                 opacity: { value: 0.5, random: true },
                 size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: "#00a3b7", opacity: 0.4, width: 1 },
+                line_linked: { enable: true, distance: 150, color: "#9CA3AF", opacity: 0.4, width: 1 },
                 move: { enable: true, speed: 3, direction: "none", random: false }
             },
             interactivity: {
                 detect_on: "canvas",
-                events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } },
-                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+                events: { 
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: { 
+                    repulse: { distance: 100, duration: 0.4 },
+                    push: { particles_nb: 4 }
+                }
             },
             retina_detect: true
         });
-    </script>
-    <!-- Countdown Script -->
-    <script>
+        
+        // Contador regressivo
         function updateCountdown() {
-            const endDate = new Date("2025-07-02T19:16:00-03:00").getTime();
-            const now = new Date().getTime();
+            const endDate = new Date();
+            endDate.setHours(endDate.getHours() + 2); // 2 horas a partir de agora
+            
+            const now = new Date();
             const distance = endDate - now;
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.querySelector(".countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            
+            document.querySelector(".countdown").textContent = `Oferta termina em: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
             if (distance < 0) {
-                document.querySelector(".countdown").innerHTML = "Oferta Expirada!";
+                document.querySelector(".countdown").textContent = "Oferta encerrada!";
             }
         }
+        
         setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Tabs de produtos
+        document.querySelectorAll('.product-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover classe active de todas as tabs e conteúdos
+                document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.product-content').forEach(c => c.classList.remove('active'));
+                
+                // Adicionar classe active à tab clicada
+                tab.classList.add('active');
+                
+                // Mostrar conteúdo correspondente
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                question.classList.toggle('active');
+                const answer = question.nextElementSibling;
+                answer.classList.toggle('active');
+                
+                // Fechar outras respostas
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    if (q !== question) {
+                        q.classList.remove('active');
+                        q.nextElementSibling.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        // Smooth scroll para links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
