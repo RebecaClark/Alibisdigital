@@ -98,7 +98,7 @@
             top: 0;
             height: 100%;
             width: 40%;
-            background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover no-repeat;
+            background: url('assets/hero-bg.jpg') center/cover no-repeat;
             border-top-right-radius: 20px;
             border-bottom-right-radius: 20px;
         }
@@ -841,6 +841,8 @@
         .wearable-item img {
             border-radius: 15px;
             transition: transform 0.3s;
+            max-width: 100%;
+            height: auto;
         }
         .wearable-item:hover img {
             transform: translateY(-5px);
@@ -1118,7 +1120,7 @@
             <div class="hero">
                 <div class="hero-content">
                     <h1>A REVOLUÇÃO DA</h1>
-                    <img src="https://via.placeholder.com/180x60" alt="MedAI Brasil" class="hero-logo">
+                    <img src="assets/logo.png" alt="MedAI Brasil" class="hero-logo">
                     <h2><span>SAÚDE INTELIGENTE</span> CHEGOU AO BRASIL</h2>
                     <p>Descubra como nossa plataforma de IA médica pode transformar sua saúde, prevenir doenças e te dar tranquilidade 24 horas por dia, 7 dias por semana.</p>
                     
@@ -1128,7 +1130,7 @@
                         </button>
                         <div class="ar-overlay">
                             <video autoplay loop muted playsinline>
-                                <source src="ar-demo.mp4" type="video/mp4">
+                                <source src="assets/videos/ar-demo.mp4" type="video/mp4">
                             </video>
                             <p>Aponte sua câmera para ver como o scanner funciona em seu ambiente</p>
                         </div>
@@ -1199,7 +1201,7 @@
                         </div>
                         <p>"O scanner de saúde detectou um problema cardíaco que eu nem sabia que tinha. Hoje estou em tratamento preventivo graças a essa tecnologia incrível!"</p>
                         <div class="author">
-                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ana Paula">
+                            <img src="assets/testimonials/ana-paula.jpg" alt="Ana Paula">
                             <div class="author-info">
                                 <h4>Ana Paula R.</h4>
                                 <p>Executiva, 42 anos - SP</p>
@@ -1216,7 +1218,7 @@
                         </div>
                         <p>"O acompanhamento emocional me salvou durante minha depressão. Era como ter um psicólogo disponível 24h por dia, com respostas precisas e acolhedoras."</p>
                         <div class="author">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos">
+                            <img src="assets/testimonials/carlos-m.jpg" alt="Carlos">
                             <div class="author-info">
                                 <h4>Carlos M.</h4>
                                 <p>Empresário, 38 anos - RJ</p>
@@ -1233,7 +1235,7 @@
                         </div>
                         <p>"Economizei tempo e dinheiro quando a IA me orientou exatamente qual especialista procurar para meu problema. Diagnóstico rápido e tratamento eficaz!"</p>
                         <div class="author">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mariana">
+                            <img src="assets/testimonials/mariana-c.jpg" alt="Mariana">
                             <div class="author-info">
                                 <h4>Mariana C.</h4>
                                 <p>Professora, 45 anos - BH</p>
@@ -1418,27 +1420,27 @@
                     
                     <div class="wearables-grid">
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Apple Watch">
+                            <img src="assets/wearables/apple-watch.png" alt="Apple Watch">
                             <span>Apple Watch</span>
                         </div>
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Samsung Galaxy Watch">
+                            <img src="assets/wearables/samsung-watch.png" alt="Samsung Galaxy Watch">
                             <span>Samsung Watch</span>
                         </div>
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Fitbit">
+                            <img src="assets/wearables/fitbit.png" alt="Fitbit">
                             <span>Fitbit</span>
                         </div>
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Garmin">
+                            <img src="assets/wearables/garmin.png" alt="Garmin">
                             <span>Garmin</span>
                         </div>
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Xiaomi">
+                            <img src="assets/wearables/xiaomi.png" alt="Xiaomi">
                             <span>Xiaomi</span>
                         </div>
                         <div class="wearable-item">
-                            <img src="https://via.placeholder.com/80x80" alt="Withings">
+                            <img src="assets/wearables/withings.png" alt="Withings">
                             <span>Withings</span>
                         </div>
                     </div>
@@ -1734,7 +1736,7 @@
     
     <footer>
         <div class="container">
-            <img src="https://via.placeholder.com/150x50" alt="MedAI Brasil" class="footer-logo">
+            <img src="assets/logo-footer.png" alt="MedAI Brasil" class="footer-logo">
             
             <div class="footer-links">
                 <a href="#">Termos de Uso</a>
@@ -1784,6 +1786,39 @@
             retina_detect: true
         });
         
+        // Contador dinâmico de vagas disponíveis
+        let vagasDisponiveis = 17; // Número inicial de vagas
+        
+        function updateVagasCounter() {
+            // Diminui aleatoriamente entre 0 e 2 vagas a cada 30-90 segundos
+            const interval = Math.floor(Math.random() * 60000) + 30000;
+            
+            setTimeout(() => {
+                if (vagasDisponiveis > 0) {
+                    const decrement = Math.floor(Math.random() * 3); // 0, 1 ou 2
+                    vagasDisponiveis = Math.max(0, vagasDisponiveis - decrement);
+                    
+                    // Atualiza o texto no cabeçalho
+                    document.querySelector('.urgency-bar div:first-child').innerHTML = `
+                        <i class="fas fa-bolt"></i> ÚLTIMAS VAGAS DISPONÍVEIS! <span class="countdown">${vagasDisponiveis} vagas restantes</span>
+                    `;
+                    
+                    // Se chegou a zero, altera a mensagem
+                    if (vagasDisponiveis === 0) {
+                        document.querySelector('.urgency-bar div:first-child').innerHTML = `
+                            <i class="fas fa-bolt"></i> VAGAS ESGOTADAS! <span class="countdown">Lista de espera disponível</span>
+                        `;
+                    } else {
+                        updateVagasCounter(); // Continua o processo
+                    }
+                }
+            }, interval);
+        }
+        
+        // Inicia o contador de vagas
+        updateVagasCounter();
+        
+        // Contador regressivo para oferta
         function updateCountdown() {
             const endDate = new Date();
             endDate.setHours(endDate.getHours() + 2);
@@ -1792,13 +1827,20 @@
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            document.querySelector(".countdown").textContent = `Oferta termina em: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Atualiza o contador apenas se ainda houver vagas
+            if (vagasDisponiveis > 0) {
+                document.querySelector(".countdown").textContent = `${vagasDisponiveis} vagas restantes | Oferta termina em: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
             if (distance < 0) {
                 document.querySelector(".countdown").textContent = "Oferta encerrada!";
+            } else {
+                setTimeout(updateCountdown, 1000);
             }
         }
         
-        setInterval(updateCountdown, 1000);
+        // Inicia o contador regressivo
         updateCountdown();
         
         document.querySelectorAll('.product-tab').forEach(tab => {
@@ -1981,7 +2023,7 @@
             const feedItem = document.createElement('div');
             feedItem.className = 'feed-item';
             feedItem.innerHTML = `
-                <img src="https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}.jpg" alt="${activity.name}">
+                <img src="assets/testimonials/${activity.name.split(' ')[0].toLowerCase()}.jpg" alt="${activity.name}">
                 <div class="text"><strong>${activity.name}</strong> (${activity.city}) ${activity.action}</div>
                 <div class="time">${activity.time}</div>
             `;
