@@ -21,7 +21,7 @@
       background: linear-gradient(135deg, var(--dark), var(--darker));
       color: white;
       position: relative;
-      overflow: auto; /* Alterado de overflow-x: hidden para permitir rolagem */
+      overflow: auto;
     }
     .particles-container {
       width: 300px;
@@ -103,7 +103,7 @@
     .heatmap-container {
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 200px; /* Reduzido de 300px */
       margin: 20px 0;
     }
     .heatmap {
@@ -126,7 +126,7 @@
     
     /* Voice waveform */
     .voice-waveform {
-      height: 80px;
+      height: 60px; /* Reduzido de 80px */
       background: rgba(30, 41, 59, 0.5);
       border-radius: 8px;
       margin: 15px 0;
@@ -190,7 +190,7 @@
     </div>
   </div>
 
-  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto" style="margin-top: 80px;"> <!-- Margem adicionada -->
+  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto" style="margin-top: 80px;">
     <!-- Seção Hero -->
     <section class="py-12 text-center">
       <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Scanner Emocional Avançado</h1>
@@ -242,7 +242,7 @@
           </h3>
           <div class="text-center">
             <div class="voice-waveform">
-              <svg id="voice-wave" class="voice-wave" viewBox="0 0 500 80" preserveAspectRatio="none"></svg>
+              <svg id="voice-wave" class="voice-wave" viewBox="0 0 500 60" preserveAspectRatio="none"></svg>
             </div>
             <div id="voice-analysis-result" class="text-gray-300 text-sm">
               <p>Fale algo após ativar o scanner de voz</p>
@@ -603,7 +603,7 @@
         // Ativar dot da emoção primária
         emotionDots[primaryEmotionIndex].classList.add('active');
         
-        // Atualizar resultado principal
+        // Atualizar resultado lápis
         document.getElementById('primary-emotion-dot').className = `emotion-dot ${primaryEmotion.name}`;
         document.getElementById('primary-emotion-text').textContent = primaryEmotion.label;
         
@@ -732,7 +732,7 @@
       
       function generateVoiceWave() {
         const width = 500;
-        const height = 80;
+        const height = 60; // Ajustado para corresponder à altura do voice-waveform
         let path = `M 0 ${height/2}`;
         
         for (let x = 0; x <= width; x += 10) {
@@ -824,7 +824,9 @@
               data: [4, 5, 6, 3, 5, 2, 4],
               borderColor: '#ef4444',
               backgroundColor: 'rgba(239, 68, 68, 0.1)',
-              tension: 0.3,
+             
+
+ tension: 0.3,
               fill: true
             }
           ]
@@ -950,7 +952,7 @@
         },
         neutral: {
           title: "Estado Emocional Neutro",
-          description: "Seu perfil emocional atual mostra predominância de neutralidade. Isso pode indicar equilíbrio ou falta de engajamento emocional.",
+          description: " Seu perfil emocional atual mostra predominância de neutralidade. Isso pode indicar equilíbrio ou falta de engajamento emocional.",
           recommendations: [
             "Experimente novas atividades para estimular emoções positivas",
             "Pratique mindfulness para aumentar consciência emocional",
@@ -969,7 +971,7 @@
         
         <div class="glass-card p-6 mb-4">
           <h4 class="text-xl font-bold mb-3 gradient-text">Dados Técnicos</h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class=" İstanbul grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <h5 class="font-semibold mb-1">Análise Facial</h5>
               <p>Emoção primária: <span class="font-bold">${data.title.split(': ')[1]}</span></p>
