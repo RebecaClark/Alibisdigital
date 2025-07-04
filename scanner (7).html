@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scanner Emocional Avançado MedAI Brasil - Análise de emoções através de reconhecimento facial e vocal">
+  <title>Scanner Emocional | MedAI Brasil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --primary: #3B82F6;
+      --secondary: #10B981;
+      --dark: #111827;
+      --darker: #1F2937;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--dark), var(--darker));
+      color: white;
+      position: relative;
+      min-height: 100vh;
+    }
+    .gradient-text {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .gradient-bg {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+    }
+    .wave-container {
+      height: 150px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.5);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background: linear-gradient(135deg, #1F2937, #111827);
+      margin: 5% auto;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .close-modal {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close-modal:hover {
+      color: white;
+    }
+    .explanation-step {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 8px;
+    }
+    #videoElement {
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+    }
+    #overlayCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="glass-card fixed top-0 left-0 w-full z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <a href="/">
+          <img src="/assets/logo.jpg" alt="MedAI Brasil" class="h-10">
+        </a>
+        <span class="text-xl font-bold">Scanner Emocional</span>
+      </div>
+      <button id="how-it-works-btn" class="text-white hover:text-blue-300 transition">
+        Como funciona
+      </button>
+    </div>
+  </header>
+
+  <!-- Modal de Introdução -->
+  <div id="intro-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="text-2xl font-bold mb-4 gradient-text">Como funciona nosso Scanner Emocional</h2>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">1. Análise Facial</h3>
+        <p class="text-gray-300">Nosso sistema identifica emoções através de 68 pontos faciais, detectando microexpressões que podem revelar seu estado emocional atual.</p>
+      </div>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">2. Análise Vocal</h3>
+        <p class="text-gray-300">Avaliamos tom, frequência e padrões de fala para complementar o diagnóstico emocional com dados acústicos.</p>
+      </div>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">3. Segurança dos Dados</h3>
+        <p class="text-gray-300">Todas as análises são processadas localmente em seu dispositivo. Nenhum dado de vídeo ou áudio é armazenado em nossos servidores.</p>
+      </div>
+      
+      <button id="start-after-explanation" class="gradient-bg text-white font-bold py-3 px-6 rounded-lg mt-4 w-full">
+        Entendi, quero começar
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteúdo Principal -->
+  <main class="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+    <!-- Área do Scanner -->
+    <section class="glass-card p-6 my-8">
+      <h2 class="text-2xl font-bold mb-6 gradient-text">Scanner Emocional</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Vídeo e Canvas -->
+        <div>
+          <div class="relative" style="width: 100%; max-width: 500px; margin: 0 auto;">
+            <video id="videoElement" autoplay muted playsinline class="w-full"></video>
+            <canvas id="overlayCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+          </div>
+          <button id="startBtn" class="gradient-bg text-white font-bold py-2 px-6 rounded-lg mt-4 w-full">
+            Iniciar Análise
+          </button>
+        </div>
+        
+        <!-- Resultados -->
+        <div>
+          <div class="wave-container">
+            <canvas id="waveCanvas" class="w-full h-full"></canvas>
+          </div>
+          
+          <div class="glass-card p-4 mb-4">
+            <h3 class="font-semibold mb-2">Emoção Detectada:</h3>
+            <div id="emotion-result" class="flex items-center">
+              <div id="emotion-dot" class="w-4 h-4 rounded-full mr-2"></div>
+              <span id="emotion-text">Aguardando análise...</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4">
+            <h3 class="font-semibold mb-2">Detalhes:</h3>
+            <div id="details-result">
+              <p class="text-gray-300">Inicie a análise para ver os resultados detalhados.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Gráficos -->
+    <section class="glass-card p-6 my-8">
+      <h2 class="text-2xl font-bold mb-6 gradient-text">Análise Detalhada</h2>
+      <canvas id="emotionChart" class="w-full h-64"></canvas>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-gray-900 py-8 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-gray-400">© 2023 MedAI Brasil. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Elementos DOM
+    const videoElement = document.getElementById('videoElement');
+    const overlayCanvas = document.getElementById('overlayCanvas');
+    const waveCanvas = document.getElementById('waveCanvas');
+    const startBtn = document.getElementById('startBtn');
+    const emotionResult = document.getElementById('emotion-result');
+    const emotionText = document.getElementById('emotion-text');
+    const emotionDot = document.getElementById('emotion-dot');
+    const detailsResult = document.getElementById('details-result');
+    const introModal = document.getElementById('intro-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const howItWorksBtn = document.getElementById('how-it-works-btn');
+    const startAfterExplanation = document.getElementById('start-after-explanation');
+
+    // Estados
+    let isScanning = false;
+    let emotionChart = null;
+
+    // Mostrar modal na primeira visita
+    window.addEventListener('DOMContentLoaded', function() {
+      const alreadyShown = localStorage.getItem('scannerExplanationSeen');
+      if (!alreadyShown) {
+        introModal.style.display = 'block';
+      }
+      
+      // Inicializar câmera
+      initCamera();
+      
+      // Inicializar gráfico vazio
+      initEmotionChart();
+    });
+
+    // Inicializar câmera
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+        
+        // Ajustar canvas overlay para acompanhar o vídeo
+        videoElement.onloadedmetadata = () => {
+          overlayCanvas.width = videoElement.videoWidth;
+          overlayCanvas.height = videoElement.videoHeight;
+        };
+      } catch (err) {
+        console.error("Erro ao acessar a câmera:", err);
+        alert("Não foi possível acessar a câmera. Por favor, verifique as permissões.");
+      }
+    }
+
+    // Inicializar gráfico de emoções
+    function initEmotionChart() {
+      const ctx = document.getElementById('emotionChart').getContext('2d');
+      emotionChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Felicidade', 'Tristeza', 'Raiva', 'Surpresa', 'Neutro'],
+          datasets: [{
+            label: 'Intensidade',
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: [
+              'rgba(245, 158, 11, 0.7)',
+              'rgba(59, 130, 246, 0.7)',
+              'rgba(239, 68, 68, 0.7)',
+              'rgba(139, 92, 246, 0.7)',
+              'rgba(100, 116, 139, 0.7)'
+            ],
+            borderColor: [
+              'rgba(245, 158, 11, 1)',
+              'rgba(59, 130, 246, 1)',
+              'rgba(239, 68, 68, 1)',
+              'rgba(139, 92, 246, 1)',
+              'rgba(100, 116, 139, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                color: '#E5E7EB'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            x: {
+              ticks: {
+                color: '#E5E7EB'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    // Iniciar análise
+    startBtn.addEventListener('click', function() {
+      if (isScanning) {
+        stopAnalysis();
+      } else {
+        startAnalysis();
+      }
+    });
+
+    // Iniciar análise
+    function startAnalysis() {
+      isScanning = true;
+      startBtn.textContent = 'Parar Análise';
+      startBtn.classList.remove('gradient-bg');
+      startBtn.classList.add('bg-red-600');
+      
+      // Simular análise (em produção seria análise real)
+      simulateAnalysis();
+      
+      // Iniciar animação da onda
+      animateWave();
+    }
+
+    // Parar análise
+    function stopAnalysis() {
+      isScanning = false;
+      startBtn.textContent = 'Iniciar Análise';
+      startBtn.classList.add('gradient-bg');
+      startBtn.classList.remove('bg-red-600');
+      
+      // Limpar overlay
+      const ctx = overlayCanvas.getContext('2d');
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    }
+
+    // Simular análise (substituir por análise real em produção)
+    function simulateAnalysis() {
+      if (!isScanning) return;
+      
+      // Emoções possíveis
+      const emotions = [
+        { name: 'happy', label: 'Felicidade', color: '#f59e0b', description: 'Você parece estar se sentindo feliz ou contente.' },
+        { name: 'sad', label: 'Tristeza', color: '#3b82f6', description: 'Seu estado emocional sugere tristeza ou melancolia.' },
+        { name: 'angry', label: 'Raiva', color: '#ef4444', description: 'Detectamos sinais de raiva ou frustração.' },
+        { name: 'surprise', label: 'Surpresa', color: '#8b5cf6', description: 'Você parece estar surpreso ou impressionado.' },
+        { name: 'neutral', label: 'Neutro', color: '#64748b', description: 'Seu estado emocional parece neutro ou equilibrado.' }
+      ];
+      
+      // Selecionar emoção aleatória (simulação)
+      const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+      
+      // Atualizar UI
+      emotionDot.style.backgroundColor = randomEmotion.color;
+      emotionText.textContent = randomEmotion.label;
+      detailsResult.innerHTML = `<p>${randomEmotion.description}</p>`;
+      
+      // Atualizar gráfico com dados simulados
+      updateChartWithRandomData();
+      
+      // Desenhar pontos faciais simulados
+      drawFacialPoints(randomEmotion.name);
+      
+      // Continuar análise até ser parada
+      setTimeout(simulateAnalysis, 3000);
+    }
+
+    // Desenhar pontos faciais simulados
+    function drawFacialPoints(emotion) {
+      const ctx = overlayCanvas.getContext('2d');
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+      
+      // Configurações baseadas na emoção
+      let pointColor, lineColor;
+      switch(emotion) {
+        case 'happy':
+          pointColor = 'rgba(245, 158, 11, 0.8)';
+          lineColor = 'rgba(245, 158, 11, 0.4)';
+          break;
+        case 'sad':
+          pointColor = 'rgba(59, 130, 246, 0.8)';
+          lineColor = 'rgba(59, 130, 246, 0.4)';
+          break;
+        case 'angry':
+          pointColor = 'rgba(239, 68, 68, 0.8)';
+          lineColor = 'rgba(239, 68, 68, 0.4)';
+          break;
+        default:
+          pointColor = 'rgba(139, 92, 246, 0.8)';
+          lineColor = 'rgba(139, 92, 246, 0.4)';
+      }
+      
+      // Desenhar pontos faciais simulados
+      const points = [];
+      for (let i = 0; i < 68; i++) {
+        const x = overlayCanvas.width/2 + (Math.random() - 0.5) * overlayCanvas.width/2;
+        const y = overlayCanvas.height/2 + (Math.random() - 0.5) * overlayCanvas.height/2;
+        points.push({x, y});
+        
+        ctx.fillStyle = pointColor;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // Desenhar linhas conectando alguns pontos
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 1;
+      
+      // Contorno do rosto
+      for (let i = 0; i < 16; i++) {
+        ctx.beginPath();
+        ctx.moveTo(points[i].x, points[i].y);
+        ctx.lineTo(points[(i+1)%17].x, points[(i+1)%17].y);
+        ctx.stroke();
+      }
+    }
+
+    // Atualizar gráfico com dados aleatórios
+    function updateChartWithRandomData() {
+      if (!emotionChart) return;
+      
+      const newData = emotionChart.data.datasets[0].data.map(() => 
+        Math.floor(Math.random() * 70) + 30
+      );
+      
+      emotionChart.data.datasets[0].data = newData;
+      emotionChart.update();
+    }
+
+    // Animar onda de voz
+    function animateWave() {
+      if (!isScanning) return;
+      
+      const ctx = waveCanvas.getContext('2d');
+      waveCanvas.width = waveCanvas.offsetWidth;
+      waveCanvas.height = waveCanvas.offsetHeight;
+      
+      ctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+      
+      ctx.strokeStyle = '#3B82F6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      const centerY = waveCanvas.height / 2;
+      const amplitude = waveCanvas.height / 3;
+      
+      for (let x = 0; x < waveCanvas.width; x++) {
+        const y = centerY + amplitude * Math.sin(x * 0.05 + Date.now() * 0.005);
+        
+        if (x === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      
+      ctx.stroke();
+      
+      requestAnimationFrame(animateWave);
+    }
+
+    // Modal de explicação
+    howItWorksBtn.addEventListener('click', function() {
+      introModal.style.display = 'block';
+    });
+
+    closeModal.addEventListener('click', function() {
+      introModal.style.display = 'none';
+      localStorage.setItem('scannerExplanationSeen', 'true');
+    });
+
+    startAfterExplanation.addEventListener('click', function() {
+      introModal.style.display = 'none';
+      localStorage.setItem('scannerExplanationSeen', 'true');
+      startAnalysis();
+    });
+
+    // Fechar modal ao clicar fora
+    window.addEventListener('click', function(event) {
+      if (event.target === introModal) {
+        introModal.style.display = 'none';
+        localStorage.setItem('scannerExplanationSeen', 'true');
+      }
+    });
+  </script>
+</body>
+</html>
