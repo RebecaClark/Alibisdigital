@@ -21,12 +21,22 @@
       background: linear-gradient(135deg, var(--dark), var(--darker));
       color: white;
       position: relative;
-      overflow-x: hidden;
+      overflow: auto; /* Alterado de overflow-x: hidden para permitir rolagem */
+    }
+    .particles-container {
+      width: 300px;
+      height: 300px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+      border-radius: 8px;
+      overflow: hidden;
     }
     #particles-js {
-      position: absolute;
       width: 100%;
       height: 100%;
+      position: absolute;
       top: 0;
       left: 0;
       z-index: -1;
@@ -147,7 +157,9 @@
 </head>
 <body class="min-h-screen">
   <!-- Partículas de Fundo -->
-  <div id="particles-js"></div>
+  <div class="particles-container">
+    <div id="particles-js"></div>
+  </div>
 
   <!-- Cabeçalho -->
   <header class="glass-card fixed top-0 left-0 w-full z-50 shadow-lg">
@@ -178,7 +190,7 @@
     </div>
   </div>
 
-  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto">
+  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto" style="margin-top: 80px;"> <!-- Margem adicionada -->
     <!-- Seção Hero -->
     <section class="py-12 text-center">
       <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Scanner Emocional Avançado</h1>
@@ -711,7 +723,6 @@
             
             // Atualizar consistência
             updateConsistency();
-            
           }, 2000);
         } catch (err) {
           console.error('Erro na análise de voz:', err);
@@ -977,11 +988,17 @@
           </div>
         </div>
         
-        <div class="glass-card p-6">
+        <div class="glass-card p-6 mb-4">
           <h4 class="text-xl font-bold mb-3 gradient-text">Recomendações Personalizadas</h4>
           <ul class="list-disc pl-5 space-y-2">
             ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
           </ul>
+        </div>
+        
+        <div class="glass-card p-6">
+          <h4 class="text-xl font-bold mb-3 gradient-text">Próximos Passos</h4>
+          <p><a href="https://medaibrasil.com.br/apoio-emocional" class="text-blue-400">Apoio Emocional</a> para suporte psicológico.</p>
+          <p><a href="https://medaibrasil.com.br/medical-ia.html" class="text-blue-400">Medical IA</a> para análise médica avançada.</p>
         </div>
       `;
     }
