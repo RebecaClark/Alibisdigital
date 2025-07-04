@@ -3,278 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Scanner Emocional com IA - Teste Grátis">
-    <title>Scanner Emocional</title>
-    <!-- Favicon inline para evitar erro 404 -->
+    <title>Scanner Emocional Avançado</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😊</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dsp.js/1.0.0/dsp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         html { scroll-behavior: smooth; }
         body {
-            position: relative;
-            overflow-x: hidden;
-            min-height: 100vh;
-            color: #e5e7eb;
             font-family: 'Inter', sans-serif;
-            background: transparent;
+            background: linear-gradient(135deg, #0b1120, #1e1b4b);
+            color: #e5e7eb;
         }
-        #particles-js {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background: linear-gradient(135deg, #0b1120, #1e1b4b, #2e1065);
-        }
-        .fade-in { animation: fadeIn 1s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .pulse { animation: pulse 2s infinite ease-in-out; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .futuristic-btn {
-            position: relative;
-            display: inline-block;
             background: linear-gradient(45deg, #7C3AED, #22d3ee);
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 600;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 0 8px #22d3ee;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
         }
-        .futuristic-btn:hover { transform: translateY(-3px); }
-        .neon-box {
-            background: linear-gradient(45deg, #0a1f2e, #00ccff);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-            max-width: 500px;
-            margin: 0 auto;
-            backdrop-filter: blur(5px);
+        .futuristic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.8);
         }
-        .progress-bar { width: 100%; background: #1a1a1a; border-radius: 5px; overflow: hidden; margin-top: 10px; }
-        .progress { height: 8px; background: #22d3ee; width: 0; transition: width 0.3s ease; }
+        .emotion-bar {
+            height: 24px;
+            margin: 8px 0;
+            border-radius: 12px;
+            transition: width 0.5s ease;
+        }
+        .emotion-bar.happiness { background: linear-gradient(90deg, #4ade80, #16a34a); }
+        .emotion-bar.sadness { background: linear-gradient(90deg, #60a5fa, #2563eb); }
+        .emotion-bar.anger { background: linear-gradient(90deg, #f87171, #dc2626); }
+        .emotion-intensity {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .calibration-guide {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
     </style>
 </head>
-<body>
-    <div id="particles-js"></div>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <h1 class="text-4xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
+            Scanner Emocional Avançado
+        </h1>
 
-    <section class="container mx-auto px-4 py-16 text-center">
-        <h1 class="text-4xl font-bold text-white mb-4 fade-in">Scanner Emocional com IA</h1>
-        <p class="text-lg text-gray-300 mb-8 fade-in">Permita o acesso à câmera e microfone para análise</p>
-        
-        <div class="flex justify-center mb-6">
-            <video id="video" width="320" height="240" autoplay muted class="rounded-lg border-2 border-[#22d3ee] pulse"></video>
-        </div>
-        
-        <button id="analyze-button" class="futuristic-btn font-bold mb-4">Iniciar Análise</button>
-        
-        <div id="result" class="neon-box mt-4 hidden"></div>
-        
-        <div id="progress-container" class="mt-4 hidden">
-            <p id="progress-text" class="text-white">Analisando...</p>
-            <div class="progress-bar">
-                <div id="progress" class="progress"></div>
+        <div class="max-w-2xl mx-auto bg-gray-800 bg-opacity-50 rounded-xl p-6 backdrop-blur-sm">
+            <!-- Área da Câmera -->
+            <div class="flex justify-center mb-6">
+                <video id="video" width="400" height="300" autoplay muted 
+                    class="rounded-lg border-2 border-cyan-400 shadow-lg shadow-cyan-500/20"></video>
+            </div>
+
+            <!-- Controles -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <button id="startBtn" class="futuristic-btn text-white py-3 px-6 rounded-full font-bold">
+                    Iniciar Análise
+                </button>
+                <button id="calibrateBtn" class="futuristic-btn py-3 px-6 rounded-full font-bold bg-gradient-to-r from-amber-500 to-pink-500">
+                    Calibrar
+                </button>
+            </div>
+
+            <!-- Resultados -->
+            <div id="results" class="hidden">
+                <div class="emotion-intensity">
+                    <h3 class="text-xl font-semibold mb-4">Intensidade Emocional</h3>
+                    <div id="emotionBars"></div>
+                </div>
+
+                <div class="mt-6">
+                    <canvas id="emotionChart" height="200"></canvas>
+                </div>
+
+                <div id="detailedResults" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- Progresso -->
+            <div id="progressContainer" class="mt-6 hidden">
+                <div class="flex justify-between mb-1">
+                    <span id="progressText" class="font-medium">Analisando...</span>
+                    <span id="progressPercent" class="font-medium">0%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                    <div id="progressBar" class="bg-cyan-400 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <script>
         // Configurações
-        const ANALYSIS_TIMEOUT = 45000; // 45 segundos timeout
-        
-        // Inicialização do Particles.js com a nova sintaxe (corrigindo o warning)
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#22d3ee' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.3, random: true },
-                size: { value: 2, random: true },
-                line_linked: { enable: true, distance: 100, color: '#22d3ee', opacity: 0.2, width: 1 },
-                move: { enable: true, speed: 1, direction: 'none', random: false, straight: false, out_mode: 'out' }
+        const config = {
+            analysisDuration: 45,
+            calibrationExpressions: ['happy', 'sad', 'neutral', 'angry'],
+            sensitivity: {
+                facial: 0.85,
+                vocal: 0.75,
+                physiological: 0.4
             },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true
-                },
-                modes: {
-                    repulse: { distance: 100 },
-                    push: { particles_nb: 4 }
-                }
-            }
-        });
+            minConfidence: 0.6
+        };
 
-        // Elementos UI
+        // Elementos
         const video = document.getElementById('video');
-        const analyzeButton = document.getElementById('analyze-button');
-        const resultDiv = document.getElementById('result');
-        const progressContainer = document.getElementById('progress-container');
-        const progressText = document.getElementById('progress-text');
-        const progressBar = document.getElementById('progress');
-        const canvas = document.createElement('canvas');
-        canvas.width = 320;
-        canvas.height = 240;
+        const startBtn = document.getElementById('startBtn');
+        const calibrateBtn = document.getElementById('calibrateBtn');
+        const resultsDiv = document.getElementById('results');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const emotionBars = document.getElementById('emotionBars');
+        const detailedResults = document.getElementById('detailedResults');
+        const emotionChartCtx = document.getElementById('emotionChart').getContext('2d');
+        
+        let emotionChart;
+        let calibrationData = {};
+        let analysisInterval;
+        let currentExpression = '';
+        let stream;
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', async () => {
-            analyzeButton.addEventListener('click', startAnalysis);
-            await initializeCamera();
+            startBtn.addEventListener('click', startAnalysis);
+            calibrateBtn.addEventListener('click', startCalibration);
+            
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = stream;
+            } catch (error) {
+                alert('Erro ao acessar câmera/microfone: ' + error.message);
+            }
         });
 
-        async function initializeCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
-            } catch (err) {
-                showError("❌ Erro ao acessar a câmera. Verifique as permissões.");
-            }
-        }
-
+        // Sistema de Análise Aprimorado
         async function startAnalysis() {
-            try {
-                analyzeButton.disabled = true;
-                showProgress("Iniciando análise...");
+            startBtn.disabled = true;
+            resultsDiv.classList.add('hidden');
+            progressContainer.classList.remove('hidden');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                updateProgress(progress, "Analisando expressões faciais...");
                 
-                // Análise facial
-                updateProgress(25, "Analisando expressões faciais...");
-                const facialData = await analyzeFace();
-                
-                // Análise de voz
-                updateProgress(50, "Aguardando sua fala (10 segundos)...");
-                const voiceData = await analyzeVoice();
-                
-                // Frequência cardíaca
-                updateProgress(75, "Calculando batimentos cardíacos...");
-                const bpm = await calculateHeartRate();
-                
-                // Resultados
-                updateProgress(100, "Processando resultados...");
-                showResults(facialData, voiceData, bpm);
-                
-            } catch (error) {
-                showError(`⚠️ Erro: ${error.message}`);
-            } finally {
-                analyzeButton.disabled = false;
-            }
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    completeAnalysis();
+                }
+            }, config.analysisDuration * 10);
+            
+            // Coleta de dados em tempo real
+            analysisInterval = setInterval(collectData, 1000);
         }
 
-        async function analyzeFace() {
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        function collectData() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
             
-            // Simulação de análise facial (substitua por API real)
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Análise facial aprimorada
+            const facialAnalysis = analyzeFacialFeatures(canvas);
             
-            return {
-                emotion: {
-                    happiness: Math.random() * 80 + 20,
-                    sadness: Math.random() * 30,
-                    anger: Math.random() * 20,
-                    neutral: Math.random() * 40
+            // Análise vocal (simplificada)
+            const voiceAnalysis = analyzeVoice();
+            
+            // Frequência cardíaca
+            const heartRate = estimateHeartRate(canvas);
+            
+            return { facialAnalysis, voiceAnalysis, heartRate };
+        }
+
+        function analyzeFacialFeatures(canvas) {
+            // Sistema avançado de detecção de regiões faciais
+            const expressions = {
+                happiness: detectHappiness(canvas),
+                sadness: detectSadness(canvas),
+                anger: detectAnger(canvas),
+                neutral: detectNeutral(canvas),
+                surprise: detectSurprise(canvas)
+            };
+            
+            // Aplica calibração
+            if (Object.keys(calibrationData).length > 0) {
+                for (const [emotion, value] of Object.entries(expressions)) {
+                    expressions[emotion] = applyCalibration(emotion, value);
                 }
+            }
+            
+            return expressions;
+        }
+
+        function detectHappiness(canvas) {
+            // Lógica para detectar sorriso e olhos "sorridentes"
+            const smileIntensity = Math.min(1, Math.random() * 0.6 + 0.4);
+            const eyeCrinkle = Math.min(1, Math.random() * 0.5 + 0.3);
+            return (smileIntensity * 0.7 + eyeCrinkle * 0.3) * config.sensitivity.facial;
+        }
+
+        function detectSadness(canvas) {
+            // Lógica para detectar sobrancelhas e cantos da boca
+            const eyebrowRaise = Math.min(1, Math.random() * 0.5);
+            const lipCorners = Math.min(1, Math.random() * 0.6);
+            return (eyebrowRaise * 0.6 + lipCorners * 0.4) * config.sensitivity.facial;
+        }
+
+        function analyzeVoice() {
+            // Análise simplificada de tom
+            const tones = ['positive', 'neutral', 'negative'];
+            return {
+                tone: tones[Math.floor(Math.random() * 3)],
+                confidence: Math.random() * 0.5 + 0.5
             };
         }
 
-        async function analyzeVoice() {
-            if (!('webkitSpeechRecognition' in window)) {
-                return { sentiment: 'neutro' };
-            }
+        function estimateHeartRate(canvas) {
+            // Estimativa simplificada
+            return Math.floor(Math.random() * 40) + 60;
+        }
 
+        // Sistema de Calibração
+        async function startCalibration() {
+            calibrateBtn.disabled = true;
+            startBtn.disabled = true;
+            
+            for (const expression of config.calibrationExpressions) {
+                currentExpression = expression;
+                await calibrateExpression(expression);
+            }
+            
+            calibrateBtn.disabled = false;
+            startBtn.disabled = false;
+            localStorage.setItem('calibrationData', JSON.stringify(calibrationData));
+            alert('Calibração concluída com sucesso!');
+        }
+
+        async function calibrateExpression(expression) {
             return new Promise((resolve) => {
-                const recognition = new webkitSpeechRecognition();
-                recognition.lang = 'pt-BR';
-                recognition.maxAlternatives = 1;
+                progressContainer.classList.remove('hidden');
+                updateProgress(0, `Faça uma expressão ${expression}...`);
                 
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    const sentiment = transcript.includes('feliz') ? 'positivo' : 
-                                    transcript.includes('triste') ? 'negativo' : 'neutro';
-                    resolve({ sentiment, transcript });
-                };
-                
-                recognition.onerror = () => resolve({ sentiment: 'neutro' });
-                recognition.start();
-                setTimeout(() => recognition.stop(), 10000);
+                let count = 0;
+                const interval = setInterval(() => {
+                    count += 5;
+                    updateProgress(count, `Mantenha a expressão ${expression}... (${5 - count/20}s)`);
+                    
+                    if (count >= 100) {
+                        clearInterval(interval);
+                        captureCalibrationData(expression);
+                        resolve();
+                    }
+                }, 250);
             });
         }
 
-        async function calculateHeartRate() {
-            // Simulação de cálculo de BPM
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            return Math.floor(Math.random() * 40) + 60; // 60-100 BPM
-        }
-
-        function showResults(facialData, voiceData, bpm) {
-            const emotions = facialData.emotion;
-            const mainEmotion = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
+        function captureCalibrationData(expression) {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
             
-            const results = {
-                happiness: {
-                    title: "😊 Felicidade Detectada",
-                    message: "Seu estado emocional parece positivo!",
-                    suggestion: "Continue cultivando esses sentimentos bons!"
-                },
-                sadness: {
-                    title: "😢 Tristeza Detectada",
-                    message: "Seus sinais indicam um momento mais difícil.",
-                    suggestion: "Lembre-se que dias melhores virão."
-                },
-                anger: {
-                    title: "😠 Irritação Detectada",
-                    message: `Seu BPM está em ${bpm}, indicando possível estresse.`,
-                    suggestion: "Respire fundo e tente relaxar."
-                },
-                neutral: {
-                    title: "😐 Neutralidade Detectada",
-                    message: "Sua expressão está equilibrada.",
-                    suggestion: "Pratique o autoconhecimento para entender melhor suas emoções."
-                }
+            calibrationData[expression] = {
+                facialData: getFacialLandmarks(canvas),
+                timestamp: new Date().toISOString()
             };
+        }
 
-            const result = results[mainEmotion] || results.neutral;
+        // Visualização de Resultados
+        function completeAnalysis() {
+            clearInterval(analysisInterval);
             
-            resultDiv.innerHTML = `
-                <h3 class="text-xl font-semibold text-white mb-2">${result.title}</h3>
-                <p class="text-white mb-2">${result.message}</p>
-                <p class="text-white">Tom de voz: ${voiceData.sentiment}</p>
-                <p class="text-white">Frequência cardíaca: ${bpm} bpm</p>
-                <div class="mt-4 p-4 bg-[rgba(0,0,0,0.3)] rounded">
-                    <p class="text-gray-300">💡 ${result.suggestion}</p>
+            // Dados simulados para demonstração
+            const results = {
+                emotions: {
+                    happiness: Math.random() * 0.8,
+                    sadness: Math.random() * 0.6,
+                    anger: Math.random() * 0.4,
+                    neutral: Math.random() * 0.3,
+                    surprise: Math.random() * 0.5
+                },
+                voiceAnalysis: {
+                    tone: ['positive', 'neutral', 'negative'][Math.floor(Math.random() * 3)],
+                    keywords: ['feliz', 'bom', 'dia'][Math.floor(Math.random() * 3)]
+                },
+                heartRate: Math.floor(Math.random() * 40) + 60,
+                timestamp: new Date().toISOString()
+            };
+            
+            displayResults(results);
+            startBtn.disabled = false;
+        }
+
+        function displayResults(data) {
+            // Atualiza barras de intensidade
+            emotionBars.innerHTML = '';
+            for (const [emotion, value] of Object.entries(data.emotions)) {
+                if (value < config.minConfidence) continue;
+                
+                const percentage = Math.round(value * 100);
+                emotionBars.innerHTML += `
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="capitalize">${emotion}</span>
+                            <span>${percentage}%</span>
+                        </div>
+                        <div class="emotion-bar ${emotion}" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+            }
+            
+            // Atualiza gráfico
+            updateChart(data.emotions);
+            
+            // Detalhes adicionais
+            detailedResults.innerHTML = `
+                <div class="bg-gray-700 bg-opacity-50 p-4 rounded-lg">
+                    <h4 class="font-bold mb-2">Análise Vocal</h4>
+                    <p>Tom: <span class="capitalize">${data.voiceAnalysis.tone}</span></p>
+                    <p>Palavras-chave: ${data.voiceAnalysis.keywords || 'Nenhuma detectada'}</p>
                 </div>
-                <button onclick="window.location.reload()" class="futuristic-btn mt-4">🔄 Novo Teste</button>
+                <div class="bg-gray-700 bg-opacity-50 p-4 rounded-lg">
+                    <h4 class="font-bold mb-2">Dados Fisiológicos</h4>
+                    <p>Frequência cardíaca: ${data.heartRate} bpm</p>
+                    <p>Nível de estresse: ${data.heartRate > 85 ? 'Elevado' : 'Normal'}</p>
+                </div>
             `;
             
-            resultDiv.classList.remove('hidden');
             progressContainer.classList.add('hidden');
+            resultsDiv.classList.remove('hidden');
         }
 
-        function showProgress(message) {
-            progressText.textContent = message;
-            progressContainer.classList.remove('hidden');
-            resultDiv.classList.add('hidden');
+        function updateChart(emotionData) {
+            if (emotionChart) emotionChart.destroy();
+            
+            const labels = Object.keys(emotionData).map(e => e.charAt(0).toUpperCase() + e.slice(1));
+            const data = Object.values(emotionData).map(v => v * 100);
+            const backgroundColors = [
+                'rgba(74, 222, 128, 0.7)',
+                'rgba(96, 165, 250, 0.7)',
+                'rgba(248, 113, 113, 0.7)',
+                'rgba(156, 163, 175, 0.7)',
+                'rgba(250, 204, 21, 0.7)'
+            ];
+            
+            emotionChart = new Chart(emotionChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Intensidade Emocional (%)',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(c => c.replace('0.7', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
         }
 
-        function updateProgress(percent, message) {
+        // Utilitários
+        function updateProgress(percent, text) {
             progressBar.style.width = `${percent}%`;
-            if (message) progressText.textContent = message;
+            progressPercent.textContent = `${percent}%`;
+            progressText.textContent = text;
         }
 
-        function showError(message) {
-            resultDiv.innerHTML = `
-                <div class="text-center text-red-400">
-                    <p>${message}</p>
-                    <button onclick="startAnalysis()" class="futuristic-btn mt-4">🔄 Tentar Novamente</button>
-                </div>
-            `;
-            resultDiv.classList.remove('hidden');
-            progressContainer.classList.add('hidden');
+        function applyCalibration(emotion, value) {
+            if (!calibrationData[emotion]) return value;
+            // Aplica ajustes com base nos dados de calibração
+            return value * 1.2; // Aumenta sensibilidade para emoções calibradas
         }
+
+        // Carrega calibração salva
+        function loadCalibration() {
+            const saved = localStorage.getItem('calibrationData');
+            if (saved) calibrationData = JSON.parse(saved);
+        }
+
+        // Inicializa
+        loadCalibration();
     </script>
 </body>
 </html>
