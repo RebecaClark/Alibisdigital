@@ -778,220 +778,375 @@
       // Inicializar Painel de Progresso
       initProgressDashboard();
     });
-
-    // ==================== FASE 1: Chatbot Terapêutico Avançado ====================
-    function initTherapeuticChat() {
-      const chatInput = document.getElementById('chat-input');
-      const sendButton = document.getElementById('send-message');
-      const chatMessages = document.getElementById('chat-messages');
-      const voiceButton = document.getElementById('start-voice-chat');
-      const typingIndicator = document.getElementById('typing-indicator');
-      const therapyApproach = document.getElementById('therapy-approach');
-      const therapistStyle = document.getElementById('therapist-style');
-      const voiceEnabled = document.getElementById('voice-enabled');
-      const applySettings = document.getElementById('apply-settings');
-      
-      let currentApproach = 'cbt';
-      let currentStyle = 'warm';
-      let isVoiceEnabled = true;
-      
-      // Configurações do Chat
-      applySettings.addEventListener('click', function() {
-        currentApproach = therapyApproach.value;
-        currentStyle = therapistStyle.value;
-        isVoiceEnabled = voiceEnabled.checked;
-        
-        // Atualizar nome e avatar do terapeuta
-        updateTherapistProfile();
-        
-        // Feedback visual
-        const feedback = document.createElement('div');
-        feedback.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg';
-        feedback.textContent = 'Configurações aplicadas!';
-        document.body.appendChild(feedback);
-        
-        setTimeout(() => {
-          feedback.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-          setTimeout(() => feedback.remove(), 500);
-        }, 2000);
-      });
-      
-      function updateTherapistProfile() {
-        const therapistName = document.getElementById('therapist-name');
-        const therapistAvatar = document.getElementById('therapist-avatar');
-        
-        const profiles = {
-          cbt: { name: 'Dr. Silva (TCC)', color: 'bg-blue-600' },
-          act: { name: 'Dra. Costa (ACT)', color: 'bg-purple-600' },
-          mindfulness: { name: 'Instrutor Paz', color: 'bg-green-600' },
-          supportive: { name: 'Apoiador Emocional', color: 'bg-pink-600' }
-        };
-        
-        therapistName.textContent = profiles[currentApproach].name;
-        therapistAvatar.className = `w-8 h-8 rounded-full ${profiles[currentApproach].color} flex items-center justify-center mr-2`;
+//==================== CHATBOT TERAPÊUTICO AVANÇADO (CORRIGIDO) ====================
+function initTherapeuticChat() {
+  const chatInput = document.getElementById('chat-input');
+  const sendButton = document.getElementById('send-message');
+  const chatMessages = document.getElementById('chat-messages');
+  const voiceButton = document.getElementById('start-voice-chat');
+  const typingIndicator = document.getElementById('typing-indicator');
+  const therapyApproach = document.getElementById('therapy-approach');
+  const therapistStyle = document.getElementById('therapist-style');
+  const voiceEnabled = document.getElementById('voice-enabled');
+  const applySettings = document.getElementById('apply-settings');
+  
+  let currentApproach = 'cbt';
+  let currentStyle = 'warm';
+  let isVoiceEnabled = true;
+  let conversationHistory = [];
+  let currentTopic = '';
+  let userName = '';
+  
+  // Configurações do Chat - Atualizado
+  applySettings.addEventListener('click', function() {
+    currentApproach = therapyApproach.value;
+    currentStyle = therapistStyle.value;
+    isVoiceEnabled = voiceEnabled.checked;
+    
+    updateTherapistProfile();
+    showFeedback('Configurações aplicadas com sucesso!');
+  });
+  
+  // Perfil do Terapeuta - Melhorado
+  function updateTherapistProfile() {
+    const therapistName = document.getElementById('therapist-name');
+    const therapistAvatar = document.getElementById('therapist-avatar');
+    
+    const profiles = {
+      cbt: { 
+        name: 'Dr. Silva (TCC)', 
+        color: 'bg-blue-600',
+        specialty: 'Terapia Cognitivo-Comportamental'
+      },
+      act: { 
+        name: 'Dra. Costa (ACT)', 
+        color: 'bg-purple-600',
+        specialty: 'Terapia de Aceitação e Compromisso'
+      },
+      mindfulness: { 
+        name: 'Instrutor Paz', 
+        color: 'bg-green-600',
+        specialty: 'Mindfulness e Meditação'
+      },
+      supportive: { 
+        name: 'Apoiador Emocional', 
+        color: 'bg-pink-600',
+        specialty: 'Apoio Emocional'
       }
-      
-      // Enviar mensagem
-      function sendMessage() {
-        const message = chatInput.value.trim();
-        if (message === '') return;
-        
-        // Adicionar mensagem do usuário
-        addMessage(message, true);
-        chatInput.value = '';
-        
-        // Mostrar indicador de digitação
-        typingIndicator.classList.remove('hidden');
-        
-        // Simular tempo de resposta
-        setTimeout(() => {
-          typingIndicator.classList.add('hidden');
-          
-          // Gerar resposta baseada na abordagem terapêutica
-          const response = generateTherapeuticResponse(message);
-          addMessage(response, false);
-          
-          // Falar a resposta se voz estiver ativada
-          if (isVoiceEnabled) {
-            speak(response);
-          }
-          
-          // Rolagem automática
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 1500 + Math.random() * 2000);
-      }
-      
-      // Adicionar mensagem ao chat
-      function addMessage(text, isUser) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'}`;
-        
-        const bubble = document.createElement('div');
-        bubble.className = isUser ? 
-          'bg-blue-600 rounded-lg p-3 max-w-xs md:max-w-md' : 
-          'bg-gray-800 rounded-lg p-3 max-w-xs md:max-w-md';
-        bubble.textContent = text;
-        
-        messageDiv.appendChild(bubble);
-        chatMessages.appendChild(messageDiv);
-        
-        // Rolagem automática
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-      
-      // Gerar resposta terapêutica
-      function generateTherapeuticResponse(message) {
-        const lowerMessage = message.toLowerCase();
-        let response = '';
-        
-        // Respostas baseadas na abordagem selecionada
-        if (currentApproach === 'cbt') {
-          // Terapia Cognitivo-Comportamental
-          if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos')) {
-            response = 'Parece que você está experimentando ansiedade. Vamos examinar os pensamentos que estão contribuindo para esse sentimento. O que passa pela sua mente quando se sente assim?';
-          } else if (lowerMessage.includes('trist') || lowerMessage.includes('deprim')) {
-            response = 'A tristeza pode ser desafiadorora. Você consegue identificar algum padrão de pensamento que possa estar reforçando esses sentimentos?';
-          } else if (lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
-            response = 'O estresse muitas vezes vem de pensamentos sobre demandas que percebemos. Como você avalia sua capacidade de lidar com essas situações?';
-          } else {
-            response = 'Interessante. Como esses pensamentos afetam seu comportamento e emoções?';
-          }
-        } else if (currentApproach === 'act') {
-          // Terapia de Aceitação e Compromisso
-          if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos')) {
-            response = 'A ansiedade pode ser difícil. Em vez de tentar eliminá-la, o que acha de observá-la com curiosidade? O que você nota quando a ansiedade está presente?';
-          } else if (lowerMessage.includes('trist') || lowerMessage.includes('deprim')) {
-            response = 'A tristeza é uma experiência humana válida. O que é mais importante para você, mesmo na presença dessa tristeza?';
-          } else if (lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
-            response = 'O estresse pode nos afastar do que é importante. Quais são seus valores que estão sendo desafiados por essa situação?';
-          } else {
-            response = 'Obrigado por compartilhar. Como você pode agir de acordo com seus valores diante disso?';
-          }
-        } else if (currentApproach === 'mindfulness') {
-          // Mindfulness
-          response = 'Observe esse sentimento sem julgamento. O que você nota no seu corpo e mente neste momento?';
-        } else {
-          // Apoio Emocional
-          if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos') || 
-              lowerMessage.includes('trist') || lowerMessage.includes('deprim') || 
-              lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
-            response = 'Parece que você está passando por um momento difícil. Quer falar mais sobre como está se sentindo?';
-          } else {
-            response = 'Obrigado por compartilhar. Como posso te apoiar melhor nisso?';
-          }
-        }
-        
-        // Ajustar estilo da resposta
-        if (currentStyle === 'direct') {
-          response = response.replace('Parece que', 'Você está');
-          response = response.replace(' pode ser', ' é');
-          response = response.replace(' muitas vezes', '');
-        } else if (currentStyle === 'friendly') {
-          response = response.replace('Parece que', 'Então você tá');
-          response = response.replace(' pode ser', ' pode até ser');
-          response = response + ' Me conta mais!';
-        }
-        
-        return response;
-      }
-      
-      // Event Listeners
-      sendButton.addEventListener('click', sendMessage);
-      chatInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          sendMessage();
-        }
-      });
-      
-      // Configuração de Voz
-      if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = 'pt-BR';
-        
-        voiceButton.addEventListener('click', function() {
-          recognition.start();
-          voiceButton.classList.add('bg-blue-600');
-          voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 animate-pulse" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>Ouvindo...';
-          
-          recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript;
-            chatInput.value = transcript;
-            sendMessage();
-          };
-          
-          recognition.onerror = function(event) {
-            console.error('Erro no reconhecimento de voz:', event.error);
-            voiceButton.classList.remove('bg-blue-600');
-            voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>Falar';
-          };
-          
-          recognition.onend = function() {
-            voiceButton.classList.remove('bg-blue-600');
-            voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>Falar';
-          };
-        });
-      } else {
-        voiceButton.disabled = true;
-        voiceButton.title = 'Reconhecimento de voz não suportado no seu navegador';
-      }
-      
-      // Fala com síntese de voz
-      function speak(text) {
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'pt-BR';
-          utterance.rate = 0.9;
-          speechSynthesis.speak(utterance);
-        }
-      }
-      
-      // Mensagem inicial
-      setTimeout(() => {
-        addMessage('Eu uso técnicas de terapia cognitivo-comportamental, aceitação e compromisso, e mindfulness para te ajudar. Por onde gostaria de começar?', false);
-      }, 1000);
+    };
+    
+    const profile = profiles[currentApproach];
+    therapistName.textContent = profile.name;
+    therapistAvatar.className = `w-8 h-8 rounded-full ${profile.color} flex items-center justify-center mr-2`;
+    
+    // Adiciona mensagem de introdução quando muda o terapeuta
+    addSystemMessage(`Olá! Sou seu terapeuta virtual especializado em ${profile.specialty}. Como posso te ajudar hoje?`);
+  }
+  
+  // Mensagens do Sistema - Novo
+  function addSystemMessage(text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'flex justify-start';
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'bg-gray-800 rounded-lg p-3 max-w-xs md:max-w-md';
+    bubble.innerHTML = `<p>${text}</p>`;
+    
+    messageDiv.appendChild(bubble);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Adiciona ao histórico
+    conversationHistory.push({
+      role: 'system',
+      content: text,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Fala a mensagem se voz estiver ativada
+    if (isVoiceEnabled) {
+      speak(text);
     }
+  }
+  
+  // Enviar Mensagem - Atualizado
+  function sendMessage() {
+    const message = chatInput.value.trim();
+    if (message === '') return;
+    
+    // Adiciona mensagem do usuário
+    addUserMessage(message);
+    chatInput.value = '';
+    
+    // Processa a mensagem
+    processUserMessage(message);
+  }
+  
+  // Adicionar Mensagem do Usuário - Novo
+  function addUserMessage(text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'flex justify-end';
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'bg-blue-600 rounded-lg p-3 max-w-xs md:max-w-md';
+    bubble.textContent = text;
+    
+    messageDiv.appendChild(bubble);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Adiciona ao histórico
+    conversationHistory.push({
+      role: 'user',
+      content: text,
+      timestamp: new Date().toISOString()
+    });
+  }
+  
+  // Processar Mensagem do Usuário - Melhorado
+  function processUserMessage(message) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Detecção de nome
+    if (!userName && (lowerMessage.includes('meu nome é') || lowerMessage.includes('eu sou'))) {
+      const nameMatch = message.match(/(?:meu nome é|eu sou)\s+([^\s,.]+)/i);
+      if (nameMatch && nameMatch[1]) {
+        userName = nameMatch[1];
+        addSystemMessage(`Prazer em te conhecer, ${userName}! Como você está se sentindo hoje?`);
+        return;
+      }
+    }
+    
+    // Mostrar indicador de digitação
+    typingIndicator.classList.remove('hidden');
+    
+    // Simular tempo de processamento
+    setTimeout(() => {
+      typingIndicator.classList.add('hidden');
+      
+      // Gerar resposta baseada no contexto
+      const response = generateTherapeuticResponse(message);
+      addSystemMessage(response);
+    }, 1000 + Math.random() * 1500);
+  }
+  
+  // Gerar Resposta Terapêutica - Melhorado
+  function generateTherapeuticResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    let response = '';
+    
+    // Mantém o tópico da conversa
+    if (currentTopic && !lowerMessage.includes('mudar') && !lowerMessage.includes('outro')) {
+      return continueCurrentTopic(message);
+    }
+    
+    // Respostas baseadas na abordagem
+    if (currentApproach === 'cbt') {
+      if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos')) {
+        currentTopic = 'ansiedade';
+        response = `Entendo que você está se sentindo ansioso. ${userName ? userName + ', ' : ''}você consegue identificar o que desencadeia essa ansiedade?`;
+      } else if (lowerMessage.includes('trist') || lowerMessage.includes('deprim')) {
+        currentTopic = 'tristeza';
+        response = `A tristeza pode ser difícil. ${userName ? userName + ', ' : ''}quanto tempo você está se sentindo assim?`;
+      } else if (lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
+        currentTopic = 'estresse';
+        response = `O estresse pode ser desafiador. ${userName ? userName + ', ' : ''}como isso está afetando sua rotina?`;
+      } else if (lowerMessage.includes('raiva') || lowerMessage.includes('bravo')) {
+        currentTopic = 'raiva';
+        response = `A raiva é uma emoção válida. ${userName ? userName + ', ' : ''}o que aconteceu antes de você se sentir assim?`;
+      } else {
+        currentTopic = 'explorar';
+        response = `Interessante. ${userName ? userName + ', ' : ''}como esses pensamentos afetam seu dia a dia?`;
+      }
+    } else if (currentApproach === 'act') {
+      if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos')) {
+        currentTopic = 'ansiedade';
+        response = `A ansiedade pode ser desconfortável. ${userName ? userName + ', ' : ''}o que é mais importante para você mesmo com essa ansiedade presente?`;
+      } else if (lowerMessage.includes('trist') || lowerMessage.includes('deprim')) {
+        currentTopic = 'tristeza';
+        response = `A tristeza faz parte da experiência humana. ${userName ? userName + ', ' : ''}quais valores são importantes para você nesse momento?`;
+      } else if (lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
+        currentTopic = 'estresse';
+        response = `O estresse pode nos afastar do que importa. ${userName ? userName + ', ' : ''}quais atividades te conectam com seus valores?`;
+      } else {
+        currentTopic = 'valores';
+        response = `Obrigado por compartilhar. ${userName ? userName + ', ' : ''}como você pode agir de acordo com seus valores diante disso?`;
+      }
+    } else if (currentApproach === 'mindfulness') {
+      currentTopic = 'mindfulness';
+      response = `Observe esse sentimento sem julgamento. ${userName ? userName + ', ' : ''}o que você nota no seu corpo e mente agora?`;
+    } else {
+      if (lowerMessage.includes('ansios') || lowerMessage.includes('nervos') || 
+          lowerMessage.includes('trist') || lowerMessage.includes('deprim') || 
+          lowerMessage.includes('estress') || lowerMessage.includes('sobrecarreg')) {
+        currentTopic = 'apoio';
+        response = `Parece que você está passando por um momento difícil. ${userName ? userName + ', ' : ''}quer falar mais sobre como está se sentindo?`;
+      } else {
+        currentTopic = 'escuta';
+        response = `Obrigado por compartilhar. ${userName ? userName + ', ' : ''}como posso te apoiar melhor?`;
+      }
+    }
+    
+    // Ajusta estilo conforme configuração
+    response = adjustResponseStyle(response);
+    
+    return response;
+  }
+  
+  // Continuar Tópico Atual - Novo
+  function continueCurrentTopic(message) {
+    const lowerMessage = message.toLowerCase();
+    let response = '';
+    
+    if (currentTopic === 'ansiedade') {
+      if (lowerMessage.includes('não sei') || lowerMessage.includes('incerto')) {
+        response = 'Tudo bem não saber de imediato. Vamos tentar identificar juntos?';
+      } else {
+        response = 'Como esses pensamentos afetam seu comportamento?';
+      }
+    } else if (currentTopic === 'tristeza') {
+      if (lowerMessage.includes('dias') || lowerMessage.includes('semanas')) {
+        response = 'Esse tempo já é significativo. Você tem algum apoio durante esse período?';
+      } else {
+        response = 'O que normalmente te traz conforto ou alegria?';
+      }
+    } else if (currentTopic === 'estresse') {
+      if (lowerMessage.includes('trabalho') || lowerMessage.includes('emprego')) {
+        response = 'O estresse no trabalho é comum. Você consegue estabelecer limites?';
+      } else {
+        response = 'Quais estratégias você já tentou para lidar com isso?';
+      }
+    } else {
+      response = 'Podemos explorar mais esse tópico ou prefere mudar de assunto?';
+    }
+    
+    return adjustResponseStyle(response);
+  }
+  
+  // Ajustar Estilo da Resposta - Novo
+  function adjustResponseStyle(response) {
+    if (currentStyle === 'direct') {
+      response = response.replace('Entendo que', 'Você está');
+      response = response.replace('pode ser', 'é');
+      response = response.replace('Parece que', 'Você está');
+      response = response.replace('tente', 'faça');
+    } else if (currentStyle === 'friendly') {
+      response = response.replace('Entendo que', 'Então você tá');
+      response = response.replace('Parece que', 'Pelo que entendi');
+      response = response + ' Me conta mais!';
+    } else if (currentStyle === 'professional') {
+      response = response.replace('tá', 'está');
+      response = response.replace('pra', 'para');
+    }
+    
+    return response;
+  }
+  
+  // Reconhecimento de Voz - Melhorado
+  function setupVoiceRecognition() {
+    if (!('webkitSpeechRecognition' in window)) {
+      voiceButton.disabled = true;
+      voiceButton.title = 'Reconhecimento de voz não suportado no seu navegador';
+      return;
+    }
+    
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'pt-BR';
+    
+    voiceButton.addEventListener('click', function() {
+      if (voiceButton.classList.contains('recording')) {
+        recognition.stop();
+        return;
+      }
+      
+      recognition.start();
+      voiceButton.classList.add('recording', 'bg-red-600');
+      voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 animate-pulse" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg> Gravando (clique para parar)';
+      
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        sendMessage();
+      };
+      
+      recognition.onerror = function(event) {
+        console.error('Erro no reconhecimento de voz:', event.error);
+        resetVoiceButton();
+        showFeedback('Erro ao gravar. Tente novamente.');
+      };
+      
+      recognition.onend = function() {
+        resetVoiceButton();
+      };
+    });
+  }
+  
+  function resetVoiceButton() {
+    voiceButton.classList.remove('recording', 'bg-red-600');
+    voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg> Falar';
+  }
+  
+  // Síntese de Voz - Melhorado
+  function speak(text) {
+    if (!('speechSynthesis' in window)) {
+      console.warn('Síntese de voz não suportada');
+      return;
+    }
+    
+    // Cancela fala anterior
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+    
+    // Tenta encontrar uma voz em português
+    const voices = speechSynthesis.getVoices();
+    const ptVoice = voices.find(v => v.lang.startsWith('pt-')) || voices[0];
+    if (ptVoice) utterance.voice = ptVoice;
+    
+    window.speechSynthesis.speak(utterance);
+  }
+  
+  // Carregar vozes quando disponíveis
+  if ('speechSynthesis' in window) {
+    speechSynthesis.onvoiceschanged = function() {
+      // Vozes carregadas
+    };
+  }
+  
+  // Feedback Visual - Novo
+  function showFeedback(message) {
+    const feedback = document.createElement('div');
+    feedback.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in';
+    feedback.textContent = message;
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+      feedback.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+      setTimeout(() => feedback.remove(), 500);
+    }, 2000);
+  }
+  
+  // Event Listeners
+  sendButton.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+  
+  // Configurar reconhecimento de voz
+  setupVoiceRecognition();
+  
+  // Mensagem inicial
+  setTimeout(() => {
+    addSystemMessage('Olá! Sou seu terapeuta virtual. Como posso te chamar?');
+  }, 1000);
+}
 
     // ==================== FASE 2: Scanner Emocional Integrado ====================
     function initEmotionalScanner() {
