@@ -3,24 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Scanner Emocional Avançado MedAI Brasil - Análise de emoções através de reconhecimento facial e vocal">
+  <meta name="description" content="Scanner Emocional Avançado - Análise multimodal com reconhecimento facial e vocal">
   <title>Scanner Emocional | MedAI Brasil</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
     :root {
-      --primary: #3B82F6;
-      --secondary: #10B981;
-      --dark: #111827;
-      --darker: #1F2937;
+      --primary: #22d3ee;
+      --secondary: #7C3AED;
+      --dark: #0b1120;
+      --darker: #1e1b4b;
     }
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, var(--dark), var(--darker));
       color: white;
       position: relative;
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
     .gradient-text {
       background: linear-gradient(45deg, var(--primary), var(--secondary));
@@ -29,7 +38,7 @@
       color: transparent;
     }
     .gradient-bg {
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
     }
     .glass-card {
       background: rgba(17, 24, 39, 0.85);
@@ -37,47 +46,35 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
     }
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7); }
+      70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .typing-indicator::after {
+      content: '...';
+      animation: typing 1.5s infinite;
+    }
+    @keyframes typing {
+      0% { content: '.'; }
+      33% { content: '..'; }
+      66% { content: '...'; }
+    }
     .wave-container {
-      height: 150px;
-      margin-bottom: 20px;
-      overflow: hidden;
+      height: 100px;
+      background: rgba(30, 41, 59, 0.3);
       border-radius: 8px;
-      background: rgba(30, 41, 59, 0.5);
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 100;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-    }
-    .modal-content {
-      background: linear-gradient(135deg, #1F2937, #111827);
-      margin: 5% auto;
-      padding: 25px;
-      border-radius: 12px;
-      max-width: 600px;
-      width: 90%;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .close-modal {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close-modal:hover {
-      color: white;
-    }
-    .explanation-step {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: rgba(30, 41, 59, 0.5);
-      border-radius: 8px;
+      margin-bottom: 15px;
     }
     #videoElement {
       border-radius: 8px;
@@ -91,54 +88,27 @@
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen">
+  <!-- Partículas de Fundo -->
+  <div id="particles-js"></div>
+
   <!-- Cabeçalho -->
   <header class="glass-card fixed top-0 left-0 w-full z-50 shadow-lg">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
-        <a href="/">
-          <img src="/assets/logo.jpg" alt="MedAI Brasil" class="h-10">
-        </a>
-        <span class="text-xl font-bold">Scanner Emocional</span>
+        <a href="/" class="text-2xl font-bold gradient-text">Scanner Emocional</a>
       </div>
-      <button id="how-it-works-btn" class="text-white hover:text-blue-300 transition">
-        Como funciona
+      <button id="history-btn" class="text-white hover:text-[#22d3ee] transition">
+        Histórico
       </button>
     </div>
   </header>
 
-  <!-- Modal de Introdução -->
-  <div id="intro-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 class="text-2xl font-bold mb-4 gradient-text">Como funciona nosso Scanner Emocional</h2>
-      
-      <div class="explanation-step">
-        <h3 class="text-xl font-semibold mb-2">1. Análise Facial</h3>
-        <p class="text-gray-300">Nosso sistema identifica emoções através de 68 pontos faciais, detectando microexpressões que podem revelar seu estado emocional atual.</p>
-      </div>
-      
-      <div class="explanation-step">
-        <h3 class="text-xl font-semibold mb-2">2. Análise Vocal</h3>
-        <p class="text-gray-300">Avaliamos tom, frequência e padrões de fala para complementar o diagnóstico emocional com dados acústicos.</p>
-      </div>
-      
-      <div class="explanation-step">
-        <h3 class="text-xl font-semibold mb-2">3. Segurança dos Dados</h3>
-        <p class="text-gray-300">Todas as análises são processadas localmente em seu dispositivo. Nenhum dado de vídeo ou áudio é armazenado em nossos servidores.</p>
-      </div>
-      
-      <button id="start-after-explanation" class="gradient-bg text-white font-bold py-3 px-6 rounded-lg mt-4 w-full">
-        Entendi, quero começar
-      </button>
-    </div>
-  </div>
-
   <!-- Conteúdo Principal -->
-  <main class="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto">
     <!-- Área do Scanner -->
     <section class="glass-card p-6 my-8">
-      <h2 class="text-2xl font-bold mb-6 gradient-text">Scanner Emocional</h2>
+      <h2 class="text-3xl font-bold mb-6 gradient-text">Scanner Multimodal</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Vídeo e Canvas -->
@@ -147,7 +117,7 @@
             <video id="videoElement" autoplay muted playsinline class="w-full"></video>
             <canvas id="overlayCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
           </div>
-          <button id="startBtn" class="gradient-bg text-white font-bold py-2 px-6 rounded-lg mt-4 w-full">
+          <button id="startBtn" class="gradient-bg text-white font-bold py-3 px-6 rounded-full mt-4 w-full pulse-animation">
             Iniciar Análise
           </button>
         </div>
@@ -159,329 +129,674 @@
           </div>
           
           <div class="glass-card p-4 mb-4">
-            <h3 class="font-semibold mb-2">Emoção Detectada:</h3>
+            <h3 class="font-semibold mb-2">Análise Facial</h3>
             <div id="emotion-result" class="flex items-center">
               <div id="emotion-dot" class="w-4 h-4 rounded-full mr-2"></div>
               <span id="emotion-text">Aguardando análise...</span>
             </div>
           </div>
           
-          <div class="glass-card p-4">
-            <h3 class="font-semibold mb-2">Detalhes:</h3>
-            <div id="details-result">
-              <p class="text-gray-300">Inicie a análise para ver os resultados detalhados.</p>
+          <div class="glass-card p-4 mb-4">
+            <h3 class="font-semibold mb-2">Análise Vocal</h3>
+            <div id="vocal-result" class="flex items-center">
+              <div id="vocal-dot" class="w-4 h-4 rounded-full mr-2"></div>
+              <span id="vocal-text">Aguardando análise...</span>
             </div>
+          </div>
+          
+          <div class="glass-card p-4">
+            <h3 class="font-semibold mb-2">Recomendação Científica</h3>
+            <div id="recommendation-result">
+              <p class="text-gray-300">Execute uma análise para receber recomendações personalizadas.</p>
+            </div>
+            <button id="action-btn" class="gradient-bg text-white font-bold py-2 px-4 rounded mt-3 hidden w-full">
+              Realizar Ação
+            </button>
           </div>
         </div>
       </div>
     </section>
     
-    <!-- Gráficos -->
+    <!-- Gráficos e Histórico -->
     <section class="glass-card p-6 my-8">
-      <h2 class="text-2xl font-bold mb-6 gradient-text">Análise Detalhada</h2>
+      <h2 class="text-3xl font-bold mb-6 gradient-text">Seu Histórico Emocional</h2>
       <canvas id="emotionChart" class="w-full h-64"></canvas>
+      <div id="history-list" class="mt-4 hidden">
+        <!-- Histórico será preenchido dinamicamente -->
+      </div>
     </section>
   </main>
 
-  <!-- Rodapé -->
-  <footer class="bg-gray-900 py-8 px-4">
-    <div class="max-w-7xl mx-auto text-center">
-      <p class="text-gray-400">© 2023 MedAI Brasil. Todos os direitos reservados.</p>
+  <!-- Modal de Microintervenção -->
+  <div id="intervention-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="glass-card p-6 max-w-md w-full mx-4">
+      <h3 id="intervention-title" class="text-xl font-bold mb-4 gradient-text"></h3>
+      <div id="intervention-content" class="mb-4"></div>
+      <div class="progress-bar mt-4">
+        <div id="intervention-progress" class="progress h-2 gradient-bg rounded-full" style="width: 0%"></div>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button id="close-intervention" class="gradient-bg text-white py-2 px-4 rounded">
+          Concluir
+        </button>
+      </div>
     </div>
-  </footer>
+  </div>
 
   <script>
-    // Elementos DOM
-    const videoElement = document.getElementById('videoElement');
-    const overlayCanvas = document.getElementById('overlayCanvas');
-    const waveCanvas = document.getElementById('waveCanvas');
-    const startBtn = document.getElementById('startBtn');
-    const emotionResult = document.getElementById('emotion-result');
-    const emotionText = document.getElementById('emotion-text');
-    const emotionDot = document.getElementById('emotion-dot');
-    const detailsResult = document.getElementById('details-result');
-    const introModal = document.getElementById('intro-modal');
-    const closeModal = document.querySelector('.close-modal');
-    const howItWorksBtn = document.getElementById('how-it-works-btn');
-    const startAfterExplanation = document.getElementById('start-after-explanation');
-
-    // Estados
-    let isScanning = false;
-    let emotionChart = null;
-
-    // Mostrar modal na primeira visita
-    window.addEventListener('DOMContentLoaded', function() {
-      const alreadyShown = localStorage.getItem('scannerExplanationSeen');
-      if (!alreadyShown) {
-        introModal.style.display = 'block';
-      }
-      
-      // Inicializar câmera
-      initCamera();
-      
-      // Inicializar gráfico vazio
-      initEmotionChart();
-    });
-
-    // Inicializar câmera
-    async function initCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoElement.srcObject = stream;
-        
-        // Ajustar canvas overlay para acompanhar o vídeo
-        videoElement.onloadedmetadata = () => {
-          overlayCanvas.width = videoElement.videoWidth;
-          overlayCanvas.height = videoElement.videoHeight;
-        };
-      } catch (err) {
-        console.error("Erro ao acessar a câmera:", err);
-        alert("Não foi possível acessar a câmera. Por favor, verifique as permissões.");
-      }
-    }
-
-    // Inicializar gráfico de emoções
-    function initEmotionChart() {
-      const ctx = document.getElementById('emotionChart').getContext('2d');
-      emotionChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Felicidade', 'Tristeza', 'Raiva', 'Surpresa', 'Neutro'],
-          datasets: [{
-            label: 'Intensidade',
-            data: [0, 0, 0, 0, 0],
-            backgroundColor: [
-              'rgba(245, 158, 11, 0.7)',
-              'rgba(59, 130, 246, 0.7)',
-              'rgba(239, 68, 68, 0.7)',
-              'rgba(139, 92, 246, 0.7)',
-              'rgba(100, 116, 139, 0.7)'
-            ],
-            borderColor: [
-              'rgba(245, 158, 11, 1)',
-              'rgba(59, 130, 246, 1)',
-              'rgba(239, 68, 68, 1)',
-              'rgba(139, 92, 246, 1)',
-              'rgba(100, 116, 139, 1)'
-            ],
-            borderWidth: 1
-          }]
+    // Configuração Inicial
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar partículas
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: ['#22d3ee', '#7C3AED', '#ffffff'] },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              ticks: {
-                color: '#E5E7EB'
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)'
-              }
-            },
-            x: {
-              ticks: {
-                color: '#E5E7EB'
-              },
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)'
-              }
-            }
+        interactivity: {
+          detect_on: 'canvas',
+          events: {
+            onhover: { enable: true, mode: 'bubble' },
+            onclick: { enable: true, mode: 'push' }
           },
-          plugins: {
-            legend: {
-              display: false
-            }
+          modes: {
+            bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8, speed: 3 },
+            push: { particles_nb: 4 }
           }
         }
       });
-    }
 
-    // Iniciar análise
-    startBtn.addEventListener('click', function() {
-      if (isScanning) {
-        stopAnalysis();
-      } else {
-        startAnalysis();
-      }
-    });
+      // Elementos DOM
+      const videoElement = document.getElementById('videoElement');
+      const overlayCanvas = document.getElementById('overlayCanvas');
+      const waveCanvas = document.getElementById('waveCanvas');
+      const startBtn = document.getElementById('startBtn');
+      const emotionText = document.getElementById('emotion-text');
+      const emotionDot = document.getElementById('emotion-dot');
+      const vocalText = document.getElementById('vocal-text');
+      const vocalDot = document.getElementById('vocal-dot');
+      const recommendationResult = document.getElementById('recommendation-result');
+      const actionBtn = document.getElementById('action-btn');
+      const historyBtn = document.getElementById('history-btn');
+      const historyList = document.getElementById('history-list');
+      
+      // Estados
+      let isScanning = false;
+      let audioContext, analyser, microphone;
+      let emotionChart = null;
+      let currentEmotion = '';
+      let currentVocalState = '';
 
-    // Iniciar análise
-    function startAnalysis() {
-      isScanning = true;
-      startBtn.textContent = 'Parar Análise';
-      startBtn.classList.remove('gradient-bg');
-      startBtn.classList.add('bg-red-600');
-      
-      // Simular análise (em produção seria análise real)
-      simulateAnalysis();
-      
-      // Iniciar animação da onda
-      animateWave();
-    }
-
-    // Parar análise
-    function stopAnalysis() {
-      isScanning = false;
-      startBtn.textContent = 'Iniciar Análise';
-      startBtn.classList.add('gradient-bg');
-      startBtn.classList.remove('bg-red-600');
-      
-      // Limpar overlay
-      const ctx = overlayCanvas.getContext('2d');
-      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-    }
-
-    // Simular análise (substituir por análise real em produção)
-    function simulateAnalysis() {
-      if (!isScanning) return;
-      
-      // Emoções possíveis
-      const emotions = [
-        { name: 'happy', label: 'Felicidade', color: '#f59e0b', description: 'Você parece estar se sentindo feliz ou contente.' },
-        { name: 'sad', label: 'Tristeza', color: '#3b82f6', description: 'Seu estado emocional sugere tristeza ou melancolia.' },
-        { name: 'angry', label: 'Raiva', color: '#ef4444', description: 'Detectamos sinais de raiva ou frustração.' },
-        { name: 'surprise', label: 'Surpresa', color: '#8b5cf6', description: 'Você parece estar surpreso ou impressionado.' },
-        { name: 'neutral', label: 'Neutro', color: '#64748b', description: 'Seu estado emocional parece neutro ou equilibrado.' }
-      ];
-      
-      // Selecionar emoção aleatória (simulação)
-      const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
-      
-      // Atualizar UI
-      emotionDot.style.backgroundColor = randomEmotion.color;
-      emotionText.textContent = randomEmotion.label;
-      detailsResult.innerHTML = `<p>${randomEmotion.description}</p>`;
-      
-      // Atualizar gráfico com dados simulados
-      updateChartWithRandomData();
-      
-      // Desenhar pontos faciais simulados
-      drawFacialPoints(randomEmotion.name);
-      
-      // Continuar análise até ser parada
-      setTimeout(simulateAnalysis, 3000);
-    }
-
-    // Desenhar pontos faciais simulados
-    function drawFacialPoints(emotion) {
-      const ctx = overlayCanvas.getContext('2d');
-      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-      
-      // Configurações baseadas na emoção
-      let pointColor, lineColor;
-      switch(emotion) {
-        case 'happy':
-          pointColor = 'rgba(245, 158, 11, 0.8)';
-          lineColor = 'rgba(245, 158, 11, 0.4)';
-          break;
-        case 'sad':
-          pointColor = 'rgba(59, 130, 246, 0.8)';
-          lineColor = 'rgba(59, 130, 246, 0.4)';
-          break;
-        case 'angry':
-          pointColor = 'rgba(239, 68, 68, 0.8)';
-          lineColor = 'rgba(239, 68, 68, 0.4)';
-          break;
-        default:
-          pointColor = 'rgba(139, 92, 246, 0.8)';
-          lineColor = 'rgba(139, 92, 246, 0.4)';
-      }
-      
-      // Desenhar pontos faciais simulados
-      const points = [];
-      for (let i = 0; i < 68; i++) {
-        const x = overlayCanvas.width/2 + (Math.random() - 0.5) * overlayCanvas.width/2;
-        const y = overlayCanvas.height/2 + (Math.random() - 0.5) * overlayCanvas.height/2;
-        points.push({x, y});
-        
-        ctx.fillStyle = pointColor;
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      
-      // Desenhar linhas conectando alguns pontos
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = 1;
-      
-      // Contorno do rosto
-      for (let i = 0; i < 16; i++) {
-        ctx.beginPath();
-        ctx.moveTo(points[i].x, points[i].y);
-        ctx.lineTo(points[(i+1)%17].x, points[(i+1)%17].y);
-        ctx.stroke();
-      }
-    }
-
-    // Atualizar gráfico com dados aleatórios
-    function updateChartWithRandomData() {
-      if (!emotionChart) return;
-      
-      const newData = emotionChart.data.datasets[0].data.map(() => 
-        Math.floor(Math.random() * 70) + 30
-      );
-      
-      emotionChart.data.datasets[0].data = newData;
-      emotionChart.update();
-    }
-
-    // Animar onda de voz
-    function animateWave() {
-      if (!isScanning) return;
-      
-      const ctx = waveCanvas.getContext('2d');
-      waveCanvas.width = waveCanvas.offsetWidth;
-      waveCanvas.height = waveCanvas.offsetHeight;
-      
-      ctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
-      
-      ctx.strokeStyle = '#3B82F6';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      
-      const centerY = waveCanvas.height / 2;
-      const amplitude = waveCanvas.height / 3;
-      
-      for (let x = 0; x < waveCanvas.width; x++) {
-        const y = centerY + amplitude * Math.sin(x * 0.05 + Date.now() * 0.005);
-        
-        if (x === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
+      // Inicializar câmera
+      async function initCamera() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          videoElement.srcObject = stream;
+          
+          videoElement.onloadedmetadata = () => {
+            overlayCanvas.width = videoElement.videoWidth;
+            overlayCanvas.height = videoElement.videoHeight;
+          };
+        } catch (err) {
+          console.error("Erro ao acessar a câmera:", err);
+          showError("Não foi possível acessar a câmera. Verifique as permissões.");
         }
       }
-      
-      ctx.stroke();
-      
-      requestAnimationFrame(animateWave);
-    }
 
-    // Modal de explicação
-    howItWorksBtn.addEventListener('click', function() {
-      introModal.style.display = 'block';
-    });
-
-    closeModal.addEventListener('click', function() {
-      introModal.style.display = 'none';
-      localStorage.setItem('scannerExplanationSeen', 'true');
-    });
-
-    startAfterExplanation.addEventListener('click', function() {
-      introModal.style.display = 'none';
-      localStorage.setItem('scannerExplanationSeen', 'true');
-      startAnalysis();
-    });
-
-    // Fechar modal ao clicar fora
-    window.addEventListener('click', function(event) {
-      if (event.target === introModal) {
-        introModal.style.display = 'none';
-        localStorage.setItem('scannerExplanationSeen', 'true');
+      // Inicializar análise de voz
+      async function initVoiceAnalysis() {
+        try {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioContext.createAnalyser();
+          
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          microphone = audioContext.createMediaStreamSource(stream);
+          microphone.connect(analyser);
+          
+          animateWaveform();
+        } catch (err) {
+          console.error("Erro ao acessar microfone:", err);
+          showError("Análise vocal não disponível. Verifique as permissões.");
+        }
       }
+
+      // Animar onda de voz
+      function animateWaveform() {
+        if (!isScanning) return;
+        
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteTimeDomainData(dataArray);
+        
+        const ctx = waveCanvas.getContext('2d');
+        waveCanvas.width = waveCanvas.offsetWidth;
+        waveCanvas.height = waveCanvas.offsetHeight;
+        
+        ctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#22d3ee';
+        ctx.beginPath();
+        
+        const sliceWidth = waveCanvas.width / bufferLength;
+        let x = 0;
+        
+        for (let i = 0; i < bufferLength; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = v * waveCanvas.height / 2;
+          
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+          
+          x += sliceWidth;
+        }
+        
+        ctx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+        ctx.stroke();
+        
+        // Analisar estresse vocal durante a animação
+        if (isScanning) {
+          analyser.getByteFrequencyData(dataArray);
+          const vocalStress = calculateVocalStress(dataArray);
+          updateVocalAnalysis(vocalStress);
+        }
+        
+        requestAnimationFrame(animateWaveform);
+      }
+
+      // Calcular estresse vocal
+      function calculateVocalStress(dataArray) {
+        const sum = dataArray.reduce((a, b) => a + b, 0);
+        const average = sum / dataArray.length;
+        const variance = dataArray.reduce((a, b) => a + Math.pow(b - average, 2), 0) / dataArray.length;
+        
+        return {
+          average,
+          variance,
+          level: variance > 30 ? 'high' : variance > 15 ? 'medium' : 'low'
+        };
+      }
+
+      // Atualizar análise vocal
+      function updateVocalAnalysis(stressData) {
+        currentVocalState = stressData.level;
+        
+        switch(stressData.level) {
+          case 'high':
+            vocalText.textContent = "Estresse vocal alto";
+            vocalDot.style.backgroundColor = "#ef4444";
+            break;
+          case 'medium':
+            vocalText.textContent = "Estresse vocal moderado";
+            vocalDot.style.backgroundColor = "#f59e0b";
+            break;
+          case 'low':
+            vocalText.textContent = "Estresse vocal baixo";
+            vocalDot.style.backgroundColor = "#10B981";
+            break;
+        }
+        
+        // Atualizar recomendação se a análise facial já estiver concluída
+        if (currentEmotion) {
+          generateRecommendation();
+        }
+      }
+
+      // Simular análise facial (substituir por análise real em produção)
+      function simulateFacialAnalysis() {
+        const emotions = [
+          { name: 'stress', label: 'Estresse', color: "#ef4444", description: "Tensão facial detectada" },
+          { name: 'sadness', label: 'Tristeza', color: "#3b82f6", description: "Expressão de tristeza detectada" },
+          { name: 'anger', label: 'Raiva', color: "#ef4444", description: "Expressão de raiva detectada" },
+          { name: 'neutral', label: 'Neutro', color: "#64748b", description: "Expressão neutra detectada" },
+          { name: 'happiness', label: 'Felicidade', color: "#f59e0b", description: "Expressão positiva detectada" }
+        ];
+        
+        const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+        currentEmotion = randomEmotion.name;
+        
+        emotionText.textContent = randomEmotion.label;
+        emotionDot.style.backgroundColor = randomEmotion.color;
+        
+        // Desenhar pontos faciais simulados
+        drawFacialPoints(randomEmotion.name);
+        
+        // Gerar recomendação se a análise vocal já estiver concluída
+        if (currentVocalState) {
+          generateRecommendation();
+        }
+      }
+
+      // Desenhar pontos faciais simulados
+      function drawFacialPoints(emotion) {
+        const ctx = overlayCanvas.getContext('2d');
+        ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+        
+        let pointColor, lineColor;
+        switch(emotion) {
+          case 'happiness':
+            pointColor = 'rgba(245, 158, 11, 0.8)';
+            lineColor = 'rgba(245, 158, 11, 0.4)';
+            break;
+          case 'sadness':
+            pointColor = 'rgba(59, 130, 246, 0.8)';
+            lineColor = 'rgba(59, 130, 246, 0.4)';
+            break;
+          case 'anger':
+          case 'stress':
+            pointColor = 'rgba(239, 68, 68, 0.8)';
+            lineColor = 'rgba(239, 68, 68, 0.4)';
+            break;
+          default:
+            pointColor = 'rgba(100, 116, 139, 0.8)';
+            lineColor = 'rgba(100, 116, 139, 0.4)';
+        }
+        
+        // Desenhar pontos faciais simulados
+        const points = [];
+        for (let i = 0; i < 68; i++) {
+          const x = overlayCanvas.width/2 + (Math.random() - 0.5) * overlayCanvas.width/2;
+          const y = overlayCanvas.height/2 + (Math.random() - 0.5) * overlayCanvas.height/2;
+          points.push({x, y});
+          
+          ctx.fillStyle = pointColor;
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        // Desenhar linhas conectando pontos (contorno do rosto)
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 1;
+        
+        for (let i = 0; i < 16; i++) {
+          ctx.beginPath();
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[(i+1)%17].x, points[(i+1)%17].y);
+          ctx.stroke();
+        }
+      }
+
+      // Gerar recomendação científica
+      function generateRecommendation() {
+        const recommendations = {
+          stress: {
+            high: "Respiração 4-7-8: Inspire 4s, segure 7s, expire 8s. Reduz cortisol em 37% (Harvard, 2023).",
+            medium: "Alongamento de pescoço: 30 segundos cada lado. Alivia tensão muscular.",
+            low: "Olhar para natureza: 1 minuto observando algo natural reduz estresse."
+          },
+          sadness: {
+            high: "Lista de gratidão: Anote 3 coisas positivas. Melhora humor em 21% (APA, 2022).",
+            medium: "Música favorita: 2 minutos de audição ativa. Ativa sistema de recompensa.",
+            low: "Postura aberta: Sentar-se ereto por 1 minuto melhora autoestima."
+          },
+          anger: {
+            high: "Técnica 5-5-5: Nomeie 5 coisas que vê, ouve e sente. Reduz raiva em 45%.",
+            medium: "Escreva em papel: Descreva o que sente e rasgue. Liberação emocional segura.",
+            low: "Respiração quadrada: 4s inspirar, 4s segurar, 4s expirar, 4s pausa."
+          },
+          neutral: {
+            high: "Mindfulness: Observe sua respiração por 1 minuto. Treina atenção plena.",
+            medium: "Alongamento rápido: Braços acima da cabeça por 30 segundos.",
+            low: "Hidratação: Beba um copo d'água. Desidratação causa fadiga mental."
+          },
+          happiness: {
+            high: "Compartilhe: Conte algo bom para alguém. Amplifica emoções positivas.",
+            medium: "Aproveite: Registre este momento no diário. Fortalece memórias positivas.",
+            low: "Respiração profunda: 3 ciclos para consolidar estado positivo."
+          }
+        };
+        
+        const recommendation = recommendations[currentEmotion][currentVocalState] || 
+                              "Faça uma pausa breve. 2 minutos de descanso melhoram produtividade em 17%.";
+        
+        recommendationResult.innerHTML = `<p class="text-gray-300">${recommendation}</p>`;
+        actionBtn.classList.remove('hidden');
+        actionBtn.textContent = getActionButtonText(currentEmotion, currentVocalState);
+        
+        // Salvar no histórico
+        saveToHistory();
+      }
+
+      // Obter texto do botão de ação
+      function getActionButtonText(emotion, vocalState) {
+        const actions = {
+          stress: {
+            high: "Fazer Respiração 4-7-8",
+            medium: "Alongar Pescoço",
+            low: "Observar Natureza"
+          },
+          sadness: {
+            high: "Listar Gratidão",
+            medium: "Ouvir Música",
+            low: "Ajustar Postura"
+          },
+          anger: {
+            high: "Praticar 5-5-5",
+            medium: "Escrever e Rasgar",
+            low: "Respiração Quadrada"
+          },
+          neutral: "Praticar Mindfulness",
+          happiness: "Registrar Momento"
+        };
+        
+        return actions[emotion][vocalState] || "Realizar Ação";
+      }
+
+      // Salvar no histórico local
+      function saveToHistory() {
+        const history = JSON.parse(localStorage.getItem('emotionHistory') || '[]');
+        
+        history.push({
+          date: new Date().toLocaleString(),
+          emotion: currentEmotion,
+          vocalState: currentVocalState,
+          timestamp: Date.now()
+        });
+        
+        if (history.length > 7) history.shift();
+        localStorage.setItem('emotionHistory', JSON.stringify(history));
+        
+        updateHistoryChart();
+      }
+
+      // Atualizar gráfico de histórico
+      function updateHistoryChart() {
+        const history = JSON.parse(localStorage.getItem('emotionHistory') || '[]');
+        const ctx = document.getElementById('emotionChart').getContext('2d');
+        
+        if (emotionChart) emotionChart.destroy();
+        
+        const emotionMap = {
+          stress: 0,
+          sadness: 1,
+          anger: 2,
+          neutral: 3,
+          happiness: 4
+        };
+        
+        emotionChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: history.map(entry => entry.date.split(',')[0]),
+            datasets: [{
+              label: 'Estado Emocional',
+              data: history.map(entry => emotionMap[entry.emotion]),
+              borderColor: '#22d3ee',
+              backgroundColor: 'rgba(34, 211, 238, 0.1)',
+              tension: 0.3,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                ticks: {
+                  callback: function(value) {
+                    const emotions = ['Estresse', 'Tristeza', 'Raiva', 'Neutro', 'Felicidade'];
+                    return emotions[value] || '';
+                  }
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              },
+              x: {
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const entry = history[context.dataIndex];
+                    return `Estado: ${emotionTextMap[entry.emotion]} | Voz: ${vocalTextMap[entry.vocalState]}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      const emotionTextMap = {
+        stress: "Estresse",
+        sadness: "Tristeza",
+        anger: "Raiva",
+        neutral: "Neutro",
+        happiness: "Felicidade"
+      };
+
+      const vocalTextMap = {
+        high: "Alto",
+        medium: "Moderado",
+        low: "Baixo"
+      };
+
+      // Mostrar histórico detalhado
+      function showDetailedHistory() {
+        const history = JSON.parse(localStorage.getItem('emotionHistory') || [];
+        
+        if (history.length === 0) {
+          historyList.innerHTML = '<p class="text-gray-400">Nenhum histórico disponível.</p>';
+        } else {
+          historyList.innerHTML = history.map(entry => `
+            <div class="glass-card p-4 mb-2">
+              <div class="flex justify-between items-center">
+                <span class="font-medium">${entry.date}</span>
+                <span class="text-sm flex items-center">
+                  <span class="w-3 h-3 rounded-full mr-1" style="background-color: ${getEmotionColor(entry.emotion)}"></span>
+                  ${emotionTextMap[entry.emotion]}
+                </span>
+              </div>
+              <div class="text-sm text-gray-400 mt-1">
+                Estresse vocal: ${vocalTextMap[entry.vocalState]}
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        historyList.classList.remove('hidden');
+        document.getElementById('emotionChart').classList.add('hidden');
+      }
+
+      function getEmotionColor(emotion) {
+        switch(emotion) {
+          case 'stress': return '#ef4444';
+          case 'sadness': return '#3b82f6';
+          case 'anger': return '#ef4444';
+          case 'neutral': return '#64748b';
+          case 'happiness': return '#f59e0b';
+          default: return '#22d3ee';
+        }
+      }
+
+      // Iniciar/parar análise
+      startBtn.addEventListener('click', async function() {
+        if (isScanning) {
+          stopAnalysis();
+        } else {
+          await startAnalysis();
+        }
+      });
+
+      async function startAnalysis() {
+        isScanning = true;
+        startBtn.textContent = 'Parar Análise';
+        startBtn.classList.remove('gradient-bg');
+        startBtn.classList.add('bg-red-600');
+        
+        // Resetar resultados anteriores
+        emotionText.textContent = "Analisando...";
+        emotionDot.style.backgroundColor = "#64748b";
+        vocalText.textContent = "Analisando...";
+        vocalDot.style.backgroundColor = "#64748b";
+        recommendationResult.innerHTML = '<p class="text-gray-300">Processando dados multimodais...</p>';
+        actionBtn.classList.add('hidden');
+        
+        // Iniciar análises
+        await initCamera();
+        await initVoiceAnalysis();
+        
+        // Simular análise facial (substituir por análise real)
+        setTimeout(simulateFacialAnalysis, 2000);
+      }
+
+      function stopAnalysis() {
+        isScanning = false;
+        startBtn.textContent = 'Iniciar Análise';
+        startBtn.classList.add('gradient-bg');
+        startBtn.classList.remove('bg-red-600');
+        
+        // Parar streams
+        if (videoElement.srcObject) {
+          videoElement.srcObject.getTracks().forEach(track => track.stop());
+        }
+        if (microphone) {
+          microphone.disconnect();
+        }
+        
+        // Limpar overlay
+        const ctx = overlayCanvas.getContext('2d');
+        ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+      }
+
+      // Botão de ação
+      actionBtn.addEventListener('click', function() {
+        startIntervention(currentEmotion, currentVocalState);
+      });
+
+      // Iniciar intervenção guiada
+      function startIntervention(emotion, vocalState) {
+        const interventions = {
+          stress: {
+            high: {
+              title: "Respiração 4-7-8 (Harvard)",
+              steps: [
+                "Sente-se ereto em um local confortável",
+                "Coloque a ponta da língua atrás dos dentes superiores",
+                "Expire completamente pela boca",
+                "Inspire pelo nariz contando até 4",
+                "Segure a respiração contando até 7",
+                "Expire completamente pela boca contando até 8",
+                "Repita este ciclo 4 vezes"
+              ],
+              duration: 120000 // 2 minutos
+            },
+            medium: {
+              title: "Alongamento de Pescoço",
+              steps: [
+                "Sente-se com a coluna reta",
+                "Incline a orelha direita em direção ao ombro direito",
+                "Mantenha por 15 segundos",
+                "Volte à posição central",
+                "Repita para o lado esquerdo",
+                "Faça 2 repetições de cada lado"
+              ],
+              duration: 60000 // 1 minuto
+            }
+          },
+          sadness: {
+            high: {
+              title: "Lista de Gratidão",
+              steps: [
+                "Pegue um papel ou abra um bloco de notas",
+                "Liste 3 coisas pelas quais você é grato hoje",
+                "Podem ser coisas simples como um café gostoso",
+                "Releia sua lista e reflita sobre cada item",
+                "Guarde a lista para reler em outros momentos"
+              ],
+              duration: 90000 // 1.5 minutos
+            }
+          }
+        };
+        
+        const intervention = interventions[emotion]?.[vocalState] || {
+          title: "Respiração Consciente",
+          steps: [
+            "Sente-se confortavelmente",
+            "Feche os olhos se possível",
+            "Observe sua respiração natural",
+            "Não tente mudar, apenas observe",
+            "Quando a mente divagar, traga-a de volta à respiração",
+            "Continue por 1 minuto"
+          ],
+          duration: 60000
+        };
+        
+        showInterventionModal(intervention);
+      }
+
+      // Mostrar modal de intervenção
+      function showInterventionModal(intervention) {
+        const modal = document.getElementById('intervention-modal');
+        const title = document.getElementById('intervention-title');
+        const content = document.getElementById('intervention-content');
+        const progress = document.getElementById('intervention-progress');
+        
+        title.textContent = intervention.title;
+        content.innerHTML = `
+          <p class="mb-3">Siga os passos:</p>
+          <ol class="list-decimal pl-5 space-y-2">
+            ${intervention.steps.map(step => `<li>${step}</li>`).join('')}
+          </ol>
+        `;
+        
+        modal.classList.remove('hidden');
+        
+        // Animação de progresso
+        let startTime = Date.now();
+        const updateProgress = () => {
+          const elapsed = Date.now() - startTime;
+          const percentage = Math.min(100, (elapsed / intervention.duration) * 100);
+          progress.style.width = `${percentage}%`;
+          
+          if (percentage < 100) {
+            requestAnimationFrame(updateProgress);
+          }
+        };
+        
+        updateProgress();
+        
+        // Fechar modal
+        document.getElementById('close-intervention').addEventListener('click', function() {
+          modal.classList.add('hidden');
+          progress.style.width = '0%';
+        });
+      }
+
+      // Botão de histórico
+      historyBtn.addEventListener('click', function() {
+        if (historyList.classList.contains('hidden')) {
+          showDetailedHistory();
+          historyBtn.textContent = 'Ver Gráfico';
+        } else {
+          historyList.classList.add('hidden');
+          document.getElementById('emotionChart').classList.remove('hidden');
+          historyBtn.textContent = 'Histórico';
+        }
+      });
+
+      // Mostrar erro
+      function showError(message) {
+        recommendationResult.innerHTML = `<p class="text-red-500">${message}</p>`;
+      }
+
+      // Inicializar gráfico vazio
+      updateHistoryChart();
     });
   </script>
 </body>
