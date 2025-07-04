@@ -1212,366 +1212,599 @@
             }
             
             // Ordenar por probabilidade
-            primary.sort((a, b) => b.probability - a.probabilitypara fetchAIDiagnosis
-primary.sort((a, b) => b.probability - a.probability);
-differential.sort((a, b) => b.probability - a.probability);
+            primary.sort((a, b) => b.probability - a.probability);
+            differential.sort((a, b) => b.probability - a.probability);
+            
+            return { 
+                primary: primary.slice(0, 3), 
+                differential: differential.slice(0, 3) 
+            };
+        }
 
-// Selecionar o diagnóstico primário
-const primaryDiagnosis = primary.length > 0 ? primary[0] : {
-condition: "Nenhum diagnóstico específico identificado",
-probability: 0,
-type: "general"
-};
+        // Gerar recomendações personalizadas
+        function generatePersonalizedRecommendations(primaryDiagnosis, healthScores, lifestyle, history) {
+            const recommendations = {
+                medical: [],
+                lifestyle: [],
+                monitoring: []
+            };
+            
+            // Recomendações baseadas no diagnóstico
+            primaryDiagnosis.forEach(d => {
+                if (d.type === 'physical') {
+                    recommendations.medical.push(`Consulta com ${d.condition.includes('Gripe') ? 'clínico geral' : 'especialista'}`);
+                    recommendations.medical.push('Monitorar sintomas diariamente');
+                    
+                    if (d.condition === 'Gripe') {
+                        recommendations.lifestyle.push('Repouso adequado');
+                        recommendations.lifestyle.push('Hidratação intensiva');
+                    } else if (d.condition === 'Dengue') {
+                        recommendations.lifestyle.push('Evitar anti-inflamatórios');
+                        recommendations.lifestyle.push('Repouso absoluto');
+                    }
+                } else {
+                    recommendations.medical.push('Avaliação psicológica');
+                    recommendations.lifestyle.push('Exercícios de respiração 3x/dia');
+                    recommendations.lifestyle.push('Redução de estresse');
+                }
+            });
+            
+            // Recomendações baseadas no estilo de vida
+            if (lifestyle.tabagismo === 'Fumante Ativo') {
+                recommendations.lifestyle.push('Reduzir tabagismo');
+                recommendations.monitoring.push('Acompanhar saúde pulmonar');
+            }
+            
+            if (lifestyle.atividadeFisica === 'Sedentário') {
+                recommendations.lifestyle.push('Iniciar atividade física leve');
+                recommendations.monitoring.push('Monitorar pressão arterial');
+            }
+            
+            if (healthScores.emotional < 60) {
+                recommendations.lifestyle.push('Praticar mindfulness ou meditação');
+            }
+            
+            // Recomendações baseadas no histórico
+            if (history.includes('Diabetes')) {
+                recommendations.medical.push('Monitorar glicemia regularmente');
+                recommendations.lifestyle.push('Dieta balanceada com baixo índice glicêmico');
+            }
+            
+            if (history.includes('Hipertensão')) {
+                recommendations.medical.push('Verificar pressão arterial semanalmente');
+                recommendations.lifestyle.push('Reduzir ingestão de sal');
+            }
+            
+            // Garantir pelo menos recomendações básicas
+            if (recommendations.medical.length === 0) {
+                recommendations.medical.push('Check-up anual recomendado');
+            }
+            
+            if (recommendations.lifestyle.length === 0) {
+                recommendations.lifestyle.push('Manter hábitos saudáveis');
+            }
+            
+            if (recommendations.monitoring.length === 0) {
+                recommendations.monitoring.push('Monitorar sinais vitais periodicamente');
+            }
+            
+            return recommendations;
+        }
 
-return {
-primary: primaryDiagnosis,
-differential: differential.slice(0, 3) // Limitar a 3 diagnósticos diferenciais
-};
-}
+        // Criar plano de monitoramento
+        function createMonitoringPlan(primaryDiagnosis, healthScores, lifestyle) {
+            const plan = {
+                frequency: 'Mensal',
+                actions: ['Monitorar sintomas', 'Acompanhar sinais vitais']
+            };
+            
+            if (primaryDiagnosis.length > 0) {
+                plan.frequency = 'Semanal';
+                plan.actions.push('Registrar progresso dos sintomas');
+            }
+            
+            if (healthScores.physical < 70 || healthScores.emotional < 60) {
+                plan.frequency = 'Diário';
+            }
+            
+            if (lifestyle.tabagismo === 'Fumante Ativo') {
+                plan.actions.push('Monitorar capacidade pulmonar');
+            }
+            
+            if (lifestyle.atividadeFisica === 'Sedentário') {
+                plan.actions.push('Registrar atividade física');
+            }
+            
+            return plan;
+        }
 
-// Gerar recomendações personalizadas
-function generatePersonalizedRecommendations(primaryDiagnosis, healthScores, lifestyle, history) {
-const recommendations = {
-medical: [],
-lifestyle: [],
-monitoring: []
-};
+        // Processar diagnóstico completo
+        function processarDiagnostico() {
+            if (validateStep(currentStep)) {
+                const userData = {
+                    symptoms: Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value)
+                                .concat(Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value)),
+                    history: Array.from(document.querySelectorAll('input[name="cronicas"]:checked')).map(input => input.value),
+                    lifestyle: {
+                        tabagismo: document.getElementById('tabagismo').value,
+                        etilismo: document.getElementById('etilismo').value,
+                        atividadeFisica: document.getElementById('atividade-fisica').value
+                    },
+                    stressLevel: parseInt(document.getElementById('estresse').value) || 0,
+                    exposicao: document.getElementById('exposicao').value,
+                    scannerResults: document.getElementById('scanner-feedback').innerText
+                };
+                
+                // Mostrar loader
+                const loader = document.createElement('div');
+                loader.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center';
+                loader.innerHTML = `
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#22d3ee] mx-auto mb-4"></div>
+                        <p class="text-white text-xl">Analisando seus dados com IA...</p>
+                        <p class="text-gray-400">Isso pode levar alguns segundos</p>
+                    </div>
+                `;
+                document.body.appendChild(loader);
+                
+                enhancedDiagnosis(userData).then(result => {
+                    loader.remove();
+                    displayHolisticDashboard(result);
+                    document.getElementById('diagnostico-form').classList.add('hidden');
+                    document.getElementById('holistic-dashboard').classList.remove('hidden');
+                    
+                    // Configurar botão de exportação
+                    document.getElementById('export-report').addEventListener('click', () => {
+                        generateHealthReport(result);
+                    });
+                });
+            }
+        }
 
-// Recomendações baseadas no diagnóstico primário
-switch (primaryDiagnosis.condition) {
-case "Gripe":
-recommendations.medical.push("Consultar médico para avaliação de antiviral", "Hidratação oral intensiva");
-recommendations.lifestyle.push("Repouso por 5-7 dias", "Evitar contato com outras pessoas");
-recommendations.monitoring.push("Medir temperatura corporal a cada 6 horas", "Acompanhar sintomas respiratórios");
-break;
-case "Dengue":
-recommendations.medical.push("Consultar médico para exames laboratoriais", "Reposição de fluidos");
-recommendations.lifestyle.push("Evitar picadas de mosquitos (usar repelente)", "Repouso absoluto");
-recommendations.monitoring.push("Monitorar febre e sinais de sangramento", "Acompanhar hidratação");
-break;
-case "Gastrite":
-recommendations.medical.push("Consultar gastroenterologista", "Considerar inibidores de bomba de prótons");
-recommendations.lifestyle.push("Evitar alimentos gordurosos e ácidos", "Praticar refeições leves e frequentes");
-recommendations.monitoring.push("Registrar episódios de dor abdominal", "Monitorar resposta a mudanças na dieta");
-break;
-case "Infecção Urinária":
-recommendations.medical.push("Consultar médico para antibióticos", "Realizar exame de urina");
-recommendations.lifestyle.push("Aumentar ingestão de água", "Evitar segurar urina por longos períodos");
-recommendations.monitoring.push("Acompanhar frequência urinária", "Monitorar sintomas de febre");
-break;
-case "Síndrome do Pânico":
-case "Burnout":
-case "Transtorno de Ansiedade":
-recommendations.medical.push("Consultar psiquiatra ou psicólogo", "Avaliar necessidade de terapia medicamentosa");
-recommendations.lifestyle.push("Praticar técnicas de relaxamento (ex.: respiração profunda)", "Estabelecer rotina de sono regular");
-recommendations.monitoring.push("Registrar episódios de ansiedade", "Acompanhar níveis de estresse");
-break;
-default:
-recommendations.medical.push("Consultar médico para avaliação detalhada");
-recommendations.lifestyle.push("Adotar dieta equilibrada", "Manter atividade física regular");
-recommendations.monitoring.push("Realizar check-up anual", "Monitorar sinais vitais regularmente");
-}
+        // Exibir painel holístico
+        function displayHolisticDashboard(result) {
+            // Calcular score geral
+            const overallScore = Math.round(
+                (result.healthScores.physical + result.healthScores.emotional + 
+                 result.healthScores.metabolic + result.healthScores.environmental) / 4
+            );
+            
+            // Atualizar scores
+            document.getElementById('overall-health-score').textContent = overallScore;
+            document.getElementById('physical-score').textContent = result.healthScores.physical;
+            document.getElementById('emotional-score').textContent = result.healthScores.emotional;
+            document.getElementById('metabolic-score').textContent = result.healthScores.metabolic;
+            document.getElementById('environmental-score').textContent = result.healthScores.environmental;
+            
+            // Status de saúde geral
+            const healthStatus = document.getElementById('health-status');
+            if (overallScore > 80) {
+                healthStatus.innerHTML = '<span class="text-green-400">Ótima saúde geral</span>';
+            } else if (overallScore > 60) {
+                healthStatus.innerHTML = '<span class="text-yellow-400">Saúde moderada</span>';
+            } else {
+                healthStatus.innerHTML = '<span class="text-red-400">Atenção necessária</span>';
+            }
+            
+            // Diagnóstico principal
+            const primaryDiagnosisEl = document.getElementById('primary-diagnosis');
+            if (result.primaryDiagnosis.length > 0) {
+                primaryDiagnosisEl.innerHTML = result.primaryDiagnosis.map(d => `
+                    <div class="diagnosis-item mb-2">
+                        <div class="font-semibold">${d.condition}</div>
+                        <div class="text-sm text-gray-400">Probabilidade: ${d.probability}%</div>
+                        <div class="text-xs text-gray-500">${d.type === 'physical' ? 'Condição física' : 'Condição emocional'}</div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('diagnosis-confidence').innerHTML = `
+                    <div class="text-sm text-gray-400">
+                        <i class="fas fa-info-circle mr-1"></i> 
+                        ${result.primaryDiagnosis[0].probability > 80 ? 
+                            'Alta confiança no diagnóstico' : 
+                            'Confiança moderada - consulte um médico para confirmação'}
+                    </div>
+                `;
+            } else {
+                primaryDiagnosisEl.innerHTML = '<div class="text-gray-400">Nenhum diagnóstico primário identificado</div>';
+                document.getElementById('diagnosis-confidence').innerHTML = `
+                    <div class="text-sm text-gray-400">
+                        <i class="fas fa-info-circle mr-1"></i> 
+                        Consulte um médico para avaliação completa
+                    </div>
+                `;
+            }
+            
+            // Ações recomendadas
+            document.getElementById('medical-actions').innerHTML = result.recommendations.medical
+                .map(action => `<li>${action}</li>`).join('') || '<li class="text-gray-400">Nenhuma ação médica recomendada</li>';
+            
+            document.getElementById('lifestyle-actions').innerHTML = result.recommendations.lifestyle
+                .map(action => `<li>${action}</li>`).join('') || '<li class="text-gray-400">Nenhuma mudança de estilo de vida recomendada</li>';
+            
+            document.getElementById('monitoring-actions').innerHTML = result.monitoringPlan.actions
+                .map(action => `<li>${action} (${result.monitoringPlan.frequency})</li>`).join('') || 
+                '<li class="text-gray-400">Nenhum plano de monitoramento específico</li>';
+            
+            // Gráfico de radar para dimensões de saúde
+            new Chart(document.getElementById('physical-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Física'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.physical],
+                        backgroundColor: '#22d3ee',
+                        borderColor: '#22d3ee',
+                        borderWidth: 1
+                    }]
+                },
+                options: { 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+            
+            new Chart(document.getElementById('emotional-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Emocional'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.emotional],
+                        backgroundColor: '#7C3AED',
+                        borderColor: '#7C3AED',
+                        borderWidth: 1
+                    }]
+                },
+                options: { 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+            
+            new Chart(document.getElementById('metabolic-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Metabólica'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.metabolic],
+                        backgroundColor: '#22d3ee',
+                        borderColor: '#22d3ee',
+                        borderWidth: 1
+                    }]
+                },
+                options: { 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+            
+            new Chart(document.getElementById('environmental-chart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Ambiental'],
+                    datasets: [{
+                        label: 'Score',
+                        data: [result.healthScores.environmental],
+                        backgroundColor: '#7C3AED',
+                        borderColor: '#7C3AED',
+                        borderWidth: 1
+                    }]
+                },
+                options: { 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+            
+            // Linha do tempo de saúde (simulada)
+            new Chart(document.getElementById('health-timeline-chart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Score de Saúde',
+                        data: [75, 78, 82, 80, 77, 74, overallScore],
+                        borderColor: '#22d3ee',
+                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 50,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: { 
+                            labels: { 
+                                color: '#e5e7eb',
+                                font: { size: 12 }
+                            } 
+                        }
+                    }
+                }
+            });
+        }
 
-// Ajustes baseados em scores de saúde
-if (healthScores.physical < 60) {
-recommendations.medical.push("Priorizar consulta médica urgente");
-}
-if (healthScores.emotional < 50) {
-recommendations.lifestyle.push("Considerar práticas de mindfulness");
-recommendations.monitoring.push("Registrar humor diário");
-}
-if (healthScores.metabolic < 60) {
-recommendations.lifestyle.push("Reduzir consumo de açúcares e gorduras");
-recommendations.monitoring.push("Monitorar glicemia e pressão arterial");
-}
-if (healthScores.environmental < 60) {
-recommendations.lifestyle.push("Evitar exposição a ambientes de risco");
-}
+        // Gerar relatório de saúde em PDF
+        async function generateHealthReport(result) {
+            // Mostrar loader
+            const loader = document.createElement('div');
+            loader.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center';
+            loader.innerHTML = `
+                <div class="text-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#22d3ee] mx-auto mb-4"></div>
+                    <p class="text-white text-xl">Gerando relatório...</p>
+                </div>
+            `;
+            document.body.appendChild(loader);
+            
+            try {
+                // Criar um elemento canvas para renderizar o dashboard como imagem
+                const dashboard = document.getElementById('holistic-dashboard');
+                
+                // Aumentar temporariamente o tamanho para melhor qualidade
+                const originalWidth = dashboard.style.width;
+                dashboard.style.width = '800px';
+                
+                const canvas = await html2canvas(dashboard, {
+                    backgroundColor: '#1F2937',
+                    scale: 2, // Maior resolução para PDF
+                    logging: false,
+                    useCORS: true
+                });
+                
+                // Restaurar tamanho original
+                dashboard.style.width = originalWidth;
+                
+                // Configurar o PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                // Adicionar cabeçalho
+                pdf.setFontSize(18);
+                pdf.setTextColor(34, 211, 238);
+                pdf.text('Relatório de Saúde - Medical IA', 105, 20, { align: 'center' });
+                
+                // Adicionar data
+                pdf.setFontSize(10);
+                pdf.setTextColor(150, 150, 150);
+                pdf.text(`Gerado em: ${new Date().toLocaleDateString()}`, 105, 30, { align: 'center' });
+                
+                // Adicionar a imagem ao PDF
+                pdf.addImage(imgData, 'PNG', 10, 40, pdfWidth, pdfHeight);
+                
+                // Adicionar rodapé
+                pdf.setFontSize(8);
+                pdf.setTextColor(100, 100, 100);
+                pdf.text('Este relatório não substitui uma avaliação médica profissional. Consulte sempre um especialista.', 105, 285, { align: 'center' });
+                
+                // Adicionar metadados
+                pdf.setProperties({
+                    title: `Relatório de Saúde - ${new Date().toLocaleDateString()}`,
+                    subject: 'Diagnóstico médico gerado pelo Medical IA',
+                    author: 'Álibis Digital Medical IA',
+                    keywords: 'saúde, diagnóstico, medical ia'
+                });
+                
+                // Baixar o PDF
+                pdf.save(`relatorio-saude-${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`);
+                
+            } catch (error) {
+                console.error('Erro ao gerar relatório:', error);
+                alert('Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.');
+            } finally {
+                loader.remove();
+            }
+        }
 
-// Ajustes baseados no estilo de vida
-if (lifestyle.tabagismo === "Fumante Ativo") {
-recommendations.lifestyle.push("Iniciar programa de cessação de tabagismo");
-recommendations.monitoring.push("Acompanhar função pulmonar");
-}
-if (lifestyle.etilismo === "Uso Regular") {
-recommendations.lifestyle.push("Reduzir consumo de álcool");
-}
-if (lifestyle.atividadeFisica === "Sedentário") {
-recommendations.lifestyle.push("Iniciar atividade física leve (ex.: caminhada 30 min/dia)");
-}
+        // Melhorias de acessibilidade
+        function enhanceAccessibility() {
+            // Foco gerenciado para navegação por teclado
+            document.querySelectorAll('.form-input, .form-textarea, .futuristic-btn').forEach(el => {
+                el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const focusable = Array.from(document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+                            .filter(el => el.offsetParent !== null); // Somente elementos visíveis
+                        const currentIndex = focusable.indexOf(document.activeElement);
+                        let nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
+                        
+                        if (nextIndex >= focusable.length) nextIndex = 0;
+                        if (nextIndex < 0) nextIndex = focusable.length - 1;
+                        
+                        focusable[nextIndex].focus();
+                    }
+                });
+            });
+            
+            // Alternativa de texto para elementos visuais
+            document.querySelectorAll('.health-card, .action-card').forEach(card => {
+                if (!card.getAttribute('aria-label')) {
+                    const title = card.querySelector('h4, h5')?.textContent || 'Card informativo';
+                    const content = Array.from(card.querySelectorAll('p, li')).map(el => el.textContent).join('. ');
+                    card.setAttribute('aria-label', `${title}. ${content}`);
+                }
+            });
+            
+            // Contraste aumentado para modo noturno
+            const contrastToggle = document.createElement('button');
+            contrastToggle.className = 'fixed bottom-4 right-4 bg-gray-800 p-2 rounded-full';
+            contrastToggle.innerHTML = '<i class="fas fa-adjust"></i>';
+            contrastToggle.title = 'Alternar contraste';
+            contrastToggle.setAttribute('aria-label', 'Alternar modo de alto contraste');
+            contrastToggle.addEventListener('click', toggleContrast);
+            document.body.appendChild(contrastToggle);
+            
+            function toggleContrast() {
+                document.body.classList.toggle('high-contrast');
+                const isHighContrast = document.body.classList.contains('high-contrast');
+                contrastToggle.setAttribute('aria-pressed', isHighContrast);
+                localStorage.setItem('highContrastMode', isHighContrast);
+            }
+            
+            // Restaurar preferência de contraste
+            if (localStorage.getItem('highContrastMode') === 'true') {
+                document.body.classList.add('high-contrast');
+                contrastToggle.setAttribute('aria-pressed', 'true');
+            }
+        }
 
-// Ajustes baseados no histórico
-if (history.includes("Diabetes")) {
-recommendations.monitoring.push("Monitorar glicemia regularmente");
-}
-if (history.includes("Hipertensão")) {
-recommendations.monitoring.push("Medir pressão arterial diariamente");
-}
+        // Feedback em tempo real
+        function setupRealTimeFeedback() {
+            const feedbackElements = {
+                idade: document.getElementById('idade'),
+                peso: document.getElementById('peso'),
+                altura: document.getElementById('altura'),
+                estresse: document.getElementById('estresse')
+            };
+            
+            Object.entries(feedbackElements).forEach(([id, element]) => {
+                element.addEventListener('input', () => {
+                    const value = parseFloat(element.value) || 0;
+                    let feedback = '';
+                    
+                    if (id === 'idade') {
+                        if (value > 60) feedback = '👴 Considerar check-up completo';
+                        else if (value > 40) feedback = '👨‍⚕️ Recomendado check-up anual';
+                    } else if (id === 'peso' && document.getElementById('altura').value) {
+                        const altura = parseFloat(document.getElementById('altura').value);
+                        if (altura > 0) {
+                            const imc = value / (altura * altura);
+                            if (imc > 30) feedback = '⚠️ IMC indica obesidade';
+                            else if (imc > 25) feedback = 'ℹ️ IMC indica sobrepeso';
+                            else if (imc < 18.5) feedback = 'ℹ️ IMC abaixo do normal';
+                        }
+                    } else if (id === 'estresse') {
+                        if (value > 3) feedback = '🧠 Nível de estresse elevado - considere técnicas de relaxamento';
+                    }
+                    
+                    // Mostrar feedback
+                    const feedbackId = `${id}-feedback`;
+                    let feedbackEl = document.getElementById(feedbackId);
+                    if (!feedbackEl) {
+                        feedbackEl = document.createElement('div');
+                        feedbackEl.id = feedbackId;
+                        feedbackEl.className = 'text-xs mt-1 text-[#22d3ee]';
+                        element.parentNode.appendChild(feedbackEl);
+                    }
+                    feedbackEl.textContent = feedback;
+                });
+            });
+        }
 
-return recommendations;
-}
+        // Menu mobile
+        document.getElementById('hamburger-menu').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
 
-// Criar plano de monitoramento
-function createMonitoringPlan(primaryDiagnosis, healthScores, lifestyle) {
-const plan = [];
-
-// Baseado no diagnóstico primário
-switch (primaryDiagnosis.condition) {
-case "Gripe":
-case "Dengue":
-plan.push("Acompanhar febre e sintomas por 7 dias", "Registrar sinais vitais 2x/dia");
-break;
-case "Gastrite":
-plan.push("Monitorar episódios de dor abdominal", "Anotar alimentos desencadeantes");
-break;
-case "Infecção Urinária":
-plan.push("Monitorar sintomas urinários", "Acompanhar ingestão de líquidos");
-break;
-case "Síndrome do Pânico":
-case "Burnout":
-case "Transtorno de Ansiedade":
-plan.push("Registrar episódios de ansiedade diária", "Monitorar qualidade do sono");
-break;
-default:
-plan.push("Realizar check-up anual", "Monitorar sinais vitais semanalmente");
-}
-
-// Ajustes baseados em scores
-if (healthScores.emotional < 50) {
-plan.push("Manter diário emocional por 2 semanas");
-}
-if (healthScores.metabolic < 60) {
-plan.push("Acompanhar peso e IMC mensalmente");
-}
-
-// Ajustes baseados no estilo de vida
-if (lifestyle.tabagismo === "Fumante Ativo") {
-plan.push("Monitorar tentativas de redução do tabagismo");
-}
-if (lifestyle.atividadeFisica === "Sedentário") {
-plan.push("Registrar minutos de atividade física semanal");
-}
-
-return plan;
-}
-
-// Processar Diagnóstico
-async function processarDiagnostico() {
-if (!validateStep(currentStep)) return;
-
-const userData = {
-symptoms: Array.from(document.querySelectorAll('input[name="sintomas"]:checked')).map(input => input.value)
-.concat(Array.from(document.querySelectorAll('input[name="sintomas-secundarios"]:checked')).map(input => input.value)),
-history: Array.from(document.querySelectorAll('input[name="cronicas"]:checked')).map(input => input.value),
-lifestyle: {
-tabagismo: document.getElementById('tabagismo').value,
-etilismo: document.getElementById('etilismo').value,
-atividadeFisica: document.getElementById('atividade-fisica').value,
-stressLevel: parseInt(document.getElementById('estresse').value) || 0
-},
-exposicao: document.getElementById('exposicao').value,
-scannerResults: document.getElementById('scanner-feedback').innerText,
-peso: parseFloat(document.getElementById('peso').value),
-altura: parseFloat(document.getElementById('altura').value)
-};
-
-// Obter diagnóstico avançado
-const diagnosisResult = await enhancedDiagnosis(userData);
-
-// Exibir painel de saúde
-document.getElementById('diagnostico-form').classList.add('hidden');
-document.getElementById('holistic-dashboard').classList.remove('hidden');
-
-// Atualizar scores
-const overallScore = Math.round(
-(diagnosisResult.healthScores.physical +
-diagnosisResult.healthScores.emotional +
-diagnosisResult.healthScores.metabolic +
-diagnosisResult.healthScores.environmental) / 4
-);
-document.getElementById('overall-health-score').textContent = overallScore;
-document.getElementById('health-status').textContent = overallScore > 80 ? "Ótima saúde" :
-overallScore > 60 ? "Saúde moderada" :
-"Necessita atenção";
-
-document.getElementById('physical-score').textContent = diagnosisResult.healthScores.physical;
-document.getElementById('emotional-score').textContent = diagnosisResult.healthScores.emotional;
-document.getElementById('metabolic-score').textContent = diagnosisResult.healthScores.metabolic;
-document.getElementById('environmental-score').textContent = diagnosisResult.healthScores.environmental;
-
-// Atualizar diagnóstico
-document.getElementById('primary-diagnosis').textContent = diagnosisResult.primaryDiagnosis.condition;
-document.getElementById('diagnosis-confidence').textContent = Confiança: ${diagnosisResult.primaryDiagnosis.probability}%;
-
-// Atualizar recomendações
-document.getElementById('medical-actions').innerHTML = diagnosisResult.recommendations.medical
-.map(item => <li>${item}</li>).join('');
-document.getElementById('lifestyle-actions').innerHTML = diagnosisResult.recommendations.lifestyle
-.map(item => <li>${item}</li>).join('');
-document.getElementById('monitoring-actions').innerHTML = diagnosisResult.recommendations.monitoring
-.map(item => <li>${item}</li>).join('');
-
-// Gerar gráficos
-generateHealthCharts(diagnosisResult.healthScores);
-
-// Limpar progresso salvo
-localStorage.removeItem('medicalIAFormProgress');
-}
-
-// Gerar gráficos de saúde
-function generateHealthCharts(scores) {
-const chartConfig = {
-type: 'radar',
-data: {
-labels: ['Física', 'Emocional', 'Metabólica', 'Ambiental'],
-datasets: [{
-label: 'Score de Saúde',
-data: [
-scores.physical,
-scores.emotional,
-scores.metabolic,
-scores.environmental
-],
-backgroundColor: 'rgba(34, 211, 238, 0.2)',
-borderColor: '#22d3ee',
-pointBackgroundColor: '#22d3ee',
-borderWidth: 2
-}]
-},
-options: {
-responsive: true,
-scales: {
-r: {
-min: 0,
-max: 100,
-ticks: { stepSize: 20, color: '#e5e7eb' },
-grid: { color: 'rgba(255, 255, 255, 0.1)' },
-pointLabels: { color: '#e5e7eb' }
-}
-},
-plugins: {
-legend: { display: false }
-}
-}
-};
-
-// Gerar gráficos individuais
-['physical', 'emotional', 'metabolic', 'environmental'].forEach(dimension => {
-const canvas = document.getElementById(${dimension}-chart);
-new Chart(canvas, { ...chartConfig, data: { ...chartConfig.data, datasets: [{ ...chartConfig.data.datasets[0], data: [scores[dimension], 0, 0, 0] }] } });
-});
-
-// Gerar linha do tempo de saúde
-const timelineChart = new Chart(document.getElementById('health-timeline-chart'), {
-type: 'line',
-data: {
-labels: ['Dia 1', 'Dia 2', 'Dia 3', 'Dia 4', 'Dia 5'],
-datasets: [{
-label: 'Score Geral',
-data: [overallScore - 10, overallScore - 5, overallScore, overallScore + 5, overallScore + 10].map(score => Math.min(100, Math.max(0, score))),
-borderColor: '#22d3ee',
-backgroundColor: 'rgba(34, 211, 238, 0.2)',
-fill: true,
-tension: 0.4
-}]
-},
-options: {
-responsive: true,
-scales: {
-y: { min: 0, max: 100, ticks: { color: '#e5e7eb' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } },
-x: { ticks: { color: '#e5e7eb' }, grid: { color: 'rgba(255, 255, 255, 0.1)' } }
-},
-plugins: {
-legend: { display: false }
-}
-}
-});
-}
-
-// Exportar relatório
-document.getElementById('export-report').addEventListener('click', async () => {
-const { jsPDF } = window.jspdf;
-const dashboard = document.getElementById('holistic-dashboard');
-const canvas = await html2canvas(dashboard, { backgroundColor: '#1F2937', scale: 2 });
-const imgData = canvas.toDataURL('image/png');
-const pdf = new jsPDF('p', 'mm', 'a4');
-const pdfWidth = pdf.internal.pageSize.getWidth();
-const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-pdf.setProperties({
-title: Relatório de Saúde - ${new Date().toLocaleDateString()},
-subject: 'Diagnóstico gerado pelo Medical IA',
-author: 'Álibis Digital'
-});
-pdf.save(relatorio-saude-${new Date().toLocaleDateString()}.pdf);
-});
-
-// Acessibilidade
-function enhanceAccessibility() {
-// Navegação por teclado
-const focusableElements = document.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
-focusableElements.forEach((el, index) => {
-el.addEventListener('keydown', (e) => {
-if (e.key === 'Enter' || e.key === ' ') {
-e.preventDefault();
-el.click();
-}
-if (e.key === 'Tab') {
-e.preventDefault();
-const nextIndex = e.shiftKey ? index - 1 : index + 1;
-const nextEl = focusableElements[nextIndex < 0 ? focusableElements.length - 1 : nextIndex % focusableElements.length];
-nextEl.focus();
-}
-});
-});
-
-// Alternar modo de alto contraste
-const contrastToggle = document.createElement('button');
-contrastToggle.className = 'fixed bottom-4 right-4 bg-gray-800 p-2 rounded-full text-white';
-contrastToggle.innerHTML = '';
-contrastToggle.title = 'Alternar modo de alto contraste';
-contrastToggle.addEventListener('click', () => {
-document.body.classList.toggle('high-contrast');
-});
-document.body.appendChild(contrastToggle);
-}
-
-// Inicialização
-document.addEventListener('DOMContentLoaded', () => {
-enhanceAccessibility();
-loadFormProgress();
-document.querySelectorAll('input[name="sintomas"], input[name="sintomas-secundarios"]').forEach(checkbox => {
-checkbox.addEventListener('change', toggleSymptomDetails);
-});
-
-// Configurar inputs dinâmicos
-document.getElementById('tabagismo').addEventListener('change', () => {
-document.getElementById('tabagismo-detalhes').classList.toggle('hidden', document.getElementById('tabagismo').value !== 'Fumante Ativo');
-});
-document.getElementById('etilismo').addEventListener('change', () => {
-document.getElementById('etilismo-detalhes').classList.toggle('hidden', document.getElementById('etilismo').value !== 'Uso Regular');
-});
-document.getElementById('sintoma-outro').addEventListener('change', () => {
-document.getElementById('sintomas-outra').classList.toggle('hidden', !document.getElementById('sintoma-outro').checked);
-});
-document.querySelector('input[name="cronicas"][value="Outra"]').addEventListener('change', () => {
-document.getElementById('cronicas-outra').classList.toggle('hidden', !document.querySelector('input[name="cronicas"][value="Outra"]').checked);
-});
-});
-</script>
-
-Medical IA
-Sua plataforma avançada de diagnóstico médico com IA.
-
-Links Rápidos
-Blog
-Criar Álibi
-Scanner com IA
-Apoio Emocional
-Suporte
-Contato
-suporte@medicalia.com
-
-(11) 91234-5678
-
-© 2025 Álibis Digital. Todos os direitos reservados.
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFormProgress();
+            enhanceAccessibility();
+            setupRealTimeFeedback();
+            
+            // Configurar eventos para checkboxes de doenças crônicas
+            document.querySelectorAll('input[name="cronicas"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === 'Nenhuma' && this.checked) {
+                        document.querySelectorAll('input[name="cronicas"]:not([value="Nenhuma"])').forEach(cb => {
+                            cb.checked = false;
+                        });
+                        document.getElementById('cronicas-outra').classList.add('hidden');
+                    } else if (this.checked) {
+                        document.querySelector('input[name="cronicas"][value="Nenhuma"]').checked = false;
+                        
+                        if (this.value === 'Outra') {
+                            document.getElementById('cronicas-outra').classList.remove('hidden');
+                        }
+                    }
+                });
+            });
+            
+            // Configurar eventos para detalhes de tabagismo/etilismo
+            document.getElementById('tabagismo').addEventListener('change', function() {
+                document.getElementById('tabagismo-detalhes').classList.toggle(
+                    'hidden', 
+                    this.value !== 'Fumante Ativo' && this.value !== 'Ex-Fumante'
+                );
+            });
+            
+            document.getElementById('etilismo').addEventListener('change', function() {
+                document.getElementById('etilismo-detalhes').classList.toggle(
+                    'hidden', 
+                    this.value === 'Não Bebe'
+                );
+            });
+        });
+    </script>
+</body>
+</html>
