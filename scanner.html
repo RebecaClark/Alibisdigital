@@ -3,33 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Scanner Emocional Avançado com análise multimodal integrada">
-  <title>Scanner Emocional | Medai Brasil</title>
+  <meta name="description" content="Scanner Emocional Avançado MedAI Brasil - Análise de emoções através de reconhecimento facial e vocal">
+  <title>Scanner Emocional | MedAI Brasil</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <style>
     :root {
-      --primary: #22d3ee;
-      --secondary: #7C3AED;
-      --dark: #0b1120;
-      --darker: #1e1b4b;
+      --primary: #3B82F6;
+      --secondary: #10B981;
+      --dark: #111827;
+      --darker: #1F2937;
     }
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, var(--dark), var(--darker));
       color: white;
       position: relative;
-      overflow-x: hidden;
-    }
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
+      min-height: 100vh;
     }
     .gradient-text {
       background: linear-gradient(45deg, var(--primary), var(--secondary));
@@ -38,7 +29,7 @@
       color: transparent;
     }
     .gradient-bg {
-      background: linear-gradient(45deg, var(--secondary), var(--primary));
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
     }
     .glass-card {
       background: rgba(17, 24, 39, 0.85);
@@ -46,1001 +37,452 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
     }
-    .pulse-animation {
-      animation: pulse 2s infinite;
+    .wave-container {
+      height: 150px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.5);
     }
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.7); }
-      70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
-    }
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .slide-up {
-      animation: slideUp 0.5s ease-out;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .emotion-dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin: 0 2px;
-      opacity: 0.7;
-      transition: all 0.3s ease;
-    }
-    .emotion-dot.active {
-      transform: scale(1.5);
-      opacity: 1;
-    }
-    .emotion-dot.happy { background-color: #f59e0b; }
-    .emotion-dot.sad { background-color: #3b82f6; }
-    .emotion-dot.angry { background-color: #ef4444; }
-    .emotion-dot.surprise { background-color: #8b5cf6; }
-    .emotion-dot.neutral { background-color: #64748b; }
-    .emotion-dot.fear { background-color: #d946ef; }
-    .emotion-dot.disgust { background-color: #84cc16; }
-    
-    /* Heatmap styles */
-    .heatmap-container {
-      position: relative;
-      width: 100%;
-      height: 300px;
-      margin: 20px 0;
-    }
-    .heatmap {
-      position: absolute;
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      border-radius: 8px;
-      overflow: hidden;
+      background-color: rgba(0,0,0,0.8);
     }
-    .heatmap-region {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.7;
-      transform: scale(0);
-      animation: heatmapPulse 2s infinite alternate;
+    .modal-content {
+      background: linear-gradient(135deg, #1F2937, #111827);
+      margin: 5% auto;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    @keyframes heatmapPulse {
-      to { transform: scale(1); opacity: 0.9; }
+    .close-modal {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    
-    /* Voice waveform */
-    .voice-waveform {
-      height: 80px;
+    .close-modal:hover {
+      color: white;
+    }
+    .explanation-step {
+      margin-bottom: 20px;
+      padding: 15px;
       background: rgba(30, 41, 59, 0.5);
       border-radius: 8px;
-      margin: 15px 0;
-      position: relative;
-      overflow: hidden;
     }
-    .voice-wave {
+    #videoElement {
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+    }
+    #overlayCanvas {
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      stroke: var(--primary);
-      stroke-width: 2;
-      fill: none;
+      pointer-events: none;
     }
   </style>
 </head>
-<body class="min-h-screen">
-  <!-- Partículas de Fundo -->
-  <div id="particles-js"></div>
-
+<body>
   <!-- Cabeçalho -->
   <header class="glass-card fixed top-0 left-0 w-full z-50 shadow-lg">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-3">
-        <a href="/" class="text-2xl font-bold gradient-text">Álibis Emocional</a>
+        <a href="/">
+          <img src="/assets/logo.jpg" alt="MedAI Brasil" class="h-10">
+        </a>
+        <span class="text-xl font-bold">Scanner Emocional</span>
       </div>
-      <nav class="hidden md:flex space-x-6">
-        <a href="#scanner" class="hover:text-[#22d3ee] transition">Scanner</a>
-        <a href="#analise" class="hover:text-[#22d3ee] transition">Análise</a>
-        <a href="#recomendacoes" class="hover:text-[#22d3ee] transition">Recomendações</a>
-      </nav>
-      <button id="mobile-menu-button" class="md:hidden text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+      <button id="how-it-works-btn" class="text-white hover:text-blue-300 transition">
+        Como funciona
       </button>
     </div>
   </header>
 
-  <!-- Menu Mobile -->
-  <div id="mobile-menu" class="glass-card fixed top-16 left-0 w-full hidden z-40 md:hidden">
-    <div class="flex flex-col p-4 space-y-3">
-      <a href="#scanner" class="py-2 px-4 hover:bg-gray-800 rounded">Scanner</a>
-      <a href="#analise" class="py-2 px-4 hover:bg-gray-800 rounded">Análise</a>
-      <a href="#recomendacoes" class="py-2 px-4 hover:bg-gray-800 rounded">Recomendações</a>
+  <!-- Modal de Introdução -->
+  <div id="intro-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="text-2xl font-bold mb-4 gradient-text">Como funciona nosso Scanner Emocional</h2>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">1. Análise Facial</h3>
+        <p class="text-gray-300">Nosso sistema identifica emoções através de 68 pontos faciais, detectando microexpressões que podem revelar seu estado emocional atual.</p>
+      </div>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">2. Análise Vocal</h3>
+        <p class="text-gray-300">Avaliamos tom, frequência e padrões de fala para complementar o diagnóstico emocional com dados acústicos.</p>
+      </div>
+      
+      <div class="explanation-step">
+        <h3 class="text-xl font-semibold mb-2">3. Segurança dos Dados</h3>
+        <p class="text-gray-300">Todas as análises são processadas localmente em seu dispositivo. Nenhum dado de vídeo ou áudio é armazenado em nossos servidores.</p>
+      </div>
+      
+      <button id="start-after-explanation" class="gradient-bg text-white font-bold py-3 px-6 rounded-lg mt-4 w-full">
+        Entendi, quero começar
+      </button>
     </div>
   </div>
 
-  <main class="pt-20 pb-16 px-4 max-w-7xl mx-auto">
-    <!-- Seção Hero -->
-    <section class="py-12 text-center">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 gradient-text">Scanner Emocional Avançado</h1>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
-        Análise multimodal integrada com reconhecimento facial, análise vocal e dados biométricos
-      </p>
-      <button id="start-scan" class="gradient-bg text-white font-bold py-3 px-8 rounded-full text-lg pulse-animation">
-        Iniciar Scanner
-      </button>
-    </section>
-
-    <!-- Scanner Multimodal -->
-    <section id="scanner" class="py-12 glass-card p-6 my-8">
-      <h2 class="text-3xl font-bold mb-6 gradient-text">Scanner Multimodal</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Scanner Facial -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-            Análise Facial
-          </h3>
-          <div class="text-center">
-            <div class="relative mx-auto" style="width: 300px; height: 300px;">
-              <video id="facial-video" autoplay muted playsinline class="w-full h-full object-cover rounded-lg border border-gray-700 hidden"></video>
-              <canvas id="facial-canvas" class="absolute top-0 left-0 w-full h-full hidden"></canvas>
-              <div id="facial-placeholder" class="w-full h-full bg-gray-800 rounded-lg flex items-center justify-center">
-                <p class="text-gray-400">Scanner facial será ativado</p>
-              </div>
-            </div>
-            <div id="facial-emotions" class="mt-4 flex justify-center">
-              <!-- Emotion dots will be added here -->
-            </div>
-            <button id="start-facial" class="gradient-bg text-white font-bold py-2 px-6 rounded mt-4">
-              Ativar Scanner Facial
-            </button>
-          </div>
-        </div>
-        
-        <!-- Análise de Voz -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
-            </svg>
-            Análise de Voz
-          </h3>
-          <div class="text-center">
-            <div class="voice-waveform">
-              <svg id="voice-wave" class="voice-wave" viewBox="0 0 500 80" preserveAspectRatio="none"></svg>
-            </div>
-            <div id="voice-analysis-result" class="text-gray-300 text-sm">
-              <p>Fale algo após ativar o scanner de voz</p>
-            </div>
-            <button id="start-voice" class="gradient-bg text-white font-bold py-2 px-6 rounded mt-4">
-              Ativar Análise de Voz
-            </button>
-            <div id="voice-emotion" class="mt-4 hidden">
-              <h4 class="font-semibold">Emoção Detectada:</h4>
-              <div class="flex justify-center mt-2">
-                <span id="voice-emotion-dot" class="emotion-dot"></span>
-                <span id="voice-emotion-text" class="ml-2"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Dados Biométricos -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-            </svg>
-            Dados Biométricos
-          </h3>
-          <div id="biometric-data" class="space-y-4">
-            <div class="flex justify-between items-center">
-              <span>Frequência Cardíaca:</span>
-              <span id="heart-rate" class="font-semibold">-- bpm</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span>Variabilidade (HRV):</span>
-              <span id="hrv" class="font-semibold">-- ms</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span>Resposta Galvânica:</span>
-              <span id="gsr" class="font-semibold">-- μS</span>
-            </div>
-            <div class="heatmap-container">
-              <div class="heatmap bg-gray-800">
-                <div id="stress-heatmap" class="heatmap-region" style="background: rgba(239, 68, 68, 0.6); width: 100%; height: 100%;"></div>
-              </div>
-            </div>
-            <button id="connect-wearable" class="gradient-bg text-white w-full py-2 px-4 rounded">
-              Conectar Dispositivo
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Análise Integrada -->
-    <section id="analise" class="py-12 glass-card p-6 my-8">
-      <h2 class="text-3xl font-bold mb-6 gradient-text">Análise Integrada</h2>
+  <!-- Conteúdo Principal -->
+  <main class="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+    <!-- Área do Scanner -->
+    <section class="glass-card p-6 my-8">
+      <h2 class="text-2xl font-bold mb-6 gradient-text">Scanner Emocional</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Mapa de Calor Emocional -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4">Mapa de Calor Emocional</h3>
-          <div id="emotion-heatmap" class="h-64 rounded-lg bg-gray-800 flex items-center justify-center">
-            <p class="text-gray-400">Dados de análise serão exibidos aqui</p>
+        <!-- Vídeo e Canvas -->
+        <div>
+          <div class="relative" style="width: 100%; max-width: 500px; margin: 0 auto;">
+            <video id="videoElement" autoplay muted playsinline class="w-full"></video>
+            <canvas id="overlayCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
           </div>
-          <div class="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
-            <div><span class="emotion-dot happy inline-block"></span> Felicidade</div>
-            <div><span class="emotion-dot sad inline-block"></span> Tristeza</div>
-            <div><span class="emotion-dot angry inline-block"></span> Raiva</div>
-            <div><span class="emotion-dot surprise inline-block"></span> Surpresa</div>
-            <div><span class="emotion-dot fear inline-block"></span> Medo</div>
-            <div><span class="emotion-dot neutral inline-block"></span> Neutro</div>
-          </div>
-        </div>
-        
-        <!-- Resultados Detalhados -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4">Resultados Detalhados</h3>
-          <div id="detailed-results" class="space-y-4">
-            <div>
-              <h4 class="font-medium mb-2">Estado Emocional Primário:</h4>
-              <div id="primary-emotion" class="flex items-center">
-                <span id="primary-emotion-dot" class="emotion-dot mr-2"></span>
-                <span id="primary-emotion-text">Não detectado</span>
-              </div>
-            </div>
-            <div>
-              <h4 class="font-medium mb-2">Confiança da Análise:</h4>
-              <div class="w-full bg-gray-700 rounded-full h-2.5">
-                <div id="confidence-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-              </div>
-              <p id="confidence-text" class="text-right text-sm mt-1">0%</p>
-            </div>
-            <div>
-              <h4 class="font-medium mb-2">Consistência entre Modais:</h4>
-              <div class="flex items-center">
-                <div class="w-full bg-gray-700 rounded-full h-2.5 mr-2">
-                  <div id="consistency-bar" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
-                </div>
-                <span id="consistency-text" class="text-sm">0%</span>
-              </div>
-            </div>
-            <div>
-              <h4 class="font-medium mb-2">Tendências Recentes:</h4>
-              <canvas id="trends-chart" class="w-full h-32"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Relatório Completo -->
-      <div id="full-report" class="glass-card p-6 mt-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold">Relatório Completo</h3>
-          <button id="download-report" class="gradient-bg text-white py-2 px-4 rounded text-sm">
-            Baixar Relatório
+          <button id="startBtn" class="gradient-bg text-white font-bold py-2 px-6 rounded-lg mt-4 w-full">
+            Iniciar Análise
           </button>
         </div>
-        <div id="report-content" class="space-y-4">
-          <!-- Report content will be generated here -->
+        
+        <!-- Resultados -->
+        <div>
+          <div class="wave-container">
+            <canvas id="waveCanvas" class="w-full h-full"></canvas>
+          </div>
+          
+          <div class="glass-card p-4 mb-4">
+            <h3 class="font-semibold mb-2">Emoção Detectada:</h3>
+            <div id="emotion-result" class="flex items-center">
+              <div id="emotion-dot" class="w-4 h-4 rounded-full mr-2"></div>
+              <span id="emotion-text">Aguardando análise...</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-4">
+            <h3 class="font-semibold mb-2">Detalhes:</h3>
+            <div id="details-result">
+              <p class="text-gray-300">Inicie a análise para ver os resultados detalhados.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-
-    <!-- Recomendações Personalizadas -->
-    <section id="recomendacoes" class="py-12 glass-card p-6 my-8">
-      <h2 class="text-3xl font-bold mb-6 gradient-text">Recomendações Personalizadas</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Intervenções Imediatas -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4">Intervenções Imediatas</h3>
-          <div id="immediate-interventions" class="space-y-3">
-            <div class="p-3 bg-gray-800 rounded-lg">
-              <div class="flex justify-between items-center">
-                <h4 class="font-medium">Respiração 4-7-8</h4>
-                <button class="text-xs gradient-bg text-white py-1 px-2 rounded">
-                  Iniciar
-                </button>
-              </div>
-              <p class="text-sm mt-1 text-gray-400">Para reduzir o estresse imediato</p>
-            </div>
-            <div class="p-3 bg-gray-800 rounded-lg">
-              <div class="flex justify-between items-center">
-                <h4 class="font-medium">Grounding 5-4-3-2-1</h4>
-                <button class="text-xs gradient-bg text-white py-1 px-2 rounded">
-                  Iniciar
-                </button>
-              </div>
-              <p class="text-sm mt-1 text-gray-400">Para ansiedade e nervosismo</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Atividades Sugeridas -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4">Atividades Sugeridas</h3>
-          <div id="suggested-activities" class="space-y-3">
-            <div class="p-3 bg-gray-800 rounded-lg">
-              <div class="flex items-center">
-                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3">
-                  <span>🚶</span>
-                </div>
-                <div>
-                  <h4 class="font-medium">Caminhada de 10 minutos</h4>
-                  <p class="text-xs text-gray-400">Para melhorar humor e energia</p>
-                </div>
-              </div>
-            </div>
-            <div class="p-3 bg-gray-800 rounded-lg">
-              <div class="flex items-center">
-                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mr-3">
-                  <span>📓</span>
-                </div>
-                <div>
-                  <h4 class="font-medium">Diário de Gratidão</h4>
-                  <p class="text-xs text-gray-400">Anote 3 coisas positivas do dia</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Recursos Adicionais -->
-        <div class="glass-card p-6">
-          <h3 class="text-xl font-semibold mb-4">Recursos Adicionais</h3>
-          <div id="additional-resources" class="space-y-3">
-            <a href="#" class="block p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
-              <h4 class="font-medium">Meditação Guiada</h4>
-              <p class="text-sm text-gray-400">Sessão personalizada para seu estado atual</p>
-            </a>
-            <a href="#" class="block p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
-              <h4 class="font-medium">Artigos Recomendados</h4>
-              <p class="text-sm text-gray-400">Leituras sobre regulação emocional</p>
-            </a>
-            <a href="#" class="block p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition">
-              <h4 class="font-medium">Conectar com Terapeuta</h4>
-              <p class="text-sm text-gray-400">Agende uma sessão com um profissional</p>
-            </a>
-          </div>
-        </div>
-      </div>
+    
+    <!-- Gráficos -->
+    <section class="glass-card p-6 my-8">
+      <h2 class="text-2xl font-bold mb-6 gradient-text">Análise Detalhada</h2>
+      <canvas id="emotionChart" class="w-full h-64"></canvas>
     </section>
   </main>
 
   <!-- Rodapé -->
   <footer class="bg-gray-900 py-8 px-4">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div>
-          <h3 class="text-xl font-bold gradient-text mb-4">Álibis Emocional</h3>
-          <p class="text-gray-400">Sua plataforma avançada de saúde mental e bem-estar emocional.</p>
-        </div>
-        <div>
-          <h4 class="font-semibold mb-3">Links Rápidos</h4>
-          <ul class="space-y-2">
-            <li><a href="#scanner" class="text-gray-400 hover:text-white">Scanner</a></li>
-            <li><a href="#analise" class="text-gray-400 hover:text-white">Análise</a></li>
-            <li><a href="#recomendacoes" class="text-gray-400 hover:text-white">Recomendações</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-semibold mb-3">Contato</h4>
-          <ul class="space-y-2 text-gray-400">
-            <li>suporte@alibisemocional.com</li>
-            <li>(11) 91234-5678</li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
-        © 2025 Álibis Digital. Todos os direitos reservados.
-      </div>
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-gray-400">© 2023 MedAI Brasil. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- Modal de Intervenção -->
-  <div id="intervention-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="glass-card p-6 max-w-md w-full mx-4">
-      <h3 id="intervention-title" class="text-xl font-bold mb-4"></h3>
-      <div id="intervention-content" class="mb-4"></div>
-      <div class="flex justify-end space-x-3">
-        <button id="cancel-intervention" class="bg-gray-700 text-white py-2 px-4 rounded">
-          Fechar
-        </button>
-        <button id="start-intervention" class="gradient-bg text-white py-2 px-4 rounded">
-          Começar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
   <script>
-    // Configuração Inicial
-    document.addEventListener('DOMContentLoaded', function() {
-      // Inicializar partículas
-      particlesJS('particles-js', {
-        particles: {
-          number: { value: 80, density: { enable: true, value_area: 800 } },
-          color: { value: ['#22d3ee', '#7C3AED', '#ffffff'] },
-          shape: { type: 'circle' },
-          opacity: { value: 0.5, random: true },
-          size: { value: 3, random: true },
-          line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-          move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
-        },
-        interactivity: {
-          detect_on: 'canvas',
-          events: {
-            onhover: { enable: true, mode: 'bubble' },
-            onclick: { enable: true, mode: 'push' }
-          },
-          modes: {
-            bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8, speed: 3 },
-            push: { particles_nb: 4 }
-          }
-        }
-      });
+    // Elementos DOM
+    const videoElement = document.getElementById('videoElement');
+    const overlayCanvas = document.getElementById('overlayCanvas');
+    const waveCanvas = document.getElementById('waveCanvas');
+    const startBtn = document.getElementById('startBtn');
+    const emotionResult = document.getElementById('emotion-result');
+    const emotionText = document.getElementById('emotion-text');
+    const emotionDot = document.getElementById('emotion-dot');
+    const detailsResult = document.getElementById('details-result');
+    const introModal = document.getElementById('intro-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const howItWorksBtn = document.getElementById('how-it-works-btn');
+    const startAfterExplanation = document.getElementById('start-after-explanation');
 
-      // Menu Mobile
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      
-      mobileMenuButton.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-      });
+    // Estados
+    let isScanning = false;
+    let emotionChart = null;
 
-      // Inicializar Scanner Facial
-      initFacialScanner();
+    // Mostrar modal na primeira visita
+    window.addEventListener('DOMContentLoaded', function() {
+      const alreadyShown = localStorage.getItem('scannerExplanationSeen');
+      if (!alreadyShown) {
+        introModal.style.display = 'block';
+      }
       
-      // Inicializar Análise de Voz
-      initVoiceAnalysis();
+      // Inicializar câmera
+      initCamera();
       
-      // Inicializar Dados Biométricos
-      initBiometricData();
-      
-      // Inicializar Gráficos
-      initCharts();
-      
-      // Configurar Event Listeners
-      setupEventListeners();
+      // Inicializar gráfico vazio
+      initEmotionChart();
     });
 
-    // ==================== Scanner Facial ====================
-    function initFacialScanner() {
-      const facialVideo = document.getElementById('facial-video');
-      const facialCanvas = document.getElementById('facial-canvas');
-      const facialPlaceholder = document.getElementById('facial-placeholder');
-      const startFacialBtn = document.getElementById('start-facial');
-      const facialEmotions = document.getElementById('facial-emotions');
-      
-      // Emoções para exibição
-      const emotions = [
-        { name: 'happy', label: 'Felicidade' },
-        { name: 'sad', label: 'Tristeza' },
-        { name: 'angry', label: 'Raiva' },
-        { name: 'surprise', label: 'Surpresa' },
-        { name: 'fear', label: 'Medo' },
-        { name: 'neutral', label: 'Neutro' }
-      ];
-      
-      // Criar dots de emoção
-      emotions.forEach(emotion => {
-        const dot = document.createElement('span');
-        dot.className = `emotion-dot ${emotion.name}`;
-        dot.title = emotion.label;
-        facialEmotions.appendChild(dot);
-      });
-      
-      startFacialBtn.addEventListener('click', async function() {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          facialVideo.srcObject = stream;
-          facialVideo.classList.remove('hidden');
-          facialCanvas.classList.remove('hidden');
-          facialPlaceholder.classList.add('hidden');
-          startFacialBtn.textContent = 'Analisando...';
-          startFacialBtn.disabled = true;
-          
-          // Simular análise facial
-          simulateFacialAnalysis();
-        } catch (err) {
-          console.error('Erro ao acessar câmera:', err);
-          facialPlaceholder.innerHTML = '<p class="text-red-500">Erro ao acessar câmera</p>';
-        }
-      });
-      
-      function simulateFacialAnalysis() {
-        const emotionDots = document.querySelectorAll('#facial-emotions .emotion-dot');
+    // Inicializar câmera
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
         
-        // Limpar estados ativos
-        emotionDots.forEach(dot => dot.classList.remove('active'));
-        
-        // Selecionar uma emoção primária aleatória
-        const primaryEmotionIndex = Math.floor(Math.random() * emotions.length);
-        const primaryEmotion = emotions[primaryEmotionIndex];
-        
-        // Ativar dot da emoção primária
-        emotionDots[primaryEmotionIndex].classList.add('active');
-        
-        // Atualizar resultado principal
-        document.getElementById('primary-emotion-dot').className = `emotion-dot ${primaryEmotion.name}`;
-        document.getElementById('primary-emotion-text').textContent = primaryEmotion.label;
-        
-        // Atualizar barra de confiança
-        const confidence = Math.floor(Math.random() * 30) + 70; // 70-100%
-        document.getElementById('confidence-bar').style.width = `${confidence}%`;
-        document.getElementById('confidence-text').textContent = `${confidence}%`;
-        
-        // Desenhar pontos faciais no canvas
-        drawFacialPoints(primaryEmotion.name);
-        
-        // Atualizar heatmap
-        updateEmotionHeatmap(primaryEmotion.name);
-      }
-      
-      function drawFacialPoints(emotion) {
-        const canvas = document.getElementById('facial-canvas');
-        const ctx = canvas.getContext('2d');
-        const width = canvas.width = facialVideo.videoWidth;
-        const height = canvas.height = facialVideo.videoHeight;
-        
-        // Limpar canvas
-        ctx.clearRect(0, 0, width, height);
-        
-        // Desenhar vídeo
-        ctx.drawImage(facialVideo, 0, 0, width, height);
-        
-        // Configurações de desenho baseadas na emoção
-        let pointColor, lineColor;
-        switch(emotion) {
-          case 'happy':
-            pointColor = 'rgba(245, 158, 11, 0.8)';
-            lineColor = 'rgba(245, 158, 11, 0.4)';
-            break;
-          case 'sad':
-            pointColor = 'rgba(59, 130, 246, 0.8)';
-            lineColor = 'rgba(59, 130, 246, 0.4)';
-            break;
-          case 'angry':
-            pointColor = 'rgba(239, 68, 68, 0.8)';
-            lineColor = 'rgba(239, 68, 68, 0.4)';
-            break;
-          default:
-            pointColor = 'rgba(139, 92, 246, 0.8)';
-            lineColor = 'rgba(139, 92, 246, 0.4)';
-        }
-        
-        // Desenhar pontos faciais simulados
-        const points = [];
-        for (let i = 0; i < 68; i++) {
-          const x = width/2 + (Math.random() - 0.5) * width/2;
-          const y = height/2 + (Math.random() - 0.5) * height/2;
-          points.push({x, y});
-          
-          ctx.fillStyle = pointColor;
-          ctx.beginPath();
-          ctx.arc(x, y, 3, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        
-        // Desenhar linhas conectando alguns pontos
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 1;
-        
-        // Contorno do rosto
-        for (let i = 0; i < 16; i++) {
-          ctx.beginPath();
-          ctx.moveTo(points[i].x, points[i].y);
-          ctx.lineTo(points[(i+1)%17].x, points[(i+1)%17].y);
-          ctx.stroke();
-        }
+        // Ajustar canvas overlay para acompanhar o vídeo
+        videoElement.onloadedmetadata = () => {
+          overlayCanvas.width = videoElement.videoWidth;
+          overlayCanvas.height = videoElement.videoHeight;
+        };
+      } catch (err) {
+        console.error("Erro ao acessar a câmera:", err);
+        alert("Não foi possível acessar a câmera. Por favor, verifique as permissões.");
       }
     }
 
-    // ==================== Análise de Voz ====================
-    function initVoiceAnalysis() {
-      const startVoiceBtn = document.getElementById('start-voice');
-      const voiceWave = document.getElementById('voice-wave');
-      const voiceResult = document.getElementById('voice-analysis-result');
-      const voiceEmotion = document.getElementById('voice-emotion');
-      const voiceEmotionDot = document.getElementById('voice-emotion-dot');
-      const voiceEmotionText = document.getElementById('voice-emotion-text');
-      
-      const emotions = [
-        { name: 'happy', label: 'Feliz', color: '#f59e0b' },
-        { name: 'sad', label: 'Triste', color: '#3b82f6' },
-        { name: 'angry', label: 'Raiva', color: '#ef4444' },
-        { name: 'neutral', label: 'Neutro', color: '#64748b' }
-      ];
-      
-      startVoiceBtn.addEventListener('click', async function() {
-        try {
-          startVoiceBtn.textContent = 'Gravando...';
-          startVoiceBtn.classList.add('bg-red-600');
-          
-          // Simular gravação e análise
-          setTimeout(() => {
-            startVoiceBtn.textContent = 'Ativar Análise de Voz';
-            startVoiceBtn.classList.remove('bg-red-600');
-            
-            // Gerar onda de voz simulada
-            generateVoiceWave();
-            
-            // Detectar emoção aleatória
-            const emotion = emotions[Math.floor(Math.random() * emotions.length)];
-            
-            // Atualizar UI
-            voiceResult.innerHTML = `
-              <p>Tono: <span class="font-semibold">${Math.random() > 0.5 ? 'Positivo' : 'Neutro'}</span></p>
-              <p>Velocidade: <span class="font-semibold">${Math.random() > 0.5 ? 'Normal' : 'Rápida'}</span></p>
-            `;
-            
-            voiceEmotionDot.className = `emotion-dot ${emotion.name}`;
-            voiceEmotionDot.style.backgroundColor = emotion.color;
-            voiceEmotionText.textContent = emotion.label;
-            voiceEmotion.classList.remove('hidden');
-            
-            // Atualizar consistência
-            updateConsistency();
-            
-          }, 2000);
-        } catch (err) {
-          console.error('Erro na análise de voz:', err);
-          voiceResult.innerHTML = '<p class="text-red-500">Erro na análise de voz</p>';
-        }
-      });
-      
-      function generateVoiceWave() {
-        const width = 500;
-        const height = 80;
-        let path = `M 0 ${height/2}`;
-        
-        for (let x = 0; x <= width; x += 10) {
-          const y = height/2 + (Math.random() - 0.5) * height/1.5;
-          path += ` L ${x} ${y}`;
-        }
-        
-        voiceWave.innerHTML = `<path d="${path}"></path>`;
-      }
-    }
-
-    // ==================== Dados Biométricos ====================
-    function initBiometricData() {
-      const connectWearableBtn = document.getElementById('connect-wearable');
-      const heartRateEl = document.getElementById('heart-rate');
-      const hrvEl = document.getElementById('hrv');
-      const gsrEl = document.getElementById('gsr');
-      const stressHeatmap = document.getElementById('stress-heatmap');
-      
-      connectWearableBtn.addEventListener('click', function() {
-        connectWearableBtn.textContent = 'Conectando...';
-        
-        // Simular conexão com wearable
-        setTimeout(() => {
-          connectWearableBtn.textContent = 'Conectado';
-          connectWearableBtn.classList.remove('gradient-bg');
-          connectWearableBtn.classList.add('bg-green-600');
-          connectWearableBtn.disabled = true;
-          
-          // Iniciar atualização contínua de dados
-          simulateBiometricData();
-        }, 1500);
-      });
-      
-      function simulateBiometricData() {
-        // Valores iniciais
-        let heartRate = 70;
-        let hrv = 50;
-        let gsr = 5;
-        
-        // Atualizar dados a cada segundo
-        setInterval(() => {
-          // Variação suave dos valores
-          heartRate += (Math.random() - 0.5) * 2;
-          hrv += (Math.random() - 0.5) * 1;
-          gsr += (Math.random() - 0.5) * 0.1;
-          
-          // Limitar valores a faixas realistas
-          heartRate = Math.max(60, Math.min(heartRate, 90));
-          hrv = Math.max(30, Math.min(hrv, 70));
-          gsr = Math.max(3, Math.min(gsr, 10));
-          
-          // Atualizar UI
-          heartRateEl.textContent = Math.round(heartRate) + ' bpm';
-          hrvEl.textContent = Math.round(hrv) + ' ms';
-          gsrEl.textContent = gsr.toFixed(1) + ' μS';
-          
-          // Atualizar heatmap de estresse baseado nos dados
-          const stressLevel = (heartRate - 60) / 30 + (50 - hrv) / 40 + gsr / 10;
-          const stressOpacity = Math.min(0.8, stressLevel / 3);
-          stressHeatmap.style.opacity = stressOpacity;
-          stressHeatmap.style.transform = `scale(${1 + stressLevel / 10})`;
-          
-          // Atualizar consistência
-          updateConsistency();
-        }, 1000);
-      }
-    }
-
-    // ==================== Gráficos e Visualizações ====================
-    function initCharts() {
-      // Gráfico de tendências
-      const trendsCtx = document.getElementById('trends-chart').getContext('2d');
-      new Chart(trendsCtx, {
-        type: 'line',
+    // Inicializar gráfico de emoções
+    function initEmotionChart() {
+      const ctx = document.getElementById('emotionChart').getContext('2d');
+      emotionChart = new Chart(ctx, {
+        type: 'bar',
         data: {
-          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-          datasets: [
-            {
-              label: 'Bem-estar',
-              data: [5, 6, 4, 7, 5, 8, 6],
-              borderColor: '#22d3ee',
-              backgroundColor: 'rgba(34, 211, 238, 0.1)',
-              tension: 0.3,
-              fill: true
-            },
-            {
-              label: 'Estresse',
-              data: [4, 5, 6, 3, 5, 2, 4],
-              borderColor: '#ef4444',
-              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-              tension: 0.3,
-              fill: true
-            }
-          ]
+          labels: ['Felicidade', 'Tristeza', 'Raiva', 'Surpresa', 'Neutro'],
+          datasets: [{
+            label: 'Intensidade',
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: [
+              'rgba(245, 158, 11, 0.7)',
+              'rgba(59, 130, 246, 0.7)',
+              'rgba(239, 68, 68, 0.7)',
+              'rgba(139, 92, 246, 0.7)',
+              'rgba(100, 116, 139, 0.7)'
+            ],
+            borderColor: [
+              'rgba(245, 158, 11, 1)',
+              'rgba(59, 130, 246, 1)',
+              'rgba(239, 68, 68, 1)',
+              'rgba(139, 92, 246, 1)',
+              'rgba(100, 116, 139, 1)'
+            ],
+            borderWidth: 1
+          }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: '#e5e7eb'
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                color: '#E5E7EB'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              }
+            },
+            x: {
+              ticks: {
+                color: '#E5E7EB'
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
               }
             }
           },
-          scales: {
-            x: {
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)'
-              },
-              ticks: {
-                color: '#e5e7eb'
-              }
-            },
-            y: {
-              grid: {
-                color: 'rgba(255, 255, 255, 0.1)'
-              },
-              ticks: {
-                color: '#e5e7eb'
-              },
-              min: 0,
-              max: 10
+          plugins: {
+            legend: {
+              display: false
             }
           }
         }
       });
     }
 
-    // ==================== Heatmap Emocional ====================
-    function updateEmotionHeatmap(primaryEmotion) {
-      const heatmap = document.getElementById('emotion-heatmap');
-      heatmap.innerHTML = '';
+    // Iniciar análise
+    startBtn.addEventListener('click', function() {
+      if (isScanning) {
+        stopAnalysis();
+      } else {
+        startAnalysis();
+      }
+    });
+
+    // Iniciar análise
+    function startAnalysis() {
+      isScanning = true;
+      startBtn.textContent = 'Parar Análise';
+      startBtn.classList.remove('gradient-bg');
+      startBtn.classList.add('bg-red-600');
       
-      // Cores baseadas na emoção primária
-      let baseColor;
-      switch(primaryEmotion) {
+      // Simular análise (em produção seria análise real)
+      simulateAnalysis();
+      
+      // Iniciar animação da onda
+      animateWave();
+    }
+
+    // Parar análise
+    function stopAnalysis() {
+      isScanning = false;
+      startBtn.textContent = 'Iniciar Análise';
+      startBtn.classList.add('gradient-bg');
+      startBtn.classList.remove('bg-red-600');
+      
+      // Limpar overlay
+      const ctx = overlayCanvas.getContext('2d');
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    }
+
+    // Simular análise (substituir por análise real em produção)
+    function simulateAnalysis() {
+      if (!isScanning) return;
+      
+      // Emoções possíveis
+      const emotions = [
+        { name: 'happy', label: 'Felicidade', color: '#f59e0b', description: 'Você parece estar se sentindo feliz ou contente.' },
+        { name: 'sad', label: 'Tristeza', color: '#3b82f6', description: 'Seu estado emocional sugere tristeza ou melancolia.' },
+        { name: 'angry', label: 'Raiva', color: '#ef4444', description: 'Detectamos sinais de raiva ou frustração.' },
+        { name: 'surprise', label: 'Surpresa', color: '#8b5cf6', description: 'Você parece estar surpreso ou impressionado.' },
+        { name: 'neutral', label: 'Neutro', color: '#64748b', description: 'Seu estado emocional parece neutro ou equilibrado.' }
+      ];
+      
+      // Selecionar emoção aleatória (simulação)
+      const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+      
+      // Atualizar UI
+      emotionDot.style.backgroundColor = randomEmotion.color;
+      emotionText.textContent = randomEmotion.label;
+      detailsResult.innerHTML = `<p>${randomEmotion.description}</p>`;
+      
+      // Atualizar gráfico com dados simulados
+      updateChartWithRandomData();
+      
+      // Desenhar pontos faciais simulados
+      drawFacialPoints(randomEmotion.name);
+      
+      // Continuar análise até ser parada
+      setTimeout(simulateAnalysis, 3000);
+    }
+
+    // Desenhar pontos faciais simulados
+    function drawFacialPoints(emotion) {
+      const ctx = overlayCanvas.getContext('2d');
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+      
+      // Configurações baseadas na emoção
+      let pointColor, lineColor;
+      switch(emotion) {
         case 'happy':
-          baseColor = 'rgba(245, 158, 11, 0.7)';
+          pointColor = 'rgba(245, 158, 11, 0.8)';
+          lineColor = 'rgba(245, 158, 11, 0.4)';
           break;
         case 'sad':
-          baseColor = 'rgba(59, 130, 246, 0.7)';
+          pointColor = 'rgba(59, 130, 246, 0.8)';
+          lineColor = 'rgba(59, 130, 246, 0.4)';
           break;
         case 'angry':
-          baseColor = 'rgba(239, 68, 68, 0.7)';
-          break;
-        case 'surprise':
-          baseColor = 'rgba(139, 92, 246, 0.7)';
-          break;
-        case 'fear':
-          baseColor = 'rgba(217, 70, 239, 0.7)';
+          pointColor = 'rgba(239, 68, 68, 0.8)';
+          lineColor = 'rgba(239, 68, 68, 0.4)';
           break;
         default:
-          baseColor = 'rgba(100, 116, 139, 0.7)';
+          pointColor = 'rgba(139, 92, 246, 0.8)';
+          lineColor = 'rgba(139, 92, 246, 0.4)';
       }
       
-      // Criar regiões de heatmap
-      for (let i = 0; i < 5; i++) {
-        const region = document.createElement('div');
-        region.className = 'heatmap-region';
-        region.style.background = baseColor;
+      // Desenhar pontos faciais simulados
+      const points = [];
+      for (let i = 0; i < 68; i++) {
+        const x = overlayCanvas.width/2 + (Math.random() - 0.5) * overlayCanvas.width/2;
+        const y = overlayCanvas.height/2 + (Math.random() - 0.5) * overlayCanvas.height/2;
+        points.push({x, y});
         
-        // Posição e tamanho aleatórios
-        const size = 30 + Math.random() * 50;
-        region.style.width = `${size}%`;
-        region.style.height = `${size}%`;
-        region.style.left = `${Math.random() * 70}%`;
-        region.style.top = `${Math.random() * 70}%`;
-        
-        // Atraso de animação
-        region.style.animationDelay = `${i * 0.2}s`;
-        
-        heatmap.appendChild(region);
+        ctx.fillStyle = pointColor;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
       }
       
-      // Mostrar relatório completo após análise
-      document.getElementById('full-report').classList.remove('hidden');
-      generateReportContent(primaryEmotion);
+      // Desenhar linhas conectando alguns pontos
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 1;
+      
+      // Contorno do rosto
+      for (let i = 0; i < 16; i++) {
+        ctx.beginPath();
+        ctx.moveTo(points[i].x, points[i].y);
+        ctx.lineTo(points[(i+1)%17].x, points[(i+1)%17].y);
+        ctx.stroke();
+      }
     }
 
-    // ==================== Relatório ====================
-    function generateReportContent(primaryEmotion) {
-      const reportContent = document.getElementById('report-content');
+    // Atualizar gráfico com dados aleatórios
+    function updateChartWithRandomData() {
+      if (!emotionChart) return;
       
-      // Dados simulados para o relatório
-      const emotionData = {
-        happy: {
-          title: "Predominância de Emoções Positivas",
-          description: "Seu perfil emocional atual mostra predominância de sentimentos positivos, com alta taxa de felicidade detectada.",
-          recommendations: [
-            "Continue cultivando atividades que trazem alegria",
-            "Pratique gratidão para manter esse estado positivo",
-            "Compartilhe sua energia positiva com outras pessoas"
-          ]
-        },
-        sad: {
-          title: "Predominância de Tristeza",
-          description: "Seu perfil emocional atual mostra sinais de tristeza. Isso pode ser uma resposta normal a eventos recentes.",
-          recommendations: [
-            "Permita-se sentir essas emoções sem julgamento",
-            "Conecte-se com pessoas queridas",
-            "Pratique atividades que tragam conforto"
-          ]
-        },
-        angry: {
-          title: "Predominância de Raiva/Frustração",
-          description: "Seu perfil emocional atual mostra sinais de raiva ou frustração. Identificar a fonte pode ajudar no processamento.",
-          recommendations: [
-            "Pratique técnicas de respiração para acalmar o sistema nervoso",
-            "Expresse seus sentimentos de forma saudável",
-            "Encontre atividade física para liberar tensão"
-          ]
-        },
-        neutral: {
-          title: "Estado Emocional Neutro",
-          description: "Seu perfil emocional atual mostra predominância de neutralidade. Isso pode indicar equilíbrio ou falta de engajamento emocional.",
-          recommendations: [
-            "Experimente novas atividades para estimular emoções positivas",
-            "Pratique mindfulness para aumentar consciência emocional",
-            "Reflita sobre seus objetivos e valores pessoais"
-          ]
+      const newData = emotionChart.data.datasets[0].data.map(() => 
+        Math.floor(Math.random() * 70) + 30
+      );
+      
+      emotionChart.data.datasets[0].data = newData;
+      emotionChart.update();
+    }
+
+    // Animar onda de voz
+    function animateWave() {
+      if (!isScanning) return;
+      
+      const ctx = waveCanvas.getContext('2d');
+      waveCanvas.width = waveCanvas.offsetWidth;
+      waveCanvas.height = waveCanvas.offsetHeight;
+      
+      ctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+      
+      ctx.strokeStyle = '#3B82F6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      const centerY = waveCanvas.height / 2;
+      const amplitude = waveCanvas.height / 3;
+      
+      for (let x = 0; x < waveCanvas.width; x++) {
+        const y = centerY + amplitude * Math.sin(x * 0.05 + Date.now() * 0.005);
+        
+        if (x === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
         }
-      };
+      }
       
-      const data = emotionData[primaryEmotion] || emotionData.neutral;
+      ctx.stroke();
       
-      reportContent.innerHTML = `
-        <div class="glass-card p-6 mb-4">
-          <h4 class="text-xl font-bold mb-3 gradient-text">Resumo Emocional</h4>
-          <p>${data.description}</p>
-        </div>
-        
-        <div class="glass-card p-6 mb-4">
-          <h4 class="text-xl font-bold mb-3 gradient-text">Dados Técnicos</h4>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <h5 class="font-semibold mb-1">Análise Facial</h5>
-              <p>Emoção primária: <span class="font-bold">${data.title.split(': ')[1]}</span></p>
-              <p>Confiança: <span class="font-bold">${Math.floor(Math.random() * 20) + 80}%</span></p>
-            </div>
-            <div>
-              <h5 class="font-semibold mb-1">Análise Vocal</h5>
-              <p>Tom: <span class="font-bold">${primaryEmotion === 'happy' ? 'Positivo' : primaryEmotion === 'sad' ? 'Baixo' : 'Neutro'}</span></p>
-              <p>Intensidade: <span class="font-bold">${Math.floor(Math.random() * 30) + 50}%</span></p>
-            </div>
-            <div>
-              <h5 class="font-semibold mb-1">Dados Biométricos</h5>
-              <p>Frequência cardíaca: <span class="font-bold">${Math.floor(Math.random() * 20) + 70} bpm</span></p>
-              <p>HRV: <span class="font-bold">${Math.floor(Math.random() * 20) + 40} ms</span></p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="glass-card p-6">
-          <h4 class="text-xl font-bold mb-3 gradient-text">Recomendações Personalizadas</h4>
-          <ul class="list-disc pl-5 space-y-2">
-            ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
-          </ul>
-        </div>
-      `;
+      requestAnimationFrame(animateWave);
     }
 
-    // ==================== Consistência ====================
-    function updateConsistency() {
-      const consistency = Math.floor(Math.random() * 30) + 70; // 70-100%
-      document.getElementById('consistency-bar').style.width = `${consistency}%`;
-      document.getElementById('consistency-text').textContent = `${consistency}%`;
-    }
+    // Modal de explicação
+    howItWorksBtn.addEventListener('click', function() {
+      introModal.style.display = 'block';
+    });
 
-    // ==================== Event Listeners ====================
-    function setupEventListeners() {
-      // Botão de iniciar scan completo
-      document.getElementById('start-scan').addEventListener('click', function() {
-        document.getElementById('scanner').scrollIntoView({ behavior: 'smooth' });
-      });
-      
-      // Botão de download de relatório
-      document.getElementById('download-report').addEventListener('click', function() {
-        alert('Relatório baixado com sucesso! (simulação)');
-      });
-      
-      // Intervenções
-      document.querySelectorAll('#immediate-interventions button').forEach(button => {
-        button.addEventListener('click', function() {
-          const intervention = this.closest('div').querySelector('h4').textContent;
-          showInterventionModal(intervention, getInterventionContent(intervention));
-        });
-      });
-    }
-    
-    function showInterventionModal(title, content) {
-      document.getElementById('intervention-title').textContent = title;
-      document.getElementById('intervention-content').innerHTML = content;
-      document.getElementById('intervention-modal').classList.remove('hidden');
-      
-      document.getElementById('cancel-intervention').onclick = function() {
-        document.getElementById('intervention-modal').classList.add('hidden');
-      };
-      
-      document.getElementById('start-intervention').onclick = function() {
-        alert(`Intervenção "${title}" iniciada!`);
-        document.getElementById('intervention-modal').classList.add('hidden');
-      };
-    }
-    
-    function getInterventionContent(intervention) {
-      const contents = {
-        'Respiração 4-7-8': `
-          <p class="mb-4">Esta técnica ajuda a reduzir o estresse e promover relaxamento:</p>
-          <ol class="list-decimal pl-5 space-y-2 mb-4">
-            <li>Inspire profundamente pelo nariz contando até 4</li>
-            <li>Segure a respiração contando até 7</li>
-            <li>Expire completamente pela boca contando até 8</li>
-          </ol>
-          <p>Repita este ciclo 4 vezes.</p>
-        `,
-        'Grounding 5-4-3-2-1': `
-          <p class="mb-4">Técnica para reduzir ansiedade e trazer para o momento presente:</p>
-          <ol class="list-decimal pl-5 space-y-2 mb-4">
-            <li>Identifique 5 coisas que você pode VER</li>
-            <li>Identifique 4 coisas que você pode TOCAR</li>
-            <li>Identifique 3 coisas que você pode OUVIR</li>
-            <li>Identifique 2 coisas que você pode CHEIRAR</li>
-            <li>Identifique 1 coisa que você pode SABOREAR</li>
-          </ol>
-          <p>Respire fundo após completar.</p>
-        `
-      };
-      
-      return contents[intervention] || '<p>Conteúdo da intervenção não disponível.</p>';
-    }
+    closeModal.addEventListener('click', function() {
+      introModal.style.display = 'none';
+      localStorage.setItem('scannerExplanationSeen', 'true');
+    });
+
+    startAfterExplanation.addEventListener('click', function() {
+      introModal.style.display = 'none';
+      localStorage.setItem('scannerExplanationSeen', 'true');
+      startAnalysis();
+    });
+
+    // Fechar modal ao clicar fora
+    window.addEventListener('click', function(event) {
+      if (event.target === introModal) {
+        introModal.style.display = 'none';
+        localStorage.setItem('scannerExplanationSeen', 'true');
+      }
+    });
   </script>
 </body>
 </html>
