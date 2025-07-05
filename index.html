@@ -260,10 +260,33 @@
             margin-bottom: 30px;
             max-width: 600px;
         }
+    
+        .header-logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
         
-        .hero-logo {
-            max-width: 180px;
-            margin: 20px 0;
+        .header-logo {
+            max-width: 220px; /* Ajuste conforme necessário */
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .header-logo {
+                max-width: 180px;
+            }
+            .header-logo-container {
+                padding-top: 15px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo {
+                max-width: 150px;
+            }
         }
         
         .btn {
@@ -1035,7 +1058,10 @@
         <div class="container">
             <div class="header-card">
                 <!-- Logo adicionado aqui -->
-                <img src="assets/logo.png" alt="MedAI Brasil" class="header-logo">                
+              <header class="header-section">
+             <div class="header-logo-container">
+            <img src="assets/logo.png" alt="MedAI Brasil" class="header-logo">
+            </div>      
                 <h1>Você Sabia Que <span>85% dos Problemas de Saúde</span> Começam Com Emoções Não Gerenciadas?</h1>
                 
                 <div class="video-container">
