@@ -29,7 +29,7 @@
             background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
             line-height: 1.6;
             overflow-x: hidden;
-            padding-bottom: 60px; /* Para o disclaimer médico */
+            padding-bottom: 60px;
         }
         
         /* Efeito de partículas */
@@ -123,14 +123,42 @@
             cursor: pointer;
         }
         
-        /* Seção Hero atualizada */
+        /* Seção Hero atualizada com vídeo */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.7;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+        
         .hero {
             background: rgba(255,255,255,0.95);
             border-radius: 20px;
-            margin-top: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             overflow: hidden;
             position: relative;
+            z-index: 2;
+            margin: 30px 20px 0;
         }
         
         .hero-content {
@@ -139,15 +167,9 @@
             z-index: 2;
         }
         
-        .hero-bg {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 40%;
-            background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMLA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover no-repeat;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
+        .hero-headlines {
+            position: relative;
+            z-index: 3;
         }
         
         .hero h1 {
@@ -186,6 +208,7 @@
             margin: 20px 0;
         }
         
+        /* Botões com microinterações */
         .btn {
             display: inline-block;
             padding: 18px 36px;
@@ -197,6 +220,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
+            border: none;
+            cursor: pointer;
         }
         
         .btn-primary {
@@ -207,6 +232,7 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
+            background: linear-gradient(to right, var(--primary), #3a7bc8);
         }
         
         .btn-accent {
@@ -223,6 +249,66 @@
         .btn-lg {
             font-size: 18px;
             padding: 20px 45px;
+        }
+        
+        /* Efeito ripple */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* Animação de flutuação */
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Banner rolante */
+        .scrolling-banner {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px 0;
+            margin: 30px 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .scrolling-content {
+            display: flex;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+        }
+        
+        .scrolling-item {
+            display: flex;
+            align-items: center;
+            margin-right: 40px;
+        }
+        
+        .scrolling-item i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         
         /* Seção de credibilidade */
@@ -313,7 +399,8 @@
         }
 
         .card-icon {
-            font-size: 60px;
+            width: 80px;
+            height: 80px;
             margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
         }
@@ -349,12 +436,6 @@
             left: 0;
             color: var(--primary);
             font-weight: bold;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
         }
 
         /* Seção de demonstração interativa */
@@ -815,10 +896,6 @@
         
         /* Responsivo */
         @media (max-width: 992px) {
-            .hero-bg {
-                display: none;
-            }
-            
             .hero-content {
                 padding: 40px;
             }
@@ -928,8 +1005,13 @@
         </div>
     </div>
     
-    <!-- Seção Hero -->
+    <!-- Seção Hero com Vídeo -->
     <section class="hero-section">
+        <video autoplay muted loop class="hero-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-doing-yoga-1586-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        
         <div class="container">
             <div class="hero">
                 <div class="hero-content">
@@ -941,13 +1023,27 @@
                     <p>3 Inteligências Artificiais Integradas para Seu Bem-Estar: Scanner de Bem-Estar + Apoio Emocional + Orientação Inteligente + Painel Órbita</p>
                     <p><small>*Não substitui orientação médica profissional</small></p>
                     
-                    <div class="video-container" style="margin: 30px 0;">
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px; background: var(--dark); border-radius: 15px; padding: 30px;">
-                            [VÍDEO EXPLICATIVO AQUI - 4 MINUTOS]
+                    <div class="scrolling-banner">
+                        <div class="scrolling-content">
+                            <div class="scrolling-item">
+                                <i class="fas fa-heartbeat"></i> Scanner de Bem-Estar
+                            </div>
+                            <div class="scrolling-item">
+                                <i class="fas fa-brain"></i> Apoio Emocional 24/7
+                            </div>
+                            <div class="scrolling-item">
+                                <i class="fas fa-robot"></i> Orientação Inteligente
+                            </div>
+                            <div class="scrolling-item">
+                                <i class="fas fa-chart-line"></i> Painel Órbita Premium
+                            </div>
+                            <div class="scrolling-item">
+                                <i class="fas fa-mobile-alt"></i> App para Android e iOS
+                            </div>
                         </div>
                     </div>
                     
-                    <a href="#offer" class="btn btn-primary btn-lg pulse">
+                    <a href="#offer" class="btn btn-primary btn-lg pulse" id="cta-button">
                         <i class="fas fa-arrow-right"></i> QUERO MELHORAR MEU BEM-ESTAR
                     </a>
                     
@@ -963,7 +1059,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="hero-bg"></div>
             </div>
         </div>
     </section>
@@ -977,60 +1072,82 @@
             </div>
             
             <div class="flip-cards-container">
-                <!-- Card 1 -->
+                <!-- Card 1 - Scanner de Saúde -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #4A90E2, #2D5E9D);">
-                            <div class="card-icon"><i class="fas fa-robot"></i></div>
-                            <h3>IA Preditiva</h3>
+                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none" />
+                                <circle cx="50" cy="50" r="30" stroke="white" stroke-width="6" fill="none" />
+                                <circle cx="50" cy="50" r="20" stroke="white" stroke-width="4" fill="none" />
+                                <circle cx="50" cy="50" r="10" stroke="white" stroke-width="2" fill="white" />
+                                <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="3" />
+                                <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="3" />
+                            </svg>
+                            <h3>Scanner de Saúde</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>ANÁLISE PREDITIVA</h4>
+                            <h4>SCANNER DE SAÚDE</h4>
                             <ul>
                                 <li>Detecta padrões de bem-estar</li>
                                 <li>87% de precisão comprovada</li>
                                 <li>Alertas preventivos</li>
+                                <li>Análise em tempo real</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Card 2 -->
+                <!-- Card 2 - Apoio Emocional -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #D3D3D3, #6B7280);">
-                            <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
-                            <h3>Monitoramento 24/7</h3>
+                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M30,50 Q50,20 70,50 T90,50" stroke="white" stroke-width="8" fill="none" />
+                                <path d="M30,60 Q50,90 70,60 T90,60" stroke="white" stroke-width="8" fill="none" />
+                                <circle cx="40" cy="45" r="5" fill="white" />
+                                <circle cx="60" cy="45" r="5" fill="white" />
+                                <path d="M40,65 Q50,75 60,65" stroke="white" stroke-width="3" fill="none" />
+                            </svg>
+                            <h3>Apoio Emocional</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>VIGILÂNCIA CONSTANTE</h4>
+                            <h4>APOIO EMOCIONAL</h4>
                             <ul>
-                                <li>Dados atualizados a cada 5 min</li>
-                                <li>Comparação com sua baseline</li>
-                                <li>Notificações em tempo real</li>
+                                <li>Chat 24/7 com IA especializada</li>
+                                <li>Técnicas de relaxamento</li>
+                                <li>Monitoramento de humor</li>
+                                <li>Exercícios mentais</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Card 3 -->
+                <!-- Card 3 - Medical IA -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #1A252F, #4A90E2);">
-                            <div class="card-icon"><i class="fas fa-lock"></i></div>
-                            <h3>Segurança de Dados</h3>
+                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="30" y="30" width="40" height="40" rx="5" stroke="white" stroke-width="6" fill="none" />
+                                <line x1="30" y1="40" x2="70" y2="40" stroke="white" stroke-width="3" />
+                                <line x1="40" y1="30" x2="40" y2="70" stroke="white" stroke-width="3" />
+                                <line x1="60" y1="30" x2="60" y2="70" stroke="white" stroke-width="3" />
+                                <path d="M20,20 L30,30 M80,20 L70,30 M20,80 L30,70 M80,80 L70,70" stroke="white" stroke-width="3" />
+                            </svg>
+                            <h3>Medical IA</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>PROTEÇÃO TOTAL</h4>
+                            <h4>MEDICAL IA</h4>
                             <ul>
-                                <li>Criptografia hospitalar</li>
-                                <li>Certificado HIPAA</li>
-                                <li>Dados anonimizados</li>
+                                <li>Orientação inteligente</li>
+                                <li>Baseado em pesquisas médicas</li>
+                                <li>Recomendações personalizadas</li>
+                                <li>Integração com profissionais</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
@@ -1157,7 +1274,7 @@
                 </div>
                 
                 <div>
-                    <a href="#" class="btn btn-accent btn-lg pulse">
+                    <a href="#" class="btn btn-accent btn-lg pulse" id="offer-button">
                         <i class="fas fa-lock"></i> GARANTIR MEU ACESSO AGORA
                     </a>
                 </div>
@@ -1490,6 +1607,33 @@
                 const answer = question.nextElementSibling;
                 answer.classList.toggle('active');
             });
+        });
+        
+        // Efeito ripple nos botões
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+            circle.classList.add("ripple");
+            
+            const ripple = button.getElementsByClassName("ripple")[0];
+            
+            if (ripple) {
+                ripple.remove();
+            }
+            
+            button.appendChild(circle);
+        }
+        
+        // Aplicar efeito ripple aos botões principais
+        const buttons = document.querySelectorAll('#cta-button, #offer-button, .btn-accent');
+        buttons.forEach(button => {
+            button.addEventListener('click', createRipple);
         });
     </script>
 </body>
