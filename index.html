@@ -172,6 +172,47 @@
             opacity: 0.9;
         }
         
+        /* Header com Logo */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            margin-left: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
         /* Disclaimer médico fixo */
         .medical-disclaimer {
             position: fixed;
@@ -259,39 +300,11 @@
             font-size: 18px;
             margin-bottom: 30px;
             max-width: 600px;
-        .header-logo-container {
-            text-align: center;
-            margin: 0 auto 25px;
-            padding-top: 20px;
         }
         
-        .header-logo {
-            max-width: 280px; /* Aumentei de 220px para 280px */
-            height: auto;
-            transition: all 0.3s ease;
-        }
-
-        /* AJUSTES PARA O LOGO NO FOOTER (REDUZINDO O TAMANHO) */
-        .footer-logo {
-            max-width: 180px; /* Reduzi de 220px para 180px */
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .header-logo {
-                max-width: 180px;
-            }
-            .header-logo-container {
-                padding-top: 15px;
-                margin-bottom: 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-logo {
-                max-width: 150px;
-            }
+        .hero-logo {
+            max-width: 180px;
+            margin: 20px 0;
         }
         
         .btn {
@@ -744,7 +757,7 @@
         .guarantee-icon {
             min-width: 80px;
             height: 80px;
-            background: linear-gradient(to right, var(--success), #9CA3AF);
+            background: linear-gradient(to right, var(--success), #9CA3AF));
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1046,13 +1059,28 @@
     </style>
 </head>
 <body>
-   <div id="particles-js"></div>
+    <div id="particles-js"></div>
+    
+    <!-- Header com Logo -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/150x50?text=MedAI+Logo" alt="MedAI Logo" id="logo">
+                <span class="logo-text">MedAI</span>
+            </div>
+            <div class="header-cta">
+                <a href="#offer" class="btn btn-primary btn-sm">
+                    <i class="fas fa-arrow-right"></i> Quero Acesso
+                </a>
+            </div>
+        </div>
+    </header>
     
     <!-- Barra de urgência melhorada -->
     <div class="urgency-bar">
         <div class="container">
             <div>
-                <i class="fas fa-fire"></i> <span id="remaining-spots">50</span> VAGAS COM ACESSO VITALÍCIO!
+                <i class="fas fa-fire"></i> OFERTA LIMITADA - <span id="remaining-spots">50</span> VAGAS COM DESCONTO!
                 <span class="countdown">Termina em: <span id="countdown-timer">30:00</span></span>
             </div>
         </div>
@@ -1062,11 +1090,6 @@
     <section class="hero-section">
         <div class="container">
             <div class="header-card">
-                <!-- Logo adicionado aqui -->
-              <header class="header-section">
-             <div class="header-logo-container">
-            <img src="assets/logo.png" alt="MedAI Brasil" class="header-logo">
-            </div>      
                 <h1>Você Sabia Que <span>85% dos Problemas de Saúde</span> Começam Com Emoções Não Gerenciadas?</h1>
                 
                 <div class="video-container">
@@ -1095,7 +1118,7 @@
         <div class="container">
             <div class="section-header">
                 <h2>TECNOLOGIA QUE REVOLUCIONA SEU BEM-ESTAR</h2>
-                <p>Descubra como nossa plataforma funciona</p>
+                <p>Scanner Emocional + Apoio 24/7 + Medical IA em uma única plataforma</p>
             </div>
             
             <div class="flip-cards-container">
@@ -1103,16 +1126,16 @@
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #4A90E2, #2D5E9D);">
-                            <div class="card-icon"><i class="fas fa-robot"></i></div>
-                            <h3>IA Preditiva</h3>
+                            <div class="card-icon"><i class="fas fa-brain"></i></div>
+                            <h3>Scanner Emocional</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>ANÁLISE PREDITIVA</h4>
+                            <h4>SCANNER EMOCIONAL</h4>
                             <ul>
-                                <li>Detecta padrões de bem-estar</li>
-                                <li>87% de precisão comprovada</li>
-                                <li>Alertas preventivos</li>
+                                <li>Detecta 7 emoções com 99% de precisão</li>
+                                <li>Análise facial e vocal em tempo real</li>
+                                <li>Biofeedback com realidade aumentada</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
@@ -1124,15 +1147,15 @@
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #D3D3D3, #6B7280);">
                             <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
-                            <h3>Monitoramento 24/7</h3>
+                            <h3>Apoio Emocional</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>VIGILÂNCIA CONSTANTE</h4>
+                            <h4>APOIO EMOCIONAL</h4>
                             <ul>
-                                <li>Dados atualizados a cada 5 min</li>
-                                <li>Comparação com sua baseline</li>
-                                <li>Notificações em tempo real</li>
+                                <li>Terapeuta virtual 24 horas</li>
+                                <li>Intervenções personalizadas</li>
+                                <li>Monitoramento contínuo</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
@@ -1143,16 +1166,16 @@
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #1A252F, #4A90E2);">
-                            <div class="card-icon"><i class="fas fa-lock"></i></div>
-                            <h3>Segurança de Dados</h3>
+                            <div class="card-icon"><i class="fas fa-stethoscope"></i></div>
+                            <h3>Medical IA</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>PROTEÇÃO TOTAL</h4>
+                            <h4>MEDICAL IA</h4>
                             <ul>
-                                <li>Criptografia hospitalar</li>
-                                <li>Certificado HIPAA</li>
-                                <li>Dados anonimizados</li>
+                                <li>Pré-diagnósticos precisos</li>
+                                <li>Score de Saúde Geral</li>
+                                <li>Scanner corporal integrado</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
@@ -1189,7 +1212,7 @@
         <div class="container">
             <div class="testimonials">
                 <div class="section-header">
-                    <h2>+75.000 BRASILEIROS JÁ MELHORARAM SEU BEM-ESTAR</h2>
+                    <h2>+75.000 PESSOAS TRANSFORMARAM SUA SAÚDE</h2>
                     <p>Veja o que nossos usuários estão dizendo</p>
                 </div>
                 <div class="testimonial-grid">
@@ -1201,12 +1224,12 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </div>
-                        <p>"A ferramenta de scanner me ajudou a ficar mais atenta ao meu bem-estar. Comecei a cuidar melhor da minha saúde e procurei orientação médica quando necessário!"</p>
+                        <p>"O Scanner Emocional me mostrou padrões que nem eu percebia. Em 3 semanas, minhas dores de cabeça desapareceram!"</p>
                         <div class="author">
-                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ana Paula">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ana">
                             <div class="author-info">
-                                <h4>Ana Paula R.</h4>
-                                <p>Executiva - São Paulo, SP</p>
+                                <h4>Ana Carolina</h4>
+                                <p>Gerente de Projetos</p>
                             </div>
                         </div>
                     </div>
@@ -1218,12 +1241,12 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                         </div>
-                        <p>"O apoio emocional da IA me deu suporte nos momentos difíceis. É como ter alguém para conversar 24 horas por dia. Melhorou muito minha qualidade de vida!"</p>
+                        <p>"O Medical IA detectou que meu cansaço era falta de vitamina D. O médico confirmou e hoje me sinto 20 anos mais jovem!"</p>
                         <div class="author">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Roberto">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos">
                             <div class="author-info">
-                                <h4>Roberto S.</h4>
-                                <p>Empresário - Rio de Janeiro, RJ</p>
+                                <h4>Carlos Eduardo</h4>
+                                <p>Empresário</p>
                             </div>
                         </div>
                     </div>
@@ -1253,8 +1276,8 @@
     <section id="offer">
         <div class="container">
             <div class="offer">
-                <h2>OFERTA ESPECIAL POR TEMPO LIMITADO</h2>
-                <p>Aproveite hoje nosso pacote completo com desconto exclusivo</p>
+                <h2>OFERTA EXCLUSIVA POR TEMPO LIMITADO</h2>
+                <p>Todas as ferramentas por menos de <strong>R$ 7 por dia</strong></p>
                 
                 <div class="price">
                     <small>12x de</small> R$ 97<small>,90</small>
@@ -1266,21 +1289,18 @@
                 </div>
                 
                 <div class="offer-bonuses">
-                    <h3>Você vai receber:</h3>
+                    <h3>Você recebe:</h3>
                     <ul>
-                        <li>Acesso completo ao Scanner de Bem-Estar IA</li>
-                        <li>Acompanhamento Emocional 24/7</li>
-                        <li>Orientação Inteligente para bem-estar</li>
-                        <li>Painel Órbita Premium</li>
-                        <li>Aplicativo Mobile para Android e iOS</li>
-                        <li>Atualizações gratuitas por 1 ano</li>
-                        <li>Suporte prioritário em português</li>
+                        <li>Scanner Emocional Premium</li>
+                        <li>Apoio Emocional 24/7</li>
+                        <li>Medical IA com scanner corporal</li>
+                        <li>Atualizações gratuitas</li>
                     </ul>
                 </div>
                 
                 <div>
                     <a href="#" class="btn btn-accent btn-lg pulse">
-                        <i class="fas fa-lock"></i> GARANTIR MEU ACESSO AGORA
+                        <i class="fas fa-lock"></i> QUERO MEU ACESSO
                     </a>
                 </div>
                 
@@ -1401,7 +1421,8 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <img src="assets/logo.png" alt="MedAI Brasil" class="header-logo">            
+            <img src="https://via.placeholder.com/150x50?text=MedAI+Logo" alt="MedAI Brasil" class="footer-logo">
+            
             <div class="footer-links">
                 <a href="#" id="show-terms">Termos de Uso</a>
                 <a href="#" id="show-policy">Política de Privacidade</a>
