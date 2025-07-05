@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedAI Brasil - Bem-Estar Inteligente com IA</title>
+    <meta name="description" content="Plataforma de IA para apoio ao seu bem-estar e qualidade de vida com Scanner de Bem-Estar, Apoio Emocional e Orientação Inteligente">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,6 +18,7 @@
             --light: #F9FAFB;
             --success: #6B7280;
             --error: #d32f2f;
+            --warning: #F59E0B;
         }
         
         * {
@@ -32,6 +36,7 @@
             padding-bottom: 60px;
         }
         
+        /* Efeito de partículas otimizado */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -49,141 +54,50 @@
         section {
             padding: 80px 0;
             position: relative;
+            scroll-margin-top: 80px; /* Melhora a navegação por âncora */
         }
         
-        /* Seção Hero Otimizada */
-        .hero-section {
-            position: relative;
-            margin-top: 30px;
-        }
-        
-        .hero-content {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 60px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .pre-video-headline {
+        /* Barra de urgência melhorada com animação mais chamativa */
+        .urgency-bar {
+            background: linear-gradient(to right, var(--primary), var(--error));
+            color: white;
+            padding: 15px 0;
             text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .pre-video-headline h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.3;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .pre-video-headline h2 {
-            font-size: 28px;
             font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 25px;
-        }
-        
-        .pre-video-headline h2 span {
-            color: var(--primary);
-            font-weight: 700;
-        }
-        
-        .video-hero-container {
-            max-width: 900px;
-            margin: 0 auto 40px;
-            position: relative;
-        }
-        
-        .video-wrapper {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-        }
-        
-        .video-container iframe {
-            position: absolute;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+            z-index: 1000;
+            animation: urgencyPulse 3s infinite;
         }
         
-        .video-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 50px;
+        @keyframes urgencyPulse {
+            0% { background: linear-gradient(to right, var(--primary), var(--error)); }
+            50% { background: linear-gradient(to right, #d32f2f, #9C27B0); }
+            100% { background: linear-gradient(to right, var(--primary), var(--error)); }
+        }
+        
+        .urgency-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .urgency-bar .countdown {
             font-weight: 700;
-            font-size: 14px;
-            z-index: 10;
-        }
-        
-        .video-warning {
-            text-align: center;
-            background: #FFF3E0;
-            color: #E65100;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-weight: 600;
-        }
-        
-        .post-video-cta {
-            text-align: center;
-            margin: 50px auto;
-            max-width: 600px;
-        }
-        
-        .post-video-cta h3 {
-            font-size: 24px;
-            margin-bottom: 25px;
-            color: var(--dark);
-        }
-        
-        .post-video-cta h3 span {
-            color: var(--primary);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 18px 36px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
-        }
-        
-        .btn-lg {
             font-size: 18px;
-            padding: 20px 45px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-left: 15px;
+            animation: blink 1s infinite alternate;
+        }
+        
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.7; }
         }
         
         .pulse {
@@ -196,250 +110,354 @@
             100% { transform: scale(1); }
         }
         
-        .secure-badge {
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--success);
-        }
-        
-        .social-proof {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 60px 0;
-            flex-wrap: wrap;
-        }
-        
-        .proof-item {
-            text-align: center;
-            min-width: 150px;
-        }
-        
-        .proof-number {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--primary);
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-        
-        .trust-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(74, 144, 226, 0.1);
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-top: 20px;
-        }
-        
-        .trust-badge i {
-            color: var(--primary);
-            margin-right: 10px;
-            font-size: 20px;
-        }
-        
-        /* Barra de urgência */
-        .urgency-bar {
-            background: linear-gradient(to right, #d32f2f, #b71c1c);
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-weight: 600;
+        /* Disclaimer médico fixo com destaque */
+        .medical-disclaimer {
             position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .urgency-bar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .urgency-bar i {
-            margin-right: 8px;
-        }
-        
-        .countdown {
-            margin-left: 15px;
-            font-weight: 700;
-        }
-        
-        .btn-accent {
-            background: white;
-            color: #d32f2f;
-            padding: 10px 20px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--error);
+            color: white;
+            padding: 12px;
             font-size: 14px;
-        }
-        
-        /* Seção de Cards Flip */
-        .flip-cards-section {
-            background: white;
-            padding: 80px 0;
-        }
-        
-        .section-header {
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            margin-bottom: 50px;
+            border-top: 2px solid white;
         }
         
-        .section-header h2 {
+        .medical-disclaimer i {
+            margin-right: 10px;
+            font-size: 18px;
+            animation: shake 0.5s infinite alternate;
+        }
+        
+        @keyframes shake {
+            from { transform: rotate(-5deg); }
+            to { transform: rotate(5deg); }
+        }
+        
+        .close-disclaimer {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .close-disclaimer:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Seção Hero aprimorada com mais destaque para CTA */
+        .hero {
+            background: rgba(255,255,255,0.97);
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+        }
+        
+        .hero-content {
+            padding: 60px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 40%;
+            background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover no-repeat;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .hero h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 36px;
             font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
             color: var(--dark);
-            margin-bottom: 15px;
         }
         
-        .section-header p {
-            color: var(--success);
+        .hero h2 span {
+            color: var(--primary);
+            text-decoration: underline;
+            text-decoration-color: var(--warning);
+            text-decoration-thickness: 3px;
+            text-underline-offset: 5px;
+        }
+        
+        .hero p {
             font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
         }
         
-        .flip-cards-container {
+        .hero-logo {
+            max-width: 180px;
+            margin: 20px 0;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
+            background: linear-gradient(to right, #3a7bc8, #1e4a7a);
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(211, 211, 211, 0.4);
+            background: #B0B0B0;
+        }
+        
+        .btn-lg {
+            font-size: 18px;
+            padding: 20px 45px;
+        }
+        
+        /* Efeito hover para botões */
+        .btn-primary::after, .btn-accent::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s;
+        }
+        
+        .btn-primary:hover::after, .btn-accent:hover::after {
+            transform: translateX(0);
+        }
+        
+        /* Seção de credibilidade com mais destaque */
+        .trust-badges {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
         
-        .flip-card {
-            width: 300px;
-            height: 400px;
-            perspective: 1000px;
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
+        .trust-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            background: var(--primary);
+            color: white;
+        }
+        
+        .trust-badge:hover i {
+            color: white;
+        }
+        
+        .trust-badge i {
+            margin-right: 8px;
+            color: var(--primary);
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+        
+        /* Seção de cards flip com melhor feedback visual */
+        .flip-cards-section {
+            padding: 80px 0;
+            background: rgba(255,255,255,0.97);
+        }
+
+        .flip-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            height: 350px;
+            cursor: pointer;
+        }
+
         .flip-card-inner {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 20px;
         }
-        
+
         .flip-card:hover .flip-card-inner {
             transform: rotateY(180deg);
         }
-        
-        .flip-card.active .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        
+
         .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
             border-radius: 20px;
-            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 30px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .flip-card-front {
             color: white;
         }
-        
+
+        .flip-card-front {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
         .flip-card-back {
             background: white;
             color: var(--dark);
             transform: rotateY(180deg);
+            border: 2px solid rgba(74, 144, 226, 0.2);
         }
-        
+
         .card-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 30px;
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
         }
-        
+
         .flip-card-front h3 {
             font-size: 24px;
             margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
-        .flip-card-front p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        
+
         .flip-card-back h4 {
-            font-size: 22px;
+            color: var(--secondary);
             margin-bottom: 20px;
-            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
         }
-        
+
         .flip-card-back ul {
             list-style: none;
-            margin-bottom: 30px;
             text-align: left;
+            margin-bottom: 25px;
+            padding-left: 20px;
         }
-        
-        .flip-card-back ul li {
-            margin-bottom: 10px;
+
+        .flip-card-back li {
             position: relative;
+            margin-bottom: 10px;
             padding-left: 25px;
+            line-height: 1.5;
         }
-        
-        .flip-card-back ul li:before {
+
+        .flip-card-back li::before {
             content: "✓";
-            color: var(--primary);
             position: absolute;
             left: 0;
+            color: var(--primary);
             font-weight: bold;
         }
-        
-        /* Seção de Demonstração Interativa */
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Seção de demonstração interativa mais intuitiva */
         .platform-demo {
             background: white;
             border-radius: 20px;
-            padding: 50px;
+            padding: 40px;
+            margin: 60px 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            margin-top: 50px;
-        }
-        
-        .platform-demo h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .platform-demo p {
-            color: var(--success);
-            font-size: 18px;
-            margin-bottom: 40px;
+            border: 1px solid rgba(74, 144, 226, 0.1);
         }
         
         .demo-phone {
             width: 300px;
             height: 600px;
-            border: 15px solid var(--dark);
-            border-radius: 40px;
+            background: var(--dark);
+            border-radius: 30px;
+            padding: 20px;
             margin: 0 auto;
             position: relative;
-            overflow: hidden;
-            background: #f5f5f5;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 5px solid rgba(255,255,255,0.1);
         }
         
         .demo-screen {
             width: 100%;
             height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             font-weight: 600;
             font-size: 18px;
@@ -451,8 +469,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 20px;
             margin-top: 30px;
-            gap: 30px;
         }
         
         .btn-demo-prev, .btn-demo-next {
@@ -462,310 +480,419 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn-demo-prev:hover, .btn-demo-next:hover {
             transform: scale(1.1);
+            background: var(--secondary);
         }
         
         .demo-step {
             font-weight: 600;
+            min-width: 100px;
+            text-align: center;
             color: var(--dark);
         }
         
-        /* Seção de Depoimentos */
+        /* Seção de depoimentos com mais destaque */
         .testimonials {
-            background: white;
+            background: rgba(255,255,255,0.97);
             border-radius: 20px;
-            padding: 50px;
+            padding: 60px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-top: 50px;
+            border: 1px solid rgba(74, 144, 226, 0.1);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: #6B7280;
+            max-width: 700px;
+            margin: 0 auto;
         }
         
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 50px;
         }
         
         .testimonial-card {
-            background: var(--light);
+            background: white;
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
         }
         
-        .stars {
-            color: #FFC107;
-            margin-bottom: 20px;
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 60px;
+            color: rgba(74, 144, 226, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-card .stars {
+            color: var(--warning);
+            margin-bottom: 15px;
+            font-size: 18px;
         }
         
         .testimonial-card p {
             font-style: italic;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
-        .author {
+        .testimonial-card .author {
             display: flex;
             align-items: center;
         }
         
-        .author img {
+        .testimonial-card .author img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
             margin-right: 15px;
+            border: 2px solid var(--primary);
         }
         
-        .author-info h4 {
+        .testimonial-card .author-info h4 {
             font-weight: 600;
             margin-bottom: 5px;
         }
         
-        .author-info p {
-            font-size: 14px;
-            color: var(--success);
-            margin: 0;
+        .testimonial-card .author-info p {
             font-style: normal;
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
         }
         
-        /* Seção de Oferta */
+        /* Seção de oferta com mais urgência */
+        #offer {
+            padding: 80px 0;
+        }
+        
         .offer {
-            background: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
             border-radius: 20px;
-            padding: 50px;
+            padding: 60px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .offer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(30deg) translateX(-100%); }
+            100% { transform: rotate(30deg) translateX(100%); }
         }
         
         .offer h2 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--dark);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        .offer p {
-            color: var(--success);
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-        
-        .price {
-            font-family: 'Montserrat', sans-serif;
+        .offer .price {
             font-size: 72px;
-            font-weight: 800;
-            color: var(--primary);
+            font-weight: 700;
             margin: 30px 0;
             line-height: 1;
-        }
-        
-        .price small {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--success);
-        }
-        
-        .discount {
+            position: relative;
             display: inline-block;
-            background: #FFC107;
-            color: #333;
-            padding: 10px 25px;
+        }
+        
+        .offer .price::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255,255,255,0.5);
+            transform: rotate(-2deg);
+        }
+        
+        .offer .price small {
+            font-size: 24px;
+            vertical-align: super;
+        }
+        
+        .offer .old-price {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-size: 24px;
+            position: relative;
+            display: inline-block;
+            margin-right: 15px;
+        }
+        
+        .offer .old-price::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: rotate(5deg);
+        }
+        
+        .offer .discount {
+            background: var(--warning);
+            color: var(--dark);
+            padding: 8px 20px;
             border-radius: 50px;
             font-weight: 700;
+            display: inline-block;
             margin-bottom: 30px;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
         }
         
         .offer-bonuses {
-            background: rgba(74, 144, 226, 0.1);
+            background: rgba(255,255,255,0.1);
             border-radius: 15px;
             padding: 30px;
             margin: 40px 0;
             text-align: left;
+            border: 1px dashed rgba(255,255,255,0.3);
+            position: relative;
+        }
+        
+        .offer-bonuses::before {
+            content: 'BÔNUS INCLUSOS';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            padding: 0 10px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 5px;
         }
         
         .offer-bonuses h3 {
-            font-size: 22px;
             margin-bottom: 20px;
-            color: var(--primary);
-            text-align: center;
+            font-weight: 600;
         }
         
         .offer-bonuses ul {
             list-style: none;
         }
         
-        .offer-bonuses ul li {
-            margin-bottom: 15px;
+        .offer-bonuses li {
+            margin-bottom: 10px;
             position: relative;
-            padding-left: 35px;
+            padding-left: 30px;
         }
         
-        .offer-bonuses ul li:before {
-            content: "✓";
-            color: var(--primary);
+        .offer-bonuses li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
             position: absolute;
             left: 0;
-            font-weight: bold;
-            font-size: 20px;
+            color: white;
         }
         
         .payment-methods {
             display: flex;
             justify-content: center;
             gap: 15px;
+            margin-top: 30px;
             flex-wrap: wrap;
-            margin: 30px 0;
         }
         
         .payment-method {
-            background: var(--light);
+            background: white;
             padding: 10px 15px;
             border-radius: 8px;
-            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .payment-method i {
+            color: var(--primary);
         }
         
         .guarantee {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
             display: flex;
             align-items: center;
-            background: rgba(76, 175, 80, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 40px;
+            gap: 20px;
             text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(74, 144, 226, 0.2);
         }
         
         .guarantee-icon {
-            font-size: 40px;
-            color: #4CAF50;
-            margin-right: 20px;
+            min-width: 80px;
+            height: 80px;
+            background: linear-gradient(to right, var(--success), #9CA3AF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            flex-shrink: 0;
         }
         
         .guarantee-content h3 {
-            font-size: 20px;
             margin-bottom: 10px;
-            color: #2E7D32;
+            font-weight: 600;
+            color: var(--secondary);
         }
         
-        /* Seção FAQ */
+        /* Seção FAQ com melhor interação */
         .faq {
-            background: white;
+            background: rgba(255,255,255,0.97);
             border-radius: 20px;
-            padding: 50px;
+            padding: 60px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-top: 50px;
+            border: 1px solid rgba(74, 144, 226, 0.1);
         }
         
         .faq-item {
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
         .faq-question {
-            padding: 20px 0;
+            background: white;
+            padding: 20px;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: #F9FAFB;
+            color: var(--primary);
         }
         
         .faq-question i {
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
         }
         
-        .faq-question.active i {
-            transform: rotate(180deg);
+        .faq-question.active {
+            background: var(--primary);
+            color: white;
         }
         
         .faq-answer {
+            background: #F9FAFB;
+            padding: 0;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
-            padding: 0 20px;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
         }
         
         .faq-answer.active {
-            max-height: 200px;
-            padding-bottom: 20px;
+            padding: 20px;
+            max-height: 500px;
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
         
-        /* Modal Legal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 800px;
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-        }
-        
-        .modal-content h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        /* Footer */
+        /* Footer mais organizado */
         footer {
             background: var(--dark);
             color: white;
-            padding: 50px 0;
-            margin-top: 80px;
+            padding: 60px 0 30px;
+            text-align: center;
+            margin-top: 60px;
         }
         
         .footer-logo {
-            width: 150px;
+            max-width: 150px;
             margin-bottom: 30px;
+            filter: brightness(0) invert(1);
         }
         
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 30px;
-            flex-wrap: wrap;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         
         .footer-links a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
+            font-weight: 500;
         }
         
         .footer-links a:hover {
             color: var(--primary);
+            text-decoration: underline;
         }
         
         .footer-social {
@@ -778,115 +905,170 @@
         .footer-social a {
             color: white;
             font-size: 20px;
+            transition: all 0.3s;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
         }
         
         .footer-social a:hover {
-            background: var(--primary);
+            color: var(--primary);
+            background: white;
             transform: translateY(-3px);
         }
         
         .footer-disclaimer {
-            text-align: center;
             font-size: 14px;
             opacity: 0.7;
+            max-width: 800px;
+            margin: 0 auto;
             line-height: 1.6;
         }
         
-        /* Disclaimer Médico Fixo */
-        .medical-disclaimer {
-            background: #FFF3E0;
-            color: #E65100;
-            padding: 15px 0;
+        /* Modal legal mais acessível */
+        .modal {
+            display: none;
             position: fixed;
-            bottom: 0;
+            z-index: 1001;
+            left: 0;
+            top: 0;
             width: 100%;
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
         }
         
-        .medical-disclaimer .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalFadeIn 0.3s;
         }
         
-        .medical-disclaimer i {
-            margin-right: 10px;
-            font-size: 20px;
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .close-disclaimer {
-            background: none;
-            border: none;
-            color: #E65100;
-            font-size: 24px;
-            margin-left: 15px;
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
-            line-height: 1;
+            transition: color 0.3s;
         }
         
-        /* Notificações de compra */
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        /* Notificações de compra mais visíveis */
         .purchase-notification {
             position: fixed;
             bottom: 100px;
             right: 20px;
-            background: white;
-            color: var(--dark);
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 1000;
-            animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+            animation: slideIn 0.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid var(--warning);
+        }
+        
+        .purchase-notification i {
+            font-size: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
         
         @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        
-        /* Efeito ripple */
-        .ripple {
-            position: absolute;
+        /* Botão flutuante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.7);
-            transform: scale(0);
-            animation: ripple 0.6s linear;
-            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+            text-decoration: none;
         }
         
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
-        /* Responsividade */
+        /* Responsivo melhorado */
         @media (max-width: 992px) {
-            .pre-video-headline h1 {
-                font-size: 36px;
+            .hero-bg {
+                display: none;
             }
             
             .hero-content {
                 padding: 40px;
+                text-align: center;
             }
             
-            .price {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .section-header h2 {
+                font-size: 36px;
+            }
+            
+            .offer .price {
                 font-size: 60px;
+            }
+            
+            .offer-bonuses {
+                padding: 20px;
             }
         }
         
@@ -895,44 +1077,82 @@
                 padding: 60px 0;
             }
             
-            .pre-video-headline h1 {
+            .hero, .testimonials, .products, .offer, .faq {
+                padding: 40px;
+            }
+            
+            .hero h1 {
                 font-size: 32px;
             }
             
-            .pre-video-headline h2 {
-                font-size: 22px;
-            }
-            
-            .video-badge {
-                top: 10px;
-                right: 10px;
-                font-size: 12px;
-            }
-            
-            .social-proof {
-                gap: 20px;
-            }
-            
-            .proof-item {
-                min-width: 120px;
-            }
-            
-            .proof-number {
+            .section-header h2 {
                 font-size: 32px;
+            }
+            
+            .offer h2 {
+                font-size: 32px;
+            }
+            
+            .offer .price {
+                font-size: 48px;
+            }
+            
+            .guarantee {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .flip-card:hover .flip-card-inner {
+                transform: none;
+            }
+            
+            .flip-card.active .flip-card-inner {
+                transform: rotateY(180deg);
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero, .testimonials, .products, .offer, .faq {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .section-header h2 {
+                font-size: 28px;
+            }
+            
+            .offer h2 {
+                font-size: 28px;
+            }
+            
+            .offer .price {
+                font-size: 36px;
+            }
+            
+            .btn-lg {
+                width: 100%;
+                padding: 18px;
             }
             
             .urgency-bar .container {
                 flex-direction: column;
-                gap: 10px;
             }
             
-            .countdown {
-                margin-left: 0;
+            .urgency-bar .countdown {
+                margin: 10px 0 0;
                 display: block;
-            }
-            
-            .platform-demo {
-                padding: 30px 20px;
             }
             
             .demo-phone {
@@ -940,49 +1160,8 @@
                 height: 500px;
             }
             
-            .offer, .faq, .testimonials {
-                padding: 30px 20px;
-            }
-            
-            .modal-content {
-                width: 95%;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero-content {
-                padding: 30px 20px;
-                border-radius: 15px;
-            }
-            
-            .pre-video-headline h1 {
-                font-size: 28px;
-            }
-            
-            .post-video-cta h3 {
-                font-size: 20px;
-            }
-            
-            .btn-lg {
-                width: 100%;
-            }
-            
-            .section-header h2 {
-                font-size: 28px;
-            }
-            
-            .price {
-                font-size: 48px;
-            }
-            
-            .flip-card {
-                width: 100%;
-                height: 350px;
-                margin-bottom: 20px;
-            }
-            
-            .flip-card:last-child {
-                margin-bottom: 0;
+            .footer-links {
+                gap: 15px;
             }
         }
     </style>
@@ -1003,65 +1182,52 @@
         </div>
     </div>
     
-    <!-- Seção Hero com VSL Integrado -->
+    <!-- Seção Hero -->
     <section class="hero-section">
         <div class="container">
-            <div class="hero-content">
-                <!-- Headline Antes do Vídeo -->
-                <div class="pre-video-headline">
-                    <h1>REVOLUCIONE SEU BEM-ESTAR COM IA MÉDICA AVANÇADA</h1>
-                    <h2><span>75.000 brasileiros</span> já transformaram sua qualidade de vida</h2>
-                    <div class="trust-badge">
-                        <i class="fas fa-check-circle"></i> Tecnologia validada por especialistas
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-headlines">
+                        <img src="assets/logo.jpg" alt="MedAI Brasil" class="hero-logo">
+                        <h1>A PRIMEIRA PLATAFORMA DE IA</h1>
+                        <h2>PARA APOIO AO SEU <span>BEM-ESTAR E QUALIDADE DE VIDA</span></h2>
                     </div>
-                </div>
-                
-                <!-- Container do Vídeo -->
-                <div class="video-hero-container">
-                    <div class="video-wrapper">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/SEU_VIDEO" allowfullscreen></iframe>
+                    <p>3 Inteligências Artificiais Integradas para Seu Bem-Estar: Scanner de Bem-Estar + Apoio Emocional + Orientação Inteligente + Painel Órbita</p>
+                    <p><small>*Não substitui orientação médica profissional</small></p>
+                    
+                    <div class="video-container" style="margin: 30px 0;">
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px; background: var(--dark); border-radius: 15px; padding: 30px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); opacity: 0.8;"></div>
+                            <div style="position: relative; z-index: 1; text-align: center;">
+                                <i class="fas fa-play-circle" style="font-size: 50px; margin-bottom: 15px; display: block;"></i>
+                                <span>ASSISTA AO VÍDEO EXPLICATIVO (4 MINUTOS)</span>
+                            </div>
                         </div>
-                        <div class="video-badge">
-                            <i class="fas fa-play"></i> VÍDEO EXPLICATIVO
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <a href="#offer" class="btn btn-primary btn-lg pulse" style="margin-bottom: 15px;">
+                            <i class="fas fa-arrow-right"></i> QUERO MELHORAR MEU BEM-ESTAR
+                        </a>
+                        <p style="font-size: 14px; color: #6B7280;"><i class="fas fa-lock"></i> Compra 100% segura e protegida</p>
+                    </div>
+                    
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <i class="fas fa-shield-alt"></i> Segurança LGPD
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-brazilian-real-sign"></i> Empresa Brasileira
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-medal"></i> 94.7% Satisfação
+                        </div>
+                        <div class="trust-badge">
+                            <i class="fas fa-users"></i> +75.000 Usuários
                         </div>
                     </div>
-                    <div class="video-warning">
-                        <i class="fas fa-exclamation-triangle"></i> Vagas limitadas para acesso imediato!
-                    </div>
                 </div>
-                
-                <!-- CTA Pós-Vídeo -->
-                <div class="post-video-cta">
-                    <h3>Pronto para transformar sua saúde? <span>Comece agora!</span></h3>
-                    <a href="#offer" class="btn btn-primary btn-lg pulse">
-                        <i class="fas fa-arrow-right"></i> QUERO MEU ACESSO
-                    </a>
-                    <div class="secure-badge">
-                        <i class="fas fa-lock"></i> Compra 100% segura | 7 dias de garantia
-                    </div>
-                </div>
-                
-                <!-- Prova Social -->
-                <div class="social-proof">
-                    <div class="proof-item">
-                        <div class="proof-number">+75.000</div>
-                        <div class="proof-text">Pessoas beneficiadas</div>
-                    </div>
-                    <div class="proof-item">
-                        <div class="proof-number">94,7%</div>
-                        <div class="proof-text">Satisfação dos usuários</div>
-                    </div>
-                    <div class="proof-item">
-                        <div class="proof-number">24/7</div>
-                        <div class="proof-text">Suporte especializado</div>
-                    </div>
-                </div>
-                
-                <!-- Imagem do Produto (ajuste o caminho conforme necessário) -->
-                <div style="text-align: center; margin-top: 30px;">
-                    <img src="assets/app-screenshot.png" alt="MedAI em ação" style="max-width: 300px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                </div>
+                <div class="hero-bg"></div>
             </div>
         </div>
     </section>
@@ -1075,82 +1241,66 @@
             </div>
             
             <div class="flip-cards-container">
-                <!-- Card 1 - Scanner de Saúde -->
+                <!-- Card 1 -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #4A90E2, #2D5E9D);">
-                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none" />
-                                <circle cx="50" cy="50" r="30" stroke="white" stroke-width="6" fill="none" />
-                                <circle cx="50" cy="50" r="20" stroke="white" stroke-width="4" fill="none" />
-                                <circle cx="50" cy="50" r="10" stroke="white" stroke-width="2" fill="white" />
-                                <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="3" />
-                                <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="3" />
-                            </svg>
-                            <h3>Scanner de Saúde</h3>
+                            <div class="card-icon"><i class="fas fa-robot"></i></div>
+                            <h3>IA Preditiva</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>SCANNER DE SAÚDE</h4>
+                            <h4>ANÁLISE PREDITIVA</h4>
                             <ul>
                                 <li>Detecta padrões de bem-estar</li>
                                 <li>87% de precisão comprovada</li>
                                 <li>Alertas preventivos</li>
-                                <li>Análise em tempo real</li>
+                                <li>Relatórios personalizados</li>
+                                <li>Comparativo com sua baseline</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Card 2 - Apoio Emocional -->
+                <!-- Card 2 -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #D3D3D3, #6B7280);">
-                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M30,50 Q50,20 70,50 T90,50" stroke="white" stroke-width="8" fill="none" />
-                                <path d="M30,60 Q50,90 70,60 T90,60" stroke="white" stroke-width="8" fill="none" />
-                                <circle cx="40" cy="45" r="5" fill="white" />
-                                <circle cx="60" cy="45" r="5" fill="white" />
-                                <path d="M40,65 Q50,75 60,65" stroke="white" stroke-width="3" fill="none" />
-                            </svg>
-                            <h3>Apoio Emocional</h3>
+                            <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+                            <h3>Monitoramento 24/7</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>APOIO EMOCIONAL</h4>
+                            <h4>VIGILÂNCIA CONSTANTE</h4>
                             <ul>
-                                <li>Chat 24/7 com IA especializada</li>
-                                <li>Técnicas de relaxamento</li>
-                                <li>Monitoramento de humor</li>
-                                <li>Exercícios mentais</li>
+                                <li>Dados atualizados a cada 5 min</li>
+                                <li>Comparação com sua baseline</li>
+                                <li>Notificações em tempo real</li>
+                                <li>Histórico completo</li>
+                                <li>Exporte seus dados</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Card 3 - Medical IA -->
+                <!-- Card 3 -->
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background: linear-gradient(135deg, #1A252F, #4A90E2);">
-                            <svg class="card-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="30" y="30" width="40" height="40" rx="5" stroke="white" stroke-width="6" fill="none" />
-                                <line x1="30" y1="40" x2="70" y2="40" stroke="white" stroke-width="3" />
-                                <line x1="40" y1="30" x2="40" y2="70" stroke="white" stroke-width="3" />
-                                <line x1="60" y1="30" x2="60" y2="70" stroke="white" stroke-width="3" />
-                                <path d="M20,20 L30,30 M80,20 L70,30 M20,80 L30,70 M80,80 L70,70" stroke="white" stroke-width="3" />
-                            </svg>
-                            <h3>Medical IA</h3>
+                            <div class="card-icon"><i class="fas fa-lock"></i></div>
+                            <h3>Segurança de Dados</h3>
                             <p>Clique para ver como funciona</p>
                         </div>
                         <div class="flip-card-back">
-                            <h4>MEDICAL IA</h4>
+                            <h4>PROTEÇÃO TOTAL</h4>
                             <ul>
-                                <li>Orientação inteligente</li>
-                                <li>Baseado em pesquisas médicas</li>
-                                <li>Recomendações personalizadas</li>
-                                <li>Integração com profissionais</li>
+                                <li>Criptografia hospitalar</li>
+                                <li>Certificado HIPAA</li>
+                                <li>Dados anonimizados</li>
+                                <li>Conformidade LGPD</li>
+                                <li>Backup diário</li>
                             </ul>
                             <button class="btn btn-accent">SAIBA MAIS</button>
                         </div>
@@ -1177,6 +1327,12 @@
                     <button class="btn-demo-prev"><i class="fas fa-arrow-left"></i></button>
                     <span class="demo-step">Passo 1/6</span>
                     <button class="btn-demo-next"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <a href="#offer" class="btn btn-primary btn-lg pulse">
+                        <i class="fas fa-rocket"></i> QUERO COMEÇAR AGORA
+                    </a>
                 </div>
             </div>
         </div>
@@ -1243,6 +1399,12 @@
                         </div>
                     </div>
                 </div>
+                
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="#offer" class="btn btn-primary btn-lg pulse">
+                        <i class="fas fa-arrow-right"></i> QUERO EXPERIMENTAR
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -1254,14 +1416,17 @@
                 <h2>OFERTA ESPECIAL POR TEMPO LIMITADO</h2>
                 <p>Aproveite hoje nosso pacote completo com desconto exclusivo</p>
                 
+                <div style="margin: 20px 0;">
+                    <span class="old-price">De R$ 1.897,00</span>
+                    <span class="discount">
+                        <i class="fas fa-gift"></i> 47% DE DESCONTO HOJE!
+                    </span>
+                </div>
+                
                 <div class="price">
                     <small>12x de</small> R$ 97<small>,90</small>
                 </div>
                 <p>ou R$ 997 à vista</p>
-                
-                <div class="discount">
-                    <i class="fas fa-gift"></i> 47% DE DESCONTO HOJE!
-                </div>
                 
                 <div class="offer-bonuses">
                     <h3>Você vai receber:</h3>
@@ -1273,11 +1438,13 @@
                         <li>Aplicativo Mobile para Android e iOS</li>
                         <li>Atualizações gratuitas por 1 ano</li>
                         <li>Suporte prioritário em português</li>
+                        <li>Bônus: E-book "Bem-Estar em 30 Dias"</li>
+                        <li>Bônus: Acesso à Comunidade Exclusiva</li>
                     </ul>
                 </div>
                 
                 <div>
-                    <a href="#" class="btn btn-primary btn-lg pulse" id="offer-button">
+                    <a href="#" class="btn btn-accent btn-lg pulse" id="checkout-btn">
                         <i class="fas fa-lock"></i> GARANTIR MEU ACESSO AGORA
                     </a>
                 </div>
@@ -1328,7 +1495,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Sim! Nossas ferramentas são baseadas em tecnologia de IA e já apoiaram mais de 75.000 pessoas em seu bem-estar.</p>
+                        <p>Sim! Nossas ferramentas são baseadas em tecnologia de IA validada cientificamente e já apoiaram mais de 75.000 pessoas em seu bem-estar. Elas fornecem insights valiosos e acompanhamento contínuo, mas sempre recomendamos a supervisão de profissionais de saúde para diagnósticos e tratamentos.</p>
                     </div>
                 </div>
                 
@@ -1338,7 +1505,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Totalmente! Seguimos todas as normas de segurança de dados (LGPD) e temos certificação SSL.</p>
+                        <p>Totalmente! Seguimos todas as normas de segurança de dados (LGPD) e temos certificação SSL. Seus dados são criptografados e armazenados com os mais altos padrões de segurança, semelhantes aos utilizados em instituições financeiras.</p>
                     </div>
                 </div>
                 
@@ -1348,7 +1515,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>NÃO. Nossas ferramentas são para apoio ao bem-estar e sempre orientamos a buscar profissionais qualificados quando necessário.</p>
+                        <p>NÃO. Nossas ferramentas são para apoio ao bem-estar e sempre orientamos a buscar profissionais qualificados quando necessário. A plataforma pode ajudar a identificar padrões e fornecer informações, mas o diagnóstico e tratamento devem sempre ser feitos por profissionais de saúde.</p>
                     </div>
                 </div>
                 
@@ -1358,7 +1525,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Perfeitamente! Temos aplicativo mobile com todas as funcionalidades das ferramentas.</p>
+                        <p>Perfeitamente! Temos aplicativo mobile nativo para Android e iOS com todas as funcionalidades das ferramentas. Você pode acompanhar seu bem-estar de qualquer lugar, a qualquer momento.</p>
                     </div>
                 </div>
                 
@@ -1368,7 +1535,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>É seu centro de controle pessoal onde você visualiza todos os dados das ferramentas integrados.</p>
+                        <p>É seu centro de controle pessoal onde você visualiza todos os dados das ferramentas integrados em gráficos e relatórios fáceis de entender. O painel Órbita mostra tendências, comparações e oferece insights personalizados para você tomar decisões mais informadas sobre seu bem-estar.</p>
                     </div>
                 </div>
                 
@@ -1378,8 +1545,14 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Oferecemos 30 dias de garantia. Não ficou satisfeito? Devolvemos seu investimento.</p>
+                        <p>Oferecemos 30 dias de garantia incondicional. Se por qualquer motivo você não ficar satisfeito, basta nos enviar um e-mail dentro desse período e devolvemos 100% do seu investimento, sem burocracia ou questionamentos.</p>
                     </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="#offer" class="btn btn-primary btn-lg pulse">
+                        <i class="fas fa-check-circle"></i> QUERO MEU ACESSO
+                    </a>
                 </div>
             </div>
         </div>
@@ -1399,7 +1572,8 @@
     <!-- Links Legais -->
     <div class="legal-links" style="text-align: center; margin: 30px 0;">
         <a href="#" id="show-terms">Termos de Uso</a> | 
-        <a href="#" id="show-policy">Política de Privacidade</a>
+        <a href="#" id="show-policy">Política de Privacidade</a> | 
+        <a href="#" id="show-contact">Contato</a>
     </div>
     
     <!-- Footer -->
@@ -1412,6 +1586,7 @@
                 <a href="#">Contato</a>
                 <a href="#">Trabalhe Conosco</a>
                 <a href="#">Blog</a>
+                <a href="#">Perguntas Frequentes</a>
             </div>
             
             <div class="footer-social">
@@ -1424,7 +1599,8 @@
             <div class="footer-disclaimer">
                 <p>© 2025 MedAI Brasil - Todos os direitos reservados</p>
                 <p>Plataforma de Tecnologia para Apoio ao Bem-Estar</p>
-                <p>CNPJ: XX.XXX.XXX/0001-XX | Endereço: [Seu endereço completo]</p>
+                <p>CNPJ: XX.XXX.XXX/0001-XX | Endereço: Av. Paulista, 1000 - São Paulo/SP</p>
+                <p style="margin-top: 15px;">As informações contidas nesta plataforma não substituem o aconselhamento médico profissional. Sempre consulte um especialista qualificado para orientações sobre sua saúde.</p>
             </div>
         </div>
     </footer>
@@ -1439,34 +1615,41 @@
         </div>
     </div>
     
+    <!-- Botão flutuante de WhatsApp -->
+    <a href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20MedAI%20Brasil" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Inicializar partículas
-        particlesJS("particles-js", {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#9CA3AF" },
-                shape: { type: "circle" },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: "#9CA3AF", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 3, direction: "none", random: false }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: { 
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" }
+        // Inicializar partículas otimizado
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
+                    color: { value: "#9CA3AF" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#9CA3AF", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: false }
                 },
-                modes: { 
-                    repulse: { distance: 100, duration: 0.4 },
-                    push: { particles_nb: 4 }
-                }
-            },
-            retina_detect: true
+                interactivity: {
+                    detect_on: "canvas",
+                    events: { 
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    },
+                    modes: { 
+                        repulse: { distance: 100, duration: 0.4 },
+                        push: { particles_nb: 4 }
+                    }
+                },
+                retina_detect: true
+            });
         });
         
-        // Contador regressivo
+        // Contador regressivo melhorado
         function updateCountdown() {
             let hours = 2;
             let minutes = 0;
@@ -1477,6 +1660,8 @@
                     if (minutes === 0) {
                         if (hours === 0) {
                             clearInterval(countdown);
+                            document.querySelector('.urgency-bar').style.background = 'linear-gradient(to right, #d32f2f, #9C27B0)';
+                            document.getElementById('countdown-timer').textContent = 'OFERTA ENCERRADA!';
                             return;
                         }
                         hours--;
@@ -1491,20 +1676,34 @@
                 
                 document.getElementById('countdown-timer').textContent = 
                     `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Aumentar urgência nos últimos 30 minutos
+                if (hours === 0 && minutes < 30) {
+                    document.querySelector('.countdown').style.animation = 'blink 0.5s infinite alternate';
+                }
             }, 1000);
         }
         
         updateCountdown();
         
-        // Simular vagas restantes
+        // Simular vagas restantes com decréscimo mais realista
         let spots = 97;
-        setInterval(() => {
-            spots -= Math.floor(Math.random() * 3);
-            if(spots < 0) spots = 0;
+        const spotInterval = setInterval(() => {
+            const decrement = Math.random() < 0.7 ? 1 : (Math.random() < 0.9 ? 2 : 3);
+            spots -= decrement;
+            if(spots < 0) {
+                spots = 0;
+                clearInterval(spotInterval);
+            }
             document.getElementById('remaining-spots').textContent = spots;
+            
+            // Aumentar urgência quando poucas vagas
+            if (spots < 10) {
+                document.querySelector('.urgency-bar').style.animation = 'urgencyPulse 1s infinite';
+            }
         }, 30000);
         
-        // Demo interativa
+        // Demo interativa com mais passos
         const demoSteps = [
             "Tela inicial: Bem-vindo ao MedAI",
             "Scanner de Bem-Estar: Posicione seu dedo",
@@ -1518,17 +1717,43 @@
         
         function updateDemo() {
             document.querySelector('.demo-content').textContent = demoSteps[currentStep];
-            document.querySelector('.demo-step').textContent = `Passo ${currentStep+1}/6`;
+            document.querySelector('.demo-step').textContent = `Passo ${currentStep+1}/${demoSteps.length}`;
         }
         
         document.querySelector('.btn-demo-next').addEventListener('click', () => {
-            if(currentStep < 5) currentStep++;
+            if(currentStep < demoSteps.length - 1) currentStep++;
             updateDemo();
         });
         
         document.querySelector('.btn-demo-prev').addEventListener('click', () => {
             if(currentStep > 0) currentStep--;
             updateDemo();
+        });
+        
+        // Auto-play da demonstração
+        let autoPlay = setInterval(() => {
+            if(currentStep < demoSteps.length - 1) {
+                currentStep++;
+            } else {
+                currentStep = 0;
+            }
+            updateDemo();
+        }, 5000);
+        
+        // Pausar auto-play ao interagir
+        document.querySelector('.demo-controls').addEventListener('mouseenter', () => {
+            clearInterval(autoPlay);
+        });
+        
+        document.querySelector('.demo-controls').addEventListener('mouseleave', () => {
+            autoPlay = setInterval(() => {
+                if(currentStep < demoSteps.length - 1) {
+                    currentStep++;
+                } else {
+                    currentStep = 0;
+                }
+                updateDemo();
+            }, 5000);
         });
         
         updateDemo();
@@ -1547,12 +1772,22 @@
             });
         });
         
-        // Modal legal
+        // Modal legal com mais conteúdo
         document.getElementById('show-terms').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('modal-title').textContent = "Termos de Uso";
             document.getElementById('modal-text').innerHTML = `
-                <p>Conteúdo dos termos de uso aqui...</p>
+                <h4>1. Aceitação dos Termos</h4>
+                <p>Ao utilizar a plataforma MedAI Brasil, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
+                
+                <h4>2. Uso da Plataforma</h4>
+                <p>A plataforma destina-se ao apoio ao bem-estar e não substitui atendimento médico profissional.</p>
+                
+                <h4>3. Responsabilidades</h4>
+                <p>O usuário é responsável por manter a confidencialidade de suas credenciais de acesso.</p>
+                
+                <h4>4. Limitações</h4>
+                <p>Não nos responsabilizamos por decisões tomadas com base nas informações fornecidas pela plataforma.</p>
             `;
             document.getElementById('legal-modal').style.display = "block";
         });
@@ -1561,7 +1796,32 @@
             e.preventDefault();
             document.getElementById('modal-title').textContent = "Política de Privacidade";
             document.getElementById('modal-text').innerHTML = `
-                <p>Conteúdo da política de privacidade aqui...</p>
+                <h4>1. Dados Coletados</h4>
+                <p>Coletamos dados necessários para o funcionamento da plataforma, sempre com seu consentimento.</p>
+                
+                <h4>2. Uso dos Dados</h4>
+                <p>Seus dados são utilizados apenas para fornecer os serviços contratados e melhorar sua experiência.</p>
+                
+                <h4>3. Segurança</h4>
+                <p>Implementamos medidas de segurança avançadas para proteger suas informações.</p>
+                
+                <h4>4. Direitos do Usuário</h4>
+                <p>Você pode acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
+            `;
+            document.getElementById('legal-modal').style.display = "block";
+        });
+        
+        document.getElementById('show-contact').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('modal-title').textContent = "Contato";
+            document.getElementById('modal-text').innerHTML = `
+                <h4>Suporte ao Cliente</h4>
+                <p><i class="fas fa-envelope"></i> contato@medaibrasil.com.br</p>
+                <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
+                
+                <h4>Horário de Atendimento</h4>
+                <p>Segunda a Sexta: 9h às 18h</p>
+                <p>Sábado: 9h às 13h</p>
             `;
             document.getElementById('legal-modal').style.display = "block";
         });
@@ -1581,62 +1841,75 @@
             document.querySelector('.medical-disclaimer').style.display = 'none';
         }
         
-        // Notificações de compra
-        setInterval(() => {
-            const cities = ['SP', 'RJ', 'MG', 'RS', 'PR', 'SC'];
-            const names = ['Ana', 'Carlos', 'Mariana', 'João', 'Fernanda'];
+        // Notificações de compra mais variadas
+        const cities = ['SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'BA', 'PE'];
+        const names = ['Ana', 'Carlos', 'Mariana', 'João', 'Fernanda', 'Ricardo', 'Patrícia', 'Lucas'];
+        const actions = ['acabou de assinar', 'comprou o pacote', 'adquiriu o acesso', 'garantiu sua vaga'];
+        
+        function showPurchaseNotification() {
             const city = cities[Math.floor(Math.random() * cities.length)];
             const name = names[Math.floor(Math.random() * names.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
             
             const notification = document.createElement('div');
             notification.className = 'purchase-notification';
             notification.innerHTML = `
-                <span>${name} de ${city} acabou de assinar!</span>
+                <i class="fas fa-bolt"></i>
+                <span>${name} de ${city} ${action}!</span>
             `;
             
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.remove();
+                notification.style.animation = 'slideIn 0.5s reverse forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 500);
             }, 5000);
-        }, 30000);
+        }
         
-        // FAQ accordion
+        // Mostrar notificação imediatamente e depois a cada 20-40 segundos
+        setTimeout(showPurchaseNotification, 3000);
+        setInterval(showPurchaseNotification, 20000 + Math.random() * 20000);
+        
+        // FAQ accordion melhorado
         const faqQuestions = document.querySelectorAll('.faq-question');
         
         faqQuestions.forEach(question => {
             question.addEventListener('click', () => {
-                question.classList.toggle('active');
-                const answer = question.nextElementSibling;
-                answer.classList.toggle('active');
+                const isActive = question.classList.contains('active');
+                faqQuestions.forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    question.classList.add('active');
+                    question.nextElementSibling.classList.add('active');
+                }
             });
         });
         
-        // Efeito ripple nos botões
-        function createRipple(event) {
-            const button = event.currentTarget;
-            const circle = document.createElement("span");
-            const diameter = Math.max(button.clientWidth, button.clientHeight);
-            const radius = diameter / 2;
-            
-            circle.style.width = circle.style.height = `${diameter}px`;
-            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-            circle.classList.add("ripple");
-            
-            const ripple = button.getElementsByClassName("ripple")[0];
-            
-            if (ripple) {
-                ripple.remove();
-            }
-            
-            button.appendChild(circle);
-        }
+        // Rastrear cliques no botão de checkout
+        document.getElementById('checkout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Simular redirecionamento para página de pagamento
+            alert('Você será redirecionado para a página de pagamento seguro. Obrigado por escolher a MedAI Brasil!');
+            // Aqui você pode adicionar código de rastreamento como Google Analytics, Facebook Pixel, etc.
+        });
         
-        // Aplicar efeito ripple aos botões principais
-        const buttons = document.querySelectorAll('#offer-button, .btn-accent');
-        buttons.forEach(button => {
-            button.addEventListener('click', createRipple);
+        // Suavizar rolagem para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
