@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAI Brasil - Bem-Estar Inteligente com IA</title>
-    <meta name="description" content="Plataforma de IA para apoio ao seu bem-estar e qualidade de vida com Scanner de Bem-Estar, Apoio Emocional e Orientação Inteligente">
+    <title>MedAI - Saúde Emocional e Física com IA</title>
+    <meta name="description" content="Plataforma de IA para saúde emocional e física com Scanner de Bem-Estar, Apoio Emocional e Orientação Inteligente">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #4A90E2;
             --secondary: #2D5E9D;
-            --accent: #D3D3D3;
+            --accent: #FF6B6B;
             --dark: #1A252F;
             --light: #F9FAFB;
-            --success: #6B7280;
-            --error: #d32f2f;
             --warning: #F59E0B;
+            --success: #4CAF50;
         }
         
         * {
@@ -30,13 +29,18 @@
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
-            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
+            background: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
             padding-bottom: 60px;
         }
         
-        /* Efeito de partículas otimizado */
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* Efeito de partículas */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -54,12 +58,12 @@
         section {
             padding: 80px 0;
             position: relative;
-            scroll-margin-top: 80px; /* Melhora a navegação por âncora */
+            scroll-margin-top: 80px;
         }
         
-        /* Barra de urgência melhorada com animação mais chamativa */
+        /* Barra de urgência */
         .urgency-bar {
-            background: linear-gradient(to right, var(--primary), var(--error));
+            background: linear-gradient(to right, var(--primary), var(--accent));
             color: white;
             padding: 15px 0;
             text-align: center;
@@ -72,14 +76,14 @@
         }
         
         @keyframes urgencyPulse {
-            0% { background: linear-gradient(to right, var(--primary), var(--error)); }
-            50% { background: linear-gradient(to right, #d32f2f, #9C27B0); }
-            100% { background: linear-gradient(to right, var(--primary), var(--error)); }
+            0% { background: linear-gradient(to right, var(--primary), var(--accent)); }
+            50% { background: linear-gradient(to right, var(--accent), #9C27B0); }
+            100% { background: linear-gradient(to right, var(--primary), var(--accent)); }
         }
         
         .urgency-bar .container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
@@ -110,13 +114,13 @@
             100% { transform: scale(1); }
         }
         
-        /* Disclaimer médico fixo com destaque */
+        /* Disclaimer médico */
         .medical-disclaimer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--error);
+            background: var(--accent);
             color: white;
             padding: 12px;
             font-size: 14px;
@@ -153,73 +157,119 @@
             transform: scale(1.2);
         }
         
-        /* Seção Hero aprimorada com mais destaque para CTA */
-        .hero {
-            background: rgba(255,255,255,0.97);
-            border-radius: 20px;
-            margin-top: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(74, 144, 226, 0.2);
+        /* Seção Hero */
+        .hero-section {
+            padding: 60px 0;
+            text-align: center;
         }
         
-        .hero-content {
-            padding: 60px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero-bg {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 40%;
-            background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover no-repeat;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-        
-        .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        .hero h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 36px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 20px;
+        .hero-section h1 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            line-height: 1.3;
             color: var(--dark);
         }
         
-        .hero h2 span {
-            color: var(--primary);
+        .hero-section h1 span {
+            color: var(--accent);
             text-decoration: underline;
             text-decoration-color: var(--warning);
             text-decoration-thickness: 3px;
             text-underline-offset: 5px;
         }
         
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            max-width: 600px;
+        /* Container do VSL */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            margin: 40px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background: var(--dark);
         }
         
-        .hero-logo {
-            max-width: 180px;
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Oferta abaixo do vídeo */
+        .offer-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .offer-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(30deg) translateX(-100%); }
+            100% { transform: rotate(30deg) translateX(100%); }
+        }
+        
+        .offer-box h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .price {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin: 20px 0;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            flex-wrap: wrap;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            font-size: 24px;
+            opacity: 0.7;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .old-price::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: rotate(5deg);
+        }
+        
+        .new-price {
+            font-size: 72px;
+            font-weight: 900;
+            margin: 0 10px;
+            line-height: 1;
+        }
+        
+        .new-price small {
+            font-size: 24px;
+            vertical-align: super;
         }
         
         .btn {
@@ -237,26 +287,14 @@
             cursor: pointer;
         }
         
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.4);
-            background: linear-gradient(to right, #3a7bc8, #1e4a7a);
-        }
-        
         .btn-accent {
-            background: var(--accent);
+            background: white;
             color: var(--dark);
         }
         
         .btn-accent:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(211, 211, 211, 0.4);
-            background: #B0B0B0;
+            box-shadow: 0 10px 20px rgba(255,255,255,0.3);
         }
         
         .btn-lg {
@@ -264,277 +302,62 @@
             padding: 20px 45px;
         }
         
-        /* Efeito hover para botões */
-        .btn-primary::after, .btn-accent::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.1);
-            transform: translateX(-100%);
-            transition: transform 0.3s;
+        .secure-badge {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.9;
         }
         
-        .btn-primary:hover::after, .btn-accent:hover::after {
-            transform: translateX(0);
-        }
-        
-        /* Seção de credibilidade com mais destaque */
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        
-        .trust-badge {
-            display: flex;
-            align-items: center;
-            background: white;
-            padding: 12px 20px;
-            border-radius: 50px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .trust-badge:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            background: var(--primary);
-            color: white;
-        }
-        
-        .trust-badge:hover i {
-            color: white;
-        }
-        
-        .trust-badge i {
-            margin-right: 8px;
-            color: var(--primary);
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-        
-        /* Seção de cards flip com melhor feedback visual */
-        .flip-cards-section {
+        /* Seção de benefícios */
+        .benefits-section {
+            background: rgba(255,255,255,0.95);
             padding: 80px 0;
-            background: rgba(255,255,255,0.97);
         }
-
-        .flip-cards-container {
+        
+        .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin-top: 50px;
         }
-
-        .flip-card {
-            perspective: 1000px;
-            height: 350px;
-            cursor: pointer;
-        }
-
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-style: preserve-3d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-radius: 20px;
-        }
-
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            text-align: center;
-            color: white;
-        }
-
-        .flip-card-front {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .flip-card-back {
-            background: white;
-            color: var(--dark);
-            transform: rotateY(180deg);
-            border: 2px solid rgba(74, 144, 226, 0.2);
-        }
-
-        .card-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .flip-card-front h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .flip-card-back h4 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .flip-card-back ul {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 25px;
-            padding-left: 20px;
-        }
-
-        .flip-card-back li {
-            position: relative;
-            margin-bottom: 10px;
-            padding-left: 25px;
-            line-height: 1.5;
-        }
-
-        .flip-card-back li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Seção de demonstração interativa mais intuitiva */
-        .platform-demo {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin: 60px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            border: 1px solid rgba(74, 144, 226, 0.1);
-        }
         
-        .demo-phone {
-            width: 300px;
-            height: 600px;
-            background: var(--dark);
-            border-radius: 30px;
-            padding: 20px;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border: 5px solid rgba(255,255,255,0.1);
-        }
-        
-        .demo-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .benefit-card {
+            background: white;
             border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 18px;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .demo-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .btn-demo-prev, .btn-demo-next {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-demo-prev:hover, .btn-demo-next:hover {
-            transform: scale(1.1);
-            background: var(--secondary);
-        }
-        
-        .demo-step {
-            font-weight: 600;
-            min-width: 100px;
+            border: 1px solid rgba(0,0,0,0.05);
             text-align: center;
-            color: var(--dark);
         }
         
-        /* Seção de depoimentos com mais destaque */
-        .testimonials {
-            background: rgba(255,255,255,0.97);
-            border-radius: 20px;
-            padding: 60px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid rgba(74, 144, 226, 0.1);
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
+        .benefit-icon {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 20px;
         }
         
-        .section-header h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
+        .benefit-card h3 {
             margin-bottom: 15px;
-            background: linear-gradient(to right, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--secondary);
         }
         
-        .section-header p {
-            font-size: 18px;
-            color: #6B7280;
-            max-width: 700px;
-            margin: 0 auto;
+        /* Seção de depoimentos */
+        .testimonials-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #F9FAFB, #E5E7EB);
         }
         
         .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
+            margin-top: 50px;
         }
         
         .testimonial-card {
@@ -543,13 +366,12 @@
             padding: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
-            border: 1px solid rgba(0,0,0,0.05);
             position: relative;
         }
         
         .testimonial-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
         
         .testimonial-card::before {
@@ -602,24 +424,60 @@
             margin: 0;
         }
         
-        /* Seção de oferta com mais urgência */
-        #offer {
+        /* Seção de garantia */
+        .guarantee-section {
             padding: 80px 0;
+            text-align: center;
         }
         
-        .offer {
+        .guarantee-box {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            border: 2px dashed var(--primary);
+        }
+        
+        .guarantee-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            margin: 0 auto 30px;
+        }
+        
+        .guarantee-box h2 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        /* Seção de checkout */
+        #checkout {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .checkout-box {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-radius: 20px;
             padding: 60px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
             position: relative;
             overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.2);
         }
         
-        .offer::before {
+        .checkout-box::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -628,239 +486,41 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
             transform: rotate(30deg);
-            animation: shine 8s infinite;
         }
         
-        @keyframes shine {
-            0% { transform: rotate(30deg) translateX(-100%); }
-            100% { transform: rotate(30deg) translateX(100%); }
-        }
-        
-        .offer h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .offer .price {
-            font-size: 72px;
-            font-weight: 700;
-            margin: 30px 0;
-            line-height: 1;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .offer .price::after {
-            content: '';
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: rgba(255,255,255,0.5);
-            transform: rotate(-2deg);
-        }
-        
-        .offer .price small {
-            font-size: 24px;
-            vertical-align: super;
-        }
-        
-        .offer .old-price {
-            text-decoration: line-through;
-            opacity: 0.7;
-            font-size: 24px;
-            position: relative;
-            display: inline-block;
-            margin-right: 15px;
-        }
-        
-        .offer .old-price::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: white;
-            transform: rotate(5deg);
-        }
-        
-        .offer .discount {
-            background: var(--warning);
-            color: var(--dark);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 700;
-            display: inline-block;
+        .checkout-box h2 {
             margin-bottom: 30px;
-            font-size: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            animation: pulse 2s infinite;
+            font-size: 36px;
         }
         
-        .offer-bonuses {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 40px 0;
-            text-align: left;
-            border: 1px dashed rgba(255,255,255,0.3);
-            position: relative;
-        }
-        
-        .offer-bonuses::before {
-            content: 'BÔNUS INCLUSOS';
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: var(--primary);
-            padding: 0 10px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 5px;
-        }
-        
-        .offer-bonuses h3 {
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        .offer-bonuses ul {
-            list-style: none;
-        }
-        
-        .offer-bonuses li {
-            margin-bottom: 10px;
-            position: relative;
-            padding-left: 30px;
-        }
-        
-        .offer-bonuses li::before {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: white;
-        }
-        
-        .payment-methods {
+        .payment-options {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 30px;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
         
-        .payment-method {
-            background: white;
-            padding: 10px 15px;
+        .payment-option {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
             border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--dark);
+            gap: 10px;
             font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .payment-method i {
-            color: var(--primary);
-        }
-        
-        .guarantee {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-align: left;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(74, 144, 226, 0.2);
-        }
-        
-        .guarantee-icon {
-            min-width: 80px;
-            height: 80px;
-            background: linear-gradient(to right, var(--success), #9CA3AF);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 30px;
-            flex-shrink: 0;
-        }
-        
-        .guarantee-content h3 {
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: var(--secondary);
-        }
-        
-        /* Seção FAQ com melhor interação */
-        .faq {
-            background: rgba(255,255,255,0.97);
-            border-radius: 20px;
-            padding: 60px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid rgba(74, 144, 226, 0.1);
-        }
-        
-        .faq-item {
-            margin-bottom: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .faq-question {
-            background: white;
-            padding: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             transition: all 0.3s;
         }
         
-        .faq-question:hover {
-            background: #F9FAFB;
-            color: var(--primary);
+        .payment-option:hover {
+            background: rgba(255,255,255,0.2);
         }
         
-        .faq-question i {
-            transition: transform 0.3s;
+        .payment-option i {
+            font-size: 24px;
         }
         
-        .faq-question.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .faq-answer {
-            background: #F9FAFB;
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
-        }
-        
-        .faq-answer.active {
-            padding: 20px;
-            max-height: 500px;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        /* Footer mais organizado */
+        /* Footer */
         footer {
             background: var(--dark);
             color: white;
@@ -929,7 +589,7 @@
             line-height: 1.6;
         }
         
-        /* Modal legal mais acessível */
+        /* Modal legal */
         .modal {
             display: none;
             position: fixed;
@@ -975,40 +635,6 @@
             color: var(--dark);
         }
         
-        /* Notificações de compra mais visíveis */
-        .purchase-notification {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            animation: slideIn 0.5s forwards;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-left: 5px solid var(--warning);
-        }
-        
-        .purchase-notification i {
-            font-size: 20px;
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
         /* Botão flutuante de WhatsApp */
         .whatsapp-float {
             position: fixed;
@@ -1035,40 +661,14 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
-        /* Responsivo melhorado */
+        /* Responsivo */
         @media (max-width: 992px) {
-            .hero-bg {
-                display: none;
-            }
-            
-            .hero-content {
-                padding: 40px;
-                text-align: center;
-            }
-            
-            .hero h1 {
+            .hero-section h1 {
                 font-size: 36px;
             }
             
-            .hero h2 {
-                font-size: 28px;
-            }
-            
-            .hero p {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .section-header h2 {
-                font-size: 36px;
-            }
-            
-            .offer .price {
+            .new-price {
                 font-size: 60px;
-            }
-            
-            .offer-bonuses {
-                padding: 20px;
             }
         }
         
@@ -1077,37 +677,16 @@
                 padding: 60px 0;
             }
             
-            .hero, .testimonials, .products, .offer, .faq {
-                padding: 40px;
-            }
-            
-            .hero h1 {
+            .hero-section h1 {
                 font-size: 32px;
             }
             
-            .section-header h2 {
-                font-size: 32px;
-            }
-            
-            .offer h2 {
-                font-size: 32px;
-            }
-            
-            .offer .price {
+            .new-price {
                 font-size: 48px;
             }
             
-            .guarantee {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .flip-card:hover .flip-card-inner {
-                transform: none;
-            }
-            
-            .flip-card.active .flip-card-inner {
-                transform: rotateY(180deg);
+            .offer-box, .guarantee-box, .checkout-box {
+                padding: 40px;
             }
             
             .whatsapp-float {
@@ -1120,30 +699,17 @@
         }
         
         @media (max-width: 576px) {
-            .hero, .testimonials, .products, .offer, .faq {
-                padding: 30px 20px;
-                border-radius: 15px;
-            }
-            
-            .hero h1 {
+            .hero-section h1 {
                 font-size: 28px;
             }
             
-            .section-header h2 {
-                font-size: 28px;
-            }
-            
-            .offer h2 {
-                font-size: 28px;
-            }
-            
-            .offer .price {
+            .new-price {
                 font-size: 36px;
             }
             
-            .btn-lg {
-                width: 100%;
-                padding: 18px;
+            .offer-box, .guarantee-box, .checkout-box {
+                padding: 30px 20px;
+                border-radius: 15px;
             }
             
             .urgency-bar .container {
@@ -1155,11 +721,6 @@
                 display: block;
             }
             
-            .demo-phone {
-                width: 250px;
-                height: 500px;
-            }
-            
             .footer-links {
                 gap: 15px;
             }
@@ -1169,390 +730,201 @@
 <body>
     <div id="particles-js"></div>
     
-    <!-- Barra de urgência melhorada -->
+    <!-- Barra de Urgência -->
     <div class="urgency-bar">
         <div class="container">
             <div>
-                <i class="fas fa-fire"></i> OFERTA LIMITADA - <span id="remaining-spots">97</span> VAGAS RESTANTES!
-                <span class="countdown">Termina em: <span id="countdown-timer">02:00:00</span></span>
+                <i class="fas fa-fire"></i> <span id="remaining-spots">50</span> VAGAS COM ACESSO VITALÍCIO!
+                <span class="countdown">Termina em: <span id="countdown-timer">30:00</span></span>
             </div>
-            <a href="#offer" class="btn btn-accent pulse">
-                <i class="fas fa-lock"></i> GARANTIR MEU ACESSO
-            </a>
         </div>
     </div>
     
-    <!-- Seção Hero -->
+    <!-- Seção do VSL -->
     <section class="hero-section">
         <div class="container">
-            <div class="hero">
-                <div class="hero-content">
-                    <div class="hero-headlines">
-                        <img src="assets/logo.jpg" alt="MedAI Brasil" class="hero-logo">
-                        <h1>A PRIMEIRA PLATAFORMA DE IA</h1>
-                        <h2>PARA APOIO AO SEU <span>BEM-ESTAR E QUALIDADE DE VIDA</span></h2>
-                    </div>
-                    <p>3 Inteligências Artificiais Integradas para Seu Bem-Estar: Scanner de Bem-Estar + Apoio Emocional + Orientação Inteligente + Painel Órbita</p>
-                    <p><small>*Não substitui orientação médica profissional</small></p>
-                    
-                    <div class="video-container" style="margin: 30px 0;">
-                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; font-size: 24px; background: var(--dark); border-radius: 15px; padding: 30px; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--secondary)); opacity: 0.8;"></div>
-                            <div style="position: relative; z-index: 1; text-align: center;">
-                                <i class="fas fa-play-circle" style="font-size: 50px; margin-bottom: 15px; display: block;"></i>
-                                <span>ASSISTA AO VÍDEO EXPLICATIVO (4 MINUTOS)</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center;">
-                        <a href="#offer" class="btn btn-primary btn-lg pulse" style="margin-bottom: 15px;">
-                            <i class="fas fa-arrow-right"></i> QUERO MELHORAR MEU BEM-ESTAR
-                        </a>
-                        <p style="font-size: 14px; color: #6B7280;"><i class="fas fa-lock"></i> Compra 100% segura e protegida</p>
-                    </div>
-                    
-                    <div class="trust-badges">
-                        <div class="trust-badge">
-                            <i class="fas fa-shield-alt"></i> Segurança LGPD
-                        </div>
-                        <div class="trust-badge">
-                            <i class="fas fa-brazilian-real-sign"></i> Empresa Brasileira
-                        </div>
-                        <div class="trust-badge">
-                            <i class="fas fa-medal"></i> 94.7% Satisfação
-                        </div>
-                        <div class="trust-badge">
-                            <i class="fas fa-users"></i> +75.000 Usuários
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-bg"></div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Seção de Cards Flip -->
-    <section class="flip-cards-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>TECNOLOGIA QUE REVOLUCIONA SEU BEM-ESTAR</h2>
-                <p>Descubra como nossa plataforma funciona</p>
+            <h1>Você Sabia Que <span>85% dos Problemas de Saúde</span> Começam Com Emoções Não Gerenciadas?</h1>
+            
+            <div class="video-container">
+                <!-- Substitua pelo seu embed de vídeo -->
+                <iframe src="https://www.youtube.com/embed/SEU_VIDEO" allowfullscreen></iframe>
             </div>
             
-            <div class="flip-cards-container">
-                <!-- Card 1 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background: linear-gradient(135deg, #4A90E2, #2D5E9D);">
-                            <div class="card-icon"><i class="fas fa-robot"></i></div>
-                            <h3>IA Preditiva</h3>
-                            <p>Clique para ver como funciona</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h4>ANÁLISE PREDITIVA</h4>
-                            <ul>
-                                <li>Detecta padrões de bem-estar</li>
-                                <li>87% de precisão comprovada</li>
-                                <li>Alertas preventivos</li>
-                                <li>Relatórios personalizados</li>
-                                <li>Comparativo com sua baseline</li>
-                            </ul>
-                            <button class="btn btn-accent">SAIBA MAIS</button>
-                        </div>
-                    </div>
+            <div class="offer-box pulse">
+                <h3>PACOTE COMPLETO POR APENAS:</h3>
+                <div class="price">
+                    <span class="old-price">R$ 225/mês</span>
+                    <span class="new-price">R$ 200<small>/mês</small></span>
                 </div>
-                
-                <!-- Card 2 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background: linear-gradient(135deg, #D3D3D3, #6B7280);">
-                            <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
-                            <h3>Monitoramento 24/7</h3>
-                            <p>Clique para ver como funciona</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h4>VIGILÂNCIA CONSTANTE</h4>
-                            <ul>
-                                <li>Dados atualizados a cada 5 min</li>
-                                <li>Comparação com sua baseline</li>
-                                <li>Notificações em tempo real</li>
-                                <li>Histórico completo</li>
-                                <li>Exporte seus dados</li>
-                            </ul>
-                            <button class="btn btn-accent">SAIBA MAIS</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 3 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background: linear-gradient(135deg, #1A252F, #4A90E2);">
-                            <div class="card-icon"><i class="fas fa-lock"></i></div>
-                            <h3>Segurança de Dados</h3>
-                            <p>Clique para ver como funciona</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h4>PROTEÇÃO TOTAL</h4>
-                            <ul>
-                                <li>Criptografia hospitalar</li>
-                                <li>Certificado HIPAA</li>
-                                <li>Dados anonimizados</li>
-                                <li>Conformidade LGPD</li>
-                                <li>Backup diário</li>
-                            </ul>
-                            <button class="btn btn-accent">SAIBA MAIS</button>
-                        </div>
-                    </div>
+                <a href="#checkout" class="btn btn-accent btn-lg">
+                    <i class="fas fa-lock"></i> GARANTIR MEU ACESSO
+                </a>
+                <div class="secure-badge">
+                    <i class="fas fa-shield-alt"></i> 30 dias de garantia | Cancelamento a qualquer momento
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Seção de Demonstração Interativa -->
-    <section>
+    <!-- Seção de Benefícios -->
+    <section class="benefits-section">
         <div class="container">
-            <div class="platform-demo">
-                <h3>EXPERIMENTE NOSSA PLATAFORMA</h3>
-                <p>Veja como funciona na prática:</p>
-                
-                <div class="demo-phone">
-                    <div class="demo-screen">
-                        <div class="demo-content">Tela inicial: Bem-vindo ao MedAI</div>
-                    </div>
+            <h2 style="text-align: center; margin-bottom: 15px; color: var(--secondary);">O QUE VOCÊ VAI RECEBER</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 50px;">Conheça os principais benefícios da nossa plataforma</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Monitoramento Emocional</h3>
+                    <p>Identifique padrões emocionais que afetam sua saúde com nossa IA avançada.</p>
                 </div>
                 
-                <div class="demo-controls">
-                    <button class="btn-demo-prev"><i class="fas fa-arrow-left"></i></button>
-                    <span class="demo-step">Passo 1/6</span>
-                    <button class="btn-demo-next"><i class="fas fa-arrow-right"></i></button>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h3>Acompanhamento Físico</h3>
+                    <p>Relacionamos seus indicadores físicos com seu estado emocional para uma visão completa.</p>
                 </div>
                 
-                <div style="margin-top: 30px;">
-                    <a href="#offer" class="btn btn-primary btn-lg pulse">
-                        <i class="fas fa-rocket"></i> QUERO COMEÇAR AGORA
-                    </a>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-robot"></i></div>
+                    <h3>Orientação por IA</h3>
+                    <p>Receba orientações personalizadas baseadas em milhares de casos similares.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Painel de Evolução</h3>
+                    <p>Acompanhe seu progresso com gráficos e relatórios detalhados.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Aplicativo Mobile</h3>
+                    <p>Acesse de qualquer lugar pelo seu celular, disponível para iOS e Android.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+                    <h3>Suporte Prioritário</h3>
+                    <p>Nossa equipe está disponível para te ajudar quando precisar.</p>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Seção de Depoimentos -->
-    <section>
+    <section class="testimonials-section">
         <div class="container">
-            <div class="testimonials">
-                <div class="section-header">
-                    <h2>+75.000 BRASILEIROS JÁ MELHORARAM SEU BEM-ESTAR</h2>
-                    <p>Veja o que nossos usuários estão dizendo</p>
-                </div>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p>"A ferramenta de scanner me ajudou a ficar mais atenta ao meu bem-estar. Comecei a cuidar melhor da minha saúde e procurei orientação médica quando necessário!"</p>
-                        <div class="author">
-                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ana Paula">
-                            <div class="author-info">
-                                <h4>Ana Paula R.</h4>
-                                <p>Executiva - São Paulo, SP</p>
-                            </div>
-                        </div>
+            <h2 style="text-align: center; margin-bottom: 15px; color: var(--secondary);">O QUE NOSSOS USUÁRIOS DIZEM</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 50px;">Veja como a MedAI transformou vidas</p>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
                     </div>
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p>"O apoio emocional da IA me deu suporte nos momentos difíceis. É como ter alguém para conversar 24 horas por dia. Melhorou muito minha qualidade de vida!"</p>
-                        <div class="author">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Roberto">
-                            <div class="author-info">
-                                <h4>Roberto S.</h4>
-                                <p>Empresário - Rio de Janeiro, RJ</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p>"A orientação inteligente me ajudou a organizar minhas dúvidas sobre bem-estar. Agora sei quando e como buscar ajuda profissional adequada."</p>
-                        <div class="author">
-                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Carlos">
-                            <div class="author-info">
-                                <h4>Carlos M.</h4>
-                                <p>Engenheiro - Belo Horizonte, MG</p>
-                            </div>
+                    <p>"Depois de anos sofrendo com dores inexplicáveis, a MedAI me ajudou a entender a conexão com minhas emoções reprimidas. Hoje tenho uma qualidade de vida que não imaginava ser possível!"</p>
+                    <div class="author">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Ana Clara">
+                        <div class="author-info">
+                            <h4>Ana Clara S.</h4>
+                            <p>Professora - São Paulo, SP</p>
                         </div>
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 50px;">
-                    <a href="#offer" class="btn btn-primary btn-lg pulse">
-                        <i class="fas fa-arrow-right"></i> QUERO EXPERIMENTAR
-                    </a>
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Como médico, eu era cético, mas a precisão da análise emocional da MedAI me impressionou. Agora recomendo para meus pacientes como ferramenta complementar."</p>
+                    <div class="author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Roberto">
+                        <div class="author-info">
+                            <h4>Dr. Roberto L.</h4>
+                            <p>Médico - Rio de Janeiro, RJ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Minhas crises de ansiedade diminuíram 80% depois que comecei a usar o sistema de alertas emocionais da MedAI. Finalmente entendi meus gatilhos e como lidar com eles."</p>
+                    <div class="author">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Mariana">
+                        <div class="author-info">
+                            <h4>Mariana F.</h4>
+                            <p>Empresária - Belo Horizonte, MG</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Seção de Oferta -->
-    <section id="offer">
+    <!-- Seção de Garantia -->
+    <section class="guarantee-section">
         <div class="container">
-            <div class="offer">
-                <h2>OFERTA ESPECIAL POR TEMPO LIMITADO</h2>
-                <p>Aproveite hoje nosso pacote completo com desconto exclusivo</p>
+            <div class="guarantee-box">
+                <div class="guarantee-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Garantia Incondicional de 30 Dias</h2>
+                <p>Experimente a MedAI sem riscos. Se em 30 dias você não perceber melhoras significativas no seu bem-estar emocional e físico, devolvemos 100% do seu dinheiro. Sem perguntas, sem burocracia.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Seção de Checkout -->
+    <section id="checkout">
+        <div class="container">
+            <div class="checkout-box">
+                <h2>GARANTA SEU ACESSO HOJE</h2>
+                <p>Aproveite esta oferta exclusiva por tempo limitado</p>
                 
-                <div style="margin: 20px 0;">
-                    <span class="old-price">De R$ 1.897,00</span>
-                    <span class="discount">
-                        <i class="fas fa-gift"></i> 47% DE DESCONTO HOJE!
-                    </span>
+                <div class="price" style="justify-content: center; margin: 30px 0;">
+                    <span class="old-price">R$ 225/mês</span>
+                    <span class="new-price">R$ 200<small>/mês</small></span>
                 </div>
                 
-                <div class="price">
-                    <small>12x de</small> R$ 97<small>,90</small>
-                </div>
-                <p>ou R$ 997 à vista</p>
+                <a href="#" class="btn btn-accent btn-lg pulse" id="checkout-btn" style="margin-bottom: 20px;">
+                    <i class="fas fa-lock"></i> QUERO MEU ACESSO AGORA
+                </a>
                 
-                <div class="offer-bonuses">
-                    <h3>Você vai receber:</h3>
-                    <ul>
-                        <li>Acesso completo ao Scanner de Bem-Estar IA</li>
-                        <li>Acompanhamento Emocional 24/7</li>
-                        <li>Orientação Inteligente para bem-estar</li>
-                        <li>Painel Órbita Premium</li>
-                        <li>Aplicativo Mobile para Android e iOS</li>
-                        <li>Atualizações gratuitas por 1 ano</li>
-                        <li>Suporte prioritário em português</li>
-                        <li>Bônus: E-book "Bem-Estar em 30 Dias"</li>
-                        <li>Bônus: Acesso à Comunidade Exclusiva</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <a href="#" class="btn btn-accent btn-lg pulse" id="checkout-btn">
-                        <i class="fas fa-lock"></i> GARANTIR MEU ACESSO AGORA
-                    </a>
-                </div>
-                
-                <div class="payment-methods">
-                    <div class="payment-method">
+                <div class="payment-options">
+                    <div class="payment-option">
                         <i class="fab fa-cc-visa"></i> Visa
                     </div>
-                    <div class="payment-method">
+                    <div class="payment-option">
                         <i class="fab fa-cc-mastercard"></i> Mastercard
                     </div>
-                    <div class="payment-method">
+                    <div class="payment-option">
                         <i class="fab fa-cc-amex"></i> Amex
                     </div>
-                    <div class="payment-method">
+                    <div class="payment-option">
                         <i class="fas fa-barcode"></i> Boleto
                     </div>
-                    <div class="payment-method">
+                    <div class="payment-option">
                         <i class="fab fa-pix"></i> Pix
                     </div>
                 </div>
                 
-                <div class="guarantee">
-                    <div class="guarantee-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="guarantee-content">
-                        <h3>Garantia de Satisfação de 30 Dias</h3>
-                        <p>Se em 30 dias você não estiver completamente satisfeito, devolvemos 100% do seu dinheiro sem questionamentos.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Seção FAQ -->
-    <section>
-        <div class="container">
-            <div class="faq">
-                <div class="section-header">
-                    <h2>PERGUNTAS FREQUENTES</h2>
-                    <p>Tire todas as suas dúvidas sobre a MedAI Brasil</p>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>As ferramentas de IA realmente ajudam?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sim! Nossas ferramentas são baseadas em tecnologia de IA validada cientificamente e já apoiaram mais de 75.000 pessoas em seu bem-estar. Elas fornecem insights valiosos e acompanhamento contínuo, mas sempre recomendamos a supervisão de profissionais de saúde para diagnósticos e tratamentos.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>É seguro usar a plataforma?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Totalmente! Seguimos todas as normas de segurança de dados (LGPD) e temos certificação SSL. Seus dados são criptografados e armazenados com os mais altos padrões de segurança, semelhantes aos utilizados em instituições financeiras.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>As ferramentas substituem orientação médica?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>NÃO. Nossas ferramentas são para apoio ao bem-estar e sempre orientamos a buscar profissionais qualificados quando necessário. A plataforma pode ajudar a identificar padrões e fornecer informações, mas o diagnóstico e tratamento devem sempre ser feitos por profissionais de saúde.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Funciona no meu celular?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Perfeitamente! Temos aplicativo mobile nativo para Android e iOS com todas as funcionalidades das ferramentas. Você pode acompanhar seu bem-estar de qualquer lugar, a qualquer momento.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>O que é o painel Órbita?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>É seu centro de controle pessoal onde você visualiza todos os dados das ferramentas integrados em gráficos e relatórios fáceis de entender. O painel Órbita mostra tendências, comparações e oferece insights personalizados para você tomar decisões mais informadas sobre seu bem-estar.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>E se eu não gostar?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Oferecemos 30 dias de garantia incondicional. Se por qualquer motivo você não ficar satisfeito, basta nos enviar um e-mail dentro desse período e devolvemos 100% do seu investimento, sem burocracia ou questionamentos.</p>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; margin-top: 50px;">
-                    <a href="#offer" class="btn btn-primary btn-lg pulse">
-                        <i class="fas fa-check-circle"></i> QUERO MEU ACESSO
-                    </a>
+                <div class="secure-badge">
+                    <i class="fas fa-lock"></i> Pagamento 100% seguro
                 </div>
             </div>
         </div>
@@ -1569,24 +941,17 @@
         </div>
     </div>
     
-    <!-- Links Legais -->
-    <div class="legal-links" style="text-align: center; margin: 30px 0;">
-        <a href="#" id="show-terms">Termos de Uso</a> | 
-        <a href="#" id="show-policy">Política de Privacidade</a> | 
-        <a href="#" id="show-contact">Contato</a>
-    </div>
-    
     <!-- Footer -->
     <footer>
         <div class="container">
-            <img src="assets/logo.jpg" alt="MedAI Brasil" class="footer-logo">
+            <img src="assets/logo.jpg" alt="MedAI" class="footer-logo">
             
             <div class="footer-links">
-                <a href="#">Sobre Nós</a>
-                <a href="#">Contato</a>
-                <a href="#">Trabalhe Conosco</a>
-                <a href="#">Blog</a>
+                <a href="#" id="show-terms">Termos de Uso</a>
+                <a href="#" id="show-policy">Política de Privacidade</a>
+                <a href="#" id="show-contact">Contato</a>
                 <a href="#">Perguntas Frequentes</a>
+                <a href="#">Trabalhe Conosco</a>
             </div>
             
             <div class="footer-social">
@@ -1597,10 +962,10 @@
             </div>
             
             <div class="footer-disclaimer">
-                <p>© 2025 MedAI Brasil - Todos os direitos reservados</p>
-                <p>Plataforma de Tecnologia para Apoio ao Bem-Estar</p>
-                <p>CNPJ: XX.XXX.XXX/0001-XX | Endereço: Av. Paulista, 1000 - São Paulo/SP</p>
-                <p style="margin-top: 15px;">As informações contidas nesta plataforma não substituem o aconselhamento médico profissional. Sempre consulte um especialista qualificado para orientações sobre sua saúde.</p>
+                <p>© 2025 MedAI - Todos os direitos reservados</p>
+                <p>Plataforma de Tecnologia para Saúde Emocional e Física</p>
+                <p>CNPJ: 12.345.678/0001-99 | Endereço: Av. Paulista, 1000 - São Paulo/SP</p>
+                <p style="margin-top: 15px;"><strong>AVISO IMPORTANTE:</strong> A MedAI é uma plataforma de apoio ao bem-estar emocional e físico e não substitui atendimento médico profissional. Para diagnósticos e tratamentos, sempre consulte um especialista qualificado.</p>
             </div>
         </div>
     </footer>
@@ -1616,13 +981,13 @@
     </div>
     
     <!-- Botão flutuante de WhatsApp -->
-    <a href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20MedAI%20Brasil" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20a%20MedAI" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
     
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Inicializar partículas otimizado
+        // Inicializar partículas
         document.addEventListener('DOMContentLoaded', function() {
             particlesJS("particles-js", {
                 particles: {
@@ -1649,45 +1014,8 @@
             });
         });
         
-        // Contador regressivo melhorado
-        function updateCountdown() {
-            let hours = 2;
-            let minutes = 0;
-            let seconds = 0;
-            
-            const countdown = setInterval(() => {
-                if (seconds === 0) {
-                    if (minutes === 0) {
-                        if (hours === 0) {
-                            clearInterval(countdown);
-                            document.querySelector('.urgency-bar').style.background = 'linear-gradient(to right, #d32f2f, #9C27B0)';
-                            document.getElementById('countdown-timer').textContent = 'OFERTA ENCERRADA!';
-                            return;
-                        }
-                        hours--;
-                        minutes = 59;
-                    } else {
-                        minutes--;
-                    }
-                    seconds = 59;
-                } else {
-                    seconds--;
-                }
-                
-                document.getElementById('countdown-timer').textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Aumentar urgência nos últimos 30 minutos
-                if (hours === 0 && minutes < 30) {
-                    document.querySelector('.countdown').style.animation = 'blink 0.5s infinite alternate';
-                }
-            }, 1000);
-        }
-        
-        updateCountdown();
-        
-        // Simular vagas restantes com decréscimo mais realista
-        let spots = 97;
+        // Contador de vagas
+        let spots = 50;
         const spotInterval = setInterval(() => {
             const decrement = Math.random() < 0.7 ? 1 : (Math.random() < 0.9 ? 2 : 3);
             spots -= decrement;
@@ -1703,91 +1031,47 @@
             }
         }, 30000);
         
-        // Demo interativa com mais passos
-        const demoSteps = [
-            "Tela inicial: Bem-vindo ao MedAI",
-            "Scanner de Bem-Estar: Posicione seu dedo",
-            "Resultados: Sua análise em tempo real",
-            "Apoio Emocional: Chat com IA especializada",
-            "Painel Órbita: Seus dados consolidados",
-            "Alertas: Notificações personalizadas"
-        ];
-        
-        let currentStep = 0;
-        
-        function updateDemo() {
-            document.querySelector('.demo-content').textContent = demoSteps[currentStep];
-            document.querySelector('.demo-step').textContent = `Passo ${currentStep+1}/${demoSteps.length}`;
+        // Timer de 30 minutos
+        function startTimer(duration) {
+            let timer = duration * 60, minutes, seconds;
+            const interval = setInterval(() => {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                document.getElementById('countdown-timer').textContent = minutes + ":" + seconds;
+                if (--timer < 0) {
+                    timer = 0;
+                    clearInterval(interval);
+                    document.querySelector('.urgency-bar').style.background = 'linear-gradient(to right, #d32f2f, #9C27B0)';
+                    document.getElementById('countdown-timer').textContent = 'OFERTA ENCERRADA!';
+                }
+            }, 1000);
         }
+        startTimer(30); // 30 minutos
         
-        document.querySelector('.btn-demo-next').addEventListener('click', () => {
-            if(currentStep < demoSteps.length - 1) currentStep++;
-            updateDemo();
-        });
-        
-        document.querySelector('.btn-demo-prev').addEventListener('click', () => {
-            if(currentStep > 0) currentStep--;
-            updateDemo();
-        });
-        
-        // Auto-play da demonstração
-        let autoPlay = setInterval(() => {
-            if(currentStep < demoSteps.length - 1) {
-                currentStep++;
-            } else {
-                currentStep = 0;
-            }
-            updateDemo();
-        }, 5000);
-        
-        // Pausar auto-play ao interagir
-        document.querySelector('.demo-controls').addEventListener('mouseenter', () => {
-            clearInterval(autoPlay);
-        });
-        
-        document.querySelector('.demo-controls').addEventListener('mouseleave', () => {
-            autoPlay = setInterval(() => {
-                if(currentStep < demoSteps.length - 1) {
-                    currentStep++;
-                } else {
-                    currentStep = 0;
-                }
-                updateDemo();
-            }, 5000);
-        });
-        
-        updateDemo();
-        
-        // Flip cards para mobile
-        const flipCards = document.querySelectorAll('.flip-card');
-        
-        flipCards.forEach(card => {
-            card.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    flipCards.forEach(c => {
-                        if (c !== card) c.classList.remove('active');
-                    });
-                    card.classList.toggle('active');
-                }
-            });
-        });
-        
-        // Modal legal com mais conteúdo
+        // Modal legal
         document.getElementById('show-terms').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('modal-title').textContent = "Termos de Uso";
             document.getElementById('modal-text').innerHTML = `
                 <h4>1. Aceitação dos Termos</h4>
-                <p>Ao utilizar a plataforma MedAI Brasil, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
+                <p>Ao utilizar a plataforma MedAI, você concorda com estes Termos de Uso e com nossa Política de Privacidade.</p>
                 
                 <h4>2. Uso da Plataforma</h4>
-                <p>A plataforma destina-se ao apoio ao bem-estar e não substitui atendimento médico profissional.</p>
+                <p>A plataforma destina-se ao apoio ao bem-estar emocional e físico e não substitui atendimento médico profissional.</p>
                 
                 <h4>3. Responsabilidades</h4>
-                <p>O usuário é responsável por manter a confidencialidade de suas credenciais de acesso.</p>
+                <p>O usuário é responsável por manter a confidencialidade de suas credenciais de acesso e pelas informações fornecidas.</p>
                 
                 <h4>4. Limitações</h4>
-                <p>Não nos responsabilizamos por decisões tomadas com base nas informações fornecidas pela plataforma.</p>
+                <p>A MedAI não se responsabiliza por decisões tomadas com base nas informações fornecidas pela plataforma.</p>
+                
+                <h4>5. Pagamentos e Assinatura</h4>
+                <p>Os pagamentos são recorrentes e podem ser cancelados a qualquer momento, sem cobranças adicionais.</p>
+                
+                <h4>6. Garantia</h4>
+                <p>Oferecemos 30 dias de garantia incondicional para todos os nossos planos.</p>
             `;
             document.getElementById('legal-modal').style.display = "block";
         });
@@ -1797,16 +1081,22 @@
             document.getElementById('modal-title').textContent = "Política de Privacidade";
             document.getElementById('modal-text').innerHTML = `
                 <h4>1. Dados Coletados</h4>
-                <p>Coletamos dados necessários para o funcionamento da plataforma, sempre com seu consentimento.</p>
+                <p>Coletamos dados necessários para o funcionamento da plataforma, sempre com seu consentimento explícito.</p>
                 
                 <h4>2. Uso dos Dados</h4>
                 <p>Seus dados são utilizados apenas para fornecer os serviços contratados e melhorar sua experiência.</p>
                 
                 <h4>3. Segurança</h4>
-                <p>Implementamos medidas de segurança avançadas para proteger suas informações.</p>
+                <p>Implementamos medidas de segurança avançadas para proteger suas informações, incluindo criptografia de ponta a ponta.</p>
                 
                 <h4>4. Direitos do Usuário</h4>
-                <p>Você pode acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento.</p>
+                <p>Você pode acessar, corrigir ou solicitar a exclusão de seus dados a qualquer momento através do seu painel.</p>
+                
+                <h4>5. Compartilhamento</h4>
+                <p>Não compartilhamos seus dados pessoais com terceiros sem sua autorização explícita.</p>
+                
+                <h4>6. Conformidade</h4>
+                <p>Cumprimos integralmente a Lei Geral de Proteção de Dados (LGPD) e regulamentações pertinentes.</p>
             `;
             document.getElementById('legal-modal').style.display = "block";
         });
@@ -1816,12 +1106,15 @@
             document.getElementById('modal-title').textContent = "Contato";
             document.getElementById('modal-text').innerHTML = `
                 <h4>Suporte ao Cliente</h4>
-                <p><i class="fas fa-envelope"></i> contato@medaibrasil.com.br</p>
+                <p><i class="fas fa-envelope"></i> contato@medai.com.br</p>
                 <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
                 
                 <h4>Horário de Atendimento</h4>
                 <p>Segunda a Sexta: 9h às 18h</p>
                 <p>Sábado: 9h às 13h</p>
+                
+                <h4>Endereço</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo/SP</p>
             `;
             document.getElementById('legal-modal').style.display = "block";
         });
@@ -1841,12 +1134,36 @@
             document.querySelector('.medical-disclaimer').style.display = 'none';
         }
         
-        // Notificações de compra mais variadas
-        const cities = ['SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'BA', 'PE'];
-        const names = ['Ana', 'Carlos', 'Mariana', 'João', 'Fernanda', 'Ricardo', 'Patrícia', 'Lucas'];
-        const actions = ['acabou de assinar', 'comprou o pacote', 'adquiriu o acesso', 'garantiu sua vaga'];
+        // Suavizar rolagem para âncoras
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if(this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
         
+        // Rastrear cliques no botão de checkout
+        document.getElementById('checkout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Simular redirecionamento para página de pagamento
+            alert('Você será redirecionado para nossa página de pagamento seguro. Obrigado por escolher a MedAI!');
+            // Aqui você pode adicionar código de rastreamento como Google Analytics, Facebook Pixel, etc.
+        });
+        
+        // Notificações de compra
         function showPurchaseNotification() {
+            const cities = ['SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'BA', 'PE'];
+            const names = ['Ana', 'Carlos', 'Mariana', 'João', 'Fernanda', 'Ricardo', 'Patrícia', 'Lucas'];
+            const actions = ['acabou de assinar', 'comprou o pacote', 'adquiriu o acesso', 'garantiu sua vaga'];
+            
             const city = cities[Math.floor(Math.random() * cities.length)];
             const name = names[Math.floor(Math.random() * names.length)];
             const action = actions[Math.floor(Math.random() * actions.length)];
@@ -1871,46 +1188,6 @@
         // Mostrar notificação imediatamente e depois a cada 20-40 segundos
         setTimeout(showPurchaseNotification, 3000);
         setInterval(showPurchaseNotification, 20000 + Math.random() * 20000);
-        
-        // FAQ accordion melhorado
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const isActive = question.classList.contains('active');
-                faqQuestions.forEach(q => {
-                    q.classList.remove('active');
-                    q.nextElementSibling.classList.remove('active');
-                });
-                
-                if (!isActive) {
-                    question.classList.add('active');
-                    question.nextElementSibling.classList.add('active');
-                }
-            });
-        });
-        
-        // Rastrear cliques no botão de checkout
-        document.getElementById('checkout-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            // Simular redirecionamento para página de pagamento
-            alert('Você será redirecionado para a página de pagamento seguro. Obrigado por escolher a MedAI Brasil!');
-            // Aqui você pode adicionar código de rastreamento como Google Analytics, Facebook Pixel, etc.
-        });
-        
-        // Suavizar rolagem para âncoras
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
     </script>
 </body>
 </html>
