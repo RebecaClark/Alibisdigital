@@ -210,9 +210,7 @@
             border-radius: 1rem;
             max-width: 500px;
             width: 90%;
-            border: 
-
- 1px solid var(--primary-color);
+            border: 1px solid var(--primary-color);
             box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
         }
         
@@ -273,36 +271,6 @@
             .sensor-status {
                 flex-direction: column;
             }
-        }
-        
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 200px;
-            background-color: rgba(17, 24, 39, 0.95);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.75rem;
-            border: 1px solid var(--primary-color);
-        }
-        
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
         }
     </style>
 </head>
@@ -536,8 +504,8 @@
             </div>
         </section>
         
-        <!-- Resultados da Análise -->
-        <div id="results-section" class="hidden">
+        <!-- Seção de Resultados -->
+        <section id="results-section" class="hidden">
             <div class="neon-card p-8 mb-8">
                 <h2 class="text-3xl font-bold mb-6 text-center text-white">Resultados da Análise</h2>
                 
@@ -677,7 +645,7 @@
                     <span>Nova Análise</span>
                 </button>
             </div>
-        </div>
+        </section>
         
         <!-- Seção de Feedback -->
         <section id="feedback-section" class="hidden py-8">
@@ -732,362 +700,491 @@
                             <span class="tooltip-text">Rede neural profunda treinada em mais de 100.000 amostras emocionais validadas</span>
                         </div>
                     </div>
+                  </div>                </div>
+                
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-3">Avalie sua experiência</h3>
+                    <div class="flex items-center justify-center space-x-2 mb-4">
+                        <i class="fas fa-star text-gray-400 hover:text-yellow-400 cursor-pointer text-2xl" data-rating="1"></i>
+                        <i class="fas fa-star text-gray-400 hover:text-yellow-400 cursor-pointer text-2xl" data-rating="2"></i>
+                        <i class="fas fa-star text-gray-400 hover:text-yellow-400 cursor-pointer text-2xl" data-rating="3"></i>
+                        <i class="fas fa-star text-gray-400 hover:text-yellow-400 cursor-pointer text-2xl" data-rating="4"></i>
+                        <i class="fas fa-star text-gray-400 hover:text-yellow-400 cursor-pointer text-2xl" data-rating="5"></i>
+                    </div>
+                    
+                    <textarea id="user-feedback" rows="3" class="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-3 text-white placeholder-gray-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition" placeholder="Deixe seu feedback sobre a análise..."></textarea>
+                    
+                    <button id="submit-feedback-btn" class="futuristic-btn w-full mt-4 py-3">
+                        <span>Enviar Feedback</span>
+                        <i class="fas fa-paper-plane icon"></i>
+                    </button>
                 </div>
             </div>
         </section>
-        
-        <!-- Modal de Alerta -->
-        <div id="sensor-alert" class="sensor-alert hidden">
-            <div class="sensor-alert-content">
-                <h2 class="text-2xl font-bold text-white mb-4">Problema com Sensores</h2>
-                <p id="alert-message" class="text-gray-300 mb-6">Um ou mais sensores não estão funcionando corretamente. Verifique as condições e tente novamente.</p>
-                <div class="flex justify-center gap-4">
-                    <button id="retry-btn" class="futuristic-btn px-6 py-2">
-                        <span>Tentar Novamente</span>
-                        <i class="fas fa-redo icon"></i>
-                    </button>
-                    <button id="cancel-btn" class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-full transition">
-                        <span>Cancelar</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
     
     <!-- Rodapé -->
-    <footer class="bg-gray-900 bg-opacity-90 py-8">
-        <div class="container mx-auto px-4 sm:px-6 text-center">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                <div class="mb-4 md:mb-0">
-                    <img src="https://medaibrasil.com.br/images/logo.png" alt="MedAI Brasil" class="logo-medai mx-auto md:mx-0">
-                    <p class="text-gray-400 mt-2">© 2023 MedAI Brasil. Todos os direitos reservados.</p>
+    <footer class="bg-gray-900/80 border-t border-gray-800 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <a href="https://medaibrasil.com.br" class="flex items-center space-x-2 mb-4">
+                        <img src="https://medaibrasil.com.br/images/logo.png" alt="MedAI Brasil" class="logo-medai">
+                        <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">MedAI</span>
+                    </a>
+                    <p class="text-gray-400 text-sm">Tecnologia médica avançada para diagnóstico e acompanhamento emocional.</p>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-300 hover:text-white transition">Termos de Uso</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition">Privacidade</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition">Contato</a>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Produtos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Medical IA</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Scanner Emocional</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Monitor Cardíaco</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Análise de Sono</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Recursos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentação</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">API para Desenvolvedores</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Casos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pesquisas</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Contato</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i> contato@medaibrasil.com.br</li>
+                        <li class="text-gray-400"><i class="fas fa-phone mr-2"></i> +55 11 98765-4321</li>
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i> São Paulo, Brasil</li>
+                        <li class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="flex justify-center space-x-6">
-                <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-twitter text-xl"></i></a>
-                <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-linkedin text-xl"></i></a>
-                <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-github text-xl"></i></a>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 MedAI Brasil. Todos os direitos reservados.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-white transition text-sm">Termos de Serviço</a>
+                    <a href="#" class="text-gray-500 hover:text-white transition text-sm">Privacidade</a>
+                    <a href="#" class="text-gray-500 hover:text-white transition text-sm">Cookies</a>
+                </div>
             </div>
         </div>
     </footer>
     
+    <!-- Scripts -->
     <script>
-        // Inicialização do Particles.js
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: ['#22d3ee', '#3b82f6', '#8b5cf6'] },
-                shape: { type: 'circle' },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: '#22d3ee', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
-            },
-            retina_detect: true
-        });
-
-        // Menu Mobile
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Controle de Seções
-        const startAnalysisBtn = document.getElementById('start-analysis-btn');
-        const calibrationSection = document.getElementById('calibration-section');
-        const analysisSection = document.getElementById('analysis-section');
-        const resultsSection = document.getElementById('results-section');
-        const feedbackSection = document.getElementById('feedback-section');
-
-        startAnalysisBtn.addEventListener('click', () => {
-            calibrationSection.classList.remove('hidden');
-        });
-
-        // Modos de Análise
-        const analysisModes = document.querySelectorAll('.analysis-mode');
-        analysisModes.forEach(mode => {
-            mode.addEventListener('click', () => {
-                analysisModes.forEach(m => m.classList.remove('active', 'bg-gray-800/50'));
-                mode.classList.add('active', 'bg-gray-800/50');
-            });
-        });
-
-        // Calibração
-        const startCalibrationBtn = document.getElementById('start-calibration-btn');
-        const calibrationProgress = document.getElementById('calibration-progress');
-        let progress = 0;
-
-        startCalibrationBtn.addEventListener('click', () => {
-            const interval = setInterval(() => {
-                progress += 10;
-                calibrationProgress.setAttribute('stroke-dashoffset', 100 - progress);
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    calibrationSection.classList.add('hidden');
-                    analysisSection.classList.remove('hidden');
-                    initAnalysis();
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuração do Particles.js
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#22d3ee" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#3b82f6", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" }
+                    }
                 }
-            }, 300);
-        });
-
-        // Inicialização da Análise
-        async function initAnalysis() {
-            const video = document.getElementById('video-input');
-            const canvas = document.getElementById('video-canvas');
-            const ctx = canvas.getContext('2d');
-
-            // Carregar modelos face-api.js
-            await Promise.all([
-                faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-                faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-                faceapi.nets.faceExpressionNet.loadFromUri('/models')
-            ]);
-
-            // Iniciar vídeo
-            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-                .then(stream => {
-                    video.srcObject = stream;
-                })
-                .catch(err => {
-                    showSensorAlert('Erro ao acessar câmera/microfone: ' + err.message);
+            });
+            
+            // Menu Mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Modos de Análise
+            const analysisModes = document.querySelectorAll('.analysis-mode');
+            analysisModes.forEach(mode => {
+                mode.addEventListener('click', function() {
+                    analysisModes.forEach(m => m.classList.remove('active', 'bg-cyan-400/10', 'border-cyan-400/30'));
+                    this.classList.add('active', 'bg-cyan-400/10', 'border-cyan-400/30');
                 });
-
-            // Detecção facial
-            video.addEventListener('play', () => {
-                setInterval(async () => {
-                    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-                        .withFaceLandmarks()
-                        .withFaceExpressions();
+            });
+            
+            // Botão de Iniciar Análise
+            const startAnalysisBtn = document.getElementById('start-analysis-btn');
+            const calibrationSection = document.getElementById('calibration-section');
+            
+            startAnalysisBtn.addEventListener('click', function() {
+                calibrationSection.classList.remove('hidden');
+            });
+            
+            // Botão de Iniciar Calibração
+            const startCalibrationBtn = document.getElementById('start-calibration-btn');
+            const calibrationVideo = document.getElementById('calibration-video');
+            const calibrationProgress = document.getElementById('calibration-progress');
+            
+            startCalibrationBtn.addEventListener('click', function() {
+                // Simulação de calibração
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    calibrationProgress.style.strokeDashoffset = 100 - progress;
                     
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    faceapi.draw.drawDetections(canvas, detections);
-                    faceapi.draw.drawFaceLandmarks(canvas, detections);
-                    faceapi.draw.drawFaceExpressions(canvas, detections);
-
-                    updateSensorStatus('face-status', detections.length > 0);
-                    updateEmotion(detections);
-                }, 100);
-            });
-
-            // Análise de voz (simulada)
-            simulateVoiceAnalysis();
-            simulatePPGAnalysis();
-        }
-
-        // Atualizar status do sensor
-        function updateSensorStatus(sensorId, isActive) {
-            const sensor = document.getElementById(sensorId);
-            sensor.classList.remove('sensor-active', 'sensor-inactive');
-            sensor.classList.add(isActive ? 'sensor-active' : 'sensor-inactive');
-        }
-
-        // Simular análise de voz
-        function simulateVoiceAnalysis() {
-            setInterval(() => {
-                updateSensorStatus('voice-status', Math.random() > 0.2);
-                document.getElementById('voice-value').textContent = ['Neutro', 'Ansiedade', 'Tristeza', 'Alegria'][Math.floor(Math.random() * 4)];
-            }, 5000);
-        }
-
-        // Simular PPG
-        function simulatePPGAnalysis() {
-            setInterval(() => {
-                updateSensorStatus('ppg-status', Math.random() > 0.3);
-                document.getElementById('bpm-value').textContent = Math.floor(60 + Math.random() * 40);
-            }, 3000);
-        }
-
-        // Atualizar emoção
-        function updateEmotion(detections) {
-            if (detections.length > 0) {
-                const expressions = detections[0].expressions;
-                const maxEmotion = Object.keys(expressions).reduce((a, b) => expressions[a] > expressions[b] ? a : b);
-                document.getElementById('emotion-value').textContent = maxEmotion.charAt(0).toUpperCase() + maxEmotion.slice(1);
-            } else {
-                document.getElementById('emotion-value').textContent = '--';
-            }
-        }
-
-        // Mostrar alerta de sensor
-        function showSensorAlert(message) {
-            const alert = document.getElementById('sensor-alert');
-            document.getElementById('alert-message').textContent = message;
-            alert.classList.remove('hidden');
-            
-            document.getElementById('retry-btn').addEventListener('click', () => {
-                alert.classList.add('hidden');
-                initAnalysis();
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        calibrationSection.classList.add('hidden');
+                        document.getElementById('analysis-section').classList.remove('hidden');
+                        
+                        // Iniciar câmera
+                        startCamera();
+                    }
+                }, 150);
             });
             
-            document.getElementById('cancel-btn').addEventListener('click', () => {
-                alert.classList.add('hidden');
-                calibrationSection.classList.add('hidden');
-            });
-        }
-
-        // Biofeedback Gráfico
-        const biofeedbackCanvas = document.getElementById('biofeedback-canvas');
-        const biofeedbackChart = new Chart(biofeedbackCanvas, {
-            type: 'line',
-            data: {
-                labels: Array(20).fill(''),
-                datasets: [{
-                    label: 'Frequência Cardíaca',
-                    data: Array(20).fill(0),
-                    borderColor: '#22d3ee',
-                    tension: 0.4,
-                    fill: false
-                }, {
-                    label: 'Resposta Emocional',
-                    data: Array(20).fill(0),
-                    borderColor: '#8b5cf6',
-                    tension: 0.4,
-                    fill: false
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true, max: 100 },
-                    x: { display: false }
-                },
-                plugins: { legend: { display: true } }
+            // Função para iniciar a câmera
+            function startCamera() {
+                const video = document.getElementById('video-input');
+                const canvas = document.getElementById('video-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        
+                        // Atualizar status dos sensores
+                        document.getElementById('face-status').classList.remove('sensor-inactive');
+                        document.getElementById('face-status').classList.add('sensor-active');
+                        
+                        document.getElementById('voice-status').classList.remove('sensor-inactive');
+                        document.getElementById('voice-status').classList.add('sensor-active');
+                        
+                        // Simular detecção de batimentos cardíacos
+                        setTimeout(() => {
+                            document.getElementById('ppg-status').classList.remove('sensor-inactive');
+                            document.getElementById('ppg-status').classList.add('sensor-active');
+                        }, 2000);
+                        
+                        // Habilitar botão de análise após 5 segundos
+                        setTimeout(() => {
+                            document.getElementById('analyze-btn').disabled = false;
+                        }, 5000);
+                        
+                        // Simular dados de biofeedback
+                        simulateBiofeedback();
+                        
+                        // Processar vídeo para detecção facial
+                        processVideo();
+                    })
+                    .catch(err => {
+                        console.error("Erro ao acessar a câmera: ", err);
+                    });
             }
-        });
-
-        // Atualizar Biofeedback
-        setInterval(() => {
-            biofeedbackChart.data.datasets[0].data.shift();
-            biofeedbackChart.data.datasets[0].data.push(Math.floor(60 + Math.random() * 40));
-            biofeedbackChart.data.datasets[1].data.shift();
-            biofeedbackChart.data.datasets[1].data.push(Math.floor(Math.random() * 100));
-            biofeedbackChart.update();
-        }, 1000);
-
-        // Análise
-        const analyzeBtn = document.getElementById('analyze-btn');
-        analyzeBtn.addEventListener('click', () => {
-            if (!document.getElementById('face-status').classList.contains('sensor-active') ||
-                !document.getElementById('voice-status').classList.contains('sensor-active') ||
-                !document.getElementById('ppg-status').classList.contains('sensor-active')) {
-                showSensorAlert('Todos os sensores precisam estar ativos para prosseguir.');
-                return;
-            }
-
-            analysisSection.classList.add('hidden');
-            resultsSection.classList.remove('hidden');
-            feedbackSection.classList.remove('hidden');
-            displayResults();
-        });
-
-        // Resultados
-        function displayResults() {
-            const verdictContainer = document.getElementById('verdict-container');
-            const emotionalSummary = document.getElementById('emotional-summary');
-            const physiologicalData = document.getElementById('physiological-data');
-            const recommendations = document.getElementById('recommendations');
-            const dataInterpretation = document.getElementById('data-interpretation');
-            const analysisSuggestions = document.getElementById('analysis-suggestions');
-            const actionContainer = document.getElementById('action-container');
-
-            // Simular resultados
-            const stressLevel = Math.random();
-            let verdictClass, verdictTitle, verdictDescription, recommendationsHTML;
-
-            if (stressLevel < 0.3) {
-                verdictClass = 'verdict-low';
-                verdictTitle = 'Baixo Nível de Estresse';
-                verdictDescription = 'Seu estado emocional está equilibrado. Continue com práticas de bem-estar.';
-                recommendationsHTML = '<div class="flex items-start"><i class="fas fa-spa text-green-400 mt-1 mr-2"></i><span class="text-gray-300">Pratique meditação diária de 10 minutos.</span></div>';
-                document.getElementById('self-care-action').classList.remove('hidden');
-                document.getElementById('monitoring-action').classList.remove('hidden');
-            } else if (stressLevel < 0.7) {
-                verdictClass = 'verdict-medium';
-                verdictTitle = 'Nível Moderado de Estresse';
-                verdictDescription = 'Detectamos sinais de estresse moderado. Considere suporte adicional.';
-                recommendationsHTML = '<div class="flex items-start"><i class="fas fa-hands-helping text-blue-400 mt-1 mr-2"></i><span class="text-gray-300">Recomendamos consultar um profissional para suporte emocional.</span></div>';
-                document.getElementById('emotional-support-action').classList.remove('hidden');
-                document.getElementById('monitoring-action').classList.remove('hidden');
-            } else {
-                verdictClass = 'verdict-high';
-                verdictTitle = 'Alto Nível de Estresse';
-                verdictDescription = 'Níveis elevados de estresse detectados. Ação imediata é recomendada.';
-                recommendationsHTML = '<div class="flex items-start"><i class="fas fa-robot text-purple-400 mt-1 mr-2"></i><span class="text-gray-300">Sugerimos uma avaliação médica detalhada com nossa plataforma.</span></div>';
-                document.getElementById('medical-ia-action').classList.remove('hidden');
-                document.getElementById('emotional-support-action').classList.remove('hidden');
-            }
-
-            verdictContainer.className = `verdict-card p-6 rounded-lg mb-8 ${verdictClass}`;
-            document.getElementById('verdict-title').textContent = verdictTitle;
-            document.getElementById('verdict-description').textContent = verdictDescription;
-            recommendations.innerHTML = recommendationsHTML;
-
-            emotionalSummary.innerHTML = `
-                <div class="flex items-center"><div class="w-3 h-3 rounded-full bg-cyan-400 mr-2"></div><span class="text-gray-300">Emoção predominante: ${document.getElementById('emotion-value').textContent}</span></div>
-                <div class="flex items-center"><div class="w-3 h-3 rounded-full bg-blue-400 mr-2"></div><span class="text-gray-300">Nível de ativação: ${(stressLevel * 100).toFixed(0)}%</span></div>
-            `;
-
-            physiologicalData.innerHTML = `
-                <div class="flex justify-between"><span class="text-gray-400">Frequência Cardíaca:</span><span id="heart-rate-result" class="text-white font-medium">${document.getElementById('bpm-value').textContent} bpm</span></div>
-                <div class="flex justify-between"><span class="text-gray-400">Variação Cardíaca:</span><span id="hrv-result" class="text-white font-medium">${(Math.random() * 50 + 50).toFixed(0)} ms</span></div>
-                <div class="flex justify-between"><span class="text-gray-400">Resposta Galvânica:</span><span id="gsr-result" class="text-white font-medium">${(Math.random() * 10).toFixed(1)} μS</span></div>
-            `;
-
-            dataInterpretation.innerHTML = `
-                <p>A análise multimodal combinou dados faciais, vocais e fisiológicos para avaliar seu estado emocional.</p>
-                <p>Os resultados indicam ${verdictDescription.toLowerCase()}</p>
-            `;
-
-            analysisSuggestions.innerHTML = recommendationsHTML;
-            actionContainer.classList.remove('hidden');
-
-            // Histórico
-            const historyChart = new Chart(document.getElementById('history-chart'), {
-                type: 'line',
-                data: {
-                    labels: ['Dia 1', 'Dia 2', 'Dia 3', 'Dia 4', 'Dia 5'],
-                    datasets: [{
-                        label: 'Nível de Estresse',
-                        data: Array(5).fill(0).map(() => Math.random() * 100),
-                        borderColor: '#22d3ee',
-                        tension: 0.4,
-                        fill: false
-                    }]
-                },
-                options: {
-                    scales: { y: { beginAtZero: true, max: 100 } }
+            
+            // Processar vídeo para detecção facial
+            function processVideo() {
+                const video = document.getElementById('video-input');
+                const canvas = document.getElementById('video-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                function detectFaces() {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // Aqui você integraria com a API de detecção facial
+                    // Por enquanto, apenas simulando
+                    
+                    // Simular emoções aleatórias
+                    const emotions = ['Neutro', 'Feliz', 'Triste', 'Surpreso', 'Raiva', 'Medo', 'Nojo'];
+                    const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+                    document.getElementById('emotion-value').textContent = randomEmotion;
+                    
+                    // Simular BPM
+                    const randomBPM = 60 + Math.floor(Math.random() * 40);
+                    document.getElementById('bpm-value').textContent = randomBPM;
+                    
+                    // Simular análise de voz
+                    const voiceStates = ['Normal', 'Estressado', 'Calmo', 'Ansioso'];
+                    const randomVoiceState = voiceStates[Math.floor(Math.random() * voiceStates.length)];
+                    document.getElementById('voice-value').textContent = randomVoiceState;
+                    
+                    requestAnimationFrame(detectFaces);
                 }
+                
+                detectFaces();
+            }
+            
+            // Simular dados de biofeedback
+            function simulateBiofeedback() {
+                const canvas = document.getElementById('biofeedback-canvas');
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                
+                let time = 0;
+                const dataPoints = [];
+                
+                function drawGraph() {
+                    ctx.clearRect(0, 0, width, height);
+                    
+                    // Desenhar grade
+                    ctx.strokeStyle = 'rgba(34, 211, 238, 0.1)';
+                    ctx.lineWidth = 1;
+                    
+                    // Linhas horizontais
+                    for (let y = 0; y <= height; y += height / 5) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(width, y);
+                        ctx.stroke();
+                    }
+                    
+                    // Linhas verticais
+                    for (let x = 0; x <= width; x += width / 10) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, height);
+                        ctx.stroke();
+                    }
+                    
+                    // Gerar novos pontos de dados
+                    time += 0.05;
+                    const value = Math.sin(time) * 0.8 + Math.sin(time * 2.3) * 0.5 + Math.random() * 0.2;
+                    const scaledValue = (value + 1.5) * (height / 3);
+                    
+                    dataPoints.push(scaledValue);
+                    if (dataPoints.length > 200) {
+                        dataPoints.shift();
+                    }
+                    
+                    // Desenhar linha de dados
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#22d3ee';
+                    ctx.lineWidth = 2;
+                    
+                    for (let i = 0; i < dataPoints.length; i++) {
+                        const x = width - (dataPoints.length - i) * (width / 200);
+                        const y = height - dataPoints[i];
+                        
+                        if (i === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    
+                    ctx.stroke();
+                    
+                    requestAnimationFrame(drawGraph);
+                }
+                
+                drawGraph();
+            }
+            
+            // Botão de Análise
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resultsSection = document.getElementById('results-section');
+            
+            analyzeBtn.addEventListener('click', function() {
+                // Mostrar seção de resultados
+                document.getElementById('analysis-section').classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+                
+                // Simular processamento
+                simulateAnalysis();
             });
-        }
-
-        // Salvar Relatório
-        document.getElementById('save-report-btn').addEventListener('click', () => {
-            alert('Relatório salvo como PDF. Verifique seu dispositivo.');
-        });
-
-        // Nova Análise
-        document.getElementById('new-analysis-btn').addEventListener('click', () => {
-            resultsSection.classList.add('hidden');
-            feedbackSection.classList.add('hidden');
-            calibrationSection.classList.remove('hidden');
-            progress = 0;
-            calibrationProgress.setAttribute('stroke-dashoffset', 100);
-        });
-
-        // Como Funciona
-        document.getElementById('learn-more-btn').addEventListener('click', () => {
-            window.scrollTo({ top: document.getElementById('feedback-section').offsetTop, behavior: 'smooth' });
-            feedbackSection.classList.remove('hidden');
+            
+            // Simular análise
+            function simulateAnalysis() {
+                const verdictContainer = document.getElementById('verdict-container');
+                const verdictIcon = document.getElementById('verdict-icon');
+                const verdictTitle = document.getElementById('verdict-title');
+                const verdictDescription = document.getElementById('verdict-description');
+                const emotionalSummary = document.getElementById('emotional-summary');
+                const heartRateResult = document.getElementById('heart-rate-result');
+                const hrvResult = document.getElementById('hrv-result');
+                const gsrResult = document.getElementById('gsr-result');
+                const recommendations = document.getElementById('recommendations');
+                
+                // Simular processamento
+                setTimeout(() => {
+                    verdictContainer.classList.add('verdict-medium');
+                    verdictIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-yellow-400"></i>';
+                    verdictTitle.textContent = 'Possível Estresse Moderado';
+                    verdictDescription.textContent = 'A análise identificou sinais de estresse moderado com alguns indicadores fisiológicos elevados.';
+                    
+                    // Atualizar resumo emocional
+                    emotionalSummary.innerHTML = `
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-cyan-400 mr-2"></div>
+                            <span class="text-gray-300">Predomínio de: <span class="text-white">Neutro (42%)</span></span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-blue-400 mr-2"></div>
+                            <span class="text-gray-300">Segunda emoção: <span class="text-white">Estresse (28%)</span></span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-purple-400 mr-2"></div>
+                            <span class="text-gray-300">Microexpressões: <span class="text-white">7 detectadas</span></span>
+                        </div>
+                    `;
+                    
+                    // Atualizar dados fisiológicos
+                    heartRateResult.textContent = '78 bpm';
+                    hrvResult.textContent = '32 ms';
+                    gsrResult.textContent = '5.2 μS';
+                    
+                    // Atualizar recomendações
+                    recommendations.innerHTML = `
+                        <div class="flex items-start">
+                            <i class="fas fa-spa text-purple-400 mt-1 mr-2"></i>
+                            <span class="text-gray-300">Sinais de estresse moderado detectados. Recomendamos técnicas de relaxamento.</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-heartbeat text-purple-400 mt-1 mr-2"></i>
+                            <span class="text-gray-300">Frequência cardíaca ligeiramente elevada para estado de repouso.</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-comment-medical text-purple-400 mt-1 mr-2"></i>
+                            <span class="text-gray-300">Considere avaliação profissional se os sintomas persistirem.</span>
+                        </div>
+                    `;
+                    
+                    // Mostrar ações recomendadas
+                    document.getElementById('action-container').classList.remove('hidden');
+                    document.getElementById('emotional-support-action').classList.remove('hidden');
+                    document.getElementById('medical-ia-action').classList.remove('hidden');
+                    document.getElementById('monitoring-action').classList.remove('hidden');
+                    
+                    // Simular gráfico de histórico
+                    simulateHistoryChart();
+                    
+                }, 1500);
+            }
+            
+            // Simular gráfico de histórico
+            function simulateHistoryChart() {
+                const ctx = document.createElement('canvas');
+                ctx.height = 300;
+                document.getElementById('history-chart').appendChild(ctx);
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                        datasets: [
+                            {
+                                label: 'Estresse',
+                                data: [65, 59, 80, 81, 56, 72, 68],
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Bem-estar',
+                                data: [45, 60, 55, 40, 65, 50, 45],
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#f3f4f6'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#f3f4f6'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#f3f4f6'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Botão Nova Análise
+            document.getElementById('new-analysis-btn').addEventListener('click', function() {
+                document.getElementById('results-section').classList.add('hidden');
+                document.getElementById('analysis-section').classList.remove('hidden');
+                
+                // Resetar dados
+                document.getElementById('emotion-value').textContent = '--';
+                document.getElementById('bpm-value').textContent = '--';
+                document.getElementById('voice-value').textContent = '--';
+                document.getElementById('analyze-btn').disabled = true;
+                
+                // Limpar gráfico de histórico
+                const chartContainer = document.getElementById('history-chart');
+                chartContainer.innerHTML = '';
+            });
+            
+            // Botão Salvar Relatório
+            document.getElementById('save-report-btn').addEventListener('click', function() {
+                alert('Relatório gerado com sucesso! (Simulação)');
+            });
+            
+            // Avaliação por estrelas
+            const stars = document.querySelectorAll('[data-rating]');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.add('text-yellow-400');
+                            s.classList.remove('text-gray-400');
+                        } else {
+                            s.classList.add('text-gray-400');
+                            s.classList.remove('text-yellow-400');
+                        }
+                    });
+                });
+            });
+            
+            // Enviar Feedback
+            document.getElementById('submit-feedback-btn').addEventListener('click', function() {
+                alert('Feedback enviado com sucesso! Obrigado por contribuir.');
+                document.getElementById('user-feedback').value = '';
+                
+                // Resetar estrelas
+                stars.forEach(star => {
+                    star.classList.add('text-gray-400');
+                    star.classList.remove('text-yellow-400');
+                });
+            });
         });
     </script>
 </body>
